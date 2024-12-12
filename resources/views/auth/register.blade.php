@@ -90,10 +90,6 @@
                             <input type="submit" class="btn btn-secondary p-2" value="Sign Up">
                         </div>
                     </form>
-
-
-
-
                     <hr>
                     <a href="{{ route('login') }}" class="d-flex justify-content-center">Already have an account?</a>
                 </div>
@@ -105,7 +101,6 @@
 <script>
     const registerForm = document.getElementById('registerForm');
 
-    // Input fields
     const fullNameInput = document.getElementById('nameInput');
     const userNameInput = document.getElementById('usernameInput');
     const phoneInput = document.getElementById('phoneInput');
@@ -114,7 +109,6 @@
     const termsInput = document.getElementById('customCheckc1');
     const submitButton = document.getElementById('submitButton');
 
-    // Error fields
     const nameError = document.getElementById('nameError');
     const usernameError = document.getElementById('usernameError');
     const phoneError = document.getElementById('phoneError');
@@ -122,13 +116,11 @@
     const passwordError = document.getElementById('passwordError');
     const termsError = document.getElementById('termsError');
 
-    // Flags for asynchronous checks
     let isFullNameUnique = true;
     let isUsernameUnique = true;
     let isPhoneUnique = true;
     let isEmailUnique = true;
 
-    // Helper function for uniqueness validation
     const checkUniqueness = (value, route, errorField, fieldName) => {
         return fetch(route, {
             method: 'POST',
@@ -159,7 +151,7 @@
         nameError.textContent = 'Full Name must be at least 5 characters.';
         return false;
     }
-    nameError.textContent = '';  // Clear the error if it's valid
+    nameError.textContent = '';
     return true;
 };
 
@@ -190,7 +182,7 @@
             return false;
         }
 
-        // Asynchronous check
+
         checkUniqueness(value, '{{ route("check.phone") }}', phoneError, 'phone')
             .then(isUnique => (isPhoneUnique = isUnique));
 
@@ -206,7 +198,7 @@
             return false;
         }
 
-        // Asynchronous check
+
         checkUniqueness(value, '{{ route("check.email") }}', emailError, 'email')
             .then(isUnique => (isEmailUnique = isUnique));
 
@@ -231,17 +223,16 @@
         return true;
     };
 
-    // Validate form on submit
-    registerForm.addEventListener('submit', async function (event) {
-        event.preventDefault(); // Prevent form submission
 
-        // Validate all fields
+    registerForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+
         const isFormValid =
             validateFullName() &&
             validatePassword() &&
             validateTerms();
 
-        // Wait for asynchronous validations to complete
         await validateFullName();
         await validateUserName();
         await validatePhone();
@@ -254,13 +245,12 @@
             isPhoneUnique &&
             isEmailUnique
         ) {
-            this.submit(); // Submit the form
+            this.submit();
         } else {
             console.error('Form has errors, fix them before submitting.');
         }
     });
 
-    // Real-time validation
     fullNameInput.addEventListener('blur', validateFullName);
     userNameInput.addEventListener('blur', validateUserName);
     phoneInput.addEventListener('blur', validatePhone);
@@ -271,10 +261,8 @@
 
 <script>
     document.getElementById('registerForm').addEventListener('submit', function (event) {
-    // Ensure the checkbox value is correctly set
     const termsInput = document.getElementById('customCheckc1');
     if (!termsInput.checked) {
-        // Set value to 0 if unchecked before form submission
         termsInput.value = '0';
     }
 });
