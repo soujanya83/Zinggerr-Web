@@ -74,9 +74,9 @@
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        <div class="form-check mt-3">
+                        <div class="form-check mt-3s">
                             <input class="form-check-input input-primary" type="checkbox" id="customCheckc1"
-                                name="tandc_status" value="1">
+                                name="tandc_status" value="0">
                             <label class="form-check-label" for="customCheckc1">
                                 <span class="h5 mb-0">Agree with <span>Terms & Condition.</span></span>
                             </label><br>
@@ -85,7 +85,6 @@
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-
                         <div class="d-grid mt-4">
                             <input type="submit" class="btn btn-secondary p-2" value="Sign Up">
                         </div>
@@ -153,29 +152,32 @@
             return false;
         });
     };
+
+    // Validate individual fields
     const validateFullName = () => {
-    const value = fullNameInput.value.trim();
-    if (value.length < 5) {
-        nameError.textContent = 'Full Name must be at least 5 characters.';
-        return false;
-    }
-    nameError.textContent = '';  // Clear the error if it's valid
-    return true;
-};
+        const value = fullNameInput.value.trim();
+        if (value.length < 5) {
+            nameError.textContent = 'Full Name must be at least 5 characters.';
+            isFullNameUnique = false;
+            return false;
+        }
+
+        // Asynchronous check
+        checkUniqueness(value, '{{ route("check.name") }}', nameError, 'name')
+            .then(isUnique => (isFullNameUnique = isUnique));
+
+        return true;
+    };
 
     const validateUserName = () => {
         const value = userNameInput.value.trim();
-        if (value === '' ) {
+        if (value === '') {
             usernameError.textContent = 'Username is required.';
             isUsernameUnique = false;
             return false;
         }
-        if (value.length < 5 ) {
-            usernameError.textContent = 'User Name must be at least 5 characters.';
-            isUsernameUnique = false;
-            return false;
-        }
 
+        // Asynchronous check
         checkUniqueness(value, '{{ route("check.username") }}', usernameError, 'username')
             .then(isUnique => (isUsernameUnique = isUnique));
 
@@ -269,17 +271,6 @@
     termsInput.addEventListener('change', validateTerms);
 </script>
 
-<script>
-    document.getElementById('registerForm').addEventListener('submit', function (event) {
-    // Ensure the checkbox value is correctly set
-    const termsInput = document.getElementById('customCheckc1');
-    if (!termsInput.checked) {
-        // Set value to 0 if unchecked before form submission
-        termsInput.value = '0';
-    }
-});
-
-</script>
 
 
 @endsection
