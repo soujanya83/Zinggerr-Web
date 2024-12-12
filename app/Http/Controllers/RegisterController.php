@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\VerifyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -25,7 +31,7 @@ class RegisterController extends Controller
                 ->withInput();
         }
 
-        User::create([
+        $user =  User::create([
             'name' => $request->input('full_name'),
             'username' => $request->input('user_name'),
             'email' => $request->input('email'),
@@ -34,14 +40,50 @@ class RegisterController extends Controller
             'password' => bcrypt($request->input('password')),
         ]);
 
-        return redirect()->route('login')->with('success', 'Registration successful! Please log in.');
+        $verificationUrl = URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            ['id' => $user->id, 'hash' => sha1($user->email)]
+        );
+
+        // Send verification email
+        Mail::to($user->email)->send(new VerifyEmail($user, $verificationUrl));
+
+        return redirect()->route('user_register')->with('success', 'Registration successful! Please check your email to verify your account.');
     }
 
-    // public function checkName(Request $request)
-    // {
-    //     $exists = User::where('name', $request->input('full_name'))->exists();
-    //     return response()->json(['exists' => $exists]);
-    // }
+    public function verify(Request $request, $id, $hash)
+    {
+        $user = User::findOrFail($id);
+        if (!hash_equals($hash, sha1($user->email))) {
+            abort(403, 'Invalid verification link.');
+        }
+        $user->update(['email_verified_at' => now()]);
+        return response()->json([
+            'message' => 'Email verified successfully!'
+        ]);
+    }
+
+
+
+
+    public function sendVerificationEmail(Request $request)
+    {
+        // Store the current device info in the session
+        Session::put('verification_device', [
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+        ]);
+
+        // Your existing logic to send the verification email
+        $user = Auth::user();
+        // $user->sendEmailVerificationNotification();
+
+        return back()->with('success', 'Verification email sent!');
+    }
+
+
+
 
     public function checkUsername(Request $request)
     {

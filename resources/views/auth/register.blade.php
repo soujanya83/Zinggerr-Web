@@ -3,8 +3,27 @@
 @section('pageTitle', 'Register')
 
 @section('content')
+
+
+@if (session('success'))
+    <div id="success-alert" class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if (session('error'))
+    <div id="error-alert" class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
+
+
+
 <div class="auth-main">
+
     <div class="auth-wrapper v3">
+
         <div class="auth-form">
             <div class="card mt-5">
                 <div class="card-body">
@@ -97,6 +116,7 @@
         </div>
     </div>
 </div>
+
 
 <script>
     const registerForm = document.getElementById('registerForm');
