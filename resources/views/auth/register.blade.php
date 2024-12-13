@@ -1,24 +1,11 @@
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 @extends('layouts.app')
 
 @section('pageTitle', 'Register')
 
 @section('content')
-
-
-@if (session('success'))
-    <div id="success-alert" class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
-
-@if (session('error'))
-    <div id="error-alert" class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
-
-
-
 
 <div class="auth-main">
 

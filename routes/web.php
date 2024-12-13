@@ -1,8 +1,11 @@
 <?php
+
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -11,9 +14,9 @@ Route::get('/app', function () {
     return view('app.dashboard');
 })->name('dashboard');
 
-Route::get('/courses', function () {
-    return view('app.courses.list');
-})->name('courses');
+// Route::get('/courses', function () {
+//     return view('app.courses.list');
+// })->name('courses');
 
 Route::get('/courses/add', function () {
     return view('app.courses.add');
@@ -22,6 +25,14 @@ Route::get('/courses/add', function () {
 Route::get('/register-page', function () {
     return view('auth.register');
 })->name('user_register');
+
+Route::get('/login-page', function () {
+    return view('auth.login');
+})->name('user_login');
+
+Route::get('/thankyou-page', function () {
+    return view('auth.thankyou_register');
+})->name('thankyou_register');
 
 Route::post('register-submit', [RegisterController::class, 'register_submit'])->name('register_submit');
 
@@ -39,6 +50,18 @@ Route::post('/check-email', [RegisterController::class, 'checkEmail'])->name('ch
 //     return 'Test email sent successfully!';
 // });
 
+// Route::post('login',[LoginController::class,'login'])->name('login');
 
 Route::get('/email/verify/{id}/{hash}', [RegisterController::class, 'verify'])
-     ->name('verification.verify');
+    ->name('verification.verify');
+
+
+Route::middleware(['web'])->group(function () {
+    Route::post('/login-page', [LoginController::class, 'login'])->name('login.submit');
+});
+
+
+Route::post('courses-create',[CourseController::class,'createCourse'])->name('courses_create');
+Route::match(['get', 'post'],'courses',[CourseController::class,'courselist'])->name('courses');
+
+Route::get('courses/{id}',[CourseController::class,'coursedetails'])->name('course_details');

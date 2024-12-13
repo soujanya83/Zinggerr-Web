@@ -46,11 +46,11 @@ class RegisterController extends Controller
             ['id' => $user->id, 'hash' => sha1($user->email)]
         );
 
-        // Send verification email
         Mail::to($user->email)->send(new VerifyEmail($user, $verificationUrl));
 
-        return redirect()->route('user_register')->with('success', 'Registration successful! Please check your email to verify your account.');
+        return redirect()->route('thankyou_register')->with('Registration successful! Please check your email to verify your account.');
     }
+
 
     public function verify(Request $request, $id, $hash)
     {
@@ -69,16 +69,11 @@ class RegisterController extends Controller
 
     public function sendVerificationEmail(Request $request)
     {
-        // Store the current device info in the session
         Session::put('verification_device', [
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent(),
         ]);
-
-        // Your existing logic to send the verification email
         $user = Auth::user();
-        // $user->sendEmailVerificationNotification();
-
         return back()->with('success', 'Verification email sent!');
     }
 

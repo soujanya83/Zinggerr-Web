@@ -19,15 +19,15 @@
         <li class="pc-item pc-hasmenu">
             <a href="#!" class="pc-link">
               <span class="pc-micon"><i class="ti ti-book"></i> </span>
-              <span class="pc-mtext" data-i18n="Courses">Courses</span> 
+              <span class="pc-mtext" data-i18n="Courses">Courses</span>
               <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
             </a>
             <ul class="pc-submenu">
               <li class="pc-item">
-                <a class="pc-link" href="{{ route('addCourse') }}" data-i18n="Add New">Add New</a>
+                <a class="pc-link" href="{{ route('addCourse') }}" data-i18n="Add New">Add New course</a>
               </li>
               <li class="pc-item">
-                <a class="pc-link" href="{{ route('courses') }}" data-i18n="Active List">Active List</a>
+                <a class="pc-link" href="{{ route('courses') }}" data-i18n="Active List">Courses List</a>
               </li>
               <li class="pc-item">
                 <a class="pc-link" href="#" data-i18n="Drafted List">Drafted List</a>
@@ -44,9 +44,9 @@
         <li class="pc-item pc-hasmenu">
             <a href="#" class="pc-link">
               <span class="pc-micon">
-                <i class="ti ti-user"></i> 
+                <i class="ti ti-user"></i>
               </span>
-              <span class="pc-mtext" data-i18n="Teachers">Teachers</span> 
+              <span class="pc-mtext" data-i18n="Teachers">Teachers</span>
               <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
             </a>
             <ul class="pc-submenu">
@@ -58,9 +58,9 @@
         <li class="pc-item pc-hasmenu">
             <a href="#" class="pc-link">
               <span class="pc-micon">
-                <i class="ti ti-users"></i> 
+                <i class="ti ti-users"></i>
               </span>
-              <span class="pc-mtext" data-i18n="Students">Students</span> 
+              <span class="pc-mtext" data-i18n="Students">Students</span>
               <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
             </a>
             <ul class="pc-submenu">
