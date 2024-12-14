@@ -40,7 +40,7 @@
                                         <!-- Image Section -->
                                         <div style="width: 30%; margin-right: 20px;">
                                             <img src="{{ asset('storage/' . $course->course_image) }}"
-                                                alt="Course Image" class="img-fluid">
+                                                alt="Course Image" class="img-fluid" style="width: 330px;height:230px">
                                             {{-- <div class="position-absolute top-0 end-0 p-2"> --}}
                                                 <span class="badge text-bg-light text-uppercase">
                                                     Status: @if($course->status == '1') <span
@@ -51,7 +51,7 @@
                                             </div> --}}
                                         </div>
 
-                                        <!-- Details Section (Right of Image) -->
+
                                         <div style="width: 50%;">
 
                                             <ul class="list-group list-group-flush mb-3">

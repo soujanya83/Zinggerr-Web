@@ -1,3 +1,14 @@
+
+<style>
+    .user-avatar {
+    width: 45; /* or any size you prefer */
+    height: 45;
+    border-radius: 50%; /* Example for a circular avatar */
+    object-fit: cover;
+}
+</style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <header class="pc-header">
     <div class="header-wrapper">
         <div class="me-auto pc-mob-drp">
@@ -85,41 +96,44 @@
                 </li>
                 <li class="dropdown pc-h-item header-user-profile">
                     <a class="pc-head-link head-link-primary dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#"
-                        role="button" aria-haspopup="false" aria-expanded="false">
-                    <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" >
-                    <span>
-                    <i class="ti ti-settings"></i>
-                    </span>
+                       role="button" aria-haspopup="false" aria-expanded="false">
+                        <img src="{{ asset('images/user/avatar-2.jpg') }}" alt="user-image" class="user-avatar">
+                        <span>
+                            <i class="ti ti-settings"></i>
+                        </span>
                     </a>
                     <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                         <div class="dropdown-header">
-                            <h4>Good Morning, <span class="small text-muted"> John Doe</span></h4>
-                            <p class="text-muted">Project Admin</p>
-                            <hr >
+                            <h4><span class="small text-muted">{{ Auth::user()->name }}</span></h4>
+                            <p class="text-muted">{{ Auth::user()->role }}</p>
+                            <hr>
                             <div class="profile-notification-scroll position-relative" style="max-height: calc(100vh - 280px)">
-                                <div class="upgradeplan-block bg-light-warning rounded">
+                                {{-- <div class="upgradeplan-block bg-light-warning rounded">
                                     <h4>Explore full code</h4>
-                                    <p class="text-muted">Buy now to get full access of code files</p>
+                                    <p class="text-muted">Buy now to get full access to code files</p>
                                     <a href="https://codedthemes.com/item/berry-bootstrap-5-admin-template/" target="_blank"
-                                        class="btn btn-warning">Buy Now</a>
-                                </div>
-                                <hr >
-                                <a href="../application/account-profile-v1.html" class="dropdown-item">
-                                <i class="ti ti-settings"></i>
-                                <span>Account Settings</span>
+                                       class="btn btn-warning">Buy Now</a>
+                                </div> --}}
+                                {{-- <hr> --}}
+                                <a href="{{ url('account-profile') }}" class="dropdown-item">
+                                    <i class="ti ti-settings"></i>
+                                    <span>Account Settings</span>
                                 </a>
-                                <a href="../application/social-profile.html" class="dropdown-item">
-                                <i class="ti ti-user"></i>
-                                <span>Social Profile</span>
+                                <a href="{{ url('social-profile') }}" class="dropdown-item">
+                                    <i class="ti ti-user"></i>
+                                    <span>Social Profile</span>
                                 </a>
-                                <a href="../pages/login-v1.html" class="dropdown-item">
-                                <i class="ti ti-logout"></i>
-                                <span>Logout</span>
+                                <a href="{{ route('logout') }}" class="dropdown-item">
+                                    <i class="ti ti-logout"></i>
+                                    <span>Logout</span>
                                 </a>
+
                             </div>
                         </div>
                     </div>
                 </li>
+
+
             </ul>
         </div>
     </div>

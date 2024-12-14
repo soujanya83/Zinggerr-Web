@@ -1,7 +1,7 @@
 @extends('layouts.app')
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Two+Tone" rel="stylesheet">
 @section('pageTitle', 'Courses')
 
 @section('content')
@@ -78,7 +78,8 @@
                                     <div class="card-body p-2">
                                         <div class="position-relative">
                                             <img src="{{ asset('storage/' . $course->course_image) }}"
-                                                alt="Course Image" class="img-fluid w-100">
+                                                alt="Course Image" class="img-fluid w-100"
+                                                style="width: 210px;height:200px">
                                             <div class="position-absolute top-0 end-0 p-2">
                                                 <span class="badge text-bg-light text-uppercase">
                                                     @if($course->status == '1') Active @else Inactive @endif
@@ -94,11 +95,25 @@
                                                             4.8</p>
                                                     </div>
                                                     <div class="flex-shrink-0">
-                                                        <a href="#"
+                                                        <a href="{{ route('course_edit', $course->id) }}"
                                                             class="avtar avtar-xs btn-link-secondary read-more-btn"
                                                             data-id="{{ $course->id }}">
                                                             <i class="ti ti-edit f-20"></i>
+
+
                                                         </a>
+
+                                                        @can('role',Auth::user())
+                                                        <a href="{{ route('course_delete', $course->id) }}"
+                                                            class="avtar avtar-xs btn-link-secondary read-more-btn"
+                                                            data-id="{{ $course->id }}"
+                                                            onclick="return confirmDelete(this)">
+                                                            <i class="ti ti-trash f-20" style="color: red;"></i>
+                                                        </a>
+
+                                                        @endcan
+
+
                                                     </div>
                                                 </div>
                                             </li>
@@ -135,7 +150,6 @@
                                         </ul>
                                         <a href="{{ route('course_details', $course->id) }}"
                                             class="btn btn-sm btn-outline-primary mb-2">Read More</a>
-
                                     </div>
                                 </div>
                             </div>
@@ -192,5 +206,31 @@
     </nav>
     @endif
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmDelete(element) {
+    event.preventDefault(); // Prevent the default link behavior
+    const url = element.href;
+
+    Swal.fire({
+        title: 'Are you sure? For Delete',
+        text: 'This action cannot be undone!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // If confirmed, redirect to the delete URL
+            window.location.href = url;
+        }
+    });
+
+    return false; // Prevent immediate navigation
+}
+
+</script>
 @include('partials.footer')
 @endsection

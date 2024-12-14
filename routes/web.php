@@ -10,9 +10,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/app', function () {
-    return view('app.dashboard');
-})->name('dashboard');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/app', function () {
+        return view('app.dashboard');
+    })->name('dashboard');
+});
 
 // Route::get('/courses', function () {
 //     return view('app.courses.list');
@@ -50,7 +52,7 @@ Route::post('/check-email', [RegisterController::class, 'checkEmail'])->name('ch
 //     return 'Test email sent successfully!';
 // });
 
-// Route::post('login',[LoginController::class,'login'])->name('login');
+
 
 Route::get('/email/verify/{id}/{hash}', [RegisterController::class, 'verify'])
     ->name('verification.verify');
@@ -60,8 +62,15 @@ Route::middleware(['web'])->group(function () {
     Route::post('/login-page', [LoginController::class, 'login'])->name('login.submit');
 });
 
+Route::post('courses-create', [CourseController::class, 'createCourse'])->name('courses_create');
+Route::match(['get', 'post'], 'courses', [CourseController::class, 'courselist'])->name('courses');
+Route::get('courses/{id}', [CourseController::class, 'coursedetails'])->name('course_details');
 
-Route::post('courses-create',[CourseController::class,'createCourse'])->name('courses_create');
-Route::match(['get', 'post'],'courses',[CourseController::class,'courselist'])->name('courses');
+Route::get('courses-edit/{id}', [CourseController::class, 'courseedit'])->name('course_edit');
+Route::post('courses-update/{id}', [CourseController::class, 'courseupdate'])->name('course_update');
 
-Route::get('courses/{id}',[CourseController::class,'coursedetails'])->name('course_details');
+Route::get('/courses-delete/{id}', [CourseController::class, 'coursedelete'])
+    ->name('course_delete')
+    ->middleware('can:role');
+
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');

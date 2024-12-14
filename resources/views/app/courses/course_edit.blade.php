@@ -21,7 +21,7 @@
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item"><a href="#">Courses</a></li>
-                            <li class="breadcrumb-item" aria-current="page">Add</li>
+                            <li class="breadcrumb-item" aria-current="page">Update</li>
                         </ul>
                     </div>
                 </div>
@@ -31,17 +31,18 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="mb-0">Course Add</h5>
+                        <h5 class="mb-0">Course Edit</h5>
                     </div>
                     <div class="card-body">
-                        <form id="createCourseForm" method="POST" enctype="multipart/form-data">
+                        <form id="createCourseForm" method="POST" enctype="multipart/form-data"
+                            action="{{ route('course_update', $course->id) }}">
                             @csrf
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Course Name</label>
                                         <input type="text" name="course_name" class="form-control"
-                                            placeholder="Enter Course Name" required>
+                                            placeholder="Enter Course Name" required value="{{ $course->course_name }}">
                                     </div>
                                 </div>
 
@@ -49,14 +50,15 @@
                                     <div class="mb-3">
                                         <label class="form-label">Course Code</label>
                                         <input type="text" name="course_code" class="form-control"
-                                            placeholder="Enter Course Code" required>
+                                            placeholder="Enter Course Code" required value="{{ $course->code }}">
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Start Date</label>
-                                        <input type="date" name="start_date" class="form-control" required>
+                                        <input type="date" name="start_date" class="form-control" required
+                                            value="{{ $course->start_date }}">
                                     </div>
                                 </div>
 
@@ -64,7 +66,8 @@
                                     <div class="mb-3">
                                         <label class="form-label">Course Duration</label>
                                         <input type="text" name="duration" class="form-control"
-                                            placeholder="Enter Course Duration" required>
+                                            placeholder="Enter Course Duration" required
+                                            value="{{ $course->duration }}">
                                     </div>
                                 </div>
 
@@ -72,7 +75,7 @@
                                     <div class="mb-3">
                                         <label class="form-label">Course Price</label>
                                         <input type="number" name="price" class="form-control"
-                                            placeholder="Enter Course Price" required>
+                                            placeholder="Enter Course Price" required value="{{ $course->price }}">
                                     </div>
                                 </div>
 
@@ -80,7 +83,8 @@
                                     <div class="mb-3">
                                         <label class="form-label">Teacher Name</label>
                                         <input type="text" name="teacher_name" class="form-control"
-                                            placeholder="Enter Teacher Name" required>
+                                            placeholder="Enter Teacher Name" required
+                                            value="{{ $course->teacher_name }}">
                                     </div>
                                 </div>
 
@@ -88,7 +92,8 @@
                                     <div class="mb-3">
                                         <label class="form-label">Maximum Students</label>
                                         <input type="number" name="max_students" class="form-control"
-                                            placeholder="Enter Maximum Students" required>
+                                            placeholder="Enter Maximum Students" required
+                                            value="{{ $course->max_students }}">
                                     </div>
                                 </div>
 
@@ -96,17 +101,20 @@
                                     <div class="mb-3">
                                         <label class="form-label">Course Status</label>
                                         <select name="status" class="form-select" required>
-                                            <option value="0">Deactive</option>
-                                            <option value="1">Active</option>
+                                            <option value="0" {{ $course->status == 0 ? 'selected' : '' }}>Deactive
+                                            </option>
+                                            <option value="1" {{ $course->status == 1 ? 'selected' : '' }}>Active
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
+
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Course Details</label>
                                         <textarea name="details" class="form-control" rows="3"
-                                            placeholder="Enter Course Details"></textarea>
+                                            placeholder="Enter Course Details">{{ $course->details }}</textarea>
                                     </div>
                                 </div>
 
@@ -114,11 +122,20 @@
                                     <div class="mb-3">
                                         <label class="form-label">Course Image</label>
                                         <input type="file" name="course_image" class="form-control" accept="image/*">
+                                        @if($course->course_image)
+                                        <div class="mb-2">
+                                            <img src="{{ asset('storage/' . $course->course_image) }}"
+                                                alt="Course Image" class="img-fluid"
+                                                style="max-width: 150px; height: auto;">
+                                        </div>
+                                        @endif
+                                        <!-- File input for uploading a new image -->
+
                                     </div>
                                 </div>
 
                                 <div class="col-md-12 text-end">
-                                    <button type="submit" class="btn btn-primary">Create Course</button>
+                                    <button type="submit" class="btn btn-primary">Update</button>
                                 </div>
                             </div>
                         </form>
@@ -136,8 +153,9 @@
     document.getElementById('createCourseForm').addEventListener('submit', function (e) {
         e.preventDefault();
         var formData = new FormData(this);
-        fetch('{{ route('courses_create') }}', {
-            method: 'POST',
+        var courseId = '{{ $course->id }}';
+        fetch(`/courses-update/${courseId}`, {
+            method: 'post',
             body: formData,
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -151,23 +169,21 @@
     text: data.message,
     icon: 'success',
     showConfirmButton: false,
-    timer: 2000,
+    timer: 3000,
     timerProgressBar: true
 })
-.then(() => {
 
+.then(() => {
+            // Redirect to the course list page after the success message
             window.location.href = '{{ route("courses") }}';
         });
-
-                // document.getElementById('createCourseForm').reset();   //// if course create form empty
-
             } else {
                 Swal.fire({
                     title: 'Error!',
                     text: data.message || 'There was an issue with your submission.',
                     icon: 'error',
                     showConfirmButton: false,
-    timer: 3000,
+    timer: 4000,
     timerProgressBar: true
                 });
             }
@@ -178,7 +194,7 @@
                 text: 'Something went wrong. Please try again.',
                 icon: 'error',
                 showConfirmButton: false,
-    timer: 3000,
+    timer: 4000,
     timerProgressBar: true
             });
         });
