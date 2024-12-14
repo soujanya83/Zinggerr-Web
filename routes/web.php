@@ -10,11 +10,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth'])->group(function () {
+// Route::middleware(['auth'])->group(function () {
     Route::get('/app', function () {
         return view('app.dashboard');
     })->name('dashboard');
-});
+// });
 
 // Route::get('/courses', function () {
 //     return view('app.courses.list');

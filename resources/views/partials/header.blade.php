@@ -7,7 +7,7 @@
     object-fit: cover;
 }
 </style>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+{{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <header class="pc-header">
     <div class="header-wrapper">
@@ -104,8 +104,10 @@
                     </a>
                     <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                         <div class="dropdown-header">
-                            <h4><span class="small text-muted">{{ Auth::user()->name }}</span></h4>
-                            <p class="text-muted">{{ Auth::user()->role }}</p>
+                            {{-- <h4><span class="small text-muted">{{ Auth::user()->name }}</span></h4> --}}
+                            <h4><span class="small text-muted"></span></h4>
+                            {{-- <p class="text-muted">{{ Auth::user()->role }}</p> --}}
+                            <p class="text-muted"></p>
                             <hr>
                             <div class="profile-notification-scroll position-relative" style="max-height: calc(100vh - 280px)">
                                 {{-- <div class="upgradeplan-block bg-light-warning rounded">
