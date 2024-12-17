@@ -1,44 +1,52 @@
 <?php
 
+use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->group(function () {
+
     Route::get('/app', function () {
         return view('app.dashboard');
-    })->name('dashboard');
-// });
+    })->name('app');
 
-// Route::get('/courses', function () {
-//     return view('app.courses.list');
-// })->name('courses');
+});
+
+Route::middleware(['auth'])->get('/dashboard', function () {
+    return view('app.dashboard');
+})->name('dashboard');
+
+Route::post('logout', function () {
+    Auth::logout();
+    return redirect()->route('login'); // Redirect to login after logout
+})->name('logout');
 
 Route::get('/courses/add', function () {
     return view('app.courses.add');
 })->name('addCourse');
 
-Route::get('/register-page', function () {
-    return view('auth.register');
-})->name('user_register');
+
 
 Route::get('/login-page', function () {
     return view('auth.login');
+})->name('user_login');
+
+Route::get('/email', function () {
+    return view('emails.email_verify');
 })->name('user_login');
 
 Route::get('/thankyou-page', function () {
     return view('auth.thankyou_register');
 })->name('thankyou_register');
 
-Route::post('register-submit', [RegisterController::class, 'register_submit'])->name('register_submit');
 
-// Route::post('/check-name', [RegisterController::class, 'checkField'])->name('check.name')->defaults('field', 'name');
 Route::post('/check-username', [RegisterController::class, 'checkUsername'])->name('check.username')->defaults('field', 'username');
 Route::post('/check-phone', [RegisterController::class, 'checkPhone'])->name('check.phone');
 Route::post('/check-email', [RegisterController::class, 'checkEmail'])->name('check.email');
@@ -51,16 +59,13 @@ Route::post('/check-email', [RegisterController::class, 'checkEmail'])->name('ch
 //     });
 //     return 'Test email sent successfully!';
 // });
-
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 Route::get('/email/verify/{id}/{hash}', [RegisterController::class, 'verify'])
     ->name('verification.verify');
 
 
-Route::middleware(['web'])->group(function () {
-    Route::post('/login-page', [LoginController::class, 'login'])->name('login.submit');
-});
 
 Route::post('courses-create', [CourseController::class, 'createCourse'])->name('courses_create');
 Route::match(['get', 'post'], 'courses', [CourseController::class, 'courselist'])->name('courses');
@@ -73,4 +78,13 @@ Route::get('/courses-delete/{id}', [CourseController::class, 'coursedelete'])
     ->name('course_delete')
     ->middleware('can:role');
 
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::post('logout', [LogoutController::class, 'logout'])->name('logout_user');
+
+
+
+
+    Route::get('/super-admin/dashboard', [LogoutController::class, 'dashboard'])->name('super-admin.dashboard');
+    Route::get('/sub-admin/dashboard', [LogoutController::class, 'dashboard'])->name('sub-admin.dashboard');
+    Route::get('/admin/dashboard', [LogoutController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/dashboard', [LogoutController::class, 'dashboard'])->name('dashboard');
+    

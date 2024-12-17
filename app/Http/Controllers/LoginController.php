@@ -11,36 +11,36 @@ use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-    public function login(Request $request)
-    {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'login' => 'required',
-                'password' => 'required'
-            ]
-        );
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput();
-        }
+    // public function login(Request $request)
+    // {
+    //     $validator = Validator::make(
+    //         $request->all(),
+    //         [
+    //             'login' => 'required',
+    //             'password' => 'required'
+    //         ]
+    //     );
+    //     if ($validator->fails()) {
+    //         return back()
+    //             ->withErrors($validator)
+    //             ->withInput();
+    //     }
 
-        $login=$request->login;
-        $password=$request->password;
+    //     $login=$request->login;
+    //     $password=$request->password;
 
-        $user = User::where('phone', $login)
-        ->orWhere('email', $login)
-        ->orWhere('username', $login)
-        ->first();
-    if ($user && Hash::check($password, $user->password)) {
-        auth()->login($user);
+    //     $user = User::where('phone', $login)
+    //     ->orWhere('email', $login)
+    //     ->orWhere('username', $login)
+    //     ->first();
+    // if ($user && Hash::check($password, $user->password)) {
+    //     auth()->login($user);
 
-        return redirect()->route('dashboard')->with('success', 'Login successful!');
-    }
-    return redirect()->route('login')->with('error', 'Invalid login credentials.');
+    //     return redirect()->route('dashboard')->with('success', 'Login successful!');
+    // }
+    // return redirect()->route('login')->with('error', 'Invalid login credentials.');
 
-    }
+    // }
 
     public function logout()
     {
@@ -49,6 +49,4 @@ class LoginController extends Controller
         // Redirect to the login page or another page
         return redirect('/login')->with('success', 'You have been logged out.');
     }
-
-
 }

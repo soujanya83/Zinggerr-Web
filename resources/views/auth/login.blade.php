@@ -39,10 +39,10 @@
                         </div>
                     </div>
 
-                    <form action="/login-page" method="post">
+                    <form action="{{ route('login') }}" method="post">
                         @csrf
                         <div class="form-floating mb-3">
-                            <input type="text" name="login" class="form-control" id="loginInput"
+                            <input type="text" name="email" class="form-control" id="loginInput"
                                 placeholder="Email address / Username / Phone">
                             <label for="floatingInput">Email address / Username / Phone</label>
                         </div>
@@ -60,7 +60,7 @@
                             <a href="{{ route('password.request') }}" class="text-secondary">Forgot Password?</a>
                         </div>
                         <div class="d-grid mt-4">
-                            <input type="submit" class="btn btn-secondary" value="Sign In">
+                            <input type="submit" class="btn btn-secondary" value="Login">
                         </div>
 
                     </form>

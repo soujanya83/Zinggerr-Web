@@ -1,14 +1,12 @@
-
 <style>
     .user-avatar {
-    width: 45; /* or any size you prefer */
-    height: 45;
-    border-radius: 50%; /* Example for a circular avatar */
-    object-fit: cover;
-}
+        width: 48%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+    }
 </style>
-{{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <header class="pc-header">
     <div class="header-wrapper">
         <div class="me-auto pc-mob-drp">
@@ -24,14 +22,16 @@
                     </a>
                 </li>
                 <li class="dropdown pc-h-item d-inline-flex d-md-none">
-                    <a class="pc-head-link head-link-secondary dropdown-toggle arrow-none m-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                    <a class="pc-head-link head-link-secondary dropdown-toggle arrow-none m-0" data-bs-toggle="dropdown"
+                        href="#" role="button" aria-haspopup="false" aria-expanded="false">
                         <i class="ti ti-search"></i>
                     </a>
                     <div class="dropdown-menu pc-h-dropdown drp-search">
                         <form class="px-3">
                             <div class="form-group mb-0 d-flex align-items-center">
                                 <i data-feather="search"></i>
-                                <input type="search" class="form-control border-0 shadow-none" placeholder="Search here. . ." >
+                                <input type="search" class="form-control border-0 shadow-none"
+                                    placeholder="Search here. . .">
                             </div>
                         </form>
                     </div>
@@ -39,8 +39,9 @@
                 <li class="pc-h-item d-none d-md-inline-flex">
                     <form class="header-search">
                         <i data-feather="search" class="icon-search"></i>
-                        <input type="search" class="form-control" placeholder="Search here. . ." >
-                        <button class="btn btn-light-secondary btn-search"><i class="ti ti-adjustments-horizontal"></i></button>
+                        <input type="search" class="form-control" placeholder="Search here. . .">
+                        <button class="btn btn-light-secondary btn-search"><i
+                                class="ti ti-adjustments-horizontal"></i></button>
                     </form>
                 </li>
             </ul>
@@ -49,7 +50,8 @@
         <div class="ms-auto">
             <ul class="list-unstyled">
                 <li class="dropdown pc-h-item">
-                    <a class="pc-head-link head-link-secondary dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                    <a class="pc-head-link head-link-secondary dropdown-toggle arrow-none me-0"
+                        data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                         <i class="ti ti-bell"></i>
                     </a>
                     <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown">
@@ -63,7 +65,8 @@
                                 <div class="list-group-item list-group-item-action">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
-                                            <div class="user-avtar bg-light-success"><i class="ti ti-building-store"></i></div>
+                                            <div class="user-avtar bg-light-success"><i
+                                                    class="ti ti-building-store"></i></div>
                                         </div>
                                         <div class="flex-grow-1 ms-1">
                                             <span class="float-end text-muted">3 min ago</span>
@@ -76,13 +79,16 @@
                                 <div class="list-group-item list-group-item-action">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
-                                            <img src="../assets/images/user/avatar-3.jpg" alt="user-image" class="user-avtar" >
+                                            <img src="../assets/images/user/avatar-3.jpg" alt="user-image"
+                                                class="user-avtar">
                                         </div>
                                         <div class="flex-grow-1 ms-1">
                                             <span class="float-end text-muted">10 min ago</span>
                                             <h5>Joseph William</h5>
-                                            <p class="text-body fs-6">It is a long established fact that a reader will be distracted </p>
-                                            <div class="badge rounded-pill bg-light-success">Confirmation of Account</div>
+                                            <p class="text-body fs-6">It is a long established fact that a reader will
+                                                be distracted </p>
+                                            <div class="badge rounded-pill bg-light-success">Confirmation of Account
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -95,28 +101,25 @@
                     </div>
                 </li>
                 <li class="dropdown pc-h-item header-user-profile">
-                    <a class="pc-head-link head-link-primary dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#"
-                       role="button" aria-haspopup="false" aria-expanded="false">
+                    <a class="pc-head-link head-link-primary dropdown-toggle arrow-none me-0" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img src="{{ asset('images/user/avatar-2.jpg') }}" alt="user-image" class="user-avatar">
-                        <span>
-                            <i class="ti ti-settings"></i>
-                        </span>
+                        <span><i class="ti ti-settings"></i></span>
                     </a>
                     <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                         <div class="dropdown-header">
-                            {{-- <h4><span class="small text-muted">{{ Auth::user()->name }}</span></h4> --}}
-                            <h4><span class="small text-muted"></span></h4>
-                            {{-- <p class="text-muted">{{ Auth::user()->role }}</p> --}}
-                            <p class="text-muted"></p>
+                            <h4><span class="small text-muted">{{ Auth::user()->name }}</span></h4>
+                            <p class="text-muted">{{ Auth::user()->role }}</p>
                             <hr>
-                            <div class="profile-notification-scroll position-relative" style="max-height: calc(100vh - 280px)">
-                                {{-- <div class="upgradeplan-block bg-light-warning rounded">
+                            <div class="profile-notification-scroll position-relative"
+                                style="max-height: calc(100vh - 280px)">
+                                <div class="upgradeplan-block bg-light-warning rounded">
                                     <h4>Explore full code</h4>
                                     <p class="text-muted">Buy now to get full access to code files</p>
-                                    <a href="https://codedthemes.com/item/berry-bootstrap-5-admin-template/" target="_blank"
-                                       class="btn btn-warning">Buy Now</a>
-                                </div> --}}
-                                {{-- <hr> --}}
+                                    <a href="https://codedthemes.com/item/berry-bootstrap-5-admin-template/"
+                                        target="_blank" class="btn btn-warning">Buy Now</a>
+                                </div>
+                                <hr>
                                 <a href="{{ url('account-profile') }}" class="dropdown-item">
                                     <i class="ti ti-settings"></i>
                                     <span>Account Settings</span>
@@ -125,15 +128,24 @@
                                     <i class="ti ti-user"></i>
                                     <span>Social Profile</span>
                                 </a>
-                                <a href="{{ route('logout') }}" class="dropdown-item">
+                                <a class="dropdown-item" href="#"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <i class="ti ti-logout"></i>
                                     <span>Logout</span>
                                 </a>
 
+
+
+
+                                <form id="logout-form" action="{{ route('logout_user') }}" method="POST"
+                                    style="display: none;">
+                                    @csrf
+                                </form>
                             </div>
                         </div>
                     </div>
                 </li>
+
 
 
             </ul>

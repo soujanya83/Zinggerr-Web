@@ -25,7 +25,7 @@
                         </div>
                     </div>
 
-                    <form id="registerForm" action="{{ route('register_submit') }}" method="post" autocomplete="off">
+                    <form id="registerForm" action="{{ route('register') }}" method="post" autocomplete="off">
                         @csrf
                         <div class="row">
                             <div class="col-md-12">

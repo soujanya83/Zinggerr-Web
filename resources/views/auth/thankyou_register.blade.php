@@ -38,7 +38,6 @@
         border-color: #45a049;
     }
 </style>
-@section('content')
 <div class="auth-main">
     <div class="auth-wrapper v3">
         <div class="auth-form">
@@ -59,7 +58,7 @@
                         </a>
                     </div>
                     <div class="mt-4 text-muted">
-                        <p>If you did not receive the email, <a href="{{ url('/register-page') }}"
+                        <p>If you did not receive the email, <a href="{{ url('/register') }}"
                                 class="text-decoration-none">click here</a> to resend it.</p>
                     </div>
                 </div>
@@ -67,4 +66,3 @@
         </div>
     </div>
 </div>
-@endsection

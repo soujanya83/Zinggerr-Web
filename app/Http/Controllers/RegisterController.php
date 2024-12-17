@@ -15,41 +15,41 @@ use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
-    public function register_submit(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'full_name' => 'required|min:5',
-            'user_name' => 'required|min:5',
-            'email' => 'required|email',
-            'phone' => 'required|digits:10',
-            'password' => 'required|min:6',
-            'tandc_status' => 'required|boolean',
-        ]);
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput();
-        }
+    // public function register_submit(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'full_name' => 'required|min:5',
+    //         'user_name' => 'required|min:5',
+    //         'email' => 'required|email',
+    //         'phone' => 'required|digits:10',
+    //         'password' => 'required|min:6',
+    //         'tandc_status' => 'required|boolean',
+    //     ]);
+    //     if ($validator->fails()) {
+    //         return back()
+    //             ->withErrors($validator)
+    //             ->withInput();
+    //     }
 
-        $user =  User::create([
-            'name' => $request->input('full_name'),
-            'username' => $request->input('user_name'),
-            'email' => $request->input('email'),
-            'phone' => $request->input('phone'),
-            'tandc_status' => $request->input('tandc_status'),
-            'password' => bcrypt($request->input('password')),
-        ]);
+    //     $user =  User::create([
+    //         'name' => $request->input('full_name'),
+    //         'username' => $request->input('user_name'),
+    //         'email' => $request->input('email'),
+    //         'phone' => $request->input('phone'),
+    //         'tandc_status' => $request->input('tandc_status'),
+    //         'password' => bcrypt($request->input('password')),
+    //     ]);
 
-        $verificationUrl = URL::temporarySignedRoute(
-            'verification.verify',
-            now()->addMinutes(60),
-            ['id' => $user->id, 'hash' => sha1($user->email)]
-        );
+    //     $verificationUrl = URL::temporarySignedRoute(
+    //         'verification.verify',
+    //         now()->addMinutes(60),
+    //         ['id' => $user->id, 'hash' => sha1($user->email)]
+    //     );
 
-        Mail::to($user->email)->send(new VerifyEmail($user, $verificationUrl));
+    //     Mail::to($user->email)->send(new VerifyEmail($user, $verificationUrl));
 
-        return redirect()->route('thankyou_register')->with('Registration successful! Please check your email to verify your account.');
-    }
+    //     return redirect()->route('thankyou_register')->with('Registration successful! Please check your email to verify your account.');
+    // }
 
 
     public function verify(Request $request, $id, $hash)
