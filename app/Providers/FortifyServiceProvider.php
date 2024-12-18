@@ -67,20 +67,25 @@ class FortifyServiceProvider extends ServiceProvider
 
         RateLimiter::for('login', function (Request $request) {
 
+
             $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
             return Limit::perMinute(5)->by($throttleKey);
         });
+
+
         Fortify::authenticateUsing(function (Request $request) {
             $request->validate([
-                'email' => ['required'],
+                'login' => ['required'],
                 'password' => ['required'],
             ]);
-            $user = User::where('email', $request->email)
-                ->orWhere('phone', $request->email)
-                ->orWhere('username', $request->email)
+            $user = User::where('email', $request->login)
+                ->orWhere('phone', $request->login)
+                ->orWhere('username', $request->login)
                 ->first();
 
-            Log::info('Attempting login for: ' . $request->email);
+            Log::info('Login attempt', $request->only('email', 'password'));
+            Log::info('Found user:', $user ? $user->toArray() : ['user' => 'not found']);
+
             // Log::info(session()->all());
 
             if ($user && Hash::check($request->password, $user->password)) {
