@@ -52,11 +52,13 @@ class CreateNewUser implements CreatesNewUsers
             ['id' => $user->id, 'hash' => sha1($user->email)]
         );
 
+
+
         Mail::to($user->email)->send(new VerifyEmail($user, $verificationUrl));
 
-      
-        event(new Registered($user));
 
+        event(new Registered($user));
+        session(['registered_email' => $user->email]); 
         return $user;
     }
 }

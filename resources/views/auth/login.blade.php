@@ -39,7 +39,7 @@
                         </div>
                     </div>
 
-                    <form action="{{ route('login') }}" method="post">
+                    <form action="{{ route('login') }}" method="POST">
                         @csrf
                         <div class="form-floating mb-3">
                             <input type="text" name="login" class="form-control" id="loginInput"
@@ -72,4 +72,6 @@
         </div>
     </div>
 </div>
+
+
 @endsection

@@ -6,9 +6,9 @@
         /* Example for a circular avatar */
         object-fit: cover;
     }
-
 </style>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
+
 <header class="pc-header">
     <div class="header-wrapper">
         <div class="me-auto pc-mob-drp">
@@ -131,13 +131,14 @@
                                     <span>Social Profile</span>
                                 </a>
                                 <a class="dropdown-item" href="#"
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                 <i class="ti ti-logout"></i>
-                                 <span>Logout</span>
-                             </a>
-                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                 @csrf
-                             </form>
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <i class="ti ti-logout"></i>
+                                    <span>Logout</span>
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    style="display: none;">
+                                    @csrf
+                                </form>
                             </div>
                         </div>
                     </div>

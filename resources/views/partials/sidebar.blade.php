@@ -68,6 +68,24 @@
                 <li class="pc-item"><a class="pc-link" href="#" data-i18n="List">List</a></li>
             </ul>
         </li>
+
+
+        <li class="pc-item pc-hasmenu">
+            <a href="#" class="pc-link">
+              <span class="pc-micon">
+                <i class="ti ti-user"></i>
+              </span>
+              <span class="pc-mtext" data-i18n="User">Users</span>
+              <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+            </a>
+            <ul class="pc-submenu">
+                <li class="pc-item"><a class="pc-link" href="{{ route('useradd') }}" data-i18n="Pricing">Add New</a></li>
+                <li class="pc-item"><a class="pc-link" href="{{ route('userlist') }}" data-i18n="List">List</a></li>
+            </ul>
+        </li>
+
+
+
       </ul>
     </div>
   </div>

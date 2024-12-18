@@ -5,7 +5,7 @@
 @section('content')
 
     @include('partials.sidebar')
-    @include('partials.header')
+    @include('partials.headerdashboard')
 
     <div class="pc-container">
     <div class="pc-content">

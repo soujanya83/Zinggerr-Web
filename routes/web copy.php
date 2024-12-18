@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\ClearCacheAfterLogout;
@@ -15,7 +16,6 @@ Route::get('/', function () {
 });
 
 
-
 Route::get('/logout', function () {
     Auth::logout();
     session()->invalidate();
@@ -23,10 +23,12 @@ Route::get('/logout', function () {
     return redirect('login');
 })->name('logout');
 
-Route::get('/login-page', function () {
-    return  view('auth.login');
-})->name('loginpage');
-
+Route::get('/login', function () {
+    if (Auth::check()) {
+        return redirect()->route('dashboard'); // Redirect logged-in users
+    }
+    return view('auth.login');
+})->name('login');
 
 
 // ................................................use email verify..........................................
@@ -74,18 +76,15 @@ Route::middleware(['web', ClearCacheAfterLogout::class, 'auth'])->group(function
 
     Route::get('courses-edit/{id}', [CourseController::class, 'courseedit'])->name('course_edit');
     Route::post('courses-update/{id}', [CourseController::class, 'courseupdate'])->name('course_update');
-    Route::get('courses-add', [CourseController::class, 'courseadd'])->name('addCourse');
 
     Route::get('/courses-delete/{id}', [CourseController::class, 'coursedelete'])
         ->name('course_delete')
         ->middleware('can:role');
+    Route::get('/courses/add', function () {
+        return view('app.courses.add');
+    })->name('addCourse');
 
-    Route::get('user-add', [UserController::class, 'useradd'])->name('useradd');
-    Route::get('user-list', [UserController::class, 'userlist'])->name('userlist');
 
-    // Route::get('/courses/add', function () {
-    //     return view('app.courses.add');
-    // })->name('addCourse');
 
     Route::post('/logout', function () {
         Auth::logout();

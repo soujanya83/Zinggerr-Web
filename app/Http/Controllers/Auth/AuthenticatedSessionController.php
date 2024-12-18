@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 class AuthenticatedSessionController extends BaseController
 {
-    /**
-     * Custom login redirect after successful authentication.
-     */
+
     protected function authenticated(Request $request, $user)
     {
         return redirect('/dashboard');

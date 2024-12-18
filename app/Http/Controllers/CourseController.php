@@ -11,7 +11,11 @@ use Illuminate\Support\Facades\Gate;
 class CourseController extends Controller
 {
 
+    public function courseadd(Request $request)
 
+    {
+        return view('app.courses.add');
+    }
 
     public function createCourse(Request $request)
     {

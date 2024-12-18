@@ -43,22 +43,24 @@
         <div class="auth-form">
             <div class="card my-5 shadow-lg rounded-3">
                 <div class="card-body text-center">
-                    <a href="{{ url('/') }}" class="d-flex justify-content-center mb-4">
-                        <img src="/images/logo.png" alt="logo" class="img-fluid" style="max-width: 150px;">
+                    <a href="#" class="d-flex justify-content-center mb-4">
+                        <img src="/images/logo.png" alt="logo" class="img-fluid" style="max-width: 285px;height:83px">
                     </a>
                     <div class="auth-header">
-                        <h2 class="text-secondary mt-3"><b>Welcome to Our Platform!</b></h2>
-                        <h3 class="f-16 mt-3 text-success">Thank you for registering!</h3>
+                        <h2 class="text-secondary mt-3"><b>Thank you for registering!</b></h2>
+                        {{-- <h3 class="f-16 mt-3 text-success"></h3> --}}
                         <p class="mt-3 text-muted">
-                            We've sent you an email to verify your account. Please check your inbox and follow the
-                            instructions to complete your registration.
+                            We've sent you an email to verify your <a href="mailto:{{ session('registered_email') }}">{{
+                                session('registered_email') }}</a>. Please check your inbox.
                         </p>
+
+
                         <a href="{{ url('/login-page') }}" class="btn btn-success mt-4 px-5">
                             Go to Login
                         </a>
                     </div>
                     <div class="mt-4 text-muted">
-                        <p>If you did not receive the email, <a href="{{ url('/register') }}"
+                        <p>If you did not receive the email, <a href="{{ url('register') }}"
                                 class="text-decoration-none">click here</a> to resend it.</p>
                     </div>
                 </div>

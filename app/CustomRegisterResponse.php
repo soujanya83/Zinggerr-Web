@@ -16,6 +16,6 @@ class CustomRegisterResponse implements RegisterResponseContract
     public function toResponse($request)
     {
 
-        return redirect('/thankyou-page');
+        return redirect('/thank-you');
     }
 }

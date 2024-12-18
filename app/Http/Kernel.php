@@ -14,18 +14,17 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
-        \App\Http\Middleware\TrustProxies::class,
         \Illuminate\Http\Middleware\HandleCors::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
-        \App\Http\Middleware\CheckForMaintenanceMode::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        \App\Http\Middleware\EncryptCookies::class,
         \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \App\Http\Middleware\Authenticate::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        \App\Http\Middleware\Authenticate::class,
+        // \App\Http\Middleware\Authenticate::class,
+        // \App\Http\Middleware\RestrictToAuthenticated::class,
+
     ];
 
     /**
@@ -36,12 +35,18 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middlewareGroups = [
+        'clear_cache_routes' => [
+            'web',
+            \App\Http\Middleware\ClearCacheAfterLogout::class,
+        ],
         'web' => [
-            \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            // \App\Http\Middleware\PreventBackMiddleware::class,
+            // \App\Http\Middleware\PreventBackAfterLogin::class,
+            // \App\Http\Middleware\RestrictToAuthenticated::class,
         ],
 
         'api' => [
@@ -61,8 +66,8 @@ class Kernel extends HttpKernel
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         // 'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         // 'redirect.if.auth' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        // 'restrict.authenticated' => \App\Http\Middleware\RestrictToAuthenticated::class,
     ];
 }

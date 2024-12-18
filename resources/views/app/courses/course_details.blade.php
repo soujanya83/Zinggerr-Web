@@ -2,7 +2,7 @@
 @section('pageTitle', 'Courses')
 @section('content')
 @include('partials.sidebar')
-@include('partials.header')
+@include('partials.headerdashboard')
 
 
 
