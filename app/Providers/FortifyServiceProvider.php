@@ -68,7 +68,6 @@ class FortifyServiceProvider extends ServiceProvider
         RateLimiter::for('login', function (Request $request) {
 
             $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
-
             return Limit::perMinute(5)->by($throttleKey);
         });
         Fortify::authenticateUsing(function (Request $request) {
@@ -80,17 +79,15 @@ class FortifyServiceProvider extends ServiceProvider
                 ->orWhere('phone', $request->email)
                 ->orWhere('username', $request->email)
                 ->first();
-            // Log::info('Attempting login for: ' . $request->email);
-            Log::info(session()->all());
+
+            Log::info('Attempting login for: ' . $request->email);
+            // Log::info(session()->all());
 
             if ($user && Hash::check($request->password, $user->password)) {
                 return $user;
             }
-
             return null;
         });
-
-
 
         Fortify::requestPasswordResetLinkView(function () {
             return view('auth.passwords.request');

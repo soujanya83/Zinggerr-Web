@@ -3,6 +3,7 @@
         width: 48%;
         height: 100%;
         border-radius: 50%;
+        /* Example for a circular avatar */
         object-fit: cover;
     }
 </style>
@@ -128,19 +129,11 @@
                                     <i class="ti ti-user"></i>
                                     <span>Social Profile</span>
                                 </a>
-                                <a class="dropdown-item" href="#"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <a class="dropdown-item" href="#">
                                     <i class="ti ti-logout"></i>
                                     <span>Logout</span>
                                 </a>
 
-
-
-
-                                <form id="logout-form" action="{{ route('logout_user') }}" method="POST"
-                                    style="display: none;">
-                                    @csrf
-                                </form>
                             </div>
                         </div>
                     </div>

@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -16,7 +17,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/app', function () {
         return view('app.dashboard');
     })->name('app');
-
 });
 
 Route::middleware(['auth'])->get('/dashboard', function () {
@@ -40,7 +40,7 @@ Route::get('/login-page', function () {
 
 Route::get('/email', function () {
     return view('emails.email_verify');
-})->name('user_login');
+})->name('user_email');
 
 Route::get('/thankyou-page', function () {
     return view('auth.thankyou_register');
@@ -78,13 +78,11 @@ Route::get('/courses-delete/{id}', [CourseController::class, 'coursedelete'])
     ->name('course_delete')
     ->middleware('can:role');
 
-    Route::post('logout', [LogoutController::class, 'logout'])->name('logout_user');
+    Route::get('logout', [LoginController::class, 'logout'])->name('logout_user');
 
 
 
 
-    Route::get('/super-admin/dashboard', [LogoutController::class, 'dashboard'])->name('super-admin.dashboard');
-    Route::get('/sub-admin/dashboard', [LogoutController::class, 'dashboard'])->name('sub-admin.dashboard');
-    Route::get('/admin/dashboard', [LogoutController::class, 'dashboard'])->name('admin.dashboard');
-    Route::get('/dashboard', [LogoutController::class, 'dashboard'])->name('dashboard');
-    
+
+
+

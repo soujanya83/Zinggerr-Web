@@ -15,4 +15,5 @@ class AuthenticatedSessionController extends BaseController
         return redirect('/dashboard');
     }
 
+
 }
