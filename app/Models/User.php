@@ -9,29 +9,28 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+
     protected $fillable = [
+        'id',
         'name',
         'username',
         'email',
         'phone',
-        'tandc_status',
+        'status',
         'password',
-        'email_verified_at'
+        'gender',
+        'type',
+        'token',
+        'email_verified_at',
+        'remember_token',
+        'profile_picture'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
+    protected $keyType = 'string'; // This tells Laravel that the primary key is a string (UUID).
+    public $incrementing = false;
     protected $hidden = [
         'password',
         'remember_token',

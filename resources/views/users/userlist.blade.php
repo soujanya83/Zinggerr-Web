@@ -67,54 +67,88 @@
                                     <tr>
                                         <th>#</th>
                                         <th>User Profile</th>
-                                        <th>Country</th>
+                                        <th>User Name</th>
+                                        <th>Phone</th>
+                                        <th>Role</th>
+                                        <th>Gender</th>
 
                                         <th>Status</th>
-                                        <th class="text-center">Actions</th>
+                                        @can('role',Auth::user()) <th class="text-center">Actions</th> @endcan
+
                                     </tr>
                                 </thead>
                                 <tbody>
-
+                                    @foreach ($data as $keys=> $user)
                                     <tr>
-
+                                        <td>{{ $keys + 1 }}</td>
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-shrink-0 wid-40">
+                                                    @if ($user->profile_picture)
+                                                    <img class="img-radius img-fluid wid-56"
+                                                        src="{{ asset('storage/' . $user->profile_picture) }}"
+                                                        alt="User image"  style="margin-left: -18px; height:51px;width: 49px;"  >
+                                                    @else
                                                     <img class="img-radius img-fluid wid-40"
-                                                        src="{{ asset('assets/images/user/') }}"
-                                                        alt="User image">
+                                                        src="{{ asset('assets/images/default-avatar.png') }}"
+                                                        alt="Default image">
+                                                    @endif
                                                 </div>
                                                 <div class="flex-grow-1 ms-3">
-                                                    <h5 class="mb-1">
-
-                                                        <i class="fas fa-check-circle text-success"></i>
-
-                                                    </h5>
-                                                    <p class="text-muted f-12 mb-0"></p>
+                                                    <h5 class="mb-1">{{ $user->name }}</h5>
+                                                    <p class="text-muted f-12 mb-0">{{ $user->email }}</p>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td></td>
-
+                                        <td>{{ $user->username }}</td>
+                                        <td>{{ $user->phone }}</td>
+                                        <td>{{ $user->type }}</td>
+                                        <td>{{ $user->gender }}</td>
+                                        {{-- <td>{{ $user->id }}</td> --}}
                                         <td>
-                                            <span class="badge rounded-pill f-14 bg-light-}">
+                                            @if ($user->status == 1)
+                                            <span class="badge rounded-pill f-14 bg-light-success">
+                                                Active </span> @else <span
+                                                class="badge bg-light-danger rounded-pill f-14"> Inactive </span>
+                                            @endif
 
-                                            </span>
                                         </td>
                                         <td class="text-center">
-                                            <button type="button" class="btn btn-link-primary">
+                                            {{-- <button type="button" class="btn btn-link-primary">
                                                 <i class="ti ti-message"></i>
                                             </button>
                                             <button type="button" class="btn btn-link-danger">
                                                 <i class="ti ti-ban"></i>
-                                            </button>
+                                            </button> --}}
+                                            @can('role',Auth::user())
+                                            <a href="{{ route('user_edit', $user->id) }}"
+                                                class="avtar avtar-xs btn-link-secondary read-more-btn"
+                                                data-id="{{ $user->id }}">
+                                                <i class="ti ti-edit f-20"></i>
+                                            </a>
+                                            <a href="{{ route('user_delete', $user->id) }}"
+                                                class="avtar avtar-xs btn-link-secondary read-more-btn"
+                                                data-id="{{ $user->id }}"
+                                                onclick="confirmDelete(event, this)">
+                                                <i class="ti ti-trash f-20" style="color: red;"></i>
+                                             </a>
+
+
+
+
+                                            @endcan
+
+
+
                                         </td>
                                     </tr>
-
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
                     </div>
+
+
                 </div>
             </div>
             <!-- [ sample-page ] end -->
@@ -124,6 +158,35 @@
     </div>
 
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmDelete(event, element) {
+        event.preventDefault(); // Prevent the default link behavior
+
+        const url = element.href || element.action; // Handle both anchor tags and form submissions
+
+        Swal.fire({
+            title: 'Are you sure? For Delete',
+            text: 'This action cannot be undone!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If confirmed, redirect to the delete URL (for anchor) or submit the form (for form)
+                if (element.tagName === 'FORM') {
+                    element.submit(); // For forms, submit the form
+                } else {
+                    window.location.href = url; // For links, use the href
+                }
+            }
+        });
+        return false; // Prevent immediate navigation
+    }
+</script>
 
 @include('partials.footer')
 @endsection

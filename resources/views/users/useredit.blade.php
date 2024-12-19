@@ -23,7 +23,7 @@
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item"><a href="#">Users</a></li>
-                            <li class="breadcrumb-item" aria-current="page">Add</li>
+                            <li class="breadcrumb-item" aria-current="page">Update</li>
                         </ul>
                     </div>
                 </div>
@@ -49,39 +49,35 @@
                         <h5 class="mb-0">Add User</h5>
                     </div>
                     <div class="card-body">
-                        <form id="registerForm" id="createuser" action="{{ route('createuser') }}" method="post"
+                        <form id="registerForm" id="createuser" action="{{ route('updateuser', $user->id) }}"  method="post"
                             autocomplete="off"  enctype="multipart/form-data">
                             @csrf
+                            @method('PUT')
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class=" mb-3">
-                                        <label for="nameInput">Full Name</label>
-                                        <input type="text" class="form-control" id="nameInput" placeholder=""
-                                            name="name" required>
-
-                                        <small id="nameError" class="text-danger"></small>
-                                        @error('full_name')
-                                        <small class="text-danger">{{ $message }}</small>
-                                        @enderror
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="nameInput">Full Name</label>
+                                            <input type="text" class="form-control" id="nameInput" name="name" value="{{ old('name', $user->name) }}" required>
+                                            @error('name')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class=" mb-3">
-                                        <label for="usernameInput">Username</label>
-                                        <input type="text" class="form-control" id="usernameInput" placeholder=""
-                                            name="username" required>
-
-                                        <small id="usernameError" class="text-danger"></small>
-                                        @error('username')
-                                        <small class="text-danger">{{ $message }}</small>
-                                        @enderror
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="usernameInput">Username</label>
+                                            <input type="text" class="form-control" id="usernameInput" name="username" value="{{ old('username', $user->username) }}" required readonly>
+                                            @error('username')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
                                     </div>
-                                </div>
                                 <div class="col-md-6">
                                     <div class=" mb-3">
                                         <label for="phoneInput">Phone</label>
                                         <input type="tel" class="form-control" id="phoneInput" placeholder=""
-                                            name="phone" required>
+                                            name="phone" required value="{{ old('phone', $user->phone) }}" readonly>
 
                                         <small id="phoneError" class="text-danger"></small>
                                         @error('phone')
@@ -94,7 +90,7 @@
                                     <div class=" mb-3">
                                         <label for="emailInput">Email</label>
                                         <input type="email" class="form-control" id="emailInput" placeholder=""
-                                            name="email" required>
+                                            name="email" required value="{{ old('email', $user->email) }}" readonly>
 
                                         <small id="emailError" class="text-danger"></small>
                                         @error('email')
@@ -106,7 +102,7 @@
                                     <div class=" mb-3">
                                         <label for="passwordlInput">Password</label>
                                         <input type="password" class="form-control" id="passwordInput" placeholder=""
-                                            name="password" required>
+                                            name="password" required value="{{ old('password', $user->password) }}" readonly>
 
                                         <small id="passwordError" class="text-danger"></small>
                                         @error('password')
@@ -145,10 +141,13 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class=" mb-3">
-                                        <label for="emailInput">Profile Picture</label>
-                                        <input type="file" name="profile_picture" class="form-control" accept="image/*"
-                                            placeholder="Profile Picture">
+                                    <div class="mb-3">
+                                        <label for="profile_picture">Profile Picture</label>
+
+                                        <input type="file" name="profile_picture" class="form-control" accept="image/*">
+                                        @if ($user->profile_picture)
+                                        <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture" class="img-thumbnail mb-2" width="150px" height="150px">
+                                    @endif
                                     </div>
                                 </div>
                                 <div class="text-end">
@@ -163,7 +162,7 @@
 </div>
 
 
-<script>
+{{-- <script>
     const registerForm = document.getElementById('registerForm');
 
     const fullNameInput = document.getElementById('nameInput');
@@ -310,7 +309,7 @@
     phoneInput.addEventListener('blur', validatePhone);
     emailInput.addEventListener('blur', validateEmail);
     passwordInput.addEventListener('input', validatePassword);
-</script>
+</script> --}}
 
 
 

@@ -80,7 +80,13 @@ Route::middleware(['web', ClearCacheAfterLogout::class, 'auth'])->group(function
         ->name('course_delete')
         ->middleware('can:role');
 
-    Route::get('user-add', [UserController::class, 'useradd'])->name('useradd');
+    Route::get('/user-delete/{id}', [UserController::class, 'userdelete'])->name('user_delete')->middleware('can:role');
+    Route::get('/user-edit/{id}', [UserController::class, 'useredit'])->name('user_edit')->middleware('can:role');
+    Route::put('/user-update/{id}', [UserController::class, 'updateuser'])->name('updateuser')->middleware('can:role');
+
+
+    Route::post('add-user', [UserController::class, 'createuser'])->name('createuser');
+    Route::get('user-page', [UserController::class, 'useradd'])->name('useradd');
     Route::get('user-list', [UserController::class, 'userlist'])->name('userlist');
 
     // Route::get('/courses/add', function () {
