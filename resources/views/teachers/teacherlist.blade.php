@@ -1,15 +1,14 @@
 @extends('layouts.app')
-<meta name="csrf-token" content="{{ csrf_token() }}">
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-{{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script> --}}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Two+Tone" rel="stylesheet">
+
 @section('pageTitle', 'Teachers List')
 
 @section('content')
 @include('partials.sidebar')
-@include('partials.headerdashboard')
-
+@include('partials.header')
 <style>
     /* Table styling */
     table {
@@ -45,8 +44,6 @@
         /* Ensure header row is always displayed */
     }
 </style>
-
-
 <div class="pc-container">
     <div class="pc-content">
         <div class="page-header">
@@ -54,14 +51,14 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Users List</h5>
+                            <h5 class="m-b-10">Tearchs View</h5>
                         </div>
                     </div>
 
                     <div class="col-auto">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/app">Home</a></li>
-                            <li class="breadcrumb-item" aria-current="page">Users List</li>
+                            <li class="breadcrumb-item" aria-current="page">Teacher List</li>
                         </ul>
                     </div>
                 </div>
@@ -98,7 +95,6 @@
                             <div class="col-auto">
                                 <div class="form-search">
                                     <div class="col-md-12">
-
                                         <div class="search-container">
                                             <input type="text" id="myInput" onkeyup="myFunction()"
                                                 placeholder="Search...">
@@ -115,25 +111,20 @@
                                     <thead>
                                         <tr id="showtr">
                                             <th>#</th>
-                                            <th>User Profile</th>
+                                            <th>Teachers Profile</th>
                                             <th>Username</th>
                                             <th>Phone</th>
-                                            <th>Role</th>
+                                            <th>Type</th>
                                             <th>Gender</th>
                                             <th>Status</th>
-                                            @can('role', Auth::user())
-                                            <th class="text-center">Actions</th>
-                                            @endcan
+                                            <th>Action</th>
+
                                         </tr>
                                     </thead>
-
                                     <tbody id="userTableBody">
-                                        @include('users.userlist_table')
+                                        @include('teachers.teacherlist_table')
                                     </tbody>
                                 </table>
-
-
-
                                 <div class="datatable-bottom">
                                     @if ($data->count() > 0)
                                     <div class="datatable-info">
@@ -144,81 +135,17 @@
                                     @endif
                                     @include('users.pagination')
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- [ sample-page ] end -->
         </div>
+        <!-- [ sample-page ] end -->
     </div>
 </div>
+</div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="your_custom_script.js"></script>
-<script>
-    function confirmStatusChange(event, button) {
-    event.preventDefault(); // Prevent the default button behavior
-
-    const userId = button.dataset.id; // Get user ID from data attribute
-    const currentStatus = button.dataset.status; // Get current status from data attribute
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content'); // Get CSRF token
-
-    Swal.fire({
-        title: 'Are you sure?',
-        text: `This will ${currentStatus == 1 ? 'deactivate' : 'activate'} the user.`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, change status!',
-        cancelButtonText: 'Cancel',
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Perform the status change request
-            fetch(`/user/${userId}/change-status`, {
-                method: 'PUT',
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken, // Include CSRF token
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ status: currentStatus }),
-            })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    if (data.success) {
-                        // Update button text and class dynamically
-                        button.classList.toggle('btn-success');
-                        button.classList.toggle('btn-danger');
-                        button.textContent = data.new_status == 1 ? 'Active' : 'Inactive';
-                        button.dataset.status = data.new_status;
-
-                        Swal.fire('Success!', 'User status has been updated.', 'success');
-                    } else {
-                        Swal.fire('Error!', data.message || 'Failed to update status.', 'error');
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                    Swal.fire('Error!', 'Something went wrong while updating the status.', 'error');
-                });
-        }
-    });
-}
-
-
-
-
-</script>
-
-
 <script>
     function myFunction() {
         // Declare variables
@@ -280,12 +207,7 @@
         }
     });
 });
-
-
-
 </script>
-
-
 
 @include('partials.footer')
 @endsection

@@ -6,8 +6,72 @@
         /* Example for a circular avatar */
         object-fit: cover;
     }
+
+
+
+    /* ...................for pagination................................... */
+
+    .datatable-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+    }
+
+    .datatable-info {
+        font-size: 14px;
+        color: #6c757d;
+    }
+
+    .datatable-pagination {
+        display: flex;
+    }
+
+    .datatable-pagination-list {
+        list-style: none;
+        display: flex;
+        gap: 5px;
+        padding: 0;
+        margin: 0;
+    }
+
+    .datatable-pagination-list-item {
+        display: inline-block;
+    }
+
+    .datatable-pagination-list-item-link {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 4px;
+        color: #6c757d;
+        text-decoration: none;
+    }
+
+    .datatable-pagination-list-item-link:hover {
+        background-color: #f8f9fa;
+        color: #000;
+    }
+
+    .datatable-pagination-list-item.datatable-active .datatable-pagination-list-item-link {
+        background-color: #e9ecef;
+        color: #000;
+        cursor: default;
+    }
+
+    .datatable-pagination-list-item.datatable-disabled button {
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        color: #6c757d;
+        cursor: not-allowed;
+    }
+
+    /* .......................................................... */
 </style>
 {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 <header class="pc-header">
     <div class="header-wrapper">
@@ -110,8 +174,8 @@
                     </a>
                     <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                         <div class="dropdown-header">
-                            <h4><span class="small text-muted">{{ Auth::user()->name }}</span></h4>
-                            <p class="text-muted">{{ Auth::user()->role }}</p>
+                            <h4><span class=" text-muted">{{ Auth::user()->name }}</span></h4>
+                            <p class="text-muted small">{{ Auth::user()->type }}</p>
                             <hr>
                             <div class="profile-notification-scroll position-relative"
                                 style="max-height: calc(100vh - 280px)">

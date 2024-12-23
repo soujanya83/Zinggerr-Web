@@ -11,6 +11,8 @@ use App\Mail\VerifyEmail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Gate;
+use Ramsey\Uuid\Guid\Guid;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -35,13 +37,17 @@ class CreateNewUser implements CreatesNewUsers
             'tandc_status' => ['required', 'boolean'],
         ])->validate();
 
-        // Create the user
+
+        $uuid = (string) Guid::uuid4();
         $user = User::create([
+            'id'=>$uuid,
+            'remember_token'=>$input['_token'],
             'name' => $input['full_name'],
             'username' => $input['user_name'],
             'email' => $input['email'],
             'phone' => $input['phone'],
-            'tandc_status' => $input['tandc_status'],
+            'status' => 1,
+            // 'tandc_status' => $input['tandc_status'],
             'password' => Hash::make($input['password']),
         ]);
 
@@ -51,14 +57,11 @@ class CreateNewUser implements CreatesNewUsers
             now()->addMinutes(60),
             ['id' => $user->id, 'hash' => sha1($user->email)]
         );
-
-
-
         Mail::to($user->email)->send(new VerifyEmail($user, $verificationUrl));
 
-
+        session()->put('registered_email','tessdvcxvdfvf' );
         event(new Registered($user));
-        session(['registered_email' => $user->email]); 
+
         return $user;
     }
 }

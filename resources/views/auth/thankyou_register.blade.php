@@ -50,8 +50,14 @@
                         <h2 class="text-secondary mt-3"><b>Thank you for registering!</b></h2>
                         {{-- <h3 class="f-16 mt-3 text-success"></h3> --}}
                         <p class="mt-3 text-muted">
-                            We've sent you an email to verify your <a href="mailto:{{ session('registered_email') }}">{{
-                                session('registered_email') }}</a>. Please check your inbox.
+                            We've sent you an email to verify your
+                            <a href="mailto:{{ session('registered_email') ?? '' }}">
+                                @if(session('registered_email') == null)
+                                    Email
+                                @else
+                                    {{ session('registered_email') }}
+                                @endif
+                            </a>. Please check your inbox.
                         </p>
 
 

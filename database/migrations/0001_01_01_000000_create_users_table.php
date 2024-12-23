@@ -24,6 +24,7 @@ return new class extends Migration
             $table->enum('gender', ['Male', 'Female', 'Other'])->nullable();
             $table->enum('type', ['Superadmin', 'Admin', 'Teacher', 'Student', 'Staff'])->default('Superadmin');
             $table->rememberToken();
+            $table->integer('status');
             $table->timestamps();
         });
 

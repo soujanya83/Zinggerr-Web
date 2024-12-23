@@ -76,9 +76,13 @@ class FortifyServiceProvider extends ServiceProvider
                 'login' => ['required'],
                 'password' => ['required'],
             ]);
-            $user = User::where('email', $request->login)
-                ->orWhere('phone', $request->login)
-                ->orWhere('username', $request->login)
+
+            $user = User::where('status', 1)
+                ->where(function ($query) use ($request) {
+                    $query->where('email', $request->login)
+                        ->orWhere('phone', $request->login)
+                        ->orWhere('username', $request->login);
+                })
                 ->first();
 
             Log::info('Login attempt', $request->only('email', 'password'));

@@ -3,7 +3,7 @@
 
 @extends('layouts.app')
 
-@section('pageTitle', 'Users Update')
+@section('pageTitle', 'Update Teacher')
 
 @section('content')
 @include('partials.sidebar')
@@ -16,13 +16,13 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">User View</h5>
+                            <h5 class="m-b-10">Teacher View</h5>
                         </div>
                     </div>
                     <div class="col-auto">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">Users</a></li>
+                            <li class="breadcrumb-item"><a href="#">Teacher</a></li>
                             <li class="breadcrumb-item" aria-current="page">Update</li>
                         </ul>
                     </div>
@@ -46,14 +46,12 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="mb-0">Add User</h5>
+                        <h5 class="mb-0">Update Teacher</h5>
                     </div>
                     <div class="card-body">
-                        <form id="registerForm" id="createuser" action="{{ route('updateuser')}}" method="get"
-                            autocomplete="off" enctype="multipart/form-data">
+                        <form id="registerForm" id="createuser" action="{{ route('updateteacher') }}"
+                            method="get" autocomplete="off" enctype="multipart/form-data">
                             @csrf
-
-
                             <input type="hidden" name="userid" value="{{ $user->id }}">
 
                             <div class="row">
@@ -105,7 +103,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class=" mb-3">
-                                            <label for="passwordInput">Password</label>
+                                            <label for="passwordlInput">Password</label>
                                             <input type="password" class="form-control" id="passwordInput"
                                                 placeholder="" name="password" required
                                                 value="{{ old('password', $user->password) }}" readonly>
@@ -116,26 +114,8 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class=" mb-3">
-                                            <label for="emailInput">Role Type</label>
-                                            <select name="role" class="form-select" required>
-                                                <option value="" disabled selected>Select Role</option>
-                                                {{-- @foreach($role as $roledata)
-                                                <option value="{{ $roledata->name }}" {{ $user->type == $roledata->name
-                                                    ? 'selected' : '' }}>
-                                                    {{ $roledata->display_name }}
-                                                </option>
-                                                @endforeach --}}
 
-                                                <option value="Superadmin" {{ old('role', $user->type) == 'Superadmin' ?
-                                                    'selected' : '' }}>Superadmin</option>
-                                                <option value="Staff" {{ old('role', $user->type) == 'Staff' ?
-                                                    'selected' : '' }}>Staff</option>
 
-                                            </select>
-                                        </div>
-                                    </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="gender">Gender</label>
@@ -161,6 +141,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <input type="hidden" name="role" value="Teacher">
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
@@ -196,7 +177,7 @@
                                         </div>
                                     </div>
                                     <div class="text-end">
-                                        <input type="submit" class="btn btn-primary" id="submitButton" value="Update">
+                                        <input type="submit" class="btn btn-primary" id="submitButton" value="Submit">
                                     </div>
                         </form>
                     </div>
@@ -355,7 +336,6 @@
     emailInput.addEventListener('blur', validateEmail);
     passwordInput.addEventListener('input', validatePassword);
 </script> --}}
-
 
 
 

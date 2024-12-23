@@ -3,7 +3,7 @@
 
 @extends('layouts.app')
 
-@section('pageTitle', 'Users Create')
+@section('pageTitle', 'Teachers Create')
 
 @section('content')
 @include('partials.sidebar')
@@ -16,13 +16,13 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Users View</h5>
+                            <h5 class="m-b-10">Teachers View</h5>
                         </div>
                     </div>
                     <div class="col-auto">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">Users</a></li>
+                            <li class="breadcrumb-item"><a href="#">Teachers</a></li>
                             <li class="breadcrumb-item" aria-current="page">Add New</li>
                         </ul>
                     </div>
@@ -46,7 +46,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="mb-0">Users Create</h5>
+                        <h5 class="mb-0">Teachers Create</h5>
                     </div>
                     <div class="card-body">
                         <form id="registerForm" id="createuser" action="{{ route('createuser') }}" method="post"
@@ -114,22 +114,9 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class=" mb-3">
-                                        <label for="emailInput">Select Role</label>
-                                        <select name="role" class="form-select" required>
-                                            <option value="">Select Role</option>
-                                            {{-- @foreach($role as $roledata)
-                                            <option value="{{ $roledata->name }}">{{ $roledata->display_name }}</option>
-                                            @endforeach --}}
 
-                                            <option value="Superadmin">Superadmin</option>
-                                            <option value="Staff">Staff</option>
+                                <input type="hidden" name="role" value="Teacher">
 
-
-                                        </select>
-                                    </div>
-                                </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="gender">Gender:</label>

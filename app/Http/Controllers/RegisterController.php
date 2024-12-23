@@ -95,6 +95,7 @@ class RegisterController extends Controller
 
     public function checkEmail(Request $request)
     {
+
         $exists = User::where('email', $request->input('email'))->exists();
         return response()->json(['exists' => $exists]);
     }

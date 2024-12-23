@@ -4,6 +4,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -68,6 +69,9 @@ Route::middleware(['web', ClearCacheAfterLogout::class, 'auth'])->group(function
         return view('app.dashboard');
     })->name('dashboard');
 
+
+
+
     Route::post('courses-create', [CourseController::class, 'createCourse'])->name('courses_create');
     Route::match(['get', 'post'], 'courses', [CourseController::class, 'courselist'])->name('courses');
     Route::get('courses/{id}', [CourseController::class, 'coursedetails'])->name('course_details');
@@ -80,18 +84,41 @@ Route::middleware(['web', ClearCacheAfterLogout::class, 'auth'])->group(function
         ->name('course_delete')
         ->middleware('can:role');
 
-    Route::get('/user-delete/{id}', [UserController::class, 'userdelete'])->name('user_delete')->middleware('can:role');
-    Route::get('/user-edit/{id}', [UserController::class, 'useredit'])->name('user_edit')->middleware('can:role');
-    Route::put('/user-update/{id}', [UserController::class, 'updateuser'])->name('updateuser')->middleware('can:role');
+    Route::get('/user-delete/{user}', [UserController::class, 'user_delete'])
+        ->name('user_delete')
+        ->middleware('can:role');
+
+
+
+
+    Route::get('/users-edit/{id}', [UserController::class, 'useredit'])->name('user_edit')->middleware('can:role');
+    Route::get('/users-update', [UserController::class, 'updateuser'])->name('updateuser');
+
+
+
+
 
 
     Route::post('add-user', [UserController::class, 'createuser'])->name('createuser');
-    Route::get('user-page', [UserController::class, 'useradd'])->name('useradd');
-    Route::get('user-list', [UserController::class, 'userlist'])->name('userlist');
+    Route::get('users-create', [UserController::class, 'useradd'])->name('useradd');
+    Route::get('/users-list', [UserController::class, 'userlist'])->name('userlist');
+    Route::get('/user_search', [UserController::class, 'search'])->name('user_search');
 
-    // Route::get('/courses/add', function () {
-    //     return view('app.courses.add');
-    // })->name('addCourse');
+
+    Route::POST('users/{userId}/status', [UserController::class, 'changeStatus'])->name('change_user_status');
+
+
+
+    Route::delete('/teacher-delete/{id}', [TeacherController::class, 'teacher_delete'])->name('teacher_delete')->middleware('can:role');
+    Route::get('/teacher-update', [TeacherController::class, 'updateteacher'])->name('updateteacher')->middleware('can:role');
+    Route::get('/teacher-edit/{id}', [TeacherController::class, 'teacheredit'])->name('teacher_edit')->middleware('can:role');
+
+    // Route::post('add-teacher', [TeacherController::class, 'createteacher'])->name('createteacher');
+    Route::get('teachers-create', [TeacherController::class, 'teacheradd'])->name('teacheradd');
+    Route::get('teachers-list', [TeacherController::class, 'teacherlist'])->name('teacherlist');
+    // Route::put('/teacher/{id}/change-status', [TeacherController::class, 'changeStatus'])->name('change_teacher_status');
+
+
 
     Route::post('/logout', function () {
         Auth::logout();

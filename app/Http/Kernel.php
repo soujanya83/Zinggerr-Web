@@ -22,9 +22,7 @@ class Kernel extends HttpKernel
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \App\Http\Middleware\Authenticate::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        // \App\Http\Middleware\Authenticate::class,
         // \App\Http\Middleware\RestrictToAuthenticated::class,
-
     ];
 
     /**
@@ -47,6 +45,8 @@ class Kernel extends HttpKernel
             // \App\Http\Middleware\PreventBackMiddleware::class,
             // \App\Http\Middleware\PreventBackAfterLogin::class,
             // \App\Http\Middleware\RestrictToAuthenticated::class,
+            \App\Http\Middleware\VerifyCsrfToken::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         ],
 
         'api' => [
@@ -66,7 +66,6 @@ class Kernel extends HttpKernel
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         // 'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'auth' => \App\Http\Middleware\Authenticate::class,
         // 'redirect.if.auth' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         // 'restrict.authenticated' => \App\Http\Middleware\RestrictToAuthenticated::class,
     ];

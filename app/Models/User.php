@@ -22,6 +22,7 @@ class User extends Authenticatable
         'status',
         'password',
         'gender',
+        'phone_verified_at',
         'type',
         'token',
         'email_verified_at',
@@ -36,11 +37,7 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+
     protected function casts(): array
     {
         return [
@@ -48,5 +45,4 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
 }

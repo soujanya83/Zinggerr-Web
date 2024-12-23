@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Zinggerr Learning Management System">
     <meta name="author" content="Zinggerr">
-    
+
     <link rel="icon" href="/images/favicon.svg" type="image/x-icon">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" id="main-font-link" >
     <link rel="stylesheet" href="/fonts/tabler-icons.min.css" >
@@ -17,6 +17,10 @@
     <link rel="stylesheet" href="/fonts/material.css" >
     <link rel="stylesheet" href="/css/style.css" id="main-style-link" >
     <link rel="stylesheet" href="/css/style-preset.css" >
+
+
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
   </head>
   <body>
     <div class="loader-bg">
@@ -24,7 +28,7 @@
             <div class="loader-fill"></div>
         </div>
     </div>
-    
+
     @yield('content')
 
     <script src="/js/plugins/popper.min.js"></script>

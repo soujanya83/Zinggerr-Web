@@ -8,18 +8,6 @@
 @include('partials.sidebar')
 @include('partials.header')
 
-
-<style>
-    .pagination-info {
-        font-size: 14px;
-        margin-bottom: 15px;
-    }
-
-    .pagination .page-link {
-        font-size: 14px;
-        padding: 8px 12px;
-    }
-</style>
 <div class="pc-container">
     <div class="pc-content">
         <div class="page-header">
@@ -162,49 +150,54 @@
                             @endif
 
                         </div>
+                        <div class="datatable-bottom">
+                            <div class="datatable-info">
+                                Showing {{ $courses->firstItem() }} to {{ $courses->lastItem() }} of {{
+                                $courses->total() }} entries
+                            </div>
 
+                            <nav class="datatable-pagination">
+                                <ul class="datatable-pagination-list">
+                                    {{-- Previous Page Link --}}
+                                    @if ($courses->onFirstPage())
+                                    <li class="datatable-pagination-list-item datatable-disabled">
+                                        <button disabled aria-label="Previous Page">‹</button>
+                                    </li>
+                                    @else
+                                    <li class="datatable-pagination-list-item">
+                                        <a href="{{ $courses->previousPageUrl() }}"
+                                            class="datatable-pagination-list-item-link" aria-label="Previous Page">‹</a>
+                                    </li>
+                                    @endif
 
+                                    {{-- Pagination Links --}}
+                                    @foreach ($courses->getUrlRange(1, $courses->lastPage()) as $page => $url)
+                                    <li
+                                        class="datatable-pagination-list-item {{ $courses->currentPage() == $page ? 'datatable-active' : '' }}">
+                                        <a href="{{ $url }}" class="datatable-pagination-list-item-link"
+                                            aria-label="Page {{ $page }}">{{ $page }}</a>
+                                    </li>
+                                    @endforeach
+
+                                    {{-- Next Page Link --}}
+                                    @if ($courses->hasMorePages())
+                                    <li class="datatable-pagination-list-item">
+                                        <a href="{{ $courses->nextPageUrl() }}"
+                                            class="datatable-pagination-list-item-link" aria-label="Next Page">›</a>
+                                    </li>
+                                    @else
+                                    <li class="datatable-pagination-list-item datatable-disabled">
+                                        <button disabled aria-label="Next Page">›</button>
+                                    </li>
+                                    @endif
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
-
                 </div>
-
             </div>
         </div>
     </div>
-    @if ($courses->hasPages())
-    <div class="pagination-info text-center mb-3">
-        <p>
-            Showing {{ $courses->firstItem() }} to {{ $courses->lastItem() }}
-            of {{ $courses->total() }} results (Page {{ $courses->currentPage() }} of {{ $courses->lastPage() }})
-        </p>
-    </div>
-
-    <nav>
-        <ul class="pagination justify-content-center">
-            {{-- Previous Page Link --}}
-            @if ($courses->onFirstPage())
-            <li class="page-item disabled" aria-disabled="true">
-                <span class="page-link">Previous</span>
-            </li>
-            @else
-            <li class="page-item">
-                <a class="page-link" href="{{ $courses->previousPageUrl() }}" rel="prev">Previous</a>
-            </li>
-            @endif
-
-            {{-- Next Page Link --}}
-            @if ($courses->hasMorePages())
-            <li class="page-item">
-                <a class="page-link" href="{{ $courses->nextPageUrl() }}" rel="next">Next</a>
-            </li>
-            @else
-            <li class="page-item disabled" aria-disabled="true">
-                <span class="page-link">Next</span>
-            </li>
-            @endif
-        </ul>
-    </nav>
-    @endif
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
