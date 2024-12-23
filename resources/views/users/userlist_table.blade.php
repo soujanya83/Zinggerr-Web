@@ -37,11 +37,16 @@
     </td>
     <td>{{ $user->gender }}</td>
     <td>
-        <button class="btn status-toggle-btn {{ $user->status == 1 ? 'btn-success' : 'btn-danger' }}"
-            data-id="{{ $user->id }}" data-status="{{ $user->status }}">
-        {{ $user->status == 1 ? 'Active' : 'Inactive' }}
-    </button>
+        <form action="{{ route('changeStatus') }}" method="GET" style="display: inline;">
+            <input type="hidden" name="id" value="{{ $user->id }}">
+            <input type="hidden" name="status" value="{{ $user->status == 1 ? 0 : 1 }}">
+            <button type="submit" class="btn {{ $user->status == 1 ? 'btn-success' : 'btn-danger' }}">
+                {{ $user->status == 1 ? 'Active' : 'Inactive' }}
+            </button>
+        </form>
     </td>
+
+
     <td class="text-center">
         @can('role', Auth::user())
         <a href="{{ route('user_edit', $user->id) }}" class="avtar avtar-xs btn-link-secondary read-more-btn"
@@ -89,7 +94,7 @@
 
 </script>
 
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function() {
       const statusToggleBtns = document.querySelectorAll('.status-toggle-btn');
 
@@ -155,4 +160,4 @@
         });
       });
     });
-    </script>
+</script> --}}

@@ -216,22 +216,30 @@ class UserController extends Controller
     //     return view('users.userlist', compact('data', 'role'));
     // }
 
-    public function changeStatus(User $user)
+    // public function changeStatus(User $user)
+    // {
+    //     try {
+    //         $user->status = $user->status == 1 ? 0 : 1;
+    //         $user->save();
+
+    //         return response()->json([
+    //             'success' => true,
+    //             'message' => 'User status updated successfully.'
+    //         ]);
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Error updating user status.'
+    //         ], 500);
+    //     }
+    // }
+
+    public function changeStatus(Request $request)
     {
-        try {
-            $user->status = $user->status == 1 ? 0 : 1;
-            $user->save();
+        $user = User::findOrFail($request->id);
+        $user->status = $request->status;
+        $user->save();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'User status updated successfully.'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error updating user status.'
-            ], 500);
-        }
+        return redirect()->back()->with('success', 'User status updated successfully!');
     }
-
 }

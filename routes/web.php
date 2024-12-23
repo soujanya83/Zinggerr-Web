@@ -95,6 +95,9 @@ Route::middleware(['web', ClearCacheAfterLogout::class, 'auth'])->group(function
     Route::get('/users-update', [UserController::class, 'updateuser'])->name('updateuser');
 
 
+    Route::get('/change-status', [UserController::class, 'changeStatus'])->name('changeStatus');
+
+
 
 
 
