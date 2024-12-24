@@ -17,6 +17,34 @@
         </li>
 
         <li class="pc-item pc-hasmenu">
+            <a href="#" class="pc-link">
+              <span class="pc-micon">
+                <i class="ti ti-user"></i>
+              </span>
+              <span class="pc-mtext" data-i18n="User">Role</span>
+              <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+            </a>
+            <ul class="pc-submenu">
+                <li class="pc-item"><a class="pc-link" href="{{ route('roles.create') }}" data-i18n="Pricing">Add New</a></li>
+                <!-- <li class="pc-item"><a class="pc-link" href="{{ route('roles.store') }}" data-i18n="List">List</a></li> -->
+            </ul>
+        </li>
+
+        <li class="pc-item pc-hasmenu">
+            <a href="#" class="pc-link">
+              <span class="pc-micon">
+                <i class="ti ti-user"></i>
+              </span>
+              <span class="pc-mtext" data-i18n="Teachers">Teachers</span>
+              <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+            </a>
+            <ul class="pc-submenu">
+                <li class="pc-item"><a class="pc-link" href="{{ route('teacheradd') }}" data-i18n="Pricing">Add New</a></li>
+                <li class="pc-item"><a class="pc-link" href="{{ route('teacherlist') }}" data-i18n="List">List</a></li>
+            </ul>
+        </li>
+
+        <li class="pc-item pc-hasmenu">
             <a href="#!" class="pc-link">
               <span class="pc-micon"><i class="ti ti-book"></i> </span>
               <span class="pc-mtext" data-i18n="Courses">Courses</span>
@@ -64,8 +92,8 @@
               <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
             </a>
             <ul class="pc-submenu">
-                <li class="pc-item"><a class="pc-link" href="#" data-i18n="Pricing">Add New</a></li>
-                <li class="pc-item"><a class="pc-link" href="#" data-i18n="List">List</a></li>
+                <li class="pc-item"><a class="pc-link" href="{{ route('studentadd') }}" data-i18n="Pricing">Add New</a></li>
+                <li class="pc-item"><a class="pc-link" href="{{ route('studentlist') }}" data-i18n="List">List</a></li>
             </ul>
         </li>
 

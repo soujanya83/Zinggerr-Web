@@ -151,6 +151,7 @@ return [
     Illuminate\View\ViewServiceProvider::class,
     App\Providers\FortifyServiceProvider::class,
     App\Providers\AuthServiceProvider::class, // This is critical
+    Spatie\Permission\PermissionServiceProvider::class,
 
 ],
 
