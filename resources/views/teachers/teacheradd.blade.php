@@ -53,7 +53,7 @@
                             autocomplete="off" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class=" mb-3">
                                         <label for="nameInput">Full Name</label>
                                         <input type="text" class="form-control" id="nameInput" placeholder=""
@@ -65,7 +65,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class=" mb-3">
                                         <label for="usernameInput">Username</label>
                                         <input type="text" class="form-control" id="usernameInput" placeholder=""
@@ -77,7 +77,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class=" mb-3">
                                         <label for="phoneInput">Phone</label>
                                         <input type="tel" class="form-control" id="phoneInput" placeholder=""
@@ -90,7 +90,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class=" mb-3">
                                         <label for="emailInput">Email</label>
                                         <input type="email" class="form-control" id="emailInput" placeholder=""
@@ -102,12 +102,15 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class=" mb-3">
-                                        <label for="passwordlInput">Password</label>
-                                        <input type="password" class="form-control" id="passwordInput" placeholder=""
-                                            name="password" required>
-
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="passwordInput">Password</label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control" id="passwordInput" name="password" placeholder="Enter your password" required>
+                                            <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
                                         <small id="passwordError" class="text-danger"></small>
                                         @error('password')
                                         <small class="text-danger">{{ $message }}</small>
@@ -115,9 +118,18 @@
                                     </div>
                                 </div>
 
-                                <input type="hidden" name="role" value="Teacher">
 
-                                <div class="col-md-6">
+
+
+                                <input type="hidden" name="role" value="Teacher">
+                                <div class="col-md-4">
+                                    <div class=" mb-3">
+                                        <label for="emailInput">Profile Picture</label>
+                                        <input type="file" name="profile_picture" class="form-control" accept="image/*"
+                                            placeholder="Profile Picture">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="gender">Gender:</label>
                                         <div style="margin-top: 10px;">
@@ -140,7 +152,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="status">Status:</label>
                                         <div style="margin-top: 10px;">
@@ -157,13 +169,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class=" mb-3">
-                                        <label for="emailInput">Profile Picture</label>
-                                        <input type="file" name="profile_picture" class="form-control" accept="image/*"
-                                            placeholder="Profile Picture">
-                                    </div>
-                                </div>
+
                                 <div class="text-end">
                                     <input type="submit" class="btn btn-primary" id="submitButton" value="Submit">
                                 </div>
@@ -175,7 +181,24 @@
     </div>
 </div>
 
+<script>
+    // JavaScript to toggle password visibility
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        const passwordField = document.getElementById('passwordInput');
+        const icon = this.querySelector('i');
 
+        // Toggle between password and text types
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+</script>
 <script>
     const registerForm = document.getElementById('registerForm');
 

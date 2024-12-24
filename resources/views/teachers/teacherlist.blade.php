@@ -51,7 +51,7 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Tearchs View</h5>
+                            <h5 class="m-b-10">Teachers View</h5>
                         </div>
                     </div>
 

@@ -1,5 +1,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 @extends('layouts.app')
 
@@ -52,20 +53,21 @@
                         <form id="registerForm" id="createuser" action="{{ route('createuser') }}" method="post"
                             autocomplete="off" enctype="multipart/form-data">
                             @csrf
+
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class=" mb-3">
                                         <label for="nameInput">Full Name</label>
-                                        <input type="text" class="form-control" id="nameInput" placeholder=""
+                                        <input type="text" class="form-control" id="nameInput"
                                             name="name" required>
 
                                         <small id="nameError" class="text-danger"></small>
-                                        @error('full_name')
+                                        {{-- @error('full_name')
                                         <small class="text-danger">{{ $message }}</small>
-                                        @enderror
+                                        @enderror --}}
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class=" mb-3">
                                         <label for="usernameInput">Username</label>
                                         <input type="text" class="form-control" id="usernameInput" placeholder=""
@@ -77,7 +79,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class=" mb-3">
                                         <label for="phoneInput">Phone</label>
                                         <input type="tel" class="form-control" id="phoneInput" placeholder=""
@@ -90,7 +92,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class=" mb-3">
                                         <label for="emailInput">Email</label>
                                         <input type="email" class="form-control" id="emailInput" placeholder=""
@@ -102,19 +104,24 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class=" mb-3">
-                                        <label for="passwordlInput">Password</label>
-                                        <input type="password" class="form-control" id="passwordInput" placeholder=""
-                                            name="password" required>
-
+                                        <label for="passwordInput">Password</label>
+                                        <div class="input-group">
+                                            <input type="password" id="password" class="form-control" name="password"
+                                                placeholder="Enter new password" required>
+                                            <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
                                         <small id="passwordError" class="text-danger"></small>
                                         @error('password')
                                         <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+
+                                <div class="col-md-4">
                                     <div class=" mb-3">
                                         <label for="emailInput">Select Role</label>
                                         <select name="role" class="form-select" required>
@@ -123,14 +130,24 @@
                                             <option value="{{ $roledata->name }}">{{ $roledata->display_name }}</option>
                                             @endforeach --}}
 
-                                            <option value="Superadmin">Superadmin</option>
+                                            <option value="Admin">Admin</option>
                                             <option value="Staff">Staff</option>
 
 
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+
+                                <div class="col-md-4">
+                                    <div class=" mb-3">
+                                        <label for="profile">Profile Picture</label>
+                                        <input type="file" name="profile_picture" class="form-control" accept="image/*"
+                                            placeholder="Profile Picture" id="profile">
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="gender">Gender:</label>
                                         <div style="margin-top: 10px;">
@@ -153,7 +170,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="status">Status:</label>
                                         <div style="margin-top: 10px;">
@@ -170,13 +187,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class=" mb-3">
-                                        <label for="emailInput">Profile Picture</label>
-                                        <input type="file" name="profile_picture" class="form-control" accept="image/*"
-                                            placeholder="Profile Picture">
-                                    </div>
-                                </div>
+
                                 <div class="text-end">
                                     <input type="submit" class="btn btn-primary" id="submitButton" value="Submit">
                                 </div>
@@ -187,7 +198,21 @@
         </div>
     </div>
 </div>
-
+<script>
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        const passwordField = document.getElementById('password');
+        const icon = this.querySelector('i');
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+</script>
 
 <script>
     const registerForm = document.getElementById('registerForm');
@@ -212,7 +237,7 @@
 
     const checkUniqueness = (value, route, errorField, fieldName) => {
         return fetch(route, {
-            method: 'POST',
+            method: 'get',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'

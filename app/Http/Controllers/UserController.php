@@ -21,6 +21,7 @@ class UserController extends Controller
 {
     public function createuser(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:5|max:255',
             'username' => 'required|min:5|max:255|unique:users,username',
@@ -76,12 +77,13 @@ class UserController extends Controller
 
     public function updateuser(Request $request)
     {
+        $id=$request->userid;
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:5|max:255',
-            // 'username' => 'required|min:5|max:255|unique:users,username,' . $id, // Ensure the username is unique except for the current user
-            // 'email' => 'required|email|unique:users,email,' . $id, // Ensure the email is unique except for the current user
-            // 'phone' => 'required|digits:10|unique:users,phone,' . $id, // Ensure phone number is unique except for the current user
+            'username' => 'required|min:5|max:255|unique:users,username,' . $id, // Ensure the username is unique except for the current user
+            'email' => 'required|email|unique:users,email,' . $id, // Ensure the email is unique except for the current user
+            'phone' => 'required|digits:10|unique:users,phone,' . $id, // Ensure phone number is unique except for the current user
             'status' => 'required|in:1,0',
             'gender' => 'required', // Assuming 1=Male, 2=Female
             'role' => 'required',  // Adjust based on role values in your system
@@ -98,17 +100,17 @@ class UserController extends Controller
 
 
             $user->name = $request->input('name');
-            // $user->username = $request->input('username');
-            // $user->email = $request->input('email');
-            // $user->phone = $request->input('phone');
+            $user->username = $request->input('username');
+            $user->email = $request->input('email');
+            $user->phone = $request->input('phone');
             $user->status = $request->input('status');
             $user->gender = $request->input('gender');
             $user->type = $request->input('role');
 
 
-            // if ($request->filled('password')) {
-            //     $user->password = bcrypt($request->input('password'));
-            // }
+            if ($request->filled('password')) {
+                $user->password = bcrypt($request->input('password'));
+            }
 
             if ($request->hasFile('profile_picture')) {
                 if ($user->profile_picture) {
@@ -165,6 +167,7 @@ class UserController extends Controller
 
         $query = User::query();
 
+        $query->whereIn('type', ['staff', 'Admin']);
         // Search logic
         if ($request->has('search') && $request->search) {
             $search = $request->search;
