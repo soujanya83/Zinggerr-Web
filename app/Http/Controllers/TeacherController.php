@@ -71,12 +71,12 @@ class TeacherController extends Controller
 
     public function updateteacher(Request $request)
     {
-
+        $id=$request->userid;
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:5|max:255',
-            // 'username' => 'required|min:5|max:255|unique:users,username,' . $id, // Ensure the username is unique except for the current user
-            // 'email' => 'required|email|unique:users,email,' . $id, // Ensure the email is unique except for the current user
-            // 'phone' => 'required|digits:10|unique:users,phone,' . $id, // Ensure phone number is unique except for the current user
+            'username' => 'required|min:5|max:255|unique:users,username,' . $id, // Ensure the username is unique except for the current user
+            'email' => 'required|email|unique:users,email,' . $id, // Ensure the email is unique except for the current user
+            'phone' => 'required|digits:10|unique:users,phone,' . $id, // Ensure phone number is unique except for the current user
             'status' => 'required|in:1,0',
             'gender' => 'required', // Assuming 1=Male, 2=Female
             // 'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:3072',
@@ -87,21 +87,19 @@ class TeacherController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-
         try {
-
-            $user = User::findOrFail($request->userid);
+            $user = User::findOrFail($id);
             $user->name = $request->input('name');
-            // $user->username = $request->input('username');
-            // $user->email = $request->input('email');
-            // $user->phone = $request->input('phone');
+            $user->username = $request->input('username');
+            $user->email = $request->input('email');
+            $user->phone = $request->input('phone');
             $user->status = $request->input('status');
             $user->gender = $request->input('gender');
             $user->type = $request->input('role');
 
-            // if ($request->filled('password')) {
-            //     $user->password = bcrypt($request->input('password'));
-            // }
+            if ($request->filled('password')) {
+                $user->password = bcrypt($request->input('password'));
+            }
 
             if ($request->hasFile('profile_picture')) {
                 if ($user->profile_picture) {
