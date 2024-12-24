@@ -94,10 +94,11 @@ Route::middleware(['web', ClearCacheAfterLogout::class, 'auth'])->group(function
         ->middleware('can:role');
     Route::get('/users-edit/{id}', [UserController::class, 'useredit'])->name('user_edit')->middleware('can:role');
     Route::get('/users-update', [UserController::class, 'updateuser'])->name('updateuser');
-<<<<<<< HEAD
 
 
     Route::get('/change-status', [UserController::class, 'changeStatus'])->name('changeStatus');
+     Route::get('/changes-status', [UserController::class, 'changeStatus'])->name('changeStatus');
+    Route::post('users-add', [UserController::class, 'createuser'])->name('createuser');
 
 
 
@@ -111,10 +112,6 @@ Route::middleware(['web', ClearCacheAfterLogout::class, 'auth'])->group(function
 
     Route::post('roles', [RoleController::class, 'store'])->name('roles.store');
     Route::post('add-user', [UserController::class, 'createuser'])->name('createuser');
-=======
-    Route::get('/changes-status', [UserController::class, 'changeStatus'])->name('changeStatus');
-    Route::post('users-add', [UserController::class, 'createuser'])->name('createuser');
->>>>>>> 328f06b9d7185a59013de3bfb0b39f25b68636a6
     Route::get('users-create', [UserController::class, 'useradd'])->name('useradd');
     Route::get('/users-list', [UserController::class, 'userlist'])->name('userlist');
     Route::get('/user_search', [UserController::class, 'search'])->name('user_search');
