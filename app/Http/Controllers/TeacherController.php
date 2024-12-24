@@ -105,7 +105,7 @@ class TeacherController extends Controller
                 if ($user->profile_picture) {
                     Storage::disk('public')->delete($user->profile_picture);
                 }
-                $filePath = $request->file('profile_picture')->store('profile pictures', 'public');
+                $filePath = $request->file('profile_picture')->store('users pictures', 'public');
                 $user->profile_picture = $filePath;
             }
             $user->save();
