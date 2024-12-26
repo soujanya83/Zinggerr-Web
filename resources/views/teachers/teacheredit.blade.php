@@ -106,7 +106,7 @@
                                             <label for="passwordInput">Password</label>
                                             <div class="input-group">
                                                 <input type="password" class="form-control" id="passwordInput"
-                                                    name="password" required>
+                                                    name="password" required placeholder="Enter New Password">
                                                 <button type="button" class="btn btn-outline-secondary"
                                                     id="togglePassword">
                                                     <i class="fas fa-eye"></i>

@@ -4,7 +4,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script> --}}
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Two+Tone" rel="stylesheet">
-@section('pageTitle', 'Teachers List')
+@section('pageTitle', 'Users List')
 
 @section('content')
 @include('partials.sidebar')
@@ -54,7 +54,7 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Users List</h5>
+                            <h5 class="m-b-10">Users View</h5>
                         </div>
                     </div>
 
@@ -86,6 +86,7 @@
                 <div class="card table-card">
                     <div class="card-header">
                         <div class="row align-items-center g-2">
+                            <h5>Users List</h5>
                             <div class="col">
                                 <select id="entriesPerPage">
                                     <option value="5" selected>5</option>
