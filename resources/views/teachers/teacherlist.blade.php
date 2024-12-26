@@ -83,6 +83,8 @@
                 <div class="card table-card">
                     <div class="card-header">
                         <div class="row align-items-center g-2">
+                            <h5>Teachers List</h5>
+
                             <div class="col">
                                 <select id="entriesPerPage">
                                     <option value="5" selected>5</option>

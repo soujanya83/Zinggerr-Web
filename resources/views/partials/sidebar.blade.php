@@ -35,12 +35,12 @@
               <span class="pc-micon">
                 <i class="ti ti-user"></i>
               </span>
-              <span class="pc-mtext" data-i18n="Teachers">Teachers</span>
+              <span class="pc-mtext" data-i18n="Teachers">Permissions</span>
               <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
             </a>
             <ul class="pc-submenu">
-                <li class="pc-item"><a class="pc-link" href="{{ route('teacheradd') }}" data-i18n="Pricing">Add New</a></li>
-                <li class="pc-item"><a class="pc-link" href="{{ route('teacherlist') }}" data-i18n="List">List</a></li>
+                <li class="pc-item"><a class="pc-link" href="{{ route('permissions.create') }}" data-i18n="Pricing">Add New</a></li>
+                <li class="pc-item"><a class="pc-link" href="{{ route('permissions.role') }}" data-i18n="List">Permission Assign</a></li>
             </ul>
         </li>
 

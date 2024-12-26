@@ -188,11 +188,23 @@
                                         target="_blank" class="btn btn-warning">Buy Now</a>
                                 </div>
                                 <hr>
+                                {{-- ........................only set for Spueradmin................................ --}}
+                                @can('role',Auth::user())
                                 <a href="{{ route('userprofile') }}" class="dropdown-item">
                                     <i class="ti ti-settings"></i>
                                     <span>Account Settings</span>
                                 </a>
-                                <a href="{{ url('social-profile') }}" class="dropdown-item">
+                                @endcan
+
+                                {{-- .........................set for auther............................................................. --}}
+                                @cannot('role',Auth::user())
+                                <a href="#" class="dropdown-item">
+                                    <i class="ti ti-settings"></i>
+                                    <span>Account Settings</span>
+                                </a>
+                                @endcannot
+                                {{-- ......................................................................... --}}
+                                <a href="{{ route('user.socialprofile') }}" class="dropdown-item">
                                     <i class="ti ti-user"></i>
                                     <span>Social Profile</span>
                                 </a>

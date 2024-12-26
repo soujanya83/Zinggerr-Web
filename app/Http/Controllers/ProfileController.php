@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -14,35 +15,78 @@ class ProfileController extends Controller
         return view('profiles.profile_page');
     }
 
+    public function socialprofilepage(Request $request)
+    {
+        return view('profiles.socialprofile_page');
+    }
+
+
+
     public function updateProfile(Request $request)
     {
+        $uid = Auth::user()->id;
 
-        $user = Auth::user(); // Get the authenticated user
+        try {
+            $user = User::findOrFail($uid);
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:10',
-            'username' => 'nullable|string|min:6',
-            'gender' => 'required|in:Male,Female,Other',
-            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // 2MB max
-        ]);
 
-        $user->update([
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'gender' => $request->gender,
-            'username' => $request->username,
-        ]);
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'phone' => 'nullable|string|max:10',
+                'username' => 'nullable|string|min:6',
+                'gender' => 'required|in:Male,Female,Other',
+                'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            ]);
 
-        if ($request->hasFile('profile_picture')) {
-            if ($user->profile_picture) {
-                Storage::disk('public')->delete('users_pictures/' . $user->profile_picture);
+
+            $user->update([
+                'name' => $request->name,
+                'phone' => $request->phone,
+                'gender' => $request->gender,
+                'username' => $request->username,
+            ]);
+
+
+            if ($request->hasFile('profile_picture')) {
+
+                // if ($user->profile_picture) {
+                //     Storage::disk('public')->delete('users_pictures/' . $user->profile_picture);
+                // }
+
+
+                $imagePath = $request->file('profile_picture')->store('users pictures', 'public');
+                $user->update(['profile_picture' => $imagePath]);
             }
 
-            $imagePath = $request->file('profile_picture')->store('users pictures', 'public');
-            $user->update(['profile_picture' => $imagePath]);
+            return redirect()->back()->with('success', 'Profile updated successfully!');
+        } catch (\Exception $e) {
+            // \Log::error('Error in updateProfile: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred. Please try again.');
         }
-
-        return redirect()->back()->with('success', 'Profile updated successfully!');
     }
+
+    public function changePassword(Request $request)
+    {
+
+
+        $uid = Auth::user()->id;
+        // $request->validate([
+        //     'current_password' => 'required',
+        //     'new_password' => 'required|min:6|confirmed',
+        //     'new_password_confirmation' => 'required',
+        // ]);
+
+        $user = User::findOrFail($uid);
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return redirect()->back()->withErrors(['current_password' => 'Current password is incorrect']);
+        }
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return redirect()->back()->with('success', 'Password changed successfully');
+    }
+
+
+
 }

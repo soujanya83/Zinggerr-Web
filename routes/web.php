@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\RegisterController;
@@ -99,7 +100,7 @@ Route::middleware(['web', ClearCacheAfterLogout::class, 'auth'])->group(function
 
 
     Route::get('/change-status', [UserController::class, 'changeStatus'])->name('changeStatus');
-     Route::get('/changes-status', [UserController::class, 'changeStatus'])->name('changeStatus');
+    Route::get('/changes-status', [UserController::class, 'changeStatus'])->name('changeStatus');
     Route::post('users-add', [UserController::class, 'createuser'])->name('createuser');
 
 
@@ -107,7 +108,7 @@ Route::middleware(['web', ClearCacheAfterLogout::class, 'auth'])->group(function
     Route::middleware(['auth'])->group(function () {
         Route::get('/roles/index', [RoleController::class, 'index'])->name('roles.index');
         Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
-       
+
         Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
         Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
     });
@@ -143,8 +144,19 @@ Route::middleware(['web', ClearCacheAfterLogout::class, 'auth'])->group(function
     Route::get('teachers-list', [TeacherController::class, 'teacherlist'])->name('teacherlist');
     // Route::put('/teacher/{id}/change-status', [TeacherController::class, 'changeStatus'])->name('change_teacher_status');
 
-    Route::get('account-profile', [ProfileController::class, 'profilepage'])->name('userprofile');
+    Route::get('user/account-profile', [ProfileController::class, 'profilepage'])->name('userprofile');
+    Route::get('user/social-profile', [ProfileController::class, 'socialprofilepage'])->name('user.socialprofile');
     Route::post('users/profile-update', [ProfileController::class, 'updateProfile'])->name('user.profile.update');
+    Route::get('users/change-password', [ProfileController::class, 'changePassword'])->name('user.changepassword');
+
+    Route::get('permissions/create', [PermissionsController::class, 'create_permission'])->name('permissions.create');
+    Route::get('permission/submit', [PermissionsController::class, 'submit_permission'])->name('submit.permission');
+    Route::get('/permissions/update', [PermissionsController::class, 'update_permission'])->name('update.permission');
+    Route::get('permission/{id}/delete', [PermissionsController::class, 'destroy'])->name('permission.delete');
+
+    Route::get('permissions/assign', [PermissionsController::class, 'role_permission'])->name('permissions.role');
+    Route::get('permissions/role-assign', [PermissionsController::class, 'assignpermissions'])->name('role.permission.assign');
+
 
 
     Route::post('/logout', function () {
