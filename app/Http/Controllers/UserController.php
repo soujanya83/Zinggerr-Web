@@ -54,7 +54,7 @@ class UserController extends Controller
 
             // Handle file upload
             if ($request->hasFile('profile_picture')) {
-                $filePath = $request->file('profile_picture')->store('profile pictures', 'public');
+                $filePath = $request->file('profile_picture')->store('users pictures', 'public');
                 $user->profile_picture = $filePath;
             }
 
@@ -117,7 +117,7 @@ class UserController extends Controller
                     Storage::disk('public')->delete($user->profile_picture);
                 }
 
-                $filePath = $request->file('profile_picture')->store('profile pictures', 'public');
+                $filePath = $request->file('profile_picture')->store('users pictures', 'public');
                 $user->profile_picture = $filePath;
             }
 

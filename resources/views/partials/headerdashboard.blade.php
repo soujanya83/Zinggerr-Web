@@ -186,7 +186,7 @@
                                         target="_blank" class="btn btn-warning">Buy Now</a>
                                 </div>
                                 <hr>
-                                <a href="{{ url('account-profile') }}" class="dropdown-item">
+                                <a href="{{ route('userprofile') }}" class="dropdown-item">
                                     <i class="ti ti-settings"></i>
                                     <span>Account Settings</span>
                                 </a>

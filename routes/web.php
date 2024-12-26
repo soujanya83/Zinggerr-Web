@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\RegisterController;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\ClearCacheAfterLogout;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
+use Symfony\Component\HttpKernel\Profiler\Profile;
 
 Route::get('/', function () {
     return view('welcome');
@@ -141,6 +143,8 @@ Route::middleware(['web', ClearCacheAfterLogout::class, 'auth'])->group(function
     Route::get('teachers-list', [TeacherController::class, 'teacherlist'])->name('teacherlist');
     // Route::put('/teacher/{id}/change-status', [TeacherController::class, 'changeStatus'])->name('change_teacher_status');
 
+    Route::get('account-profile', [ProfileController::class, 'profilepage'])->name('userprofile');
+    Route::post('users/profile-update', [ProfileController::class, 'updateProfile'])->name('user.profile.update');
 
 
     Route::post('/logout', function () {
