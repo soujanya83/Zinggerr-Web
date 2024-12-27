@@ -68,11 +68,22 @@
                                             <img src="{{ asset('storage/' . $course->course_image) }}"
                                                 alt="Course Image" class="img-fluid w-100"
                                                 style="width: 210px;height:200px">
-                                            <div class="position-absolute top-0 end-0 p-2">
+                                            {{-- <div class="position-absolute top-0 end-0 p-2">
                                                 <span class="badge text-bg-light text-uppercase">
                                                     @if($course->status == '1') Active @else Inactive @endif
                                                 </span>
-                                            </div>
+                                            </div> --}}
+
+                                            {{-- <div class="position-absolute top-0 end-0 p-2">
+                                                <button
+                                                    class="btn btn-sm {{ $course->status == '1' ? 'btn-success' : 'btn-danger' }}"
+                                                    onclick="toggleStatus({{ $course->id }})">
+                                                    {{ $course->status == '1' ? 'Active' : 'Inactive' }}
+                                                </button>
+                                            </div> --}}
+
+
+
                                         </div>
                                         <ul class="list-group list-group-flush my-2">
                                             <li class="list-group-item px-0 py-2">
@@ -82,24 +93,49 @@
                                                         <p class="mb-0 f-w-600"><i class="fas fa-star text-warning"></i>
                                                             4.8</p>
                                                     </div>
+
+                                                    {{-- @can('role',Auth::user()) --}}
+
+
+
                                                     <div class="flex-shrink-0">
+                                                        @if(Auth::user()->type === 'Superadmin')
                                                         <a href="{{ route('course_edit', $course->id) }}"
                                                             class="avtar avtar-xs btn-link-secondary read-more-btn"
                                                             data-id="{{ $course->id }}">
                                                             <i class="ti ti-edit f-20"></i>
-
-
                                                         </a>
+                                                        @elseif(isset($permissions) && in_array('courses_edit',
+                                                        $permissions))
+                                                        <a href="{{ route('course_edit', $course->id) }}"
+                                                            class="avtar avtar-xs btn-link-secondary read-more-btn"
+                                                            data-id="{{ $course->id }}">
+                                                            <i class="ti ti-edit f-20"></i>
+                                                        </a>
+                                                        @endif
 
-                                                        @can('role',Auth::user())
+                                                        @if(Auth::user()->type === 'Superadmin')
+                                                        {{-- Super admin sees everything --}}
                                                         <a href="{{ route('course_delete', $course->id) }}"
                                                             class="avtar avtar-xs btn-link-secondary read-more-btn"
                                                             data-id="{{ $course->id }}"
                                                             onclick="return confirmDelete(this)">
                                                             <i class="ti ti-trash f-20" style="color: red;"></i>
                                                         </a>
+                                                        @elseif(isset($permissions) && in_array('cousers_delete',
+                                                        $permissions))
+                                                        {{-- Other roles see the button only if they have the "delete"
+                                                        permission --}}
+                                                        <a href="{{ route('course_delete', $course->id) }}"
+                                                            class="avtar avtar-xs btn-link-secondary read-more-btn"
+                                                            data-id="{{ $course->id }}"
+                                                            onclick="return confirmDelete(this)">
+                                                            <i class="ti ti-trash f-20" style="color: red;"></i>
+                                                        </a>
+                                                        @endif
 
-                                                        @endcan
+
+                                                        {{-- @endcan --}}
 
 
                                                     </div>
@@ -136,8 +172,24 @@
                                                 </div>
                                             </li>
                                         </ul>
+
                                         <a href="{{ route('course_details', $course->id) }}"
                                             class="btn btn-sm btn-outline-primary mb-2">Read More</a>
+
+                                        <form action="{{ route('coursechangeStatus') }}" method="get"
+                                            style="display: inline;">
+                                            @csrf
+                                            <input type="hidden" name="id" value="{{ $course->id }}">
+                                            <input type="hidden" name="status"
+                                                value="{{ $course->status == 1 ? 0 : 1 }}">
+                                            <div class="d-flex justify-content-end" style="margin-top: -42px;">
+                                                <button type="submit" style="padding: 5px"
+                                                    class="btn {{ $course->status == 1 ? 'btn-success' : 'btn-danger' }}">
+                                                    {{ $course->status == 1 ? 'Active' : 'Inactive' }}
+                                                </button>
+                                            </div>
+                                        </form>
+
                                     </div>
                                 </div>
                             </div>
@@ -225,5 +277,6 @@
 }
 
 </script>
+
 @include('partials.footer')
 @endsection

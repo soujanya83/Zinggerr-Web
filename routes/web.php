@@ -66,7 +66,8 @@ Route::post('/check-email', [RegisterController::class, 'checkEmail'])->name('ch
 
 
 
-Route::middleware(['web', ClearCacheAfterLogout::class, 'auth'])->group(function () {
+// Route::middleware(['web', ClearCacheAfterLogout::class, 'auth'])->group(function () {
+Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function () {
     Route::get('/app', function () {
         return view('app.dashboard');
     })->name('app');
@@ -79,6 +80,7 @@ Route::middleware(['web', ClearCacheAfterLogout::class, 'auth'])->group(function
     Route::post('/check-phone', [RegisterController::class, 'checkPhone'])->name('check.phone');
     Route::post('/check-email', [RegisterController::class, 'checkEmail'])->name('check.email');
 
+    Route::get('courses/change-status', [CourseController::class, 'couserchangeStatus'])->name('coursechangeStatus');
 
     Route::post('courses-create', [CourseController::class, 'createCourse'])->name('courses_create');
     Route::match(['get', 'post'], 'courses', [CourseController::class, 'courselist'])->name('courses');
@@ -100,7 +102,7 @@ Route::middleware(['web', ClearCacheAfterLogout::class, 'auth'])->group(function
 
 
     Route::get('/change-status', [UserController::class, 'changeStatus'])->name('changeStatus');
-    Route::get('/changes-status', [UserController::class, 'changeStatus'])->name('changeStatus');
+    // Route::get('/changes-status', [UserController::class, 'changeStatus'])->name('changeStatus');
     Route::post('users-add', [UserController::class, 'createuser'])->name('createuser');
 
 

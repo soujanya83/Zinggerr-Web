@@ -7,6 +7,7 @@ use App\Models\Course;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Storage;
+use Ramsey\Uuid\Guid\Guid;
 use Illuminate\Support\Facades\Gate;
 class CourseController extends Controller
 {
@@ -14,7 +15,7 @@ class CourseController extends Controller
     public function courseadd(Request $request)
 
     {
-        return view('app.courses.add');
+        return view('courses.add');
     }
 
     public function createCourse(Request $request)
@@ -35,9 +36,11 @@ class CourseController extends Controller
         if ($validator->fails()) {
             return response()->json(['success' => false, 'errors' => $validator->errors()]);
         }
+        $uuid = (string) Guid::uuid4();
 
         try {
             $course = new Course();
+            $course->id =$uuid;
             $course->course_name = $request->course_name;
             $course->code = $request->course_code;
             $course->start_date = $request->start_date;
@@ -73,16 +76,18 @@ class CourseController extends Controller
             $query->where('teacher_name', 'like', '%' . $request->teacher_name . '%');
         }
 
+
+
         $courses = $query->latest()->paginate(12);
 
-        return view('app.courses.list', compact('courses'));
+        return view('courses.list', compact('courses'));
     }
     public function coursedetails(Request $request, $id)
     {
         $course = Course::find($id);
 
         if ($course) {
-            return view('app.courses.course_details', compact('course'));
+            return view('courses.course_details', compact('course'));
         } else {
             return redirect()->route('courses')->with('error', 'Course not found.');
         }
@@ -92,7 +97,7 @@ class CourseController extends Controller
     {
         $course = Course::find($id);
         if ($course) {
-            return view('app.courses.course_edit', compact('course'));
+            return view('courses.course_edit', compact('course'));
         } else {
             return redirect()->route('courses')->with('error', 'Course not found.');
         }
@@ -168,4 +173,16 @@ class CourseController extends Controller
             return redirect()->back()->with('error', 'Course ID not found.');
         }
     }
+    public function couserchangeStatus(Request $request)
+    {
+        $user = Course::findOrFail($request->id);
+        $user->status = $request->status;
+        $user->save();
+
+        return redirect()->back()->with('success', 'User status updated successfully!');
+    }
+
+
+
+
 }

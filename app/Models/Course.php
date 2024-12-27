@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Course extends Model
 {
     protected $fillable = [
+        'id',
         'name',
         'code',
         'start_date',
@@ -17,4 +18,7 @@ class Course extends Model
         'status',
         'details'
     ];
+
+    protected $keyType = 'string'; // This tells Laravel that the primary key is a string (UUID).
+    public $incrementing = false;
 }

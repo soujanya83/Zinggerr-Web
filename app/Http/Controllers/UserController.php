@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\PermissionRole;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
@@ -167,7 +168,7 @@ class UserController extends Controller
 
         $query = User::query();
 
-        $query->whereIn('type', ['staff', 'Admin']);
+        $query->whereIn('type', ['Staff', 'Admin']);
         // Search logic
         if ($request->has('search') && $request->search) {
             $search = $request->search;
@@ -188,6 +189,15 @@ class UserController extends Controller
                 'pagination' => view('users.pagination', compact('data'))->render(),
             ]);
         }
+
+
+        // $roletype=Auth::user()->type;
+        // $roleId=Role::where('name',$roletype)->first();
+        // $checkpermission=PermissionRole::select('permissions.name')->where('role_id',$roleId)->join('permissions','permissions.id','=','permission_role.permission_id')->get();
+
+        // dd($checkpermission);
+
+
 
 
         return view('users.userlist', compact('data'));
