@@ -71,13 +71,9 @@ class CourseController extends Controller
         if ($request->has('name')) {
             $query->where('course_name', 'like', '%' . $request->name . '%');
         }
-
         if ($request->has('teacher_name')) {
             $query->where('teacher_name', 'like', '%' . $request->teacher_name . '%');
         }
-
-
-
         $courses = $query->latest()->paginate(12);
 
         return view('courses.list', compact('courses'));

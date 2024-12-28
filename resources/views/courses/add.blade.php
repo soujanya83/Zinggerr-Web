@@ -37,7 +37,7 @@
                         <form id="createCourseForm" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">Course Name</label>
                                         <input type="text" name="course_name" class="form-control"
@@ -45,7 +45,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">Course Code</label>
                                         <input type="text" name="course_code" class="form-control"
@@ -53,14 +53,14 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">Start Date</label>
                                         <input type="date" name="start_date" class="form-control" required>
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">Course Duration</label>
                                         <input type="text" name="duration" class="form-control"
@@ -68,7 +68,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">Course Price</label>
                                         <input type="number" name="price" class="form-control"
@@ -76,7 +76,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">Teacher Name</label>
                                         <input type="text" name="teacher_name" class="form-control"
@@ -84,39 +84,43 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">Maximum Students</label>
                                         <input type="number" name="max_students" class="form-control"
                                             placeholder="Enter Maximum Students" required>
                                     </div>
                                 </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Course Status</label>
-                                        <select name="status" class="form-select" required>
-                                            <option value="0">Deactive</option>
-                                            <option value="1">Active</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Course Details</label>
-                                        <textarea name="details" class="form-control" rows="3"
-                                            placeholder="Enter Course Details"></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">Course Image</label>
                                         <input type="file" name="course_image" class="form-control" accept="image/*">
                                     </div>
                                 </div>
-
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Course Details</label>
+                                        <textarea name="details" class="form-control" rows="1"
+                                            placeholder="Enter Course Details"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="status">Course Status:</label>
+                                        <div style="margin-top: 10px;">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="status"
+                                                    id="statusActive" value="1">
+                                                <label class="form-check-label" for="statusActive">Active</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="status"
+                                                    id="statusInactive" value="0">
+                                                <label class="form-check-label" for="statusInactive">Inactive</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-md-12 text-end">
                                     <button type="submit" class="btn btn-primary">Create Course</button>
                                 </div>

@@ -145,7 +145,7 @@
                                 <div class="list-group-item list-group-item-action">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
-                                            <img src="../assets/images/user/avatar-3.jpg" alt="user-image"
+                                            <img src="asset/images/user/avatar-3.jpg" alt="user-image"
                                                 class="user-avtar">
                                         </div>
                                         <div class="flex-grow-1 ms-1">
@@ -169,7 +169,7 @@
                 <li class="dropdown pc-h-item header-user-profile">
                     <a class="pc-head-link head-link-primary dropdown-toggle arrow-none me-0" href="#" role="button"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="{{ asset('images/user/avatar-2.jpg') }}" alt="user-image" class="user-avatar">
+                        <img src="{{ asset('asset/images/user/avatar-2.jpg') }}" alt="user-image" class="user-avatar">
                         <span><i class="ti ti-settings"></i></span>
                     </a>
                     <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">

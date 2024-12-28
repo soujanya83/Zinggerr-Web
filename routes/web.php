@@ -9,7 +9,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\RoleController;
+
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\ClearCacheAfterLogout;
@@ -98,24 +98,13 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
         ->name('user_delete')
         ->middleware('can:role');
     Route::get('/users-edit/{id}', [UserController::class, 'useredit'])->name('user_edit')->middleware('can:role');
-    Route::get('/users-update', [UserController::class, 'updateuser'])->name('updateuser');
+    Route::get('/users-update', [UserController::class, 'updateuser'])->name('updateuser')->middleware('can:role');
 
 
     Route::get('/change-status', [UserController::class, 'changeStatus'])->name('changeStatus');
     // Route::get('/changes-status', [UserController::class, 'changeStatus'])->name('changeStatus');
     Route::post('users-add', [UserController::class, 'createuser'])->name('createuser');
 
-
-
-    Route::middleware(['auth'])->group(function () {
-        Route::get('/roles/index', [RoleController::class, 'index'])->name('roles.index');
-        Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
-
-        Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
-        Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
-    });
-
-    Route::post('roles', [RoleController::class, 'store'])->name('roles.store');
     Route::post('add-user', [UserController::class, 'createuser'])->name('createuser');
     Route::get('users-create', [UserController::class, 'useradd'])->name('useradd');
     Route::get('/users-list', [UserController::class, 'userlist'])->name('userlist');
@@ -124,22 +113,23 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
 
 
 
-    Route::delete('/student-delete/{id}', [StudentController::class, 'student_delete'])->name('student_delete')->middleware('can:role');
-    Route::get('/student-update', [StudentController::class, 'updatestudent'])->name('updatestudent')->middleware('can:role');
-    Route::get('/student-edit/{id}', [StudentController::class, 'studentedit'])->name('student_edit')->middleware('can:role');
+    // Route::delete('/student-delete/{id}', [StudentController::class, 'student_delete'])->name('student_delete')->middleware('can:role');
+    Route::get('/students-update', [StudentController::class, 'updatestudent'])->name('updatestudent');
+    Route::get('/student-edit/{id}', [StudentController::class, 'studentedit'])->name('student_edit');
 
 
-    Route::post('/student/store', [StudentController::class, 'store'])->name('student.store');
+    // Route::post('/student/store', [StudentController::class, 'store'])->name('student.store');
     // Route::post('add-teacher', [TeacherController::class, 'createteacher'])->name('createteacher');
-    Route::post('student-add', [StudentController::class, 'store'])->name('store');
-    Route::get('student-create', [StudentController::class, 'studentadd'])->name('studentadd');
+    // Route::post('student-add', [StudentController::class, 'store'])->name('store');
+    Route::get('students-create', [StudentController::class, 'studentadd'])->name('studentadd');
     Route::get('student-list', [StudentController::class, 'studentlist'])->name('studentlist');
+
     // Route::put('/teacher/{id}/change-status', [TeacherController::class, 'changeStatus'])->name('change_teacher_status');
 
 
-    Route::delete('/teacher-delete/{id}', [TeacherController::class, 'teacher_delete'])->name('teacher_delete')->middleware('can:role');
-    Route::get('/teacher-update', [TeacherController::class, 'updateteacher'])->name('updateteacher')->middleware('can:role');
-    Route::get('/teacher-edit/{id}', [TeacherController::class, 'teacheredit'])->name('teacher_edit')->middleware('can:role');
+    // Route::delete('/teacher-delete/{id}', [TeacherController::class, 'teacher_delete'])->name('teacher_delete')->middleware('can:role');
+    Route::get('/teacher-update', [TeacherController::class, 'updateteacher'])->name('updateteacher');
+    Route::get('/teacher-edit/{id}', [TeacherController::class, 'teacheredit'])->name('teacher_edit');
 
     // Route::post('add-teacher', [TeacherController::class, 'createteacher'])->name('createteacher');
     Route::get('teachers-create', [TeacherController::class, 'teacheradd'])->name('teacheradd');
@@ -158,6 +148,14 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
 
     Route::get('permissions/assign', [PermissionsController::class, 'role_permission'])->name('permissions.role');
     Route::get('permissions/role-assign', [PermissionsController::class, 'assignpermissions'])->name('role.permission.assign');
+
+    Route::get('roles/submit', [PermissionsController::class, 'submit_roles'])->name('roles.store');
+    Route::get('/role/update', [PermissionsController::class, 'update_role'])->name('update.role');
+
+    Route::get('roles/create', [PermissionsController::class, 'createroles'])->name('roles.create');
+    Route::get('/role-delete/{user}', [PermissionsController::class, 'role_delete'])
+        ->name('role_delete')
+        ->middleware('can:role');
 
 
 

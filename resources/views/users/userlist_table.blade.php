@@ -10,7 +10,7 @@
                 <img class="img-radius" src="{{ asset('storage/' . $user->profile_picture) }}" alt="User image"
                     style="height:52px;width: 52px;">
                 @else
-                <img class="img-radius" src="{{ asset('../images/user/avatar-1.jpg') }}" alt="Default image"
+                <img class="img-radius" src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="Default image"
                     style="height:52px;width: 52px;">
                 @endif
             </div>

@@ -78,17 +78,17 @@ class UserController extends Controller
 
     public function updateuser(Request $request)
     {
-        $id=$request->userid;
+        $id = $request->userid;
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:5|max:255',
-            'username' => 'required|min:5|max:255|unique:users,username,' . $id, // Ensure the username is unique except for the current user
-            'email' => 'required|email|unique:users,email,' . $id, // Ensure the email is unique except for the current user
-            'phone' => 'required|digits:10|unique:users,phone,' . $id, // Ensure phone number is unique except for the current user
+            'username' => 'required|min:5|max:255|unique:users,username,' . $id,
+            'email' => 'required|email|unique:users,email,' . $id,
+            'phone' => 'required|digits:10|unique:users,phone,' . $id,
             'status' => 'required|in:1,0',
-            'gender' => 'required', // Assuming 1=Male, 2=Female
-            'role' => 'required',  // Adjust based on role values in your system
-            // 'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:3072',
+            'gender' => 'required',
+            'role' => 'required',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:3072',
         ]);
 
         if ($validator->fails()) {
@@ -165,9 +165,7 @@ class UserController extends Controller
 
     public function userlist(Request $request)
     {
-
         $query = User::query();
-
         $query->whereIn('type', ['Staff', 'Admin']);
         // Search logic
         if ($request->has('search') && $request->search) {
@@ -189,15 +187,6 @@ class UserController extends Controller
                 'pagination' => view('users.pagination', compact('data'))->render(),
             ]);
         }
-
-
-        // $roletype=Auth::user()->type;
-        // $roleId=Role::where('name',$roletype)->first();
-        // $checkpermission=PermissionRole::select('permissions.name')->where('role_id',$roleId)->join('permissions','permissions.id','=','permission_role.permission_id')->get();
-
-        // dd($checkpermission);
-
-
 
 
         return view('users.userlist', compact('data'));

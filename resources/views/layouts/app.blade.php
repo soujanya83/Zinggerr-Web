@@ -9,7 +9,7 @@
     <meta name="description" content="Zinggerr Learning Management System">
     <meta name="author" content="Zinggerr">
 
-    <link rel="icon" href="/images/favicon.svg" type="image/x-icon">
+    <link rel="icon" href="asset/images/favicon.svg" type="image/x-icon">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" id="main-font-link" >
     <link rel="stylesheet" href="/fonts/tabler-icons.min.css" >
     <link rel="stylesheet" href="/fonts/feather.css" >

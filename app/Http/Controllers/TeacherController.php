@@ -74,11 +74,11 @@ class TeacherController extends Controller
         $id=$request->userid;
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:5|max:255',
-            'username' => 'required|min:5|max:255|unique:users,username,' . $id, // Ensure the username is unique except for the current user
-            'email' => 'required|email|unique:users,email,' . $id, // Ensure the email is unique except for the current user
-            'phone' => 'required|digits:10|unique:users,phone,' . $id, // Ensure phone number is unique except for the current user
+            'username' => 'required|min:5|max:255|unique:users,username,' . $id,
+            'email' => 'required|email|unique:users,email,' . $id,
+            'phone' => 'required|digits:10|unique:users,phone,' . $id,
             'status' => 'required|in:1,0',
-            'gender' => 'required', // Assuming 1=Male, 2=Female
+            'gender' => 'required',
             // 'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:3072',
         ]);
 

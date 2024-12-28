@@ -125,7 +125,7 @@
                                                 <img src="{{ asset('storage/users pictures/' . Auth::user()->profile_picture) }}"
                                                     class="rounded-circle" width="100" height="100">
                                                 @else
-                                                <img src="{{ asset('images/user/avatar-1.jpg') }}"
+                                                <img src="{{ asset('asset/images/user/avatar-1.jpg') }}"
                                                     class="rounded-circle" width="100" height="100">
                                                 @endif
 
@@ -257,7 +257,7 @@
                                                         <img src="{{ asset('storage/users_pictures/' . Auth::user()->profile_picture) }}"
                                                             class="rounded-circle" width="100" height="100">
                                                         @else
-                                                        <img src="{{ asset('images/user/avatar-1.jpg') }}"
+                                                        <img src="{{ asset('asset/images/user/avatar-1.jpg') }}"
                                                             class="rounded-circle" width="100" height="100">
                                                         @endif
 

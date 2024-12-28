@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
-    protected $primaryKey = 'id';
     protected $keyType = 'string';
+    public $incrementing = false;
 
     protected $fillable = [
+        'id',
         'name',
         'display_name',
         'description',

@@ -103,7 +103,7 @@
                                     <div class="text-end">
                                         <input type="submit" class="btn btn-primary" value="Submit">
 
-                                        <a href="{{ route('permissions.create') }}" class="btn btn-success"> Refresh</a>
+                                        <a href="{{ route('permissions.create') }}" class="btn btn-success">Reset</a>
 
                                     </div>
                                 </form>

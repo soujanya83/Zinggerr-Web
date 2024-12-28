@@ -51,7 +51,7 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Student View</h5>
+                            <h5 class="m-b-10">Students View</h5>
                         </div>
                     </div>
 
@@ -111,7 +111,7 @@
                                     <thead>
                                         <tr id="showtr">
                                             <th>#</th>
-                                            <th>Student Profile</th>
+                                            <th>Students Profile</th>
                                             <th>Username</th>
                                             <th>Phone</th>
                                             <th>Type</th>
@@ -122,7 +122,7 @@
                                         </tr>
                                     </thead>
                                     <tbody id="userTableBody">
-                                        @include('teachers.teacherlist_table')
+                                        @include('students.studentlist_table')
                                     </tbody>
                                 </table>
                                 <div class="datatable-bottom">
@@ -154,13 +154,8 @@
         filter = input.value.toUpperCase();
         table = document.querySelector("table");
         tr = table.getElementsByTagName("tr");
-
-        // Loop through all table rows
         for (i = 0; i < tr.length; i++) {
-            // Get all cells of current row
             var tds = tr[i].getElementsByTagName("td");
-
-            // Check if any of the cells contains the search string
             var found = false;
             for (var j = 0; j < tds.length; j++) {
                 txtValue = tds[j].textContent || tds[j].innerText;
@@ -169,8 +164,6 @@
                     break;
                 }
             }
-
-            // Show or hide the row based on search result
             tr[i].style.display = found ? "" : "none";
         }
     }
@@ -179,7 +172,7 @@
     const perPage = $(this).val();
     const url = new URL(window.location.href);
 
-    // Update URL with per_page parameter
+
     url.searchParams.set('per_page', perPage);
     url.searchParams.set('page', 1);
 
@@ -187,23 +180,20 @@
         url: url.toString(),
         type: 'GET',
         success: function(response) {
-            if (response.html) { // Check if 'html' property exists
+            if (response.html) {
                 $('#userTableBody').html(response.html);
             } else {
                 console.error('Error: Missing "html" property in response.');
-                // Handle the error gracefully (e.g., display an error message to the user)
             }
 
-            if (response.pagination) { // Check if 'pagination' property exists
+            if (response.pagination) {
                 $('.datatable-pagination').html(response.pagination);
             } else {
                 console.error('Error: Missing "pagination" property in response.');
-                // Handle the error gracefully
             }
         },
         error: function(error) {
             console.error('Error fetching data:', error);
-            // Handle the error gracefully
         }
     });
 });

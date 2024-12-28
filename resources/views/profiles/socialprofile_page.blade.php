@@ -49,12 +49,12 @@
             <!-- [ sample-page ] start -->
             <div class="col-sm-12">
                 <div class="card social-profile">
-                    <div class="card-body p-3"><img src="{{ asset('images/user/img-profile-cover.png') }}" alt=""
+                    <div class="card-body p-3"><img src="{{ asset('asset/images/user/img-profile-cover.png') }}" alt=""
                             class="w-100 rounded"></div>
                     <div class="card-body pt-2">
                         <div class="row">
                             <div class="col-md-3 text-md-end"><img class="img-fluid wid-140 img-profile-avtar"
-                                    src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image"></div>
+                                    src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image"></div>
                             <div class="col-md-9">
                                 <div class="row justify-content-between align-items-end">
                                     <div class="col-md-auto soc-profile-data">
@@ -179,7 +179,7 @@
                                     <div class="card-body">
                                         <div class="d-flex align-items-center mb-3">
                                             <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                    src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image"></div>
+                                                    src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image"></div>
                                             <div class="flex-grow-1 mx-3">
                                                 <div class="d-flex align-items-center">
                                                     <h5 class="mb-0 me-3">John Doe</h5><span
@@ -216,7 +216,7 @@
                                         <div class="d-flex align-items-center mt-3">
                                             <div class="flex-shrink-0"><img
                                                     class="img-radius d-none d-sm-inline-flex me-3 img-fluid wid-35"
-                                                    src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                    src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                             </div>
                                             <div class="flex-grow-1 me-3">
                                                 <div class="form-floating mb-0"><input type="email" class="form-control"
@@ -232,7 +232,7 @@
                                     <div class="card-body">
                                         <div class="d-flex align-items-center mb-3">
                                             <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                    src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image"></div>
+                                                    src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image"></div>
                                             <div class="flex-grow-1 mx-3">
                                                 <div class="d-flex align-items-center">
                                                     <h5 class="mb-0 me-3">John Doe</h5><span
@@ -255,7 +255,7 @@
                                         <p class="text-header">labore et dolore magna aliqua. Ut enim ad minim veniam,
                                             quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
                                             consequat Duis aute irure dolor.</p><img class="rounded img-fluid w-100"
-                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                         <div class="row my-3">
                                             <div class="col"><a href="#" class="btn btn-link-dark"><i
                                                         class="material-icons-two-tone me-1">thumb_up_alt</i> 102 Likes
@@ -268,7 +268,7 @@
                                         <div class="bg-light rounded p-2 mb-3">
                                             <div class="d-flex align-items-center mb-3">
                                                 <div class="flex-shrink-0"><img class="img-radius img-fluid wid-30"
-                                                        src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image"></div>
+                                                        src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image"></div>
                                                 <div class="flex-grow-1 mx-3">
                                                     <div class="d-flex align-items-center">
                                                         <h5 class="mb-0 me-3">Barney Thea</h5><span
@@ -298,7 +298,7 @@
                                         <div class="bg-light rounded p-2 mb-3">
                                             <div class="d-flex align-items-center mb-3">
                                                 <div class="flex-shrink-0"><img class="img-radius img-fluid wid-30"
-                                                        src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image"></div>
+                                                        src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image"></div>
                                                 <div class="flex-grow-1 mx-3">
                                                     <div class="d-flex align-items-center">
                                                         <h5 class="mb-0 me-3">Barney Thea</h5><span
@@ -328,7 +328,7 @@
                                         <div class="bg-light rounded p-2 ms-5">
                                             <div class="d-flex align-items-center mb-3">
                                                 <div class="flex-shrink-0"><img class="img-radius img-fluid wid-30"
-                                                        src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image"></div>
+                                                        src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image"></div>
                                                 <div class="flex-grow-1 mx-3">
                                                     <div class="d-flex align-items-center">
                                                         <h5 class="mb-0 me-3">Barney Thea</h5><span
@@ -361,7 +361,7 @@
                                     <div class="card-body">
                                         <div class="d-flex align-items-center mb-3">
                                             <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                    src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image"></div>
+                                                    src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image"></div>
                                             <div class="flex-grow-1 mx-3">
                                                 <div class="d-flex align-items-center">
                                                     <h5 class="mb-0 me-3">John Doe</h5><span
@@ -388,7 +388,7 @@
                                             <div class="col-sm-6">
                                                 <div class="position-relative overflow-hidden rounded"><img
                                                         class="img-fluid w-100"
-                                                        src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                        src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     <div
                                                         class="position-absolute top-0 start-0 w-100 p-3 img-post-title">
                                                         <span class="m-0 h4 text-white">Image Title</span>
@@ -398,7 +398,7 @@
                                             <div class="col-sm-6">
                                                 <div class="position-relative overflow-hidden rounded"><img
                                                         class="img-fluid w-100"
-                                                        src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                        src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     <div
                                                         class="position-absolute top-0 start-0 w-100 p-3 img-post-title">
                                                         <span class="m-0 h4 text-white">Painter</span>
@@ -418,7 +418,7 @@
                                         <div class="bg-light rounded p-2 mb-3">
                                             <div class="d-flex align-items-center mb-3">
                                                 <div class="flex-shrink-0"><img class="img-radius img-fluid wid-30"
-                                                        src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image"></div>
+                                                        src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image"></div>
                                                 <div class="flex-grow-1 mx-3">
                                                     <div class="d-flex align-items-center">
                                                         <h5 class="mb-0 me-3">Barney Thea</h5><span
@@ -451,7 +451,7 @@
                                     <div class="card-body">
                                         <div class="d-flex align-items-center mb-3">
                                             <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                    src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image"></div>
+                                                    src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image"></div>
                                             <div class="flex-grow-1 mx-3">
                                                 <div class="d-flex align-items-center">
                                                     <h5 class="mb-0 me-3">John Doe</h5><span
@@ -489,7 +489,7 @@
                                         <div class="d-flex align-items-center mt-3">
                                             <div class="flex-shrink-0"><img
                                                     class="img-radius d-none d-sm-inline-flex me-3 img-fluid wid-35"
-                                                    src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                    src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                             </div>
                                             <div class="flex-grow-1 me-3">
                                                 <div class="form-floating mb-0"><input type="email" class="form-control"
@@ -525,7 +525,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Barney</h5>
@@ -562,7 +562,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Thea</h5>
@@ -599,7 +599,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Barney</h5>
@@ -636,7 +636,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Barney</h5>
@@ -673,7 +673,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Thea</h5>
@@ -710,7 +710,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Barney</h5>
@@ -747,7 +747,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Thea</h5>
@@ -784,7 +784,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Barney</h5>
@@ -821,7 +821,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Barney</h5>
@@ -858,303 +858,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
-                                                    </div>
-                                                    <div class="flex-grow-1 mx-2">
-                                                        <h5 class="mb-1 text-truncate">Thea</h5>
-                                                        <h6
-                                                            class="text-truncate text-muted d-flex align-items-center mb-0">
-                                                            <i class="material-icons-two-tone f-14 me-1">pin_drop</i>
-                                                            New jana
-                                                        </h6>
-                                                    </div>
-                                                    <div class="flex-shrink-0">
-                                                        <div class="dropdown"><a
-                                                                class="dropdown-toggle text-primary opacity-50 arrow-none"
-                                                                href="#" data-bs-toggle="dropdown" aria-haspopup="true"
-                                                                aria-expanded="false"><i
-                                                                    class="ti ti-dots f-16"></i></a>
-                                                            <div class="dropdown-menu dropdown-menu-end"><a
-                                                                    class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">favorite</i>
-                                                                    Favorites </a><a class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">group</i> Edit
-                                                                    Friend List </a><a class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">delete</i>
-                                                                    Removed</a></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="d-grid"><button class="btn btn-primary"><i
-                                                            class="ti ti-user-plus"></i> Follow Back</button></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-4 col-sm-6">
-                                        <div class="card follower-card">
-                                            <div class="card-body p-3">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
-                                                    </div>
-                                                    <div class="flex-grow-1 mx-2">
-                                                        <h5 class="mb-1 text-truncate">Barney</h5>
-                                                        <h6
-                                                            class="text-truncate text-muted d-flex align-items-center mb-0">
-                                                            <i class="material-icons-two-tone f-14 me-1">pin_drop</i>
-                                                            Handburgh
-                                                        </h6>
-                                                    </div>
-                                                    <div class="flex-shrink-0">
-                                                        <div class="dropdown"><a
-                                                                class="dropdown-toggle text-primary opacity-50 arrow-none"
-                                                                href="#" data-bs-toggle="dropdown" aria-haspopup="true"
-                                                                aria-expanded="false"><i
-                                                                    class="ti ti-dots f-16"></i></a>
-                                                            <div class="dropdown-menu dropdown-menu-end"><a
-                                                                    class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">favorite</i>
-                                                                    Favorites </a><a class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">group</i> Edit
-                                                                    Friend List </a><a class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">delete</i>
-                                                                    Removed</a></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="d-grid"><button class="btn btn-outline-primary"><i
-                                                            class="ti ti-users"></i> Followed</button></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-4 col-sm-6">
-                                        <div class="card follower-card">
-                                            <div class="card-body p-3">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
-                                                    </div>
-                                                    <div class="flex-grow-1 mx-2">
-                                                        <h5 class="mb-1 text-truncate">Barney</h5>
-                                                        <h6
-                                                            class="text-truncate text-muted d-flex align-items-center mb-0">
-                                                            <i class="material-icons-two-tone f-14 me-1">pin_drop</i>
-                                                            Handburgh
-                                                        </h6>
-                                                    </div>
-                                                    <div class="flex-shrink-0">
-                                                        <div class="dropdown"><a
-                                                                class="dropdown-toggle text-primary opacity-50 arrow-none"
-                                                                href="#" data-bs-toggle="dropdown" aria-haspopup="true"
-                                                                aria-expanded="false"><i
-                                                                    class="ti ti-dots f-16"></i></a>
-                                                            <div class="dropdown-menu dropdown-menu-end"><a
-                                                                    class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">favorite</i>
-                                                                    Favorites </a><a class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">group</i> Edit
-                                                                    Friend List </a><a class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">delete</i>
-                                                                    Removed</a></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="d-grid"><button class="btn btn-outline-primary"><i
-                                                            class="ti ti-users"></i> Followed</button></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-4 col-sm-6">
-                                        <div class="card follower-card">
-                                            <div class="card-body p-3">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
-                                                    </div>
-                                                    <div class="flex-grow-1 mx-2">
-                                                        <h5 class="mb-1 text-truncate">Thea</h5>
-                                                        <h6
-                                                            class="text-truncate text-muted d-flex align-items-center mb-0">
-                                                            <i class="material-icons-two-tone f-14 me-1">pin_drop</i>
-                                                            New jana
-                                                        </h6>
-                                                    </div>
-                                                    <div class="flex-shrink-0">
-                                                        <div class="dropdown"><a
-                                                                class="dropdown-toggle text-primary opacity-50 arrow-none"
-                                                                href="#" data-bs-toggle="dropdown" aria-haspopup="true"
-                                                                aria-expanded="false"><i
-                                                                    class="ti ti-dots f-16"></i></a>
-                                                            <div class="dropdown-menu dropdown-menu-end"><a
-                                                                    class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">favorite</i>
-                                                                    Favorites </a><a class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">group</i> Edit
-                                                                    Friend List </a><a class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">delete</i>
-                                                                    Removed</a></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="d-grid"><button class="btn btn-outline-primary"><i
-                                                            class="ti ti-user-plus"></i> Follow Back</button></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-4 col-sm-6">
-                                        <div class="card follower-card">
-                                            <div class="card-body p-3">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
-                                                    </div>
-                                                    <div class="flex-grow-1 mx-2">
-                                                        <h5 class="mb-1 text-truncate">Barney</h5>
-                                                        <h6
-                                                            class="text-truncate text-muted d-flex align-items-center mb-0">
-                                                            <i class="material-icons-two-tone f-14 me-1">pin_drop</i>
-                                                            Handburgh
-                                                        </h6>
-                                                    </div>
-                                                    <div class="flex-shrink-0">
-                                                        <div class="dropdown"><a
-                                                                class="dropdown-toggle text-primary opacity-50 arrow-none"
-                                                                href="#" data-bs-toggle="dropdown" aria-haspopup="true"
-                                                                aria-expanded="false"><i
-                                                                    class="ti ti-dots f-16"></i></a>
-                                                            <div class="dropdown-menu dropdown-menu-end"><a
-                                                                    class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">favorite</i>
-                                                                    Favorites </a><a class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">group</i> Edit
-                                                                    Friend List </a><a class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">delete</i>
-                                                                    Removed</a></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="d-grid"><button class="btn btn-outline-primary"><i
-                                                            class="ti ti-users"></i> Followed</button></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-4 col-sm-6">
-                                        <div class="card follower-card">
-                                            <div class="card-body p-3">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
-                                                    </div>
-                                                    <div class="flex-grow-1 mx-2">
-                                                        <h5 class="mb-1 text-truncate">Thea</h5>
-                                                        <h6
-                                                            class="text-truncate text-muted d-flex align-items-center mb-0">
-                                                            <i class="material-icons-two-tone f-14 me-1">pin_drop</i>
-                                                            New jana
-                                                        </h6>
-                                                    </div>
-                                                    <div class="flex-shrink-0">
-                                                        <div class="dropdown"><a
-                                                                class="dropdown-toggle text-primary opacity-50 arrow-none"
-                                                                href="#" data-bs-toggle="dropdown" aria-haspopup="true"
-                                                                aria-expanded="false"><i
-                                                                    class="ti ti-dots f-16"></i></a>
-                                                            <div class="dropdown-menu dropdown-menu-end"><a
-                                                                    class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">favorite</i>
-                                                                    Favorites </a><a class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">group</i> Edit
-                                                                    Friend List </a><a class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">delete</i>
-                                                                    Removed</a></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="d-grid"><button class="btn btn-outline-primary"><i
-                                                            class="ti ti-user-plus"></i> Follow Back</button></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-4 col-sm-6">
-                                        <div class="card follower-card">
-                                            <div class="card-body p-3">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
-                                                    </div>
-                                                    <div class="flex-grow-1 mx-2">
-                                                        <h5 class="mb-1 text-truncate">Barney</h5>
-                                                        <h6
-                                                            class="text-truncate text-muted d-flex align-items-center mb-0">
-                                                            <i class="material-icons-two-tone f-14 me-1">pin_drop</i>
-                                                            Handburgh
-                                                        </h6>
-                                                    </div>
-                                                    <div class="flex-shrink-0">
-                                                        <div class="dropdown"><a
-                                                                class="dropdown-toggle text-primary opacity-50 arrow-none"
-                                                                href="#" data-bs-toggle="dropdown" aria-haspopup="true"
-                                                                aria-expanded="false"><i
-                                                                    class="ti ti-dots f-16"></i></a>
-                                                            <div class="dropdown-menu dropdown-menu-end"><a
-                                                                    class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">favorite</i>
-                                                                    Favorites </a><a class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">group</i> Edit
-                                                                    Friend List </a><a class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">delete</i>
-                                                                    Removed</a></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="d-grid"><button class="btn btn-outline-primary"><i
-                                                            class="ti ti-users"></i> Followed</button></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-4 col-sm-6">
-                                        <div class="card follower-card">
-                                            <div class="card-body p-3">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
-                                                    </div>
-                                                    <div class="flex-grow-1 mx-2">
-                                                        <h5 class="mb-1 text-truncate">Barney</h5>
-                                                        <h6
-                                                            class="text-truncate text-muted d-flex align-items-center mb-0">
-                                                            <i class="material-icons-two-tone f-14 me-1">pin_drop</i>
-                                                            Handburgh
-                                                        </h6>
-                                                    </div>
-                                                    <div class="flex-shrink-0">
-                                                        <div class="dropdown"><a
-                                                                class="dropdown-toggle text-primary opacity-50 arrow-none"
-                                                                href="#" data-bs-toggle="dropdown" aria-haspopup="true"
-                                                                aria-expanded="false"><i
-                                                                    class="ti ti-dots f-16"></i></a>
-                                                            <div class="dropdown-menu dropdown-menu-end"><a
-                                                                    class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">favorite</i>
-                                                                    Favorites </a><a class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">group</i> Edit
-                                                                    Friend List </a><a class="dropdown-item" href="#"><i
-                                                                        class="material-icons-two-tone">delete</i>
-                                                                    Removed</a></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="d-grid"><button class="btn btn-outline-primary"><i
-                                                            class="ti ti-users"></i> Followed</button></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-4 col-sm-6">
-                                        <div class="card follower-card">
-                                            <div class="card-body p-3">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Thea</h5>
@@ -1191,7 +895,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Barney</h5>
@@ -1228,7 +932,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Barney</h5>
@@ -1265,7 +969,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Thea</h5>
@@ -1302,7 +1006,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Barney</h5>
@@ -1339,7 +1043,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Thea</h5>
@@ -1376,7 +1080,303 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
+                                                    </div>
+                                                    <div class="flex-grow-1 mx-2">
+                                                        <h5 class="mb-1 text-truncate">Barney</h5>
+                                                        <h6
+                                                            class="text-truncate text-muted d-flex align-items-center mb-0">
+                                                            <i class="material-icons-two-tone f-14 me-1">pin_drop</i>
+                                                            Handburgh
+                                                        </h6>
+                                                    </div>
+                                                    <div class="flex-shrink-0">
+                                                        <div class="dropdown"><a
+                                                                class="dropdown-toggle text-primary opacity-50 arrow-none"
+                                                                href="#" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false"><i
+                                                                    class="ti ti-dots f-16"></i></a>
+                                                            <div class="dropdown-menu dropdown-menu-end"><a
+                                                                    class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">favorite</i>
+                                                                    Favorites </a><a class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">group</i> Edit
+                                                                    Friend List </a><a class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">delete</i>
+                                                                    Removed</a></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-grid"><button class="btn btn-outline-primary"><i
+                                                            class="ti ti-users"></i> Followed</button></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-4 col-sm-6">
+                                        <div class="card follower-card">
+                                            <div class="card-body p-3">
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
+                                                    </div>
+                                                    <div class="flex-grow-1 mx-2">
+                                                        <h5 class="mb-1 text-truncate">Barney</h5>
+                                                        <h6
+                                                            class="text-truncate text-muted d-flex align-items-center mb-0">
+                                                            <i class="material-icons-two-tone f-14 me-1">pin_drop</i>
+                                                            Handburgh
+                                                        </h6>
+                                                    </div>
+                                                    <div class="flex-shrink-0">
+                                                        <div class="dropdown"><a
+                                                                class="dropdown-toggle text-primary opacity-50 arrow-none"
+                                                                href="#" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false"><i
+                                                                    class="ti ti-dots f-16"></i></a>
+                                                            <div class="dropdown-menu dropdown-menu-end"><a
+                                                                    class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">favorite</i>
+                                                                    Favorites </a><a class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">group</i> Edit
+                                                                    Friend List </a><a class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">delete</i>
+                                                                    Removed</a></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-grid"><button class="btn btn-outline-primary"><i
+                                                            class="ti ti-users"></i> Followed</button></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-4 col-sm-6">
+                                        <div class="card follower-card">
+                                            <div class="card-body p-3">
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
+                                                    </div>
+                                                    <div class="flex-grow-1 mx-2">
+                                                        <h5 class="mb-1 text-truncate">Thea</h5>
+                                                        <h6
+                                                            class="text-truncate text-muted d-flex align-items-center mb-0">
+                                                            <i class="material-icons-two-tone f-14 me-1">pin_drop</i>
+                                                            New jana
+                                                        </h6>
+                                                    </div>
+                                                    <div class="flex-shrink-0">
+                                                        <div class="dropdown"><a
+                                                                class="dropdown-toggle text-primary opacity-50 arrow-none"
+                                                                href="#" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false"><i
+                                                                    class="ti ti-dots f-16"></i></a>
+                                                            <div class="dropdown-menu dropdown-menu-end"><a
+                                                                    class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">favorite</i>
+                                                                    Favorites </a><a class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">group</i> Edit
+                                                                    Friend List </a><a class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">delete</i>
+                                                                    Removed</a></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-grid"><button class="btn btn-primary"><i
+                                                            class="ti ti-user-plus"></i> Follow Back</button></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-4 col-sm-6">
+                                        <div class="card follower-card">
+                                            <div class="card-body p-3">
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
+                                                    </div>
+                                                    <div class="flex-grow-1 mx-2">
+                                                        <h5 class="mb-1 text-truncate">Barney</h5>
+                                                        <h6
+                                                            class="text-truncate text-muted d-flex align-items-center mb-0">
+                                                            <i class="material-icons-two-tone f-14 me-1">pin_drop</i>
+                                                            Handburgh
+                                                        </h6>
+                                                    </div>
+                                                    <div class="flex-shrink-0">
+                                                        <div class="dropdown"><a
+                                                                class="dropdown-toggle text-primary opacity-50 arrow-none"
+                                                                href="#" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false"><i
+                                                                    class="ti ti-dots f-16"></i></a>
+                                                            <div class="dropdown-menu dropdown-menu-end"><a
+                                                                    class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">favorite</i>
+                                                                    Favorites </a><a class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">group</i> Edit
+                                                                    Friend List </a><a class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">delete</i>
+                                                                    Removed</a></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-grid"><button class="btn btn-outline-primary"><i
+                                                            class="ti ti-users"></i> Followed</button></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-4 col-sm-6">
+                                        <div class="card follower-card">
+                                            <div class="card-body p-3">
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
+                                                    </div>
+                                                    <div class="flex-grow-1 mx-2">
+                                                        <h5 class="mb-1 text-truncate">Barney</h5>
+                                                        <h6
+                                                            class="text-truncate text-muted d-flex align-items-center mb-0">
+                                                            <i class="material-icons-two-tone f-14 me-1">pin_drop</i>
+                                                            Handburgh
+                                                        </h6>
+                                                    </div>
+                                                    <div class="flex-shrink-0">
+                                                        <div class="dropdown"><a
+                                                                class="dropdown-toggle text-primary opacity-50 arrow-none"
+                                                                href="#" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false"><i
+                                                                    class="ti ti-dots f-16"></i></a>
+                                                            <div class="dropdown-menu dropdown-menu-end"><a
+                                                                    class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">favorite</i>
+                                                                    Favorites </a><a class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">group</i> Edit
+                                                                    Friend List </a><a class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">delete</i>
+                                                                    Removed</a></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-grid"><button class="btn btn-outline-primary"><i
+                                                            class="ti ti-users"></i> Followed</button></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-4 col-sm-6">
+                                        <div class="card follower-card">
+                                            <div class="card-body p-3">
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
+                                                    </div>
+                                                    <div class="flex-grow-1 mx-2">
+                                                        <h5 class="mb-1 text-truncate">Thea</h5>
+                                                        <h6
+                                                            class="text-truncate text-muted d-flex align-items-center mb-0">
+                                                            <i class="material-icons-two-tone f-14 me-1">pin_drop</i>
+                                                            New jana
+                                                        </h6>
+                                                    </div>
+                                                    <div class="flex-shrink-0">
+                                                        <div class="dropdown"><a
+                                                                class="dropdown-toggle text-primary opacity-50 arrow-none"
+                                                                href="#" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false"><i
+                                                                    class="ti ti-dots f-16"></i></a>
+                                                            <div class="dropdown-menu dropdown-menu-end"><a
+                                                                    class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">favorite</i>
+                                                                    Favorites </a><a class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">group</i> Edit
+                                                                    Friend List </a><a class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">delete</i>
+                                                                    Removed</a></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-grid"><button class="btn btn-outline-primary"><i
+                                                            class="ti ti-user-plus"></i> Follow Back</button></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-4 col-sm-6">
+                                        <div class="card follower-card">
+                                            <div class="card-body p-3">
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
+                                                    </div>
+                                                    <div class="flex-grow-1 mx-2">
+                                                        <h5 class="mb-1 text-truncate">Barney</h5>
+                                                        <h6
+                                                            class="text-truncate text-muted d-flex align-items-center mb-0">
+                                                            <i class="material-icons-two-tone f-14 me-1">pin_drop</i>
+                                                            Handburgh
+                                                        </h6>
+                                                    </div>
+                                                    <div class="flex-shrink-0">
+                                                        <div class="dropdown"><a
+                                                                class="dropdown-toggle text-primary opacity-50 arrow-none"
+                                                                href="#" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false"><i
+                                                                    class="ti ti-dots f-16"></i></a>
+                                                            <div class="dropdown-menu dropdown-menu-end"><a
+                                                                    class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">favorite</i>
+                                                                    Favorites </a><a class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">group</i> Edit
+                                                                    Friend List </a><a class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">delete</i>
+                                                                    Removed</a></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-grid"><button class="btn btn-outline-primary"><i
+                                                            class="ti ti-users"></i> Followed</button></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-4 col-sm-6">
+                                        <div class="card follower-card">
+                                            <div class="card-body p-3">
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
+                                                    </div>
+                                                    <div class="flex-grow-1 mx-2">
+                                                        <h5 class="mb-1 text-truncate">Thea</h5>
+                                                        <h6
+                                                            class="text-truncate text-muted d-flex align-items-center mb-0">
+                                                            <i class="material-icons-two-tone f-14 me-1">pin_drop</i>
+                                                            New jana
+                                                        </h6>
+                                                    </div>
+                                                    <div class="flex-shrink-0">
+                                                        <div class="dropdown"><a
+                                                                class="dropdown-toggle text-primary opacity-50 arrow-none"
+                                                                href="#" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false"><i
+                                                                    class="ti ti-dots f-16"></i></a>
+                                                            <div class="dropdown-menu dropdown-menu-end"><a
+                                                                    class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">favorite</i>
+                                                                    Favorites </a><a class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">group</i> Edit
+                                                                    Friend List </a><a class="dropdown-item" href="#"><i
+                                                                        class="material-icons-two-tone">delete</i>
+                                                                    Removed</a></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-grid"><button class="btn btn-outline-primary"><i
+                                                            class="ti ti-user-plus"></i> Follow Back</button></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-4 col-sm-6">
+                                        <div class="card follower-card">
+                                            <div class="card-body p-3">
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Barney</h5>
@@ -1432,7 +1432,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Barney</h5>
@@ -1479,7 +1479,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Thea</h5>
@@ -1526,7 +1526,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Guiseppe</h5>
@@ -1573,7 +1573,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Henderson</h5>
@@ -1620,7 +1620,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Wilber</h5>
@@ -1667,7 +1667,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Barney</h5>
@@ -1714,7 +1714,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Thea</h5>
@@ -1761,7 +1761,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Guiseppe</h5>
@@ -1808,7 +1808,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Henderson</h5>
@@ -1855,7 +1855,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Wilber</h5>
@@ -1902,7 +1902,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Barney</h5>
@@ -1949,7 +1949,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Thea</h5>
@@ -1996,7 +1996,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Guiseppe</h5>
@@ -2043,7 +2043,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Henderson</h5>
@@ -2090,7 +2090,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Wilber</h5>
@@ -2137,7 +2137,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Barney</h5>
@@ -2184,7 +2184,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Thea</h5>
@@ -2231,7 +2231,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Guiseppe</h5>
@@ -2278,7 +2278,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Henderson</h5>
@@ -2325,7 +2325,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Wilber</h5>
@@ -2372,7 +2372,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Barney</h5>
@@ -2419,7 +2419,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Thea</h5>
@@ -2466,7 +2466,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Guiseppe</h5>
@@ -2513,7 +2513,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Henderson</h5>
@@ -2560,7 +2560,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Wilber</h5>
@@ -2620,7 +2620,7 @@
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 col-sm-6">
                                         <div class="card gallery-card"><img
-                                                src="{{ asset('images/user/avatar-1.jpg') }}" alt="images"
+                                                src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="images"
                                                 class="img-card-top img-fluid">
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
@@ -2653,7 +2653,7 @@
                                     </div>
                                     <div class="col-lg-3 col-md-4 col-sm-6">
                                         <div class="card gallery-card"><img
-                                                src="{{ asset('images/user/avatar-1.jpg') }}" alt="images"
+                                                src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="images"
                                                 class="img-card-top img-fluid">
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
@@ -2686,7 +2686,7 @@
                                     </div>
                                     <div class="col-lg-3 col-md-4 col-sm-6">
                                         <div class="card gallery-card"><img
-                                                src="{{ asset('images/user/avatar-1.jpg') }}" alt="images"
+                                                src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="images"
                                                 class="img-card-top img-fluid">
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
@@ -2719,7 +2719,7 @@
                                     </div>
                                     <div class="col-lg-3 col-md-4 col-sm-6">
                                         <div class="card gallery-card"><img
-                                                src="{{ asset('images/user/avatar-1.jpg') }}" alt="images"
+                                                src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="images"
                                                 class="img-card-top img-fluid">
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
@@ -2752,7 +2752,7 @@
                                     </div>
                                     <div class="col-lg-3 col-md-4 col-sm-6">
                                         <div class="card gallery-card"><img
-                                                src="{{ asset('images/user/avatar-1.jpg') }}" alt="images"
+                                                src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="images"
                                                 class="img-card-top img-fluid">
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
@@ -2785,7 +2785,7 @@
                                     </div>
                                     <div class="col-lg-3 col-md-4 col-sm-6">
                                         <div class="card gallery-card"><img
-                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="images"
+                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="images"
                                                 class="img-card-top img-fluid">
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
@@ -2818,7 +2818,7 @@
                                     </div>
                                     <div class="col-lg-3 col-md-4 col-sm-6">
                                         <div class="card gallery-card"><img
-                                                src="{{ asset('images/user/avatar-1.jpg') }}" alt="images"
+                                                src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="images"
                                                 class="img-card-top img-fluid">
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
@@ -2851,7 +2851,7 @@
                                     </div>
                                     <div class="col-lg-3 col-md-4 col-sm-6">
                                         <div class="card gallery-card"><img
-                                                src="{{ asset('images/user/avatar-1.jpg') }}" alt="images"
+                                                src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="images"
                                                 class="img-card-top img-fluid">
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
@@ -2884,7 +2884,7 @@
                                     </div>
                                     <div class="col-lg-3 col-md-4 col-sm-6">
                                         <div class="card gallery-card"><img
-                                                src="{{ asset('images/user/avatar-1.jpg') }}" alt="images"
+                                                src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="images"
                                                 class="img-card-top img-fluid">
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
@@ -2917,7 +2917,7 @@
                                     </div>
                                     <div class="col-lg-3 col-md-4 col-sm-6">
                                         <div class="card gallery-card"><img
-                                                src="{{ asset('images/user/avatar-1.jpg') }}" alt="images"
+                                                src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="images"
                                                 class="img-card-top img-fluid">
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
@@ -2950,7 +2950,7 @@
                                     </div>
                                     <div class="col-lg-3 col-md-4 col-sm-6">
                                         <div class="card gallery-card"><img
-                                                src="{{ asset('images/user/avatar-1.jpg') }}" alt="images"
+                                                src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="images"
                                                 class="img-card-top img-fluid">
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
@@ -2983,7 +2983,7 @@
                                     </div>
                                     <div class="col-lg-3 col-md-4 col-sm-6">
                                         <div class="card gallery-card"><img
-                                                src="{{ asset('images/user/avatar-1.jpg') }}" alt="images"
+                                                src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="images"
                                                 class="img-card-top img-fluid">
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
@@ -3038,7 +3038,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Barney</h5>
@@ -3083,7 +3083,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Thea</h5>
@@ -3128,7 +3128,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Guiseppe</h5>
@@ -3173,7 +3173,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Henderson</h5>
@@ -3218,7 +3218,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Henderson</h5>
@@ -3263,7 +3263,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Wilber</h5>
@@ -3308,7 +3308,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Barney</h5>
@@ -3353,7 +3353,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Thea</h5>
@@ -3398,7 +3398,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Guiseppe</h5>
@@ -3443,7 +3443,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Henderson</h5>
@@ -3488,7 +3488,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Henderson</h5>
@@ -3533,7 +3533,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Wilber</h5>
@@ -3578,7 +3578,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Barney</h5>
@@ -3623,7 +3623,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Thea</h5>
@@ -3668,7 +3668,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Guiseppe</h5>
@@ -3713,7 +3713,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Henderson</h5>
@@ -3758,7 +3758,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Henderson</h5>
@@ -3803,7 +3803,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Wilber</h5>
@@ -3848,7 +3848,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Barney</h5>
@@ -3893,7 +3893,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Thea</h5>
@@ -3938,7 +3938,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Guiseppe</h5>
@@ -3983,7 +3983,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Henderson</h5>
@@ -4028,7 +4028,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Henderson</h5>
@@ -4073,7 +4073,7 @@
                                             <div class="card-body p-3">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="flex-shrink-0"><img class="img-radius img-fluid wid-40"
-                                                            src="{{ asset('images/user/avatar-1.jpg') }}" alt="User image">
+                                                            src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="User image">
                                                     </div>
                                                     <div class="flex-grow-1 mx-2">
                                                         <h5 class="mb-1 text-truncate">Wilber</h5>

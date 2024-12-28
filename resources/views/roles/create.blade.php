@@ -2,7 +2,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Two+Tone" rel="stylesheet">
-@section('pageTitle', ' Create Role')
+@section('pageTitle', ' Roles Create')
 
 @section('content')
 @include('partials.sidebar')
@@ -14,172 +14,172 @@
             <div class="page-block">
                 <div class="row align-items-center">
                     <div class="col">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Roles View</h5>
+                        </div>
+                    </div>
 
+                    <div class="col-auto">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/app">Home</a></li>
+                            <li class="breadcrumb-item" aria-current="page">Role Create</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h3>Add Roles</h3>
-                            <div>
-                                <button class="btn btn-outline-primary me-2">Return</button>
+        <div class="row">
+            <div class="tab-pane" id="request" role="tabpanel" aria-labelledby="request-tab">
+                <div class="card">
 
+                    <div class="card-header" style="margin-bottom: -28px;">
+                        <div class="row align-items-center g-2">
+                            <div class="col">
+                                <h5>Create Roles</h5>
+                            </div>
 
-                                <!-- Button to trigger the modal -->
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#createRoleModal">
-                                    Add
-                                </button>
+                            <div class="card-body">
+                                <form id="permissionForm" action="{{ route('roles.store') }}" method="get"
+                                    autocomplete="off">
+                                    @csrf
+                                    <input type="hidden" id="permissionId" name="id" value="">
+                                    <!-- Hidden field for the ID -->
 
-                                <!-- Modal -->
-                                <div class="modal fade" id="createRoleModal" tabindex="-1"
-                                    aria-labelledby="createRoleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="createRoleModalLabel">Create Role</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label for="nameInput">Role Name</label>
+                                                <input type="text" class="form-control" id="nameInput" name="name"
+                                                    required placeholder="Enter Name">
                                             </div>
-                                            <div class="modal-body">
-                                                <form method="POST" action="{{ route('roles.store') }}">
-                                                    @csrf
-                                                    <div class="mb-3">
-                                                        <label for="name" class="form-label">Role Name</label>
-                                                        <input type="text" class="form-control" id="name" name="name"
-                                                            required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="user_display" class="form-label">User
-                                                            Display</label>
-                                                        <input type="text" class="form-control" id="user_display"
-                                                            name="user_display" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="description" class="form-label">Description</label>
-                                                        <textarea class="form-control" id="description"
-                                                            name="description" rows="3"></textarea>
-                                                    </div>
-                                                    <button type="submit" class="btn btn-primary">Save</button>
-                                                </form>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label for="displayNameInput">Role Display
+                                                    Name</label>
+                                                <input type="text" class="form-control" id="displayNameInput"
+                                                    name="displayname" required placeholder="Enter Display Name">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label for="descriptionInput">Description</label>
+                                                <textarea class="form-control" id="descriptionInput" name="description"
+                                                    required rows="1" placeholder="Enter Text..."></textarea>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                    <div class="text-end">
+                                        <input type="submit" class="btn btn-primary" value="Submit">
+                                        <a href="{{ route('roles.create') }}" class="btn btn-success"> Reset</a>
 
-
+                                    </div>
+                                </form>
                             </div>
+
+
                         </div>
-
-                        <div class="mb-3">
-                            <input type="text" class="form-control" placeholder="Search" id="searchInput">
-                        </div>
-
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th> Name</th>
-                                    <th>UserDisplay</th>
-                                    <th>Discription</th>
-                                    
-                                </tr>
-                            </thead>
-                            <tbody id="roleTableBody">
-                                <!-- Dynamic rows will be inserted here -->
-                            </tbody>
-                        </table>
-
-                        <!-- Pagination -->
-                        <nav>
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                </li>
-                                <li class="page-item active">
-                                    <a class="page-link" href="#">1</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
-                            </ul>
-                        </nav>
                     </div>
+                    <hr>
+                    <div class="card-header" style="margin-top: -19px; margin-bottom: -17px;">
+                        <div class="row align-items-center g-2">
+                            <div class="col">
+                                <h5>All Roles</h5>
+                            </div>
+                            {{-- <div class="form-search col-auto">
+                                <input type="text" class="form-control" id="searchPermissions"
+                                    placeholder="Search Permissions...">
+                            </div> --}}
+                        </div>
+                    </div>
+                    <div class="card-body">
 
-                    <!-- Bootstrap JS -->
-                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js">
-                    </script>
-                    <script>
-                    // Example JavaScript for populating the table
-                    const roles = [{
-                            name: 'Administrator',
-                            status: 'Active'
-                        },
-                        {
-                            name: 'Audit',
-                            status: 'Active'
-                        },
-                        {
-                            name: 'Author',
-                            status: 'Active'
-                        },
-                        {
-                            name: 'Contributor',
-                            status: 'Active'
-                        },
-                        {
-                            name: 'Editor',
-                            status: 'Disabled'
-                        },
-                        {
-                            name: 'Manager',
-                            status: 'Active'
-                        },
-                        {
-                            name: 'Writer',
-                            status: 'Active'
-                        },
-                    ];
 
-                    const roleTableBody = document.getElementById('roleTableBody');
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Role Name</th>
+                                        <th>Role Display Name</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($roles as $index => $role)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $role['name'] }}</td>
+                                        <td>{{ $role['display_name'] }}</td>
+                                        <td class="text-center">
+                                            <a class="avtar avtar-xs btn-link-secondary read-more-btn"
+                                                onclick="editPermission({{ json_encode($role) }})">
+                                                <i class="ti ti-edit f-20"></i>
+                                            </a>
+                                            <a href="{{ route('role_delete', $role->id) }}"
+                                                class="avtar avtar-xs btn-link-secondary read-more-btn"
+                                                data-id="{{ $role->id }}" onclick="return confirmDelete(this)">
+                                                <i class="ti ti-trash f-20" style="color: red;"></i>
+                                            </a>
+                                        </td>
 
-                    roles.forEach(role => {
-                        const row = `
-                <tr>
-                    <td>${role.name}</td>
-                    <td>${role.status}</td>
-                    <td class="text-end">
-                        <button class="btn btn-sm btn-light text-info"><i class="bi bi-eye"></i></button>
-                        <button class="btn btn-sm btn-light text-primary"><i class="bi bi-pencil"></i></button>
-                        <button class="btn btn-sm btn-light text-danger"><i class="bi bi-trash"></i></button>
-                    </td>
-                </tr>
-            `;
-                        roleTableBody.innerHTML += row;
-                    });
-                    </script>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-</div>
 
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-// Populate modal fields when the edit button is clicked
-$('#editRoleModal').on('show.bs.modal', function(event) {
-    var button = $(event.relatedTarget); // Button that triggered the modal
-    var roleId = button.data('role-id');
-    var roleName = button.data('role-name');
-    var roleDisplayName = button.data('role-display-name');
-    var roleDescription = button.data('role-description');
+    function confirmDelete(element) {
+    event.preventDefault(); // Prevent the default link behavior
+    const url = element.href;
 
-    var modal = $(this);
-    modal.find('.modal-title').text('Edit Role: ' + roleName);
-    modal.find('#role_name').val(roleName);
-    modal.find('#role_display_name').val(roleDisplayName);
-    modal.find('#role_description').val(roleDescription);
+    Swal.fire({
+        title: 'Are you sure? For Delete',
+        text: 'This action cannot be undone!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // If confirmed, redirect to the delete URL
+            window.location.href = url;
+        }
+    });
 
-    // Set the form action URL dynamically
-    modal.find('#editRoleForm').attr('action', '/roles/' + roleId);
+    return false; // Prevent immediate navigation
+}
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    function editPermission(role) {
+        const form = document.getElementById('permissionForm');
+        if (!form) {
+            console.error('Form not found!');
+            return;
+        }
+        form.action = "{{ route('update.role') }}";
+
+        document.getElementById('permissionId').value = role.id;
+        document.getElementById('nameInput').value = role.name;
+        document.getElementById('displayNameInput').value = role.display_name;
+        document.getElementById('descriptionInput').value = role.description;
+        form.scrollIntoView({ behavior: 'smooth' });
+    }
+    window.editPermission = editPermission;
 });
 </script>
+
 @include('partials.footer')
 @endsection
