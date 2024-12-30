@@ -4,7 +4,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Two+Tone" rel="stylesheet">
 
-@section('pageTitle', 'User Social Profile')
+@section('pageTitle', 'Permissions Assign')
 
 @section('content')
 @include('partials.sidebar')

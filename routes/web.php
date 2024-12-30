@@ -35,7 +35,6 @@ Route::get('/login-page', function () {
 })->name('loginpage');
 
 
-
 // ................................................use email verify..........................................
 Route::get('/email', function () {
     return view('emails.email_verify');
@@ -75,6 +74,10 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('/dashboard', function () {
         return view('app.dashboard');
     })->name('dashboard');
+
+    Route::get('student/dashboard', function () {
+        return view('app.studentdashboard');
+    })->name('studentdashboard');
 
     Route::post('/check-username', [RegisterController::class, 'checkUsername'])->name('check.username')->defaults('field', 'username');
     Route::post('/check-phone', [RegisterController::class, 'checkPhone'])->name('check.phone');

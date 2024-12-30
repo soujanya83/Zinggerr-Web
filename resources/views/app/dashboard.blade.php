@@ -5,112 +5,88 @@
 @section('content')
 
 @include('partials.sidebar')
-@include('partials.headerdashboard')
-
+@include('partials.header')
 <!-- Favicon -->
 <link href="img/favicon.ico" rel="icon">
-
-<!-- Google Web Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<!-- Icon Font Stylesheet -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-<!-- Libraries Stylesheet -->
 <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<!-- FullCalendar -->
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar/main.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar/main.min.js"></script>
-
-<!-- Customized Bootstrap Stylesheet -->
 <link href="public/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Template Stylesheet -->
 <link href="public/css/style.css" rel="stylesheet">
-
-<!-- Bootstrap CSS -->
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
-<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
-<!-- Bootstrap CSS -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        .card-custom {
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
-        .dropdown-custom {
-            border: 1px solid #dee2e6;
-            border-radius: 5px;
-            padding: 5px 15px;
-            cursor: pointer;
-            background-color: #fff;
-        }
-        .chart-container {
-            position: relative;
-            width: 100%;
-        }
-        .bg-light {
-            background-color: #f8f9fa !important;
-        }
-        .rounded {
-            border-radius: 10px !important;
-        }
-        .p-4 {
-            padding: 20px !important;
-        }
-        .icon-settings {
-            font-size: 18px;
-            color: #6c757d;
-            cursor: pointer;
-        }
-    </style>
 <style>
-.chart-container {
-    background: #f8f9fa;
-    /* Light background */
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-}
+    .card-custom {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
 
-.chart-legend {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-}
+    .dropdown-custom {
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        padding: 5px 15px;
+        cursor: pointer;
+        background-color: #fff;
+    }
 
-.chart-legend span {
-    margin-right: 15px;
-    font-size: 14px;
-}
+    .chart-container {
+        position: relative;
+        width: 100%;
+    }
 
-.dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 5px;
-}
+    .bg-light {
+        background-color: #f8f9fa !important;
+    }
+
+    .rounded {
+        border-radius: 10px !important;
+    }
+
+    .p-4 {
+        padding: 20px !important;
+    }
+
+    .icon-settings {
+        font-size: 18px;
+        color: #6c757d;
+        cursor: pointer;
+    }
+</style>
+<style>
+    .chart-container {
+        background: #f8f9fa;
+        /* Light background */
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+
+    .chart-legend {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .chart-legend span {
+        margin-right: 15px;
+        font-size: 14px;
+    }
+
+    .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 5px;
+    }
 </style>
 
 
@@ -121,10 +97,10 @@
             <div class="page-block">
                 <div class="row align-items-center">
                     <div class="col-md-12">
-            
+
                         <div class="container-fluid">
 
-        
+
 
 
 
@@ -496,7 +472,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Chart.js Script -->
 <script>
-const ctx = document.getElementById('activityChart').getContext('2d');
+    const ctx = document.getElementById('activityChart').getContext('2d');
 new Chart(ctx, {
     type: 'line',
     data: {
@@ -529,7 +505,7 @@ new Chart(ctx, {
 
 
 <script>
-const ctx = document.getElementById('revenueSalesChart').getContext('2d');
+    const ctx = document.getElementById('revenueSalesChart').getContext('2d');
 const revenueSalesChart = new Chart(ctx, {
     type: 'line',
     data: {
@@ -581,7 +557,7 @@ const revenueSalesChart = new Chart(ctx, {
 
 
 <script>
-// Earnings Chart
+    // Earnings Chart
 const earningsCtx = document.getElementById('earningsChart').getContext('2d');
 const earningsChart = new Chart(earningsCtx, {
     type: 'bar',
@@ -623,7 +599,7 @@ const earningsChart = new Chart(earningsCtx, {
 
 
 <script>
-// Worldwide Sales Chart
+    // Worldwide Sales Chart
 const worldwideSalesCtx = document.getElementById('worldwide-sales').getContext('2d');
 const worldwideSalesChart = new Chart(worldwideSalesCtx, {
     type: 'bar',
@@ -717,7 +693,7 @@ const earningsChart = new Chart(earningsCtx, {
 
 <!-- FullCalendar Script -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
     const calendarEl = document.getElementById('calendar');
     const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
@@ -734,7 +710,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <script>
-const ctx = document.getElementById('studentChart').getContext('2d');
+    const ctx = document.getElementById('studentChart').getContext('2d');
 const studentChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
