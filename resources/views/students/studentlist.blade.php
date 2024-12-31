@@ -83,6 +83,7 @@
                 <div class="card table-card">
                     <div class="card-header">
                         <div class="row align-items-center g-2">
+                            <h5>Students List</h5>
                             <div class="col">
                                 <select id="entriesPerPage">
                                     <option value="5" selected>5</option>
@@ -117,7 +118,8 @@
                                             <th>Type</th>
                                             <th>Gender</th>
                                             <th>Status</th>
-                                            <th>Action</th>
+                                            @can('role', Auth::user())
+                                            <th>Action</th> @endcan
 
                                         </tr>
                                     </thead>
@@ -143,7 +145,6 @@
         </div>
         <!-- [ sample-page ] end -->
     </div>
-</div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>

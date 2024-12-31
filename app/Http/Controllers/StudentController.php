@@ -9,12 +9,23 @@ use Ramsey\Uuid\Guid\Guid;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Course;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 
 class StudentController extends Controller
 {
+
+    public function studentdashboard(){
+
+        $student=User::where('type','Student')->count();
+        $courses=Course::where('status',1)->count();
+
+
+        return view('app.studentdashboard',compact('student','courses'));
+    }
+
     public function studentadd(Request $request)
     {
         return view('students.studentadd');

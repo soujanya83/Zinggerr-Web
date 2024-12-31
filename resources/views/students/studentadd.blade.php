@@ -181,6 +181,8 @@
         </div>
     </div>
 </div>
+
+
 <script>
     // JavaScript to toggle password visibility
     document.getElementById('togglePassword').addEventListener('click', function () {
@@ -355,5 +357,8 @@ passwordInput.addEventListener('input', validatePassword);
 
 
 
+
 @include('partials.footer')
+
+
 @endsection

@@ -119,7 +119,8 @@
                                             <th>Type</th>
                                             <th>Gender</th>
                                             <th>Status</th>
-                                            <th>Action</th>
+                                            @can('role', Auth::user())
+                                            <th>Action</th> @endcan
 
                                         </tr>
                                     </thead>

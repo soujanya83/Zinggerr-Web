@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use App\Models\Course;
 use App\Models\Role;
 use App\Models\PermissionRole;
 use Illuminate\Support\Facades\Session;
@@ -20,6 +21,38 @@ use Ramsey\Uuid\Guid\Guid;
 
 class UserController extends Controller
 {
+
+    public function dashboard()
+    {
+
+        $user = Auth::user(); // Get the authenticated user
+
+        // Check user role and redirect accordingly
+        switch ($user->type) {
+            case 'Superadmin':
+                return redirect()->route('dashboard'); ////////////// this defalut user superadmin
+            case 'Admin':
+                return redirect()->route('dashboard');
+            case 'Teacher':
+                return redirect()->route('dashboard');
+            case 'Staff':
+                return redirect()->route('dashboard');
+            case 'Student':
+                return redirect()->route('student.dashboard');
+            default:
+                return redirect()->route('default.dashboard'); // Fallback route
+        }
+    }
+
+    public function dashboardmain(){
+
+        $student=User::where('type','Student')->count();
+        $courses=Course::where('status',1)->count();
+        return view('app.dashboard',compact('student','courses'));
+    }
+
+
+
     public function createuser(Request $request)
     {
 

@@ -176,6 +176,8 @@
                                         <a href="{{ route('course_details', $course->id) }}"
                                             class="btn btn-sm btn-outline-primary mb-2">Read More</a>
 
+                                        @if(Auth::user()->type === 'Superadmin')
+
                                         <form action="{{ route('coursechangeStatus') }}" method="get"
                                             style="display: inline;">
                                             @csrf
@@ -189,6 +191,23 @@
                                                 </button>
                                             </div>
                                         </form>
+                                        @elseif(isset($permissions) && in_array('courses_status',
+                                        $permissions))
+                                        <form action="{{ route('coursechangeStatus') }}" method="get"
+                                            style="display: inline;">
+                                            @csrf
+                                            <input type="hidden" name="id" value="{{ $course->id }}">
+                                            <input type="hidden" name="status"
+                                                value="{{ $course->status == 1 ? 0 : 1 }}">
+                                            <div class="d-flex justify-content-end" style="margin-top: -42px;">
+                                                <button type="submit" style="padding: 5px"
+                                                    class="btn {{ $course->status == 1 ? 'btn-success' : 'btn-danger' }}">
+                                                    {{ $course->status == 1 ? 'Active' : 'Inactive' }}
+                                                </button>
+                                            </div>
+                                        </form>
+                                        @endif
+
 
                                     </div>
                                 </div>

@@ -459,41 +459,52 @@
                                         <div class="mb-3">
                                             <label for="gradebook_student" class="form-label">Show gradebook to
                                                 students:</label>
-                                            <select name="gradebook_student" id="gradebook_student" class="form-select"
-                                                required>
-                                                <option value="Yes">Yes</option>
-                                                <option value="No">No</option>
-                                            </select>
+                                            <br>
+                                            <input class="form-check-input" type="radio" name="gradebook_student"
+                                                id="gradebook_yes" value="Yes" required>
+                                            <label class="form-check-label" for="gradebook_yes">Yes</label>
+                                            &nbsp&nbsp
+
+                                            <input class="form-check-input" type="radio" name="gradebook_student"
+                                                id="gradebook_no" value="No">
+                                            <label class="form-check-label" for="gradebook_no">No</label>
+
                                         </div>
                                     </div>
+
 
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label for="activity_report" class="form-label">Show activity
                                                 reports:</label>
-                                            <select name="activity_report" id="activity_report" class="form-select"
-                                                required>
-                                                <option value="Yes">Yes</option>
-                                                <option value="No">No</option>
-                                            </select>
+                                            <br>
+                                            <input class="form-check-input" type="radio" name="activity_report"
+                                                id="activity_report_yes" value="Yes" required>
+                                            <label class="form-check-label" for="activity_report_yes">Yes</label>
+                                            &nbsp&nbsp
+                                            <input class="form-check-input" type="radio" name="activity_report"
+                                                id="activity_report_no" value="No">
+                                            <label class="form-check-label" for="activity_report_no">No</label>
+
                                         </div>
                                     </div>
+
 
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label for="activity_date" class="form-label">Show activity dates:</label>
-                                            <select name="activity_date" id="activity_date" class="form-select"
-                                                required>
-                                                <option value="Yes">Yes</option>
-                                                <option value="No">No</option>
-                                            </select>
+                                            <br>
+                                            <input class="form-check-input" type="radio" name="activity_date"
+                                                id="activity_date_yes" value="Yes" required>
+                                            <label class="form-check-label" for="activity_date_yes">Yes</label>
+                                            &nbsp&nbsp
+                                            <input class="form-check-input" type="radio" name="activity_date"
+                                                id="activity_date_no" value="No">
+                                            <label class="form-check-label" for="activity_date_no">No</label>
+
                                         </div>
                                     </div>
-
-
                                 </div>
-
-
                             </div>
                         </div>
                         {{--
@@ -544,25 +555,37 @@
                                         <div class="mb-3">
                                             <label for="completion_tracking" class="form-label">Enable completion
                                                 tracking:</label>
-                                            <select name="completion_tracking" id="completion_tracking"
-                                                class="form-select" required>
-                                                <option value="Yes">Yes</option>
-                                                <option value="No">No</option>
-                                            </select>
+                                            <br>
+                                            <input class="form-check-input" type="radio" name="completion_tracking"
+                                                id="completion_tracking_yes" value="Yes" required>
+                                            <label class="form-check-label" for="completion_tracking_yes">Yes</label>
+                                            &nbsp &nbsp
+                                            <input class="form-check-input" type="radio" name="completion_tracking"
+                                                id="completion_tracking_no" value="No">
+                                            <label class="form-check-label" for="completion_tracking_no">No</label>
+
                                         </div>
                                     </div>
 
+
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label for="activity_completion_conditions" class="form-label">Show activity
-                                                completion conditions</label>
-                                            <select name="activity_completion_conditions"
-                                                id="activity_completion_conditions" class="form-select" required>
-                                                <option value="Yes">Yes</option>
-                                                <option value="No">No</option>
-                                            </select>
+                                            <label class="form-label">Show activity completion conditions:</label>
+                                            <br>
+                                            <input class="form-check-input" type="radio"
+                                                name="activity_completion_conditions" id="completion_conditions_yes"
+                                                value="Yes" required>
+                                            <label class="form-check-label" for="completion_conditions_yes">Yes</label>
+                                            &nbsp &nbsp
+
+                                            <input class="form-check-input" type="radio"
+                                                name="activity_completion_conditions" id="completion_conditions_no"
+                                                value="No">
+                                            <label class="form-check-label" for="completion_conditions_no">No</label>
+
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -587,27 +610,32 @@
 
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label for="force_group_mode" class="form-label">Force group
-                                                mode
-                                            </label>
-                                            <select name="force_group_mode" id="force_group_mode" class="form-select"
-                                                required>
-                                                <option value="Yes">Yes</option>
-                                                <option value="No">No</option>
-                                            </select>
+                                            <label class="form-label">Force group mode:</label>
+                                            <br>
+                                            <input class="form-check-input" type="radio" name="force_group_mode"
+                                                id="force_group_mode_yes" value="Yes" required>
+                                            <label class="form-check-label" for="force_group_mode_yes">Yes</label>
+                                            &nbsp&nbsp
+                                            <input class="form-check-input" type="radio" name="force_group_mode"
+                                                id="force_group_mode_no" value="No">
+                                            <label class="form-check-label" for="force_group_mode_no">No</label>
+
                                         </div>
                                     </div>
 
+
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label for="default_group" class="form-label">Default grouping
-                                            </label>
-                                            <select name="default_group" id="default_group" class="form-select"
-                                                required>
-                                                <option value="None">None</option>
-                                            </select>
+                                            <label class="form-label">Default grouping:</label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="default_group"
+                                                    id="default_group_none" value="None" checked required>
+                                                <label class="form-check-label" for="default_group_none">None</label>
+                                            </div>
+
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>

@@ -85,7 +85,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="width: 100%;margin-left: 0px;">
             {{-- <div class="col-12"> --}}
                 <div class="card">
                     <div class="card-header">
@@ -93,20 +93,20 @@
                         <div class="dashboard-card">
                             <div class="card-body">
                                 <div class="card-value">
-                                    1350
+                                 {{ $student }}
                                     <span class="icon-up"><i class="ti ti-arrow-up-right-circle opacity-50"></i></span>
                                 </div>
-                                <div class="card-title">Total Pending Orders</div>
+                                <div class="card-title">Total Students</div>
                             </div>
                         </div>
 
-                        <div class="dashboard-card" style="background-color:#97FBD1">
+                        <div class="dashboard-card" style="background-color:#0dc878">
                             <div class="card-body">
                                 <div class="card-value">
-                                    1350
+                                  {{ $courses }}
                                     <span class="icon-up"><i class="ti ti-arrow-up-right-circle opacity-50"></i></span>
                                 </div>
-                                <div class="card-title">Total Pending Orders</div>
+                                <div class="card-title">Total Courses</div>
                             </div>
                         </div>
 

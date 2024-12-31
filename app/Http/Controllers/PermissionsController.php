@@ -146,7 +146,7 @@ class PermissionsController extends Controller
 
     public function createroles()
     {
-        $roles = Role::all();
+        $roles = Role::whereNot('name',['Superadmin'])->get();
         return view('roles.create', compact('roles'));
     }
 
@@ -160,7 +160,7 @@ class PermissionsController extends Controller
             $course->delete();
             return redirect()->back()->with('success', 'Role deleted successfully.');
         } else {
-            return redirect()->back()->with('error', 'Course ID not found.');
+            return redirect()->back()->with('error', 'Role ID not found.');
         }
     }
 

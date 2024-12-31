@@ -59,8 +59,7 @@
         color: #6c757d;
         cursor: pointer;
     }
-</style>
-<style>
+
     .chart-container {
         background: #f8f9fa;
         /* Light background */
@@ -89,70 +88,119 @@
     }
 </style>
 
+<style>
+    .dashboard-card {
+        background-color: #663399;
+        /* Purple background */
+        border-radius: 8px;
+        padding: 20px;
+        color: #fff;
+        width: 24%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .card-icon {
+        font-size: 24px;
+    }
+
+    .card-actions {
+        font-size: 20px;
+    }
+
+    .card-body {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .card-value {
+        font-size: 36px;
+        font-weight: bold;
+    }
+
+    .icon-up {
+        color: #00ff00;
+        /* Green for upward trend */
+        margin-left: 5px;
+    }
+</style>
 
 <div class="pc-container">
     <div class="pc-content">
-        <!-- [ breadcrumb ] start -->
         <div class="page-header">
             <div class="page-block">
                 <div class="row align-items-center">
-                    <div class="col-md-12">
+                    <div class="col">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Dashboard View</h5>
+                        </div>
+                    </div>
+                    {{-- <div class="col-auto">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">Students</a></li>
+                            <li class="breadcrumb-item" aria-current="page">Add New</li>
+                        </ul>
+                    </div> --}}
+                </div>
+            </div>
+        </div>
 
+        <div class="row" style="width: 100%;margin-left: 0px;">
+            {{-- <div class="col-12"> --}}
+                <div class="card">
+                    {{-- <div class="card-header"> --}}
                         <div class="container-fluid">
 
-
-
-
-
-
-
-                            <!-- Content Start -->
                             <div class="content">
-                                <!-- Navbar Start -->
 
-
-
-                                <!-- Sale & Revenue Start -->
                                 <div class="container-fluid">
-                                    <div class="row g-4">
+                                    <div class="row g-4" style="    margin-top: -10px;">
                                         <div class="col-sm-6 col-xl-3">
-                                            <div
-                                                class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                                                <i class="ti ti-users f-24"></i>
+                                            <div class="rounded d-flex align-items-center justify-content-between p-4"
+                                                style="background-color:#00c853; height: 88px;color:#fff">
+
                                                 <div class="ms-3">
                                                     <p class="mb-2">
-                                                        New Students</p>
-                                                    <h6 class="mb-0">$1234</h6>
+                                                        <i class="ti ti-users f-24"></i> Total Students
+                                                    </p>
+                                                    <h6 class="mb-0">&nbsp&nbsp&nbsp&nbsp&nbsp {{ $student }}</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6 col-xl-3">
+                                            <div class="rounded d-flex align-items-center justify-content-between p-4"
+                                                style="height: 88px;background-color:#5be8e1;color:#fff">
+
+                                                <div class="ms-3">
+                                                    <i class="ti ti-notebook f-24"></i> Total Course <h6 class="mb-0">
+                                                        &nbsp&nbsp&nbsp&nbsp&nbsp {{ $courses }}</h6>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-6 col-xl-3">
-                                            <div
-                                                class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                                                <i class="ti ti-notebook f-24"></i>
+                                            <div class="rounded d-flex align-items-center justify-content-between p-4"
+                                                style="height: 88px;background-color:#F6A4EC;color:#fff">
+
                                                 <div class="ms-3">
-                                                    <p class="mb-2">Total Course</p>
-                                                    <h6 class="mb-0">$1234</h6>
+                                                    <i class="ti ti-coin f-24"></i> Today Revenue
+                                                    <h6 class="mb-0">&nbsp&nbsp&nbsp&nbsp&nbsp $1234</h6>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-6 col-xl-3">
-                                            <div
-                                                class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                                                <i class="fa fa-chart-area fa-3x text-primary"></i>
+                                            <div class="rounded d-flex align-items-center justify-content-between p-4"
+                                                style="height: 88px;background-color:#1CC6FF;color:#fff ">
+
                                                 <div class="ms-3">
-                                                    <p class="mb-2">Today Revenue</p>
-                                                    <h6 class="mb-0">$1234</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6 col-xl-3">
-                                            <div
-                                                class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                                                <i class="ti ti-eye f-24"></i>
-                                                <div class="ms-3">
-                                                    <p class="mb-2">New Visitor</p>
-                                                    <h6 class="mb-0">$1234</h6>
+                                                    <i class="ti ti-eye f-24"></i> New Visitor
+                                                    <h6 class="mb-0">&nbsp&nbsp&nbsp&nbsp&nbsp $1234</h6>
                                                 </div>
                                             </div>
 
@@ -442,34 +490,19 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Recent Sales End -->
 
                         </div>
-                        <!-- Content End -->
-
-
-
-                    </div>
-
-
-
-
-
+                        {{--
+                    </div> --}}
                 </div>
-                <!-- [ Main Content ] end -->
             </div>
         </div>
     </div>
-    <!-- [ Main Content ] end -->
 </div>
-</div>
-
-
-
-
 
 <!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js">
+</script>
 <!-- Chart.js Script -->
 <script>
     const ctx = document.getElementById('activityChart').getContext('2d');
