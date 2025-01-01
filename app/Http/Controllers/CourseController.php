@@ -9,6 +9,8 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Guid\Guid;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
+
 class CourseController extends Controller
 {
 
@@ -20,36 +22,78 @@ class CourseController extends Controller
 
     public function createCourse(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'course_name' => 'required|string|max:255',
-            'course_code' => 'required|string|max:50',
-            'start_date' => 'required|date',
-            'duration' => 'required|string',
-            'price' => 'required|numeric',
-            'teacher_name' => 'required|max:255',
-            'max_students' => 'required|integer',
-            'status' => 'required|in:1,0',
-            'details' => 'nullable|string',
-            'course_image' => 'image|mimes:jpeg,png,jpg|max:2048',
-        ]);
 
-        if ($validator->fails()) {
-            return response()->json(['success' => false, 'errors' => $validator->errors()]);
-        }
+        // $validator = Validator::make($request->all(), [
+        //     'course_full_name' => 'required|string|max:255',
+        //     'course_short_name' => 'required|string|max:255',
+        //     'course_category' => 'required|string|max:100',
+        //     'course_start_date' => 'required|date|before_or_equal:course_end_date',
+        //     'course_end_date' => 'required|date|after_or_equal:course_start_date',
+        //     'course_id_number' => 'nullable|string|max:50',
+        //     'course_status' => 'required|boolean',
+        //     'downloa_status' => 'nullable|boolean',
+        //     'course_summary' => 'nullable|string|max:1000',
+        //     // 'course_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        //     'hidden_section' => 'nullable|string|max:255',
+        //     'course_layout' => 'nullable|string|max:255',
+        //     'course_sections' => 'required|integer|min:0|max:100',
+        //     'force_theme' => 'nullable|string|max:50',
+        //     'force_language' => 'nullable|string|max:50',
+        //     'no_announcements' => 'nullable|integer|min:0|max:255',
+        //     'gradebook_student' => 'nullable|boolean',
+        //     'activity_report' => 'nullable|boolean',
+        //     'activity_date' => 'nullable|boolean',
+        //     'file_uploads_size' => 'nullable|integer|min:0|max:2048',
+        //     'completion_tracking' => 'nullable|boolean',
+        //     'activity_completion_conditions' => 'nullable|boolean',
+        //     'group_mode' => 'nullable|string|max:50',
+        //     'force_group_mode' => 'nullable|boolean',
+        //     'default_group' => 'nullable|string|max:50',
+        //     'course_format' => 'nullable|string|max:100',
+        //     'tags' => 'nullable|array',
+        //     'tags.*' => 'string|max:50',
+        //     'module_credit' => 'nullable|integer|min:0|max:255',
+        // ]);
+
+        // if ($validator->fails()) {
+        //     return redirect()->back()
+        //         ->withErrors($validator)
+        //         ->withInput();
+        // }
+        $tags = $request->tags; // This should be an array like ['Basic', 'Advanced', 'Intermediate']
+        $tagsString = implode(',', $tags);
         $uuid = (string) Guid::uuid4();
 
         try {
             $course = new Course();
-            $course->id =$uuid;
-            $course->course_name = $request->course_name;
-            $course->code = $request->course_code;
-            $course->start_date = $request->start_date;
-            $course->duration = $request->duration;
-            $course->price = $request->price;
-            $course->teacher_name = $request->teacher_name;
-            $course->max_students = $request->max_students;
-            $course->status = $request->status;
-            $course->details = $request->details;
+            $course->id = $uuid;
+            $course->course_full_name = $request->course_full_name;
+            $course->course_short_name = $request->course_short_name;
+            $course->course_category = $request->course_category;
+            $course->course_start_date = $request->course_start_date;
+            $course->course_end_date = $request->course_end_date;
+            $course->course_id_number = $request->course_id_number;
+            $course->course_status = $request->course_status;
+            $course->downloa_status = $request->downloa_status ?? 0;
+            $course->course_summary = $request->course_summary;
+            $course->hidden_section = $request->hidden_section;
+            $course->course_layout = $request->course_layout;
+            $course->course_sections = $request->course_sections;
+            $course->force_theme = $request->force_theme;
+            $course->force_language = $request->force_language;
+            $course->no_announcements = $request->no_announcements ?? 0;
+            $course->gradebook_student = $request->gradebook_student ?? 0;
+            $course->activity_report = $request->activity_report ?? 0;
+            $course->activity_date = $request->activity_date ?? 0;
+            $course->file_uploads_size = $request->file_uploads_size ?? 0;
+            $course->completion_tracking = $request->completion_tracking ?? 0;
+            $course->activity_completion_conditions = $request->activity_completion_conditions ?? 0;
+            $course->group_mode = $request->group_mode;
+            $course->force_group_mode = $request->force_group_mode ?? 0;
+            $course->default_group = $request->default_group;
+            $course->course_format = $request->course_format;
+            $course->tags = $tagsString;
+            $course->module_credit = $request->module_credit ?? 0;
 
             if ($request->hasFile('course_image')) {
                 $filePath = $request->file('course_image')->store('courses', 'public');
@@ -60,19 +104,25 @@ class CourseController extends Controller
 
             return response()->json(['success' => true, 'message' => 'Course created successfully!']);
         } catch (\Exception $e) {
+
+            Log::error('Error occurred while creating a course: ' . $e->getMessage(), [
+                'exception' => $e,
+            ]);
+
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
+
 
     public function courselist(Request $request)
     {
         $query = Course::query();
 
         if ($request->has('name')) {
-            $query->where('course_name', 'like', '%' . $request->name . '%');
+            $query->where('course_full_name', 'like', '%' . $request->name . '%');
         }
         if ($request->has('teacher_name')) {
-            $query->where('teacher_name', 'like', '%' . $request->teacher_name . '%');
+            $query->where('course_category', 'like', '%' . $request->teacher_name . '%');
         }
         $courses = $query->latest()->paginate(12);
 
@@ -101,57 +151,90 @@ class CourseController extends Controller
 
     public function courseupdate(Request $request, $id)
     {
-        // Validation rules
-        $validator = Validator::make($request->all(), [
-            'course_name' => 'required|string|max:255',
-            'course_code' => 'required|string|max:50',
-            'start_date' => 'required|date',
-            'duration' => 'required|string',
-            'price' => 'required|numeric',
-            'teacher_name' => 'required|max:255',
-            'max_students' => 'required|integer',
-            'status' => 'required|in:1,0',
-            'details' => 'nullable|string',
-            'course_image' => 'image|mimes:jpeg,png,jpg',
-        ]);
 
-        // Return validation errors
-        if ($validator->fails()) {
-            return response()->json(['success' => false, 'errors' => $validator->errors()]);
+        // $validator = Validator::make($request->all(), [
+        //     'course_full_name' => 'required|string|max:255',
+        //     'course_short_name' => 'required|string|max:255',
+        //     'course_category' => 'required|string|max:100',
+        //     'course_start_date' => 'required|date|before_or_equal:course_end_date',
+        //     'course_end_date' => 'required|date|after_or_equal:course_start_date',
+        //     'course_id_number' => 'nullable|string|max:50',
+        //     'course_status' => 'required|boolean',
+        //     'downloa_status' => 'nullable|boolean',
+        //     'course_summary' => 'nullable|string|max:1000',
+        //     'hidden_section' => 'nullable|string|max:255',
+        //     'course_layout' => 'nullable|string|max:255',
+        //     'course_sections' => 'required|integer|min:0|max:100',
+        //     'force_theme' => 'nullable|string|max:50',
+        //     'force_language' => 'nullable|string|max:50',
+        //     'no_announcements' => 'nullable|integer|min:0|max:255',
+        //     'gradebook_student' => 'nullable|boolean',
+        //     'activity_report' => 'nullable|boolean',
+        //     'activity_date' => 'nullable|boolean',
+        //     'file_uploads_size' => 'nullable|integer|min:0|max:2048',
+        //     'completion_tracking' => 'nullable|boolean',
+        //     'activity_completion_conditions' => 'nullable|boolean',
+        //     'group_mode' => 'nullable|string|max:50',
+        //     'force_group_mode' => 'nullable|boolean',
+        //     'default_group' => 'nullable|string|max:50',
+        //     'course_format' => 'nullable|string|max:100',
+        //     'tags' => 'nullable|array',
+        //     'tags.*' => 'string|max:50',
+        //     'module_credit' => 'nullable|integer|min:0|max:255',
+        // ]);
+
+        // if ($validator->fails()) {
+        //     return redirect()->back()
+        //         ->withErrors($validator)
+        //         ->withInput();
+        // }
+        $course = Course::find($id);
+        if (!$course) {
+            return response()->json(['success' => false, 'message' => 'Course not found'], 404);
         }
+        $tags = $request->tags;
+        $tagsString = implode(',', $tags);
 
         try {
-            // Find the existing course
-            $course = Course::findOrFail($id);
+            $course->course_full_name = $request->course_full_name;
+            $course->course_short_name = $request->course_short_name;
+            $course->course_category = $request->course_category;
+            $course->course_start_date = $request->course_start_date;
+            $course->course_end_date = $request->course_end_date;
+            $course->course_id_number = $request->course_id_number;
+            $course->course_status = $request->course_status;
+            $course->downloa_status = $request->downloa_status ?? 0;
+            $course->course_summary = $request->course_summary;
+            $course->hidden_section = $request->hidden_section;
+            $course->course_layout = $request->course_layout;
+            $course->course_sections = $request->course_sections;
+            $course->force_theme = $request->force_theme;
+            $course->force_language = $request->force_language;
+            $course->no_announcements = $request->no_announcements ?? 0;
+            $course->gradebook_student = $request->gradebook_student ?? 0;
+            $course->activity_report = $request->activity_report ?? 0;
+            $course->activity_date = $request->activity_date ?? 0;
+            $course->file_uploads_size = $request->file_uploads_size ?? 0;
+            $course->completion_tracking = $request->completion_tracking ?? 0;
+            $course->activity_completion_conditions = $request->activity_completion_conditions ?? 0;
+            $course->group_mode = $request->group_mode;
+            $course->force_group_mode = $request->force_group_mode ?? 0;
+            $course->default_group = $request->default_group;
+            $course->course_format = $request->course_format;
+            $course->tags = $tagsString;
+            $course->module_credit = $request->module_credit ?? 0;
 
-            // Update course details
-            $course->course_name = $request->course_name;
-            $course->code = $request->course_code;
-            $course->start_date = $request->start_date;
-            $course->duration = $request->duration;
-            $course->price = $request->price;
-            $course->teacher_name = $request->teacher_name;
-            $course->max_students = $request->max_students;
-            $course->status = $request->status;
-            $course->details = $request->details;
-
-            // Handle the course image update
             if ($request->hasFile('course_image')) {
-                // Delete the old image if it exists
-                if ($course->course_image) {
-                    Storage::disk('public')->delete($course->course_image);
-                }
-
-                // Store the new image
                 $filePath = $request->file('course_image')->store('courses', 'public');
                 $course->course_image = $filePath;
             }
-
-            // Save updated course
             $course->save();
-
-            return response()->json(['success' => true, 'message' => 'Course updated successfully!']);
+            return response()->json(['success' => true, 'message' => 'Courses updated successfully!']);
         } catch (\Exception $e) {
+            Log::error('Error occurred while updating the course: ' . $e->getMessage(), [
+                'exception' => $e,
+            ]);
+
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
@@ -172,13 +255,9 @@ class CourseController extends Controller
     public function couserchangeStatus(Request $request)
     {
         $user = Course::findOrFail($request->id);
-        $user->status = $request->status;
+        $user->course_status = $request->status;
         $user->save();
 
         return redirect()->back()->with('success', 'User status updated successfully!');
     }
-
-
-
-
 }

@@ -80,11 +80,11 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::post('/check-email', [RegisterController::class, 'checkEmail'])->name('check.email');
 
     Route::get('courses/change-status', [CourseController::class, 'couserchangeStatus'])->name('coursechangeStatus');
-    Route::post('courses-create', [CourseController::class, 'createCourse'])->name('courses_create');
+    Route::get('courses-create', [CourseController::class, 'createCourse'])->name('courses.create');
     Route::match(['get', 'post'], 'courses', [CourseController::class, 'courselist'])->name('courses');
     Route::get('courses/{id}', [CourseController::class, 'coursedetails'])->name('course_details');
     Route::get('courses-edit/{id}', [CourseController::class, 'courseedit'])->name('course_edit');
-    Route::post('courses-update/{id}', [CourseController::class, 'courseupdate'])->name('course_update');
+    Route::get('courses-update/{id}', [CourseController::class, 'courseupdate'])->name('course_update');
     Route::get('courses-add', [CourseController::class, 'courseadd'])->name('addCourse');
     Route::get('/courses-delete/{id}', [CourseController::class, 'coursedelete'])
         ->name('course_delete')

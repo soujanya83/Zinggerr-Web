@@ -39,11 +39,11 @@
                                     <div class="card-body d-flex align-items-start p-6">
                                         <!-- Image Section -->
                                         <div style="width: 30%; margin-right: 20px;">
-                                            <img src="{{ asset('storage/' . $course->course_image) }}"
+                                            <img src="{{ asset('storage/courses/' . $course->course_image) }}"
                                                 alt="Course Image" class="img-fluid" style="width: 330px;height:230px">
                                             {{-- <div class="position-absolute top-0 end-0 p-2"> --}}
                                                 <span class="badge text-bg-light text-uppercase">
-                                                    Status: @if($course->status == '1') <span
+                                                    Status: @if($course->course_status == '1') <span
                                                         style="color: green">Active</span> @else <span
                                                         style="color: red">Inactive</span> @endif
                                                 </span>
@@ -58,31 +58,43 @@
                                                 <li class="list-group-item px-0 py-2">
                                                     <div class="d-flex align-items-center justify-content-between">
                                                         <span class="fw-bold">Course Name:</span>
-                                                        <span class="text-muted">{{ $course->course_name }}</span>
+                                                        <span class="text-muted">{{ $course->course_full_name }}</span>
                                                     </div>
                                                 </li>
                                                 <li class="list-group-item px-0 py-2">
                                                     <div class="d-flex align-items-center justify-content-between">
-                                                        <span class="fw-bold">Teacher Name:</span>
-                                                        <span class="text-muted">{{ $course->teacher_name }}</span>
+                                                        <span class="fw-bold">Couser Short Name:</span>
+                                                        <span class="text-muted">{{ $course->course_short_name }}</span>
                                                     </div>
                                                 </li>
                                                 <li class="list-group-item px-0 py-2">
                                                     <div class="d-flex align-items-center justify-content-between">
-                                                        <span class="fw-bold">Students:</span>
-                                                        <span class="text-muted">{{ $course->max_students }}</span>
+                                                        <span class="fw-bold">Course Start Date:</span>
+                                                        <span class="text-muted">{{ $course->course_start_date }}</span>
                                                     </div>
                                                 </li>
                                                 <li class="list-group-item px-0 py-2">
                                                     <div class="d-flex align-items-center justify-content-between">
-                                                        <span class="fw-bold">Duration:</span>
-                                                        <span class="text-muted">{{ $course->duration }}</span>
+                                                        <span class="fw-bold">Course End Date:</span>
+                                                        <span class="text-muted">{{ $course->course_end_date }}</span>
                                                     </div>
                                                 </li>
                                                 <li class="list-group-item px-0 py-2">
                                                     <div class="d-flex align-items-center justify-content-between">
-                                                        <span class="fw-bold">Price:</span>
-                                                        <span class="text-muted">{{ $course->price }}</span>
+                                                        <span class="fw-bold">Course Category:</span>
+                                                        <span class="text-muted">{{ $course->course_category }}</span>
+                                                    </div>
+                                                </li>
+                                                <li class="list-group-item px-0 py-2">
+                                                    <div class="d-flex align-items-center justify-content-between">
+                                                        <span class="fw-bold">Course Section:</span>
+                                                        <span class="text-muted">{{ $course->course_sections }}</span>
+                                                    </div>
+                                                </li>
+                                                <li class="list-group-item px-0 py-2">
+                                                    <div class="d-flex align-items-center justify-content-between">
+                                                        <span class="fw-bold">File Uploads Size:</span>
+                                                        <span class="text-muted">{{ $course->file_uploads_size }}</span>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -93,7 +105,7 @@
 
                                     <!-- Description Section (Below Image and Details) -->
                                     <div class="card-footer bg-light">
-                                        <p><strong>Description:</strong> {{ $course->details }}</p>
+                                        <p><strong>Description:</strong> {{ $course->course_summary }}</p>
                                     </div>
                                 </div>
                             </div>

@@ -42,7 +42,7 @@
                                         placeholder="Course Name" value="{{ request('name') }}"
                                         style="margin-top: -10px;width: 216px;margin-left: -185px;" />
                                     <input type="text" id="teacher_name" class="form-control" name="teacher_name"
-                                        placeholder="Teacher Name" value="{{ request('teacher_name') }}"
+                                        placeholder="Course Category" value="{{ request('teacher_name') }}"
                                         style="margin-top: -42px; margin-left: 47px;width: 216px;" />
                                 </div>
                                 <div style="margin-left: 276px;    margin-top: -42px;">
@@ -54,7 +54,7 @@
 
                             </form>
 
-                            <div><a href="{{ route('addCourse') }}" class="btn btn-primary">Add New Course</a></div>
+                            <div><a href="{{ route('addCourse') }}" class="btn btn-success">Add New Course</a></div>
                         </div>
                     </div>
                     <div class="card-body">
@@ -65,7 +65,7 @@
                                 <div class="card border">
                                     <div class="card-body p-2">
                                         <div class="position-relative">
-                                            <img src="{{ asset('storage/' . $course->course_image) }}"
+                                            <img src="{{ asset('storage/courses/' . $course->course_image) }}"
                                                 alt="Course Image" class="img-fluid w-100"
                                                 style="width: 210px;height:200px">
                                             {{-- <div class="position-absolute top-0 end-0 p-2">
@@ -85,8 +85,8 @@
 
 
                                         </div>
-                                        <ul class="list-group list-group-flush my-2">
-                                            <li class="list-group-item px-0 py-2">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item px-0 py-1">
                                                 <div class="d-flex align-items-center">
                                                     <div class="flex-grow-1 me-2">
                                                         <h6 class="mb-1">{{ $course->course_name }}</h6>
@@ -144,30 +144,30 @@
                                             <li class="list-group-item px-0 py-2">
                                                 <div class="d-flex align-items-center">
                                                     <div class="flex-grow-1 me-2">
-                                                        <p class="mb-0">Duration</p>
+                                                        <p class="mb-0">Course:</p>
                                                     </div>
                                                     <div class="flex-shrink-0">
-                                                        <p class="text-muted mb-0">{{ $course->duration }}</p>
+                                                        <p class="text-muted mb-0">{{ $course->course_full_name }}</p>
                                                     </div>
                                                 </div>
                                             </li>
                                             <li class="list-group-item px-0 py-2">
                                                 <div class="d-flex align-items-center">
                                                     <div class="flex-grow-1 me-2">
-                                                        <p class="mb-0">Teacher</p>
+                                                        <p class="mb-0">Time</p>
                                                     </div>
                                                     <div class="flex-shrink-0">
-                                                        <p class="text-muted mb-0">{{ $course->teacher_name }}</p>
+                                                        <p class="text-muted mb-0">{{ $course->course_start_date }} <strong>To</strong> {{ $course->course_end_date }} </p>
                                                     </div>
                                                 </div>
                                             </li>
                                             <li class="list-group-item px-0 py-2">
                                                 <div class="d-flex align-items-center">
                                                     <div class="flex-grow-1 me-2">
-                                                        <p class="mb-0">Students</p>
+                                                        <p class="mb-0">Category</p>
                                                     </div>
                                                     <div class="flex-shrink-0">
-                                                        <p class="text-muted mb-0">{{ $course->max_students }}</p>
+                                                        <p class="text-muted mb-0">{{ $course->course_category }}</p>
                                                     </div>
                                                 </div>
                                             </li>
@@ -183,11 +183,11 @@
                                             @csrf
                                             <input type="hidden" name="id" value="{{ $course->id }}">
                                             <input type="hidden" name="status"
-                                                value="{{ $course->status == 1 ? 0 : 1 }}">
+                                                value="{{ $course->course_status == 1 ? 0 : 1 }}">
                                             <div class="d-flex justify-content-end" style="margin-top: -42px;">
                                                 <button type="submit" style="padding: 5px"
-                                                    class="btn {{ $course->status == 1 ? 'btn-success' : 'btn-danger' }}">
-                                                    {{ $course->status == 1 ? 'Active' : 'Inactive' }}
+                                                    class="btn {{ $course->course_status == 1 ? 'btn-success' : 'btn-danger' }}">
+                                                    {{ $course->course_status == 1 ? 'Active' : 'Inactive' }}
                                                 </button>
                                             </div>
                                         </form>
@@ -198,11 +198,11 @@
                                             @csrf
                                             <input type="hidden" name="id" value="{{ $course->id }}">
                                             <input type="hidden" name="status"
-                                                value="{{ $course->status == 1 ? 0 : 1 }}">
+                                                value="{{ $course->course_status == 1 ? 0 : 1 }}">
                                             <div class="d-flex justify-content-end" style="margin-top: -42px;">
                                                 <button type="submit" style="padding: 5px"
-                                                    class="btn {{ $course->status == 1 ? 'btn-success' : 'btn-danger' }}">
-                                                    {{ $course->status == 1 ? 'Active' : 'Inactive' }}
+                                                    class="btn {{ $course->course_status == 1 ? 'btn-success' : 'btn-danger' }}">
+                                                    {{ $course->course_status == 1 ? 'Active' : 'Inactive' }}
                                                 </button>
                                             </div>
                                         </form>

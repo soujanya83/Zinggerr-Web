@@ -106,20 +106,21 @@
                 <div class="card-body">
                     <div class="tab-content" id="myTabContent">
                         {{--
-                        ........................................................................................................................
+                        ..............................................................................................................
                         --}}
 
                         <div class="tab-pane fade show active" id="profile-1" role="tabpanel"
                             aria-labelledby="profile-tab-1">
                             <div class="row">
                                 <div class="card-body">
-                                    <form id="createCourseForm" method="POST" enctype="multipart/form-data">
+                                    <form id="createCourseForm" method="get" enctype="multipart/form-data"
+                                        action="{{ route('courses.create') }}">
                                         @csrf
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="mb-3">
                                                     <label class="form-label">Course Full Name</label>
-                                                    <input type="text" name="course_name" class="form-control"
+                                                    <input type="text" name="course_full_name" class="form-control"
                                                         placeholder="Enter Course Full Name" required>
                                                 </div>
                                             </div>
@@ -127,7 +128,7 @@
                                             <div class="col-md-4">
                                                 <div class="mb-3">
                                                     <label class="form-label">Course Short Name</label>
-                                                    <input type="text" name="course_code" class="form-control"
+                                                    <input type="text" name="course_short_name" class="form-control"
                                                         placeholder="Enter Course Short Name" required>
                                                 </div>
                                             </div>
@@ -162,7 +163,7 @@
                                             <div class="col-md-4">
                                                 <div class="mb-3">
                                                     <label class="form-label">Course End Date</label>
-                                                    <input type="date" name="coursr_end_date" class="form-control"
+                                                    <input type="date" name="cour_end_date" class="form-control"
                                                         required>
                                                 </div>
                                             </div>
@@ -246,7 +247,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Course image</label>
                                             <input type="file" name="course_image" class="form-control" placeholder=""
-                                                required cols="6">
+                                                 cols="6">
                                         </div>
                                     </div>
                                 </div>
@@ -270,10 +271,12 @@
                                         <div class="mb-3">
                                             <label for="emailInput" class="form-label">Hidden sections</label>
                                             <select name="hidden_section" class="form-select" required>
-                                                <option value="shown_not_available">Hidden sections are shown as not
-                                                    available</option>
-                                                <option value="completely_invisible">Hidden sections are completely
-                                                    invisible</option>
+                                                <option value="Hidden sections are shown as not available">
+                                                    Hidden sections are shown as not available
+                                                </option>
+                                                <option value="Hidden sections are completely invisible">
+                                                    Hidden sections are completely invisible
+                                                </option>
                                             </select>
 
                                         </div>
@@ -283,9 +286,11 @@
                                         <div class="mb-3">
                                             <label for="emailInput" class="form-label">Course layout</label>
                                             <select name="course_layout" class="form-select" required>
-                                                <option value="shown_not_available">Hidden sections are shown as not
+                                                <option value="Hidden sections are shown as not
+                                                    available">Hidden sections are shown as not
                                                     available</option>
-                                                <option value="completely_invisible">Hidden sections are completely
+                                                <option value="Hidden sections are completely
+                                                    invisible">Hidden sections are completely
                                                     invisible</option>
                                             </select>
 
@@ -411,7 +416,8 @@
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label for="select_language" class="form-label">Force Language:</label>
-                                            <select id="select_language" name="force_them" class="form-select" required>
+                                            <select id="select_language" name="force_language" class="form-select"
+                                                required>
                                                 <option value="do_not_force" selected>Do not force</option>
                                                 <option value="boost">Boost</option>
                                                 <option value="classic">Classic</option>
@@ -461,12 +467,12 @@
                                                 students:</label>
                                             <br>
                                             <input class="form-check-input" type="radio" name="gradebook_student"
-                                                id="gradebook_yes" value="Yes" required>
+                                                id="gradebook_yes" value="1" required>
                                             <label class="form-check-label" for="gradebook_yes">Yes</label>
                                             &nbsp&nbsp
 
                                             <input class="form-check-input" type="radio" name="gradebook_student"
-                                                id="gradebook_no" value="No">
+                                                id="gradebook_no" value="0">
                                             <label class="form-check-label" for="gradebook_no">No</label>
 
                                         </div>
@@ -479,11 +485,11 @@
                                                 reports:</label>
                                             <br>
                                             <input class="form-check-input" type="radio" name="activity_report"
-                                                id="activity_report_yes" value="Yes" required>
+                                                id="activity_report_yes" value="1" required>
                                             <label class="form-check-label" for="activity_report_yes">Yes</label>
                                             &nbsp&nbsp
                                             <input class="form-check-input" type="radio" name="activity_report"
-                                                id="activity_report_no" value="No">
+                                                id="activity_report_no" value="0">
                                             <label class="form-check-label" for="activity_report_no">No</label>
 
                                         </div>
@@ -495,11 +501,11 @@
                                             <label for="activity_date" class="form-label">Show activity dates:</label>
                                             <br>
                                             <input class="form-check-input" type="radio" name="activity_date"
-                                                id="activity_date_yes" value="Yes" required>
+                                                id="activity_date_yes" value="1" required>
                                             <label class="form-check-label" for="activity_date_yes">Yes</label>
                                             &nbsp&nbsp
                                             <input class="form-check-input" type="radio" name="activity_date"
-                                                id="activity_date_no" value="No">
+                                                id="activity_date_no" value="0">
                                             <label class="form-check-label" for="activity_date_no">No</label>
 
                                         </div>
@@ -557,11 +563,11 @@
                                                 tracking:</label>
                                             <br>
                                             <input class="form-check-input" type="radio" name="completion_tracking"
-                                                id="completion_tracking_yes" value="Yes" required>
+                                                id="completion_tracking_yes" value="1" required>
                                             <label class="form-check-label" for="completion_tracking_yes">Yes</label>
                                             &nbsp &nbsp
                                             <input class="form-check-input" type="radio" name="completion_tracking"
-                                                id="completion_tracking_no" value="No">
+                                                id="completion_tracking_no" value="0">
                                             <label class="form-check-label" for="completion_tracking_no">No</label>
 
                                         </div>
@@ -574,13 +580,13 @@
                                             <br>
                                             <input class="form-check-input" type="radio"
                                                 name="activity_completion_conditions" id="completion_conditions_yes"
-                                                value="Yes" required>
+                                                value="1" required>
                                             <label class="form-check-label" for="completion_conditions_yes">Yes</label>
                                             &nbsp &nbsp
 
                                             <input class="form-check-input" type="radio"
                                                 name="activity_completion_conditions" id="completion_conditions_no"
-                                                value="No">
+                                                value="0">
                                             <label class="form-check-label" for="completion_conditions_no">No</label>
 
                                         </div>
@@ -613,11 +619,11 @@
                                             <label class="form-label">Force group mode:</label>
                                             <br>
                                             <input class="form-check-input" type="radio" name="force_group_mode"
-                                                id="force_group_mode_yes" value="Yes" required>
+                                                id="force_group_mode_yes" value="1" required>
                                             <label class="form-check-label" for="force_group_mode_yes">Yes</label>
                                             &nbsp&nbsp
                                             <input class="form-check-input" type="radio" name="force_group_mode"
-                                                id="force_group_mode_no" value="No">
+                                                id="force_group_mode_no" value="0">
                                             <label class="form-check-label" for="force_group_mode_no">No</label>
 
                                         </div>
@@ -700,13 +706,13 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.getElementById('createCourseForm').addEventListener('submit', function (e) {
         e.preventDefault();
         var formData = new FormData(this);
-        fetch('{{ route('courses_create') }}', {
-            method: 'POST',
+        fetch('{{ route('courses.create') }}', {
+            method: 'get',
             body: formData,
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -753,7 +759,7 @@
         });
     });
 </script>
-
+ --}}
 
 
 
