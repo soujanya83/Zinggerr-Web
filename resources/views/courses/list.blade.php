@@ -33,7 +33,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex align-items-center justify-content-between">
-                            <h5 class="mb-0">Course</h5>
+                            <h5 class="mb-0">Courses List</h5>
 
                             <form method="get" action="{{ route('courses') }}" class="">
                                 @csrf
@@ -65,23 +65,57 @@
                                 <div class="card border">
                                     <div class="card-body p-2">
                                         <div class="position-relative">
+
+                                            <div class="position-absolute top-0 end-0 p-2">
+                                                @if(Auth::user()->type === 'Superadmin')
+
+                                                <form action="{{ route('coursechangeStatus') }}" method="get"
+                                                    style="display: inline;">
+                                                    @csrf
+                                                    <input type="hidden" name="id" value="{{ $course->id }}">
+                                                    <input type="hidden" name="status"
+                                                        value="{{ $course->course_status == 1 ? 0 : 1 }}">
+                                                    <div class="d-flex justify-content-end">
+                                                        <button type="submit" style="padding: 2px"
+                                                            class="btn {{ $course->course_status == 1 ? 'btn-success' : 'btn-danger' }}">
+                                                            {{ $course->course_status == 1 ? 'Active' : 'Inactive' }}
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                                @elseif(isset($permissions) && in_array('courses_status',
+                                                $permissions))
+                                                <form action="{{ route('coursechangeStatus') }}" method="get"
+                                                    style="display: inline;">
+                                                    @csrf
+                                                    <input type="hidden" name="id" value="{{ $course->id }}">
+                                                    <input type="hidden" name="status"
+                                                        value="{{ $course->course_status == 1 ? 0 : 1 }}">
+                                                    <div class="d-flex justify-content-end">
+                                                        <button type="submit" style="padding: 2px"
+                                                            class="btn {{ $course->course_status == 1 ? 'btn-success' : 'btn-danger' }}">
+                                                            {{ $course->course_status == 1 ? 'Active' : 'Inactive' }}
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                                @endif
+                                            </div>
                                             <img src="{{ asset('storage/courses/' . $course->course_image) }}"
                                                 alt="Course Image" class="img-fluid w-100"
                                                 style="width: 210px;height:200px">
+
                                             {{-- <div class="position-absolute top-0 end-0 p-2">
                                                 <span class="badge text-bg-light text-uppercase">
                                                     @if($course->status == '1') Active @else Inactive @endif
                                                 </span>
-                                            </div> --}}
+                                            </div>
 
-                                            {{-- <div class="position-absolute top-0 end-0 p-2">
+                                            <div class="position-absolute top-0 end-0 p-2">
                                                 <button
                                                     class="btn btn-sm {{ $course->status == '1' ? 'btn-success' : 'btn-danger' }}"
                                                     onclick="toggleStatus({{ $course->id }})">
                                                     {{ $course->status == '1' ? 'Active' : 'Inactive' }}
                                                 </button>
                                             </div> --}}
-
 
 
                                         </div>
@@ -92,7 +126,9 @@
                                                         <h6 class="mb-1">{{ $course->course_name }}</h6>
                                                         <p class="mb-0 f-w-600"><i class="fas fa-star text-warning"></i>
                                                             4.8</p>
+
                                                     </div>
+
 
                                                     {{-- @can('role',Auth::user()) --}}
 
@@ -157,7 +193,9 @@
                                                         <p class="mb-0">Time</p>
                                                     </div>
                                                     <div class="flex-shrink-0">
-                                                        <p class="text-muted mb-0">{{ $course->course_start_date }} <strong>To</strong> {{ $course->course_end_date }} </p>
+                                                        <p class="text-muted mb-0">{{ $course->course_start_date }}
+                                                            <strong>To</strong> {{ $course->course_end_date }}
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </li>
@@ -176,37 +214,134 @@
                                         <a href="{{ route('course_details', $course->id) }}"
                                             class="btn btn-sm btn-outline-primary mb-2">Read More</a>
 
-                                        @if(Auth::user()->type === 'Superadmin')
 
-                                        <form action="{{ route('coursechangeStatus') }}" method="get"
-                                            style="display: inline;">
-                                            @csrf
-                                            <input type="hidden" name="id" value="{{ $course->id }}">
-                                            <input type="hidden" name="status"
-                                                value="{{ $course->course_status == 1 ? 0 : 1 }}">
-                                            <div class="d-flex justify-content-end" style="margin-top: -42px;">
-                                                <button type="submit" style="padding: 5px"
-                                                    class="btn {{ $course->course_status == 1 ? 'btn-success' : 'btn-danger' }}">
-                                                    {{ $course->course_status == 1 ? 'Active' : 'Inactive' }}
-                                                </button>
-                                            </div>
-                                        </form>
-                                        @elseif(isset($permissions) && in_array('courses_status',
+                                        @if(Auth::user()->type === 'Superadmin')
+                                        <button class="btn btn-sm btn-outline-success mb-2" data-bs-toggle="modal"
+                                            style="margin-left: 100px;" data-bs-target="#assignUsersModal"
+                                            data-course-id="{{ $course->id }}">
+                                            Assign Users
+                                        </button>
+                                        @elseif(isset($permissions) && in_array('cousers_assign',
                                         $permissions))
-                                        <form action="{{ route('coursechangeStatus') }}" method="get"
-                                            style="display: inline;">
-                                            @csrf
-                                            <input type="hidden" name="id" value="{{ $course->id }}">
-                                            <input type="hidden" name="status"
-                                                value="{{ $course->course_status == 1 ? 0 : 1 }}">
-                                            <div class="d-flex justify-content-end" style="margin-top: -42px;">
-                                                <button type="submit" style="padding: 5px"
-                                                    class="btn {{ $course->course_status == 1 ? 'btn-success' : 'btn-danger' }}">
-                                                    {{ $course->course_status == 1 ? 'Active' : 'Inactive' }}
-                                                </button>
-                                            </div>
-                                        </form>
+                                        <button class="btn btn-sm btn-outline-success mb-2" data-bs-toggle="modal"
+                                            style="margin-left: 100px;" data-bs-target="#assignUsersModal"
+                                            data-course-id="{{ $course->id }}">
+                                            Assign Users
+                                        </button>
                                         @endif
+                                        {{--
+                                        /////////////////////////////////////////model//////////////////////////////////////////
+                                        --}}
+                                        <!-- Assign Users Button -->
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="assignUsersModal" tabindex="-1"
+                                            aria-labelledby="assignUsersModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="assignUsersModalLabel">Assign
+                                                            Users
+                                                            to Course</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+
+
+                                                    <form id="assignUsersForm" action="{{ route('course.assign') }}"
+                                                        method="get">
+                                                        @csrf
+                                                        <div class="modal-body" style="margin-top: -20px;">
+
+                                                            <!-- Hidden Input for Course ID -->
+                                                            <input type="hidden" name="course_id" id="course_id"
+                                                                value="">
+
+                                                            <!-- Search Box -->
+                                                            <input type="text" id="userSearch" class="form-control mb-3"
+                                                                placeholder="Search users...">
+
+                                                            <!-- Users List -->
+                                                            <div id="userList"
+                                                                style="max-height: 300px; overflow-y: auto;">
+                                                                <p>Loading users...</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            {{-- <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button> --}}
+
+
+                                                            <button type="submit" class="btn btn-primary">Couser Assign
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+                                        {{-- ///////////////////////////////////////////////////////////////// --}}
+
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function () {
+    const userList = document.getElementById('userList');
+    const userSearch = document.getElementById('userSearch');
+    const assignUsersForm = document.getElementById('assignUsersForm');
+
+    $('#assignUsersModal').on('show.bs.modal', function (event) {
+        const button = event.relatedTarget; // Button that triggered the modal
+        const courseId = button.getAttribute('data-course-id'); // Extract course ID
+        document.getElementById('course_id').value = courseId; // Set course ID in form
+
+        userList.innerHTML = 'Loading users...';
+
+        // Fetch users (replace with your API endpoint)
+        fetch(`/api/users`)
+            .then(response => response.json())
+            .then(users => {
+                const userCheckboxes = users.map(user => `
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="user-${user.id}" name="users[]" value="${user.id}">
+                        <label class="form-check-label" for="user-${user.id}">${user.name}</label>
+                        <span  class="badge rounded-pill f-14 ${
+                        user.type === 'Superadmin' ? 'bg-light-success' :
+                        user.type === 'Admin' ? 'bg-light-danger' :
+                        user.type === 'Student' ? 'bg-light-primary' :
+                        user.type === 'Staff' ? 'bg-light-warning' :
+                        user.type === 'Teacher' ? 'bg-light-info' : 'bg-light-secondary'
+                          }">${user.type}</span>
+                    </div>
+                `).join('');
+                userList.innerHTML = userCheckboxes;
+            })
+            .catch(() => {
+                userList.innerHTML = '<p>Error loading users</p>';
+            });
+    });
+
+    // Search functionality
+    userSearch.addEventListener('input', function () {
+        const searchTerm = this.value.toLowerCase();
+        document.querySelectorAll('#userList .form-check').forEach(item => {
+            const label = item.querySelector('label').textContent.toLowerCase();
+            item.style.display = label.includes(searchTerm) ? 'block' : 'none';
+        });
+    });
+});
+
+
+                                        </script>
+
+                                        {{-- //////////////////////////////////////////////////////// --}}
+
+
+
+
+
+
+
 
 
                                     </div>

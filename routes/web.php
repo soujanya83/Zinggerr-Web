@@ -80,6 +80,8 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::post('/check-email', [RegisterController::class, 'checkEmail'])->name('check.email');
 
     Route::get('courses/change-status', [CourseController::class, 'couserchangeStatus'])->name('coursechangeStatus');
+    Route::get('/api/users', [CourseController::class, 'getUsers']);
+    Route::get('/courses/assign', [CourseController::class, 'couserassign'])->name('course.assign');
     Route::get('courses-create', [CourseController::class, 'createCourse'])->name('courses.create');
     Route::match(['get', 'post'], 'courses', [CourseController::class, 'courselist'])->name('courses');
     Route::get('courses/{id}', [CourseController::class, 'coursedetails'])->name('course_details');
@@ -108,7 +110,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::POST('users/{userId}/status', [UserController::class, 'changeStatus'])->name('change_user_status');
     Route::get('user/dashboard', [UserController::class, 'dashboard'])->name('dashboard_user');
 
-    Route::get('dashboard', [UserController::class, 'dashboardmain'])->name('dashboard')->middleware('can:role');
+    Route::get('dashboard', [UserController::class, 'dashboardmain'])->name('dashboard');
 
 
 

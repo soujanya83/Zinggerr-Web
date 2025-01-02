@@ -44,7 +44,7 @@
                         <div class="form-floating mb-3">
                             <input type="text" name="login" class="form-control" id="loginInput"
                                 placeholder="Email address / Username / Phone">
-                            <label for="floatingInput">Email address / Username / Phone</label>
+                            <label for="floatingInput">Email address / Username</label>
                         </div>
                         <div class="form-floating mb-3">
                             <input type="password" class="form-control" id="passwordInput" placeholder="Password"

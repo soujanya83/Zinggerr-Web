@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Course;
+use App\Models\CoursesAssign;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Guid\Guid;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class CourseController extends Controller
@@ -19,6 +22,26 @@ class CourseController extends Controller
     {
         return view('courses.add');
     }
+
+    public function getUsers(Request $request)
+    {
+        return response()->json(User::select('id', 'name','type')->whereNotIn('type',['Superadmin','Admin','Staff'])->where('status',1)->get());
+    }
+
+    public function couserassign(Request $request)
+    {
+        $courseId = $request->input('course_id');
+        $userIds = $request->input('users', []);
+        foreach ($userIds as $userId) {
+            $uuid = (string) Guid::uuid4();
+            CoursesAssign::updateOrCreate(
+                ['courses_id' => $courseId, 'users_id' => $userId],
+                [ 'id' => $uuid]
+            );
+        }
+        return redirect()->back()->with('success', 'Users assigned successfully!');
+    }
+
 
     public function createCourse(Request $request)
     {
@@ -116,18 +139,27 @@ class CourseController extends Controller
 
     public function courselist(Request $request)
     {
-        $query = Course::query();
+        $userId=Auth::user()->id;
+       $userType=Auth::user()->type;
+       if($userType=='Superadmin' || $userType=='Admin' || $userType=='Staff'){
+        $query=Course::query();
+       }else{
+        $query=CoursesAssign::where('users_id',$userId)->join('courses','courses.id','=','courses_assign.courses_id');
+       }
 
         if ($request->has('name')) {
-            $query->where('course_full_name', 'like', '%' . $request->name . '%');
+            $query->where('courses.course_full_name', 'like', '%' . $request->name . '%');
         }
         if ($request->has('teacher_name')) {
-            $query->where('course_category', 'like', '%' . $request->teacher_name . '%');
+            $query->where('courses.course_category', 'like', '%' . $request->teacher_name . '%');
         }
-        $courses = $query->latest()->paginate(12);
+        $courses = $query->latest('courses.created_at')->paginate(12);
 
-        return view('courses.list', compact('courses'));
+        $users = User::where('status', 1)->get();
+
+        return view('courses.list', compact('courses', 'users'));
     }
+
     public function coursedetails(Request $request, $id)
     {
         $course = Course::find($id);

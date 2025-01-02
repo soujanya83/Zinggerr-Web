@@ -146,7 +146,7 @@ class PermissionsController extends Controller
 
     public function createroles()
     {
-        $roles = Role::whereNot('name',['Superadmin'])->get();
+        $roles = Role::whereNotIn('name',['Superadmin'])->get();
         return view('roles.create', compact('roles'));
     }
 

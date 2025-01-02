@@ -80,7 +80,7 @@ class FortifyServiceProvider extends ServiceProvider
             $user = User::where('status', 1)
                 ->where(function ($query) use ($request) {
                     $query->where('email', $request->login)
-                        ->orWhere('phone', $request->login)
+                        // ->orWhere('phone', $request->login)
                         ->orWhere('username', $request->login);
                 })
                 ->first();

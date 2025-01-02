@@ -20,7 +20,7 @@ class StudentController extends Controller
     public function studentdashboard(){
 
         $student=User::where('type','Student')->count();
-        $courses=Course::where('status',1)->count();
+        $courses=Course::where('course_status',1)->count();
 
 
         return view('app.studentdashboard',compact('student','courses'));

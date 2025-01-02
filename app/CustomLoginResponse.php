@@ -23,12 +23,12 @@ class CustomLoginResponse implements LoginResponseContract
         switch ($user->type) {
             case 'Superadmin':
                 return redirect()->route('dashboard'); ////////////// this defalut user superadmin
-            case 'admin':
-                return redirect()->route('admin.dashboard');
-            case 'teacher':
-                return redirect()->route('teacher.dashboard');
-            case 'staff':
-                return redirect()->route('staff.dashboard');
+            case 'Admin':
+                return redirect()->route('dashboard');
+            case 'Teacher':
+                return redirect()->route('dashboard');
+            case 'Staff':
+                return redirect()->route('dashboard');
             case 'Student':
                 return redirect()->route('student.dashboard');
             default:
