@@ -119,8 +119,11 @@
                                             <th>Type</th>
                                             <th>Gender</th>
                                             <th>Status</th>
-                                            @can('role', Auth::user())
-                                            <th>Action</th> @endcan
+                                            @if(Auth::user()->can('role') ||
+                                            (isset($permissions) && in_array('teachers_edit', $permissions)) ||
+                                            (isset($permissions) && in_array('teachers_delete', $permissions)))
+                                            <th class="text-center">Action</th>
+                                            @endif
 
                                         </tr>
                                     </thead>

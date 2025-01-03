@@ -54,7 +54,7 @@
 
                             </form>
 
-                            <div><a href="{{ route('addCourse') }}" class="btn btn-success">Add New Course</a></div>
+                            {{-- <div><a href="{{ route('addCourse') }}" class="btn btn-success">Add New Course</a></div> --}}
                         </div>
                     </div>
                     <div class="card-body">

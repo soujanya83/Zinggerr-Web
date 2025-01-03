@@ -146,7 +146,7 @@ class PermissionsController extends Controller
 
     public function createroles()
     {
-        $roles = Role::whereNotIn('name',['Superadmin'])->get();
+        $roles = Role::whereNotIn('name', ['Superadmin'])->get();
         return view('roles.create', compact('roles'));
     }
 
@@ -164,6 +164,25 @@ class PermissionsController extends Controller
         }
     }
 
+    public function permissions_assigned_list()
+    {
+        $permissions = PermissionRole::select('permission_role.id','permissions.name', 'permissions.display_name', 'roles.display_name as role_name')->join('permissions', 'permissions.id', '=', 'permission_role.permission_id')->join('roles', 'roles.id', '=', 'permission_role.role_id')->get();
+
+        return view('permissions.permissions_assigned_list', compact('permissions'));
+    }
 
 
+    public function permissions_assigned_delete($id)
+    {
+        // if (Gate::denies('role')) {
+        //     return redirect()->back()->with('error', 'Unauthorized access.');
+        // }
+        $assigned = PermissionRole::find($id);
+        if ($assigned) {
+            $assigned->delete();
+            return redirect()->back()->with('success', 'Permissions Assigned deleted successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Permissions Assigned ID not found.');
+        }
+    }
 }

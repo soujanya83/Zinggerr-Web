@@ -148,6 +148,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('permission/{id}/delete', [PermissionsController::class, 'destroy'])->name('permission.delete');
 
     Route::get('permissions/assign', [PermissionsController::class, 'role_permission'])->name('permissions.role');
+    Route::get('permissions/assigned-list', [PermissionsController::class, 'permissions_assigned_list'])->name('permissions.assignedlist');
     Route::get('permissions/role-assign', [PermissionsController::class, 'assignpermissions'])->name('role.permission.assign');
 
     Route::get('roles/submit', [PermissionsController::class, 'submit_roles'])->name('roles.store');
@@ -157,6 +158,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('/role-delete/{user}', [PermissionsController::class, 'role_delete'])
         ->name('role_delete')
         ->middleware('can:role');
+    Route::get('/permissions/assigned-delete/{user}', [PermissionsController::class, 'permissions_assigned_delete'])->name('permission_assigned_delete');
 
 
 

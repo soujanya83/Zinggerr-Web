@@ -116,7 +116,7 @@
                     <div class="card-header" style="margin-top: -19px; margin-bottom: -17px;">
                         <div class="row align-items-center g-2">
                             <div class="col">
-                                <h5>All Permissions</h5>
+                                <h5>All Permissions List</h5>
                             </div>
                             <div class="form-search col-auto">
                                 <input type="text" class="form-control" id="searchPermissions"
@@ -186,8 +186,12 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Permission Name</th>
+                                        <th>Permissions Name</th>
+                                        @if(Auth::user()->can('role') ||
+                                        (isset($permissions) && in_array('permissions_edit', $permissions)) ||
+                                        (isset($permissions) && in_array('permissions_delete', $permissions)))
                                         <th>Actions</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -197,15 +201,21 @@
                                         <td>{{ $permission['display_name'] }}</td>
                                         <td>
                                             <div class="btn-group">
+                                                @if(Auth::user()->can('role') ||
+                                                (isset($permissions) && in_array('permissions_edit', $permissions)))
                                                 <button class="btn btn-sm btn-primary"
                                                     onclick="editPermission({{ json_encode($permission) }})">
                                                     Edit
                                                 </button>
+                                                @endif
+                                                @if(Auth::user()->can('role') ||
+                                                (isset($permissions) && in_array('permissions_delete', $permissions)))
                                                 &nbsp &nbsp
                                                 <a href="{{ route('permission.delete', $permission['id']) }}"
                                                     class="btn btn-sm btn-danger">
                                                     Delete
                                                 </a>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>

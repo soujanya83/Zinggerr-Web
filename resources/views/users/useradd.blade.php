@@ -58,8 +58,7 @@
                                 <div class="col-md-4">
                                     <div class=" mb-3">
                                         <label for="nameInput">Full Name</label>
-                                        <input type="text" class="form-control" id="nameInput"
-                                            name="name" required>
+                                        <input type="text" class="form-control" id="nameInput" name="name" required>
 
                                         <small id="nameError" class="text-danger"></small>
                                         {{-- @error('full_name')
@@ -198,6 +197,7 @@
         </div>
     </div>
 </div>
+
 <script>
     document.getElementById('togglePassword').addEventListener('click', function () {
         const passwordField = document.getElementById('password');

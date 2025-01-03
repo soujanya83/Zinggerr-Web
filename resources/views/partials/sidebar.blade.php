@@ -31,10 +31,10 @@
                         <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
                     </a>
                     <ul class="pc-submenu">
-                        <li class="pc-item"><a class="pc-link" href="{{ route('teacheradd') }}" data-i18n="Pricing">Add
-                                New</a></li>
+                        <li class="pc-item"><a class="pc-link" href="{{ route('teacheradd') }}"
+                                data-i18n="Pricing">Create Teachers</a></li>
                         <li class="pc-item"><a class="pc-link" href="{{ route('teacherlist') }}"
-                                data-i18n="List">List</a></li>
+                                data-i18n="List">Teachers List</a></li>
                     </ul>
                 </li>
 
@@ -47,10 +47,10 @@
                         <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
                     </a>
                     <ul class="pc-submenu">
-                        <li class="pc-item"><a class="pc-link" href="{{ route('studentadd') }}" data-i18n="Pricing">Add
-                                New</a></li>
+                        <li class="pc-item"><a class="pc-link" href="{{ route('studentadd') }}"
+                                data-i18n="Pricing">Create Students</a></li>
                         <li class="pc-item"><a class="pc-link" href="{{ route('studentlist') }}"
-                                data-i18n="List">List</a></li>
+                                data-i18n="List">Students List</a></li>
                     </ul>
                 </li>
 
@@ -62,12 +62,12 @@
                     </a>
                     <ul class="pc-submenu">
                         <li class="pc-item">
-                            <a class="pc-link" href="{{ route('addCourse') }}" data-i18n="Add New">Add New course</a>
+                            <a class="pc-link" href="{{ route('addCourse') }}" data-i18n="Add New">Create Courses</a>
                         </li>
                         <li class="pc-item">
                             <a class="pc-link" href="{{ route('courses') }}" data-i18n="Active List">Courses List</a>
                         </li>
-                        <li class="pc-item">
+                        {{-- <li class="pc-item">
                             <a class="pc-link" href="#" data-i18n="Drafted List">Drafted List</a>
                         </li>
                         <li class="pc-item">
@@ -75,13 +75,13 @@
                         </li>
                         <li class="pc-item">
                             <a class="pc-link" href="#" data-i18n="View All">View All</a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </li>
 
 
 
-                @can('role',Auth::user())
+                @if(Auth::user()->can('role') || Auth::user()->can('admin-role') || Auth::user()->can('staff-role'))
 
                 <li class="pc-item pc-hasmenu">
                     <a href="#" class="pc-link">
@@ -92,13 +92,13 @@
                         <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
                     </a>
                     <ul class="pc-submenu">
-                        <li class="pc-item"><a class="pc-link" href="{{ route('useradd') }}" data-i18n="Pricing">Add
-                                New</a></li>
-                        <li class="pc-item"><a class="pc-link" href="{{ route('userlist') }}" data-i18n="List">List</a>
+                        <li class="pc-item"><a class="pc-link" href="{{ route('useradd') }}" data-i18n="Pricing">Create
+                                Users</a></li>
+                        <li class="pc-item"><a class="pc-link" href="{{ route('userlist') }}" data-i18n="List">Users
+                                List</a>
                         </li>
                     </ul>
                 </li>
-
 
 
 
@@ -112,10 +112,12 @@
                     </a>
                     <ul class="pc-submenu">
                         <li class="pc-item"><a class="pc-link" href="{{ route('roles.create') }}"
-                                data-i18n="Pricing">Add New</a></li>
+                                data-i18n="Pricing">Create Roles</a></li>
                     </ul>
                 </li>
+                @endif
 
+                @if(Auth::user()->can('role'))
                 <li class="pc-item pc-hasmenu">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
@@ -126,12 +128,16 @@
                     </a>
                     <ul class="pc-submenu">
                         <li class="pc-item"><a class="pc-link" href="{{ route('permissions.create') }}"
-                                data-i18n="Pricing">Add New</a></li>
+                                data-i18n="Pricing">Create Permissions</a></li>
                         <li class="pc-item"><a class="pc-link" href="{{ route('permissions.role') }}"
-                                data-i18n="List">Permission Assign</a></li>
+                                data-i18n="List">Permissions Assign</a></li>
+
+                        <li class="pc-item"><a class="pc-link" href="{{ route('permissions.assignedlist') }}"
+                                data-i18n="List">Permissions Assigned List</a></li>
                     </ul>
+
                 </li>
-                @endcan
+                @endif
 
 
 

@@ -121,10 +121,15 @@
                                             <th>Phone</th>
                                             <th>Role</th>
                                             <th>Gender</th>
+                                            @if(Auth::user()->can('role') ||
+                                            (isset($permissions) && in_array('users_status', $permissions)))
                                             <th>Status</th>
-                                            @can('role', Auth::user())
+                                            @endif
+                                            @if(Auth::user()->can('role') ||
+                                            (isset($permissions) && in_array('users_edit', $permissions)) ||
+                                            (isset($permissions) && in_array('users_delete', $permissions)))
                                             <th class="text-center">Actions</th>
-                                            @endcan
+                                            @endif
                                         </tr>
                                     </thead>
 

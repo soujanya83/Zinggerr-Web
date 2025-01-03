@@ -47,7 +47,7 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Permissions View</h5>
+                            <h5 class="m-b-10">Permissions Assign View</h5>
                         </div>
                     </div>
 
@@ -98,7 +98,7 @@
                                 <!-- Permissions Checkboxes -->
                                 <div class="row align-items-center g-2">
                                     <div class="col">
-                                        <h5>All Permissions</h5>
+                                        <h5>All Permissions List</h5>
                                     </div>
                                     <div class="form-search col-auto">
                                         <input type="text" class="form-control" id="searchPermissions"
@@ -238,8 +238,9 @@
             </div>
         </div>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
     function editPermission(permission) {
         const form = document.getElementById('permissionForm');
         if (!form) {
@@ -268,10 +269,10 @@ document.getElementById('searchPermissions').addEventListener('keyup', function 
 });
 
 
-    </script>
+</script>
 
 
 
 
-    @include('partials.footer')
-    @endsection
+@include('partials.footer')
+@endsection
