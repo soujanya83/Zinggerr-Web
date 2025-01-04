@@ -161,40 +161,66 @@
 
                                 <div class="container-fluid">
                                     <div class="row g-4" style="    margin-top: -10px;">
-                                        <div class="col-sm-6 col-xl-3">
+                                        <div class="col-sm-6 col-xl-2">
                                             <div class="rounded d-flex align-items-center justify-content-between p-4"
-                                                style="background-color:#00c853; height: 88px;color:#fff">
+                                                style="background-color:#3bcd78; height: 88px;color:#fff">
 
                                                 <div class="ms-3">
                                                     <p class="mb-2">
                                                         <i class="ti ti-users f-24"></i> Total Students
                                                     </p>
-                                                    <h6 class="mb-0">&nbsp&nbsp&nbsp&nbsp&nbsp {{ $student }}</h6>
+                                                    <h6 class="mb-0">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp {{ $student }}</h6>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-6 col-xl-3">
+                                        <div class="col-sm-6 col-xl-2">
+                                            <div class="rounded d-flex align-items-center justify-content-between p-4"
+                                                style="background-color:#ba5dd8; height: 88px;color:#fff">
+
+                                                <div class="ms-3">
+                                                    <p class="mb-2">
+                                                        <i class="ti ti-users f-24"></i> Total Students
+                                                    </p>
+                                                    <h6 class="mb-0">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp {{ $student }}</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-sm-6 col-xl-2">
                                             <div class="rounded d-flex align-items-center justify-content-between p-4"
                                                 style="height: 88px;background-color:#5be8e1;color:#fff">
 
                                                 <div class="ms-3">
                                                     <i class="ti ti-notebook f-24"></i> Total Course <h6 class="mb-0">
-                                                        &nbsp&nbsp&nbsp&nbsp&nbsp {{ $courses }}</h6>
+                                                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp {{ $courses }}</h6>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6 col-xl-3">
+
+                                        <div class="col-sm-6 col-xl-2">
+                                            <div class="rounded d-flex align-items-center justify-content-between p-4"
+                                                style="height: 88px;background-color:#f469a5;color:#fff">
+
+                                                <div class="ms-3">
+                                                    <i class="ti ti-notebook f-24"></i> Total <h6 class="mb-0">
+                                                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 1234</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6 col-xl-2">
                                             <div class="rounded d-flex align-items-center justify-content-between p-4"
                                                 style="height: 88px;background-color:#F6A4EC;color:#fff">
 
                                                 <div class="ms-3">
-                                                    <i class="ti ti-coin f-24"></i> Today Revenue
+                                                    <i class="ti ti-coin f-24"></i> Money
                                                     <h6 class="mb-0">&nbsp&nbsp&nbsp&nbsp&nbsp $1234</h6>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6 col-xl-3">
+                                        <div class="col-sm-6 col-xl-2">
                                             <div class="rounded d-flex align-items-center justify-content-between p-4"
                                                 style="height: 88px;background-color:#1CC6FF;color:#fff ">
 
@@ -212,7 +238,7 @@
                                 <div class="container-fluid pt-4 px-4">
                                     <div class="row g-4">
                                         <!-- Revenue & Sales Chart -->
-                                        <div class="col-sm-12 col-xl-6">
+                                        <div class="col-sm-12 col-xl-8">
                                             <div class="card card-custom">
                                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                                     <div>
@@ -229,8 +255,25 @@
                                             </div>
                                         </div>
 
+                                        <!-- Calendar Section -->
+                                        <div class="col-lg-4">
+                                            <div class="card p-3">
+                                                <div id="calendar"></div>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+
+
+                                <!-- Widgets Start -->
+                                <div class="container-fluid pt-4 px-4">
+                                    <div class="row g-4">
+
                                         <!-- Sales & Revenue Chart -->
-                                        <div class="col-sm-12 col-xl-6">
+                                        <div class="col-sm-12 col-xl-8" style="margin-top: -70px;">
                                             <div class="bg-light text-center rounded p-4">
                                                 <div class="d-flex align-items-center justify-content-between mb-4">
                                                     <h6 class="mb-0">Sales & Revenue</h6>
@@ -240,13 +283,10 @@
                                                 <i class="icon-settings">&#9881;</i>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
 
 
-                                <!-- Widgets Start -->
-                                <div class="container-fluid pt-4 px-4">
-                                    <div class="row g-4">
+
+
                                         <div class="col-sm-12 col-md-6 col-xl-4">
                                             <div class="h-100 bg-light rounded p-4">
                                                 <div class="d-flex align-items-center justify-content-between mb-2">
@@ -299,26 +339,137 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-12 col-md-6 col-xl-4">
-                                            <div class="h-100 bg-light rounded p-4">
-                                                <div class="d-flex align-items-center justify-content-between mb-4">
-                                                    <h6 class="mb-0">Calender</h6>
-                                                    <a href="">Show All</a>
+
+                                        <div class="row">
+                                            <!-- Chart Section -->
+                                            <div class="col-lg-8 mb-3">
+                                                <div class="card p-3">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <h5>Activitys</h5>
+                                                        <select class="form-select form-select-sm w-auto">
+                                                            <option selected>Monthly</option>
+                                                            <option>Weekly</option>
+                                                            <option>Daily</option>
+                                                        </select>
+                                                    </div>
+                                                    <canvas id="activityChart" height="200"></canvas>
                                                 </div>
-                                                <div class="chart-container text-center">
-                                                    <h6 class="mb-3">Student States</h6>
-                                                    <canvas id="studentChart"></canvas>
-                                                    <div class="chart-legend mt-3">
-                                                        <span><span class="dot"
-                                                                style="background-color: #36a2eb;"></span>Total
-                                                            Signups</span>
-                                                        <span><span class="dot"
-                                                                style="background-color: #ff6384;"></span>Active
-                                                            Student</span>
+                                            </div>
+
+                                            <div class="col-sm-12 col-md-6 col-xl-4">
+                                                <div class="h-100 bg-light rounded p-4">
+                                                    <div class="d-flex align-items-center justify-content-between">
+                                                        <h6 class="mb-0">Calender</h6>
+                                                        <a href="">Show All</a>
+                                                    </div>
+                                                    <div class="chart-container text-center">
+                                                        <h6 class="mb-3">Student States</h6>
+                                                        <canvas id="studentChart"></canvas>
+                                                        <div class="chart-legend mt-3">
+                                                            <span><span class="dot"
+                                                                    style="background-color: #36a2eb;"></span>Total
+                                                                Signups</span>
+                                                            <span><span class="dot"
+                                                                    style="background-color: #ff6384;"></span>Active
+                                                                Student</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+
+
+
                                         </div>
+
+
+
+
+                                        <!-- Recent Sales Start -->
+                                        <div class="container-fluid col-sm-8">
+                                            <div class="bg-light text-center rounded p-4">
+                                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                                    <h6 class="mb-0">Course States</h6>
+                                                    <a href="">Show All</a>
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table
+                                                        class="table text-start align-middle table-bordered table-hover mb-0">
+                                                        <thead>
+                                                            <tr class="text-dark">
+                                                                <th scope="col"><input class="form-check-input"
+                                                                        type="checkbox">
+                                                                </th>
+                                                                <th scope="col">Name</th>
+                                                                <th scope="col">Teacher</th>
+                                                                <th scope="col">Rating</th>
+                                                                <th scope="col">Earring</th>
+                                                                <th scope="col">Sale</th>
+                                                                <th scope="col">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><input class="form-check-input" type="checkbox">
+                                                                </td>
+                                                                <td>01 Jan 2045</td>
+                                                                <td>INV-0123</td>
+                                                                <td>* 4.8</td>
+                                                                <td>$123</td>
+                                                                <td>Paid</td>
+                                                                <td><a class="btn btn-sm btn-primary" href="">Detail</a>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><input class="form-check-input" type="checkbox">
+                                                                </td>
+                                                                <td>01 Jan 2045</td>
+                                                                <td>INV-0123</td>
+                                                                <td>* 4.8</td>
+                                                                <td>$123</td>
+                                                                <td>Paid</td>
+                                                                <td><a class="btn btn-sm btn-primary" href="">Detail</a>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><input class="form-check-input" type="checkbox">
+                                                                </td>
+                                                                <td>01 Jan 2045</td>
+                                                                <td>INV-0123</td>
+                                                                <td>* 4.8</td>
+                                                                <td>$123</td>
+                                                                <td>Paid</td>
+                                                                <td><a class="btn btn-sm btn-primary" href="">Detail</a>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><input class="form-check-input" type="checkbox">
+                                                                </td>
+                                                                <td>01 Jan 2045</td>
+                                                                <td>INV-0123</td>
+                                                                <td>* 4.8</td>
+                                                                <td>$123</td>
+                                                                <td>Paid</td>
+                                                                <td><a class="btn btn-sm btn-primary" href="">Detail</a>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><input class="form-check-input" type="checkbox">
+                                                                </td>
+                                                                <td>01 Jan 2045</td>
+                                                                <td>INV-0123</td>
+                                                                <td>* 4.8</td>
+                                                                <td>$123</td>
+                                                                <td>Paid</td>
+                                                                <td><a class="btn btn-sm btn-primary" href="">Detail</a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
                                         <div class="col-sm-12 col-md-6 col-xl-4">
                                             <div class="h-100 bg-light rounded p-4">
                                                 <div class="d-flex align-items-center justify-content-between mb-4">
@@ -389,111 +540,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Widgets End -->
-
-
-
-                                <div class="row">
-                                    <!-- Chart Section -->
-                                    <div class="col-lg-8 mb-3">
-                                        <div class="card p-3">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <h5>Activity</h5>
-                                                <select class="form-select form-select-sm w-auto">
-                                                    <option selected>Monthly</option>
-                                                    <option>Weekly</option>
-                                                    <option>Daily</option>
-                                                </select>
-                                            </div>
-                                            <canvas id="activityChart" height="200"></canvas>
-                                        </div>
-                                    </div>
-                                    <!-- Calendar Section -->
-                                    <div class="col-lg-4 mb-3">
-                                        <div class="card p-3">
-                                            <div id="calendar"></div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
-
-
-                            <!-- Recent Sales Start -->
-                            <div class="container-fluid pt-4 px-4">
-                                <div class="bg-light text-center rounded p-4">
-                                    <div class="d-flex align-items-center justify-content-between mb-4">
-                                        <h6 class="mb-0">Course States</h6>
-                                        <a href="">Show All</a>
-                                    </div>
-                                    <div class="table-responsive">
-                                        <table class="table text-start align-middle table-bordered table-hover mb-0">
-                                            <thead>
-                                                <tr class="text-dark">
-                                                    <th scope="col"><input class="form-check-input" type="checkbox">
-                                                    </th>
-                                                    <th scope="col">Name</th>
-                                                    <th scope="col">Teacher</th>
-                                                    <th scope="col">Rating</th>
-                                                    <th scope="col">Earring</th>
-                                                    <th scope="col">Sale</th>
-                                                    <th scope="col">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td><input class="form-check-input" type="checkbox"></td>
-                                                    <td>01 Jan 2045</td>
-                                                    <td>INV-0123</td>
-                                                    <td>* 4.8</td>
-                                                    <td>$123</td>
-                                                    <td>Paid</td>
-                                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input class="form-check-input" type="checkbox"></td>
-                                                    <td>01 Jan 2045</td>
-                                                    <td>INV-0123</td>
-                                                    <td>* 4.8</td>
-                                                    <td>$123</td>
-                                                    <td>Paid</td>
-                                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input class="form-check-input" type="checkbox"></td>
-                                                    <td>01 Jan 2045</td>
-                                                    <td>INV-0123</td>
-                                                    <td>* 4.8</td>
-                                                    <td>$123</td>
-                                                    <td>Paid</td>
-                                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input class="form-check-input" type="checkbox"></td>
-                                                    <td>01 Jan 2045</td>
-                                                    <td>INV-0123</td>
-                                                    <td>* 4.8</td>
-                                                    <td>$123</td>
-                                                    <td>Paid</td>
-                                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><input class="form-check-input" type="checkbox"></td>
-                                                    <td>01 Jan 2045</td>
-                                                    <td>INV-0123</td>
-                                                    <td>* 4.8</td>
-                                                    <td>$123</td>
-                                                    <td>Paid</td>
-                                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
-                        {{--
-                    </div> --}}
+                    </div>
                 </div>
             </div>
         </div>

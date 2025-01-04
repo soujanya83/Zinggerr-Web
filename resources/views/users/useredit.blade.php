@@ -53,7 +53,6 @@
                             autocomplete="off" enctype="multipart/form-data">
                             @csrf
 
-
                             <input type="hidden" name="userid" value="{{ $user->id }}">
 
                             <div class="row">

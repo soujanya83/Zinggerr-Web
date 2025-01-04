@@ -34,7 +34,7 @@ class UserController extends Controller
             case 'Admin':
                 return redirect()->route('dashboard');
             case 'Teacher':
-                return redirect()->route('dashboard');
+                return redirect()->route('teacher.dashboard');
             case 'Staff':
                 return redirect()->route('dashboard');
             case 'Student':

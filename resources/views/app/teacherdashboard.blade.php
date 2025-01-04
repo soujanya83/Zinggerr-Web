@@ -5,7 +5,7 @@
 @section('content')
 
 @include('partials.sidebar')
-@include('partials.header')
+@include('partials.headerdashboard')
 
 <!-- Favicon -->
 <link href="img/favicon.ico" rel="icon">
@@ -72,7 +72,7 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Students Dashboard View</h5>
+                            <h5 class="m-b-10">Teachers Dashboard View</h5>
                         </div>
                     </div>
                     {{-- <div class="col-auto">
@@ -351,25 +351,28 @@
     </div>
 </div>
 
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    const calendarEl = document.getElementById('calendar');
-    const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        headerToolbar: {
-            left: '',
-            center: 'title',
-            right: 'prev,next'
-        },
-        selectable: true
-    });
-    calendar.render();
+   const calendarEl = document.getElementById('calendar');
+   const calendar = new FullCalendar.Calendar(calendarEl, {
+       initialView: 'dayGridMonth',
+       headerToolbar: {
+           left: '',
+           center: 'title',
+           right: 'prev,next'
+       },
+       selectable: true
+   });
+   calendar.render();
 });
 </script>
-
 
 @include('partials.footer')
 @endsection

@@ -9,11 +9,22 @@ use Ramsey\Uuid\Guid\Guid;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Course;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 class TeacherController extends Controller
 {
+
+    public function teacherdashboard(){
+
+        $student=User::where('type','Student')->count();
+        $teacher=User::where('type','Teacher')->count();
+        $courses=Course::where('course_status',1)->count();
+
+
+        return view('app.teacherdashboard',compact('student','courses','teacher'));
+    }
 
 
     public function teacheradd(Request $request)

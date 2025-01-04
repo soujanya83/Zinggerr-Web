@@ -118,7 +118,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('/students-update', [StudentController::class, 'updatestudent'])->name('updatestudent');
     Route::get('/student-edit/{id}', [StudentController::class, 'studentedit'])->name('student_edit');
 
-    Route::get('/student/dashboard', [StudentController::class, 'studentdashboard'])->name('student.dashboard')->middleware('can:student-role');
+    Route::get('/students/dashboard', [StudentController::class, 'studentdashboard'])->name('student.dashboard')->middleware('can:student-role');
     // Route::post('/student/store', [StudentController::class, 'store'])->name('student.store');
     // Route::post('add-teacher', [TeacherController::class, 'createteacher'])->name('createteacher');
     // Route::post('student-add', [StudentController::class, 'store'])->name('store');
@@ -131,11 +131,13 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     // Route::delete('/teacher-delete/{id}', [TeacherController::class, 'teacher_delete'])->name('teacher_delete')->middleware('can:role');
     Route::get('/teacher-update', [TeacherController::class, 'updateteacher'])->name('updateteacher');
     Route::get('/teacher-edit/{id}', [TeacherController::class, 'teacheredit'])->name('teacher_edit');
+    Route::get('/teachers/dashboard', [TeacherController::class, 'teacherdashboard'])->name('teacher.dashboard')->middleware('can:teacher-role');
 
     // Route::post('add-teacher', [TeacherController::class, 'createteacher'])->name('createteacher');
     Route::get('teachers-create', [TeacherController::class, 'teacheradd'])->name('teacheradd');
     Route::get('teachers-list', [TeacherController::class, 'teacherlist'])->name('teacherlist');
     // Route::put('/teacher/{id}/change-status', [TeacherController::class, 'changeStatus'])->name('change_teacher_status');
+
 
     Route::get('user/account-profile', [ProfileController::class, 'profilepage'])->name('userprofile');
     Route::get('user/social-profile', [ProfileController::class, 'socialprofilepage'])->name('user.socialprofile');
