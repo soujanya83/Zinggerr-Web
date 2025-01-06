@@ -80,7 +80,6 @@
                 </li>
 
 
-
                 @if(Auth::user()->can('role') || Auth::user()->can('admin-role') || Auth::user()->can('staff-role'))
 
                 <li class="pc-item pc-hasmenu">
