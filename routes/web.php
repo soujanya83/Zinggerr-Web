@@ -89,8 +89,15 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('courses-update/{id}', [CourseController::class, 'courseupdate'])->name('course_update');
     Route::get('courses-add', [CourseController::class, 'courseadd'])->name('addCourse');
     Route::get('/courses-delete/{id}', [CourseController::class, 'coursedelete'])
-        ->name('course_delete')
-        ->middleware('can:role');
+    ->name('course_delete')
+    ->middleware('can:role');
+
+
+    Route::get('assets-add/{id}', [CourseController::class, 'add_assets'])->name('add_assets');
+
+    Route::post('assets/upload', [CourseController::class, 'submitAssets'])->name('assets.submit');
+
+
 
 
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Course;
+use App\Models\CoursesAssets;
 use App\Models\CoursesAssign;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
@@ -17,6 +18,38 @@ use Illuminate\Support\Facades\Log;
 class CourseController extends Controller
 {
 
+    public function submitAssets(Request $request)
+    {
+
+        $request->validate([
+            'blog_name' => 'required|string|max:255',
+            'course_assets_video' => 'required|file|mimes:mp4,webm,ogv', // Specify allowed video formats
+        ]);
+
+        $video = $request->file('course_assets_video');
+        $fileName = time() . '_' . $video->getClientOriginalName();
+
+        // Store the video using Laravel's Storage
+        Storage::disk('public')->putFileAs('assets_videos', $video, $fileName);
+
+        CoursesAssets::create([
+            'id' => (string) Guid::uuid4(),
+            'course_id' => $request->course_id,
+            'blog_name' => $request->blog_name,
+            'course_assets_video' => $fileName,
+        ]);
+
+        return redirect()->back()->with('success', 'Assets created successfully!');
+    }
+
+
+
+
+    public function add_assets(Request $request, $id)
+    {
+        return view('courses.add_assets', compact('id'));
+    }
+
     public function courseadd(Request $request)
 
     {
@@ -25,7 +58,7 @@ class CourseController extends Controller
 
     public function getUsers(Request $request)
     {
-        return response()->json(User::select('id', 'name','type')->whereNotIn('type',['Superadmin','Admin','Staff'])->where('status',1)->get());
+        return response()->json(User::select('id', 'name', 'type')->whereNotIn('type', ['Superadmin', 'Admin', 'Staff'])->where('status', 1)->get());
     }
 
     public function couserassign(Request $request)
@@ -36,7 +69,7 @@ class CourseController extends Controller
             $uuid = (string) Guid::uuid4();
             CoursesAssign::updateOrCreate(
                 ['courses_id' => $courseId, 'users_id' => $userId],
-                [ 'id' => $uuid]
+                ['id' => $uuid]
             );
         }
         return redirect()->back()->with('success', 'Users assigned successfully!');
@@ -139,13 +172,13 @@ class CourseController extends Controller
 
     public function courselist(Request $request)
     {
-        $userId=Auth::user()->id;
-       $userType=Auth::user()->type;
-       if($userType=='Superadmin' || $userType=='Admin' || $userType=='Staff'){
-        $query=Course::query();
-       }else{
-        $query=CoursesAssign::where('users_id',$userId)->where('courses.course_status',1)->join('courses','courses.id','=','courses_assign.courses_id');
-       }
+        $userId = Auth::user()->id;
+        $userType = Auth::user()->type;
+        if ($userType == 'Superadmin' || $userType == 'Admin' || $userType == 'Staff') {
+            $query = Course::query();
+        } else {
+            $query = CoursesAssign::where('users_id', $userId)->where('courses.course_status', 1)->join('courses', 'courses.id', '=', 'courses_assign.courses_id');
+        }
 
         if ($request->has('name')) {
             $query->where('courses.course_full_name', 'like', '%' . $request->name . '%');

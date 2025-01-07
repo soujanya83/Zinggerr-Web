@@ -36,7 +36,14 @@
 
                             <div class="col-sm-6 col-lg-12 col-xxl-12">
                                 <div class="card border">
-                                    <div class="card-body d-flex align-items-start p-6">
+                                    <button class="btn btn-sm btn-outline-success align-items-start"
+                                        style="margin-left: 92%;"
+                                        onclick="window.location.href='{{ route('add_assets', ['id' => $course->id]) }}';">
+                                        Add Assets
+                                    </button>
+
+
+                                    <div class="card-body d-flex align-items-start p-0">
                                         <!-- Image Section -->
                                         <div style="width: 30%; margin-right: 20px;">
                                             <img src="{{ asset('storage/courses/' . $course->course_image) }}"
