@@ -43,12 +43,12 @@
                         @csrf
                         <div class="form-floating mb-3">
                             <input type="text" name="login" class="form-control" id="loginInput"
-                                placeholder="Email address / Username / Phone">
+                                placeholder="Email address / Username" required>
                             <label for="floatingInput">Email address / Username</label>
                         </div>
                         <div class="form-floating mb-3">
                             <input type="password" class="form-control" id="passwordInput" placeholder="Password"
-                                name="password">
+                                name="password" required>
                             <label for="passwordInput">Password</label>
                         </div>
                         <div class="d-flex mt-1 justify-content-between">

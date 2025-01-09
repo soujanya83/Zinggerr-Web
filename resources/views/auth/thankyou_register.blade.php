@@ -44,7 +44,7 @@
             <div class="card my-5 shadow-lg rounded-3">
                 <div class="card-body text-center">
                     <a href="#" class="d-flex justify-content-center mb-4">
-                        <img src="/images/logo.png" alt="logo" class="img-fluid" style="max-width: 285px;height:83px">
+                        <img src="asset/images/logo.png" alt="logo" class="img-fluid" style="max-width: 285px;height:83px">
                     </a>
                     <div class="auth-header">
                         <h2 class="text-secondary mt-3"><b>Thank you for registering!</b></h2>
@@ -57,7 +57,7 @@
                                 @else
                                     {{ session('registered_email') }}
                                 @endif
-                            </a>. Please check your inbox.
+                            </a>. Please check your inbox and click the link to activate your account.
                         </p>
 
 

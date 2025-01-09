@@ -21,20 +21,28 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input): User
     {
 
-        // Validate input data
         Validator::make($input, [
             'full_name' => ['required', 'string', 'min:5'],
-            'user_name' => ['required', 'string', 'min:5'],
+            'user_name' => [
+                'required',
+                'string',
+                'min:5',
+                Rule::unique('users', 'username'), // Unique validation for username
+            ],
             'email' => [
                 'required',
                 'string',
                 'email',
                 'max:255',
-                Rule::unique(User::class),
+                Rule::unique('users', 'email'), // Unique validation for email
             ],
-            'phone' => ['required', 'digits:10'],
+            'phone' => [
+                'required',
+                'digits:10',
+                Rule::unique('users', 'phone'), // Unique validation for phone
+            ],
             'password' => ['required', 'string', 'min:6'],
-            'tandc_status' => ['required', 'boolean'],
+            // 'tandc_status' => ['required', 'boolean'],
         ])->validate();
 
 
@@ -59,7 +67,7 @@ class CreateNewUser implements CreatesNewUsers
         );
         Mail::to($user->email)->send(new VerifyEmail($user, $verificationUrl));
 
-        session()->put('registered_email','tessdvcxvdfvf' );
+        session()->put('registered_email',$user->email );
         event(new Registered($user));
 
         return $user;
