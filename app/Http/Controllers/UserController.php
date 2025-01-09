@@ -69,7 +69,9 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'errors' => $validator->errors()]);
+            return back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
         try {
@@ -125,9 +127,10 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'errors' => $validator->errors()]);
+            return back()
+                ->withErrors($validator)
+                ->withInput();
         }
-
         try {
 
             $user = User::findOrFail($request->userid);

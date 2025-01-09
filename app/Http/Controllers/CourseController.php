@@ -18,33 +18,112 @@ use Illuminate\Support\Facades\Log;
 class CourseController extends Controller
 {
 
-    public function submitAssets(Request $request)
-    {
+    // public function submitAssets(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'blog_name' => 'required|string|max:255',
+    //         // 'assets_description' => 'required|string|max:800',
+    //         'course_assets_video' => 'required|file|mimes:mp4,webm,ogv', // Specify allowed video formats
+    //     ]);
+    //     if ($validator->fails()) {
+    //         return back()
+    //             ->withErrors($validator)
+    //             ->withInput();
+    //     }
+    //     $course = Course::find($request->course_id);
+    //     if ($course) {
+    //         $video = $request->file('course_assets_video');
+    //         $fileName = time() . '_' . $video->getClientOriginalName();
 
-        $request->validate([
-            'blog_name' => 'required|string|max:255',
-            'course_assets_video' => 'required|file|mimes:mp4,webm,ogv', // Specify allowed video formats
-        ]);
+    //         // Store the video using Laravel's Storage
+    //         Storage::disk('public')->putFileAs('assets_videos', $video, $fileName);
 
+    //         CoursesAssets::create([
+    //             'id' => (string) Guid::uuid4(),
+    //             'course_id' => $request->course_id,
+    //             'blog_name' => $request->blog_name,
+    //             'course_assets_video' => $fileName,
+    //         ]);
+
+    //         return redirect()->back()->with('success', 'Assets created successfully!');
+    //     }
+    //     return redirect()->back()->with('error', 'Courses ID Not Found');
+    // }
+
+    public function submitAssets(Request $request){
         $video = $request->file('course_assets_video');
-        $fileName = time() . '_' . $video->getClientOriginalName();
+        $path = $video->store('videos', 'public');
+        return response()->json(['path' => $path]);
+    }
 
-        // Store the video using Laravel's Storage
-        Storage::disk('public')->putFileAs('assets_videos', $video, $fileName);
 
-        CoursesAssets::create([
-            'id' => (string) Guid::uuid4(),
-            'course_id' => $request->course_id,
-            'blog_name' => $request->blog_name,
-            'course_assets_video' => $fileName,
-        ]);
 
-        return redirect()->back()->with('success', 'Assets created successfully!');
+    public function uploadChunk(Request $request)
+    {
+        // Get chunk details
+        $file = $request->file('file');
+        $chunkIndex = $request->input('resumableChunkNumber'); // Current chunk number
+        $totalChunks = $request->input('resumableTotalChunks'); // Total number of chunks
+        $fileName = $request->input('resumableFilename'); // Original file name
+
+        // Create a unique temp directory for each upload
+        $tempDir = storage_path('app/chunks/' . md5($fileName));
+        if (!is_dir($tempDir)) {
+            mkdir($tempDir, 0777, true);
+        }
+
+        // Save the current chunk
+        $chunkPath = $tempDir . '/' . $chunkIndex;
+        file_put_contents($chunkPath, file_get_contents($file->getRealPath()));
+
+        // Check if all chunks are uploaded
+        if ($this->areAllChunksUploaded($tempDir, $totalChunks)) {
+            // Merge all chunks into a single file
+            $finalPath = storage_path('app/public/assets_videos/' . $fileName);
+            $this->mergeChunks($tempDir, $finalPath);
+
+            // Clean up temporary directory
+            $this->cleanup($tempDir);
+
+            return response()->json(['success' => true, 'path' => $finalPath]);
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+    private function areAllChunksUploaded($tempDir, $totalChunks)
+    {
+        return count(scandir($tempDir)) - 2 === $totalChunks;
+    }
+
+    private function mergeChunks($tempDir, $finalPath)
+    {
+        $files = array_map('intval', array_diff(scandir($tempDir), ['.', '..']));
+        sort($files);
+
+        $output = fopen($finalPath, 'ab');
+        foreach ($files as $file) {
+            $chunk = fopen($tempDir . '/' . $file, 'rb');
+            stream_copy_to_stream($chunk, $output);
+            fclose($chunk);
+        }
+        fclose($output);
+    }
+
+    private function cleanup($tempDir)
+    {
+        foreach (scandir($tempDir) as $file) {
+            if ($file !== '.' && $file !== '..') {
+                unlink($tempDir . '/' . $file);
+            }
+        }
+        rmdir($tempDir);
     }
 
 
 
 
+// .........................................................................................................
     public function add_assets(Request $request, $id)
     {
         return view('courses.add_assets', compact('id'));
@@ -72,50 +151,52 @@ class CourseController extends Controller
                 ['id' => $uuid]
             );
         }
-        return redirect()->back()->with('success', 'Users assigned successfully!');
+        return redirect()->back()->with('success', 'Courses assigned successfully!');
     }
 
 
     public function createCourse(Request $request)
     {
 
-        // $validator = Validator::make($request->all(), [
-        //     'course_full_name' => 'required|string|max:255',
-        //     'course_short_name' => 'required|string|max:255',
-        //     'course_category' => 'required|string|max:100',
-        //     'course_start_date' => 'required|date|before_or_equal:course_end_date',
-        //     'course_end_date' => 'required|date|after_or_equal:course_start_date',
-        //     'course_id_number' => 'nullable|string|max:50',
-        //     'course_status' => 'required|boolean',
-        //     'downloa_status' => 'nullable|boolean',
-        //     'course_summary' => 'nullable|string|max:1000',
-        //     // 'course_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        //     'hidden_section' => 'nullable|string|max:255',
-        //     'course_layout' => 'nullable|string|max:255',
-        //     'course_sections' => 'required|integer|min:0|max:100',
-        //     'force_theme' => 'nullable|string|max:50',
-        //     'force_language' => 'nullable|string|max:50',
-        //     'no_announcements' => 'nullable|integer|min:0|max:255',
-        //     'gradebook_student' => 'nullable|boolean',
-        //     'activity_report' => 'nullable|boolean',
-        //     'activity_date' => 'nullable|boolean',
-        //     'file_uploads_size' => 'nullable|integer|min:0|max:2048',
-        //     'completion_tracking' => 'nullable|boolean',
-        //     'activity_completion_conditions' => 'nullable|boolean',
-        //     'group_mode' => 'nullable|string|max:50',
-        //     'force_group_mode' => 'nullable|boolean',
-        //     'default_group' => 'nullable|string|max:50',
-        //     'course_format' => 'nullable|string|max:100',
-        //     'tags' => 'nullable|array',
-        //     'tags.*' => 'string|max:50',
-        //     'module_credit' => 'nullable|integer|min:0|max:255',
-        // ]);
+        $validator = Validator::make($request->all(), [
+            'course_full_name' => 'required|string|max:255',
+            'course_short_name' => 'required|string|max:255',
+            'course_category' => 'required|string|max:100',
+            // 'course_start_date' => 'required|date|before_or_equal:course_end_date',
+            'course_start_date' => 'required|date',
+            // 'course_end_date' => 'required|date|after_or_equal:course_start_date',
+            'course_end_date' => 'required|date',
+            'course_id_number' => 'nullable|string|max:50',
+            'course_status' => 'required|boolean',
+            'downloa_status' => 'nullable|boolean',
+            'course_summary' => 'nullable|string|max:1000',
+            'course_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'hidden_section' => 'nullable|string|max:255',
+            'course_layout' => 'nullable|string|max:255',
+            'course_sections' => 'required|integer|min:0|max:100',
+            'force_theme' => 'nullable|string|max:50',
+            'force_language' => 'nullable|string|max:50',
+            'no_announcements' => 'nullable|integer|min:0|max:255',
+            'gradebook_student' => 'nullable|boolean',
+            'activity_report' => 'nullable|boolean',
+            'activity_date' => 'nullable|boolean',
+            'file_uploads_size' => 'required',
+            'completion_tracking' => 'nullable|in:0,1',
+            'activity_completion_conditions' => 'nullable|in:0,1',
+            'group_mode' => 'nullable|string|max:50',
+            'force_group_mode' => 'nullable|boolean',
+            'default_group' => 'nullable|string|max:50',
+            'course_format' => 'nullable|string|max:100',
+            'tags' => 'nullable|array',
+            'tags.*' => 'string|max:50',
+            'module_credit' => 'nullable|integer|min:0|max:255',
+        ]);
 
-        // if ($validator->fails()) {
-        //     return redirect()->back()
-        //         ->withErrors($validator)
-        //         ->withInput();
-        // }
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
         $tags = $request->tags; // This should be an array like ['Basic', 'Advanced', 'Intermediate']
         $tagsString = implode(',', $tags);
         $uuid = (string) Guid::uuid4();
@@ -158,14 +239,10 @@ class CourseController extends Controller
 
             $course->save();
 
-            return response()->json(['success' => true, 'message' => 'Course created successfully!']);
+            return redirect()->back()->with('success', 'Courses Created successfully!');
         } catch (\Exception $e) {
 
-            Log::error('Error occurred while creating a course: ' . $e->getMessage(), [
-                'exception' => $e,
-            ]);
-
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+            return redirect()->back()->with('error', 'Something want wrong');
         }
     }
 
@@ -217,42 +294,47 @@ class CourseController extends Controller
     public function courseupdate(Request $request, $id)
     {
 
-        // $validator = Validator::make($request->all(), [
-        //     'course_full_name' => 'required|string|max:255',
-        //     'course_short_name' => 'required|string|max:255',
-        //     'course_category' => 'required|string|max:100',
-        //     'course_start_date' => 'required|date|before_or_equal:course_end_date',
-        //     'course_end_date' => 'required|date|after_or_equal:course_start_date',
-        //     'course_id_number' => 'nullable|string|max:50',
-        //     'course_status' => 'required|boolean',
-        //     'downloa_status' => 'nullable|boolean',
-        //     'course_summary' => 'nullable|string|max:1000',
-        //     'hidden_section' => 'nullable|string|max:255',
-        //     'course_layout' => 'nullable|string|max:255',
-        //     'course_sections' => 'required|integer|min:0|max:100',
-        //     'force_theme' => 'nullable|string|max:50',
-        //     'force_language' => 'nullable|string|max:50',
-        //     'no_announcements' => 'nullable|integer|min:0|max:255',
-        //     'gradebook_student' => 'nullable|boolean',
-        //     'activity_report' => 'nullable|boolean',
-        //     'activity_date' => 'nullable|boolean',
-        //     'file_uploads_size' => 'nullable|integer|min:0|max:2048',
-        //     'completion_tracking' => 'nullable|boolean',
-        //     'activity_completion_conditions' => 'nullable|boolean',
-        //     'group_mode' => 'nullable|string|max:50',
-        //     'force_group_mode' => 'nullable|boolean',
-        //     'default_group' => 'nullable|string|max:50',
-        //     'course_format' => 'nullable|string|max:100',
-        //     'tags' => 'nullable|array',
-        //     'tags.*' => 'string|max:50',
-        //     'module_credit' => 'nullable|integer|min:0|max:255',
-        // ]);
+        $validator = Validator::make($request->all(), [
+            'course_full_name' => 'required|string|max:255',
+            'course_short_name' => 'required|string|max:255',
+            'course_category' => 'required|string|max:100',
+            // 'course_start_date' => 'required|date|before_or_equal:course_end_date',
+            'course_start_date' => 'required|date',
+            // 'course_end_date' => 'required|date|after_or_equal:course_start_date',
+            'course_end_date' => 'required|date',
+            'course_id_number' => 'nullable|string|max:50',
+            'course_status' => 'required|boolean',
+            'downloa_status' => 'nullable|boolean',
+            'course_summary' => 'nullable|string|max:1000',
+            'course_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'hidden_section' => 'nullable|string|max:255',
+            'course_layout' => 'nullable|string|max:255',
+            'course_sections' => 'required|integer|min:0|max:100',
+            'force_theme' => 'nullable|string|max:50',
+            'force_language' => 'nullable|string|max:50',
+            'no_announcements' => 'nullable|integer|min:0|max:255',
+            'gradebook_student' => 'nullable|boolean',
+            'activity_report' => 'nullable|boolean',
+            'activity_date' => 'nullable|boolean',
+            'file_uploads_size' => 'required',
+            'completion_tracking' => 'nullable|in:0,1',
+            'activity_completion_conditions' => 'nullable|in:0,1',
+            'group_mode' => 'nullable|string|max:50',
+            'force_group_mode' => 'nullable|boolean',
+            'default_group' => 'nullable|string|max:50',
+            'course_format' => 'nullable|string|max:100',
+            'tags' => 'nullable|array',
+            'tags.*' => 'string|max:50',
+            'module_credit' => 'nullable|integer|min:0|max:255',
+        ]);
 
-        // if ($validator->fails()) {
-        //     return redirect()->back()
-        //         ->withErrors($validator)
-        //         ->withInput();
-        // }
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+
         $course = Course::find($id);
         if (!$course) {
             return response()->json(['success' => false, 'message' => 'Course not found'], 404);

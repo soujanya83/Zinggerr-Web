@@ -41,7 +41,15 @@
             {{ session('success') }}
         </div>
         @endif
-
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -49,7 +57,7 @@
                         <h5 class="mb-0">Add User</h5>
                     </div>
                     <div class="card-body">
-                        <form id="registerForm" id="createuser" action="{{ route('updateuser')}}" method="get"
+                        <form id="registerForm"  action="{{ route('updateuser')}}" method="post"
                             autocomplete="off" enctype="multipart/form-data">
                             @csrf
 
@@ -106,7 +114,7 @@
                                         <div class=" mb-3">
                                             <label for="passwordInput">Password</label>
                                             <div class="input-group">
-                                                <input type="password" id="password" class="form-control" name="password" placeholder="Enter new password" required>
+                                                <input type="password" id="passwordInput" class="form-control" name="password" placeholder="Enter new password" required>
                                                 <button type="button" class="btn btn-outline-secondary" id="togglePassword">
                                                     <i class="fas fa-eye"></i>
                                                 </button>

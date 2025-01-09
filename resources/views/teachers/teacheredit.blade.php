@@ -49,7 +49,7 @@
                         <h5 class="mb-0">Update Teacher</h5>
                     </div>
                     <div class="card-body">
-                        <form id="registerForm" id="createuser" action="{{ route('updateteacher') }}" method="get"
+                        <form id="registerForm" id="createuser" action="{{ route('updateteacher') }}" method="post"
                             autocomplete="off" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="userid" value="{{ $user->id }}">

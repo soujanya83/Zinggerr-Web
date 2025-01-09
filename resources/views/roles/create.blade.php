@@ -28,7 +28,20 @@
                 </div>
             </div>
         </div>
-
+        @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <div class="row">
             <div class="tab-pane" id="request" role="tabpanel" aria-labelledby="request-tab">
                 <div class="card">
@@ -40,7 +53,7 @@
                             </div>
 
                             <div class="card-body">
-                                <form id="permissionForm" action="{{ route('roles.store') }}" method="get"
+                                <form id="permissionForm" action="{{ route('roles.store') }}" method="post"
                                     autocomplete="off">
                                     @csrf
                                     <input type="hidden" id="permissionId" name="id" value="">

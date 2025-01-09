@@ -28,7 +28,7 @@
             <div class="card my-5">
                 <div class="card-body">
                     <a href="#" class="d-flex justify-content-center">
-                        <img src="/images/logo.png" alt="image" style="max-width: 50%;">
+                        <img src="asset/images/logo.png" alt="image" style="max-width: 50%;">
                     </a>
                     <div class="row">
                         <div class="d-flex justify-content-center">

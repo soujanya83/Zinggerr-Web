@@ -42,7 +42,15 @@
             {{ session('success') }}
         </div>
         @endif
-
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -50,7 +58,7 @@
                         <h5 class="mb-0">Users Create</h5>
                     </div>
                     <div class="card-body">
-                        <form id="registerForm" id="createuser" action="{{ route('createuser') }}" method="post"
+                        <form id="registerForm"  action="{{ route('createuser') }}" method="post"
                             autocomplete="off" enctype="multipart/form-data">
                             @csrf
 
@@ -61,9 +69,9 @@
                                         <input type="text" class="form-control" id="nameInput" name="name" required>
 
                                         <small id="nameError" class="text-danger"></small>
-                                        {{-- @error('full_name')
+                                        @error('name')
                                         <small class="text-danger">{{ $message }}</small>
-                                        @enderror --}}
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -107,7 +115,7 @@
                                     <div class=" mb-3">
                                         <label for="passwordInput">Password</label>
                                         <div class="input-group">
-                                            <input type="password" id="password" class="form-control" name="password"
+                                            <input type="password" id="passwordInput" class="form-control" name="password"
                                                 placeholder="Enter new password" required>
                                             <button type="button" class="btn btn-outline-secondary" id="togglePassword">
                                                 <i class="fas fa-eye"></i>
@@ -214,7 +222,8 @@
     });
 </script>
 
-<script>
+{{-- <script>
+    document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('registerForm');
 
     const fullNameInput = document.getElementById('nameInput');
@@ -237,7 +246,7 @@
 
     const checkUniqueness = (value, route, errorField, fieldName) => {
         return fetch(route, {
-            method: 'get',
+            method: 'post',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -361,9 +370,150 @@
     phoneInput.addEventListener('blur', validatePhone);
     emailInput.addEventListener('blur', validateEmail);
     passwordInput.addEventListener('input', validatePassword);
+       });
+</script> --}}
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const registerForm = document.getElementById('registerForm');
+
+        const fullNameInput = document.getElementById('nameInput');
+        const userNameInput = document.getElementById('usernameInput');
+        const phoneInput = document.getElementById('phoneInput');
+        const emailInput = document.getElementById('emailInput');
+        const passwordInput = document.getElementById('passwordInput');
+        const submitButton = document.getElementById('submitButton');
+
+        const nameError = document.getElementById('nameError');
+        const usernameError = document.getElementById('usernameError');
+        const phoneError = document.getElementById('phoneError');
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+
+        let isFullNameUnique = true;
+        let isUsernameUnique = true;
+        let isPhoneUnique = true;
+        let isEmailUnique = true;
+
+        const checkUniqueness = (value, route, errorField, fieldName) => {
+            return fetch(route, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ [fieldName]: value })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists) {
+                    errorField.textContent = `This ${fieldName} is already registered.`;
+                    return false;
+                } else {
+                    errorField.textContent = '';
+                    return true;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                return false;
+            });
+        };
+
+        const validateFullName = () => {
+            const value = fullNameInput.value.trim();
+            if (value.length < 5) {
+                nameError.textContent = 'Full Name must be at least 5 characters.';
+                return false;
+            }
+            nameError.textContent = '';
+            return true;
+        };
+
+        const validateUserName = () => {
+            const value = userNameInput.value.trim();
+            if (value === '') {
+                usernameError.textContent = 'Username is required.';
+                isUsernameUnique = false;
+                return false;
+            }
+            if (value.length < 5) {
+                usernameError.textContent = 'User Name must be at least 5 characters.';
+                isUsernameUnique = false;
+                return false;
+            }
+
+            return checkUniqueness(value, '{{ route("check.username") }}', usernameError, 'username')
+                .then(isUnique => (isUsernameUnique = isUnique));
+        };
+
+        const validatePhone = () => {
+            const value = phoneInput.value.trim();
+            if (!/^\d{10}$/.test(value)) {
+                phoneError.textContent = 'Phone number must be exactly 10 digits.';
+                isPhoneUnique = false;
+                return false;
+            }
+
+            return checkUniqueness(value, '{{ route("check.phone") }}', phoneError, 'phone')
+                .then(isUnique => (isPhoneUnique = isUnique));
+        };
+
+        const validateEmail = () => {
+            const value = emailInput.value.trim();
+            const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+            if (!isValid) {
+                emailError.textContent = 'Invalid email format.';
+                isEmailUnique = false;
+                return false;
+            }
+
+            return checkUniqueness(value, '{{ route("check.email") }}', emailError, 'email')
+                .then(isUnique => (isEmailUnique = isUnique));
+        };
+
+        const validatePassword = () => {
+            if (passwordInput.value.trim().length < 6) {
+                passwordError.textContent = 'Password must be at least 6 characters.';
+                return false;
+            }
+            passwordError.textContent = '';
+            return true;
+        };
+
+        registerForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const isFormValid =
+                validateFullName() &&
+                validatePassword();
+
+            await Promise.all([
+                validateUserName(),
+                validatePhone(),
+                validateEmail()
+            ]);
+
+            if (
+                isFormValid &&
+                isFullNameUnique &&
+                isUsernameUnique &&
+                isPhoneUnique &&
+                isEmailUnique
+            ) {
+                this.submit();
+            } else {
+                console.error('Form has errors, fix them before submitting.');
+            }
+        });
+
+        fullNameInput.addEventListener('blur', validateFullName);
+        userNameInput.addEventListener('blur', validateUserName);
+        phoneInput.addEventListener('blur', validatePhone);
+        emailInput.addEventListener('blur', validateEmail);
+        passwordInput.addEventListener('input', validatePassword);
+    });
 </script>
-
-
 
 
 

@@ -8,6 +8,7 @@ use App\Models\Permission;
 use App\Models\PermissionRole;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Role;
+use Illuminate\Support\Facades\Validator;
 
 class PermissionsController extends Controller
 {
@@ -32,13 +33,18 @@ class PermissionsController extends Controller
 
     public function assignpermissions(Request $request)
     {
-        // $request->validate([
-        //     'role_id' => 'required|exists:roles,id',
-        //     'permissions' => 'required|array',
-        //     'permissions.*' => 'exists:permissions,id'
-        // ]);
+        $validator = Validator::make($request->all(),[
+            'role_id' => 'required|exists:roles,id',
+            'permissions' => 'required|array',
+            'permissions.*' => 'exists:permissions,id'
+        ]);
 
 
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         $role_id = $request->role_id;
         $permissions = $request->permissions;
@@ -60,11 +66,16 @@ class PermissionsController extends Controller
 
     public function submit_permission(Request $request)
     {
-        // $request->validate([
-        //     'name' => 'required|string|max:255|unique:permissions,name',
-        //     'displayname' => 'required|string|max:255',
-        //     'description' => 'nullable|string|max:500',
-        // ]);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255|unique:permissions,name',
+            'displayname' => 'required|string|max:255',
+            'description' => 'nullable|string|max:500',
+        ]);
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         try {
             $uuid = (string) Guid::uuid4(); // Use Laravel's built-in Str helper for UUID
@@ -86,6 +97,18 @@ class PermissionsController extends Controller
     public function update_permission(Request $request)
     {
         $permission = Permission::findOrFail($request->id);
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255|unique:permissions,name,' . $permission->id,
+            'displayname' => 'required|string|max:255',
+            'description' => 'nullable|string|max:500',
+        ]);
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
 
         $permission->update([
             'name' => $request->name,
@@ -120,11 +143,16 @@ class PermissionsController extends Controller
 
     public function submit_roles(Request $request)
     {
-        // $request->validate([
-        //     'name' => 'required|string|max:255|unique:permissions,name',
-        //     'displayname' => 'required|string|max:255',
-        //     'description' => 'nullable|string|max:500',
-        // ]);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255|unique:permissions,name',
+            'displayname' => 'required|string|max:255',
+            'description' => 'nullable|string|max:500',
+        ]);
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         try {
             $uuid = (string) Guid::uuid4(); // Use Laravel's built-in Str helper for UUID
@@ -166,7 +194,7 @@ class PermissionsController extends Controller
 
     public function permissions_assigned_list()
     {
-        $permissions = PermissionRole::select('permission_role.id','permissions.name', 'permissions.display_name', 'roles.display_name as role_name')->join('permissions', 'permissions.id', '=', 'permission_role.permission_id')->join('roles', 'roles.id', '=', 'permission_role.role_id')->get();
+        $permissions = PermissionRole::select('permission_role.id', 'permissions.name', 'permissions.display_name', 'roles.display_name as role_name')->join('permissions', 'permissions.id', '=', 'permission_role.permission_id')->join('roles', 'roles.id', '=', 'permission_role.role_id')->get();
 
         return view('permissions.permissions_assigned_list', compact('permissions'));
     }

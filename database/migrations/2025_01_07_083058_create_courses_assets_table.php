@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('courses_assets', function (Blueprint $table) {
-           $table->char('id', 36)->primary();
+            $table->char('id', 36)->primary();
             $table->string('blog_name');
             $table->string('course_id');
             $table->string('course_assets_video');
@@ -20,9 +20,7 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+
     public function down(): void
     {
         Schema::dropIfExists('assets');

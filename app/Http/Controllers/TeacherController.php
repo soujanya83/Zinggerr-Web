@@ -90,7 +90,7 @@ class TeacherController extends Controller
             'phone' => 'required|digits:10|unique:users,phone,' . $id,
             'status' => 'required|in:1,0',
             'gender' => 'required',
-            // 'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:3072',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:3072',
         ]);
 
         if ($validator->fails()) {

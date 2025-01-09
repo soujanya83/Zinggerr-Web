@@ -220,6 +220,17 @@
                         </ul>
                     </div>
 
+                    @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+
+
                     <div class="card-body">
                         <div class="tab-content" id="myTabContent">
                             {{--
@@ -230,7 +241,7 @@
                                 aria-labelledby="profile-tab-1">
                                 <div class="row">
                                     <div class="card-body">
-                                        <form id="createCourseForm" method="get" enctype="multipart/form-data"
+                                        <form id="createCourseForm" method="post" enctype="multipart/form-data"
                                             action="{{ route('course_update', $course->id) }}">
                                             @csrf
                                             <div class="row">
@@ -399,7 +410,7 @@
                                                 <label class="form-label">Course image</label>
                                                 <input type="file" name="course_image" class="form-control"
                                                     placeholder="" cols="6">
-                                                <img src="{{ url('storage/courses/'.$course->course_image) }}"
+                                                <img src="{{ url('storage/'.$course->course_image) }}"
                                                     alt="image" width="100px" height="100px" class="mt-2">
 
                                             </div>
@@ -1031,13 +1042,13 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-{{-- <script>
+<script>
     document.getElementById('createCourseForm').addEventListener('submit', function (e) {
         e.preventDefault();
         var formData = new FormData(this);
         var courseId = '{{ $course->id }}';
         fetch(`/courses-update/${courseId}`, {
-            method: 'get',
+            method: 'post',
             body: formData,
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -1081,6 +1092,6 @@
             });
         });
     });
-</script> --}}
+</script>
 @include('partials.footer')
 @endsection

@@ -14,7 +14,7 @@
         <div class="auth-form">
             <div class="card mt-5">
                 <div class="card-body">
-                    <a href="#" class="d-flex justify-content-center mt-3"><img src="/images/logo.png" alt="image"
+                    <a href="#" class="d-flex justify-content-center mt-3"><img src="asset/images/logo.png" alt="image"
                             style="max-width: 50%;"></a>
                     <div class="row">
                         <div class="d-flex justify-content-center">

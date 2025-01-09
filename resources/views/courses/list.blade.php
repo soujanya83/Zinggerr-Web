@@ -57,6 +57,15 @@
                             {{-- <div><a href="{{ route('addCourse') }}" class="btn btn-success">Add New Course</a></div> --}}
                         </div>
                     </div>
+
+                    @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                    @endif
+
+
+
                     <div class="card-body">
                         <div class="row">
                             @if ($courses->count() > 0)
@@ -99,7 +108,7 @@
                                                 </form>
                                                 @endif
                                             </div>
-                                            <img src="{{ asset('storage/courses/' . $course->course_image) }}"
+                                            <img src="{{ asset('storage/' . $course->course_image) }}"
                                                 alt="Course Image" class="img-fluid w-100"
                                                 style="width: 210px;height:200px">
 
@@ -248,7 +257,7 @@
 
 
                                                     <form id="assignUsersForm" action="{{ route('course.assign') }}"
-                                                        method="get">
+                                                        method="post">
                                                         @csrf
                                                         <div class="modal-body" style="margin-top: -20px;">
 

@@ -46,7 +46,7 @@
                                     <div class="card-body d-flex align-items-start p-0">
                                         <!-- Image Section -->
                                         <div style="width: 30%; margin-right: 20px;">
-                                            <img src="{{ asset('storage/courses/' . $course->course_image) }}"
+                                            <img src="{{ asset('storage/' . $course->course_image) }}"
                                                 alt="Course Image" class="img-fluid" style="width: 330px;height:230px">
                                             {{-- <div class="position-absolute top-0 end-0 p-2"> --}}
                                                 <span class="badge text-bg-light text-uppercase">

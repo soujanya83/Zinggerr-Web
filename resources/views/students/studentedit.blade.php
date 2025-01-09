@@ -42,6 +42,16 @@
         </div>
         @endif
 
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -49,7 +59,7 @@
                         <h5 class="mb-0">Update Students</h5>
                     </div>
                     <div class="card-body">
-                        <form id="registerForm" id="createuser" action="{{ route('updatestudent') }}" method="get"
+                        <form id="registerForm" id="createuser" action="{{ route('updatestudent') }}" method="post"
                             autocomplete="off" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="userid" value="{{ $user->id }}">

@@ -103,6 +103,21 @@
                     </ul>
                 </div>
 
+                @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+                @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+                @endif
+
                 <div class="card-body">
                     <div class="tab-content" id="myTabContent">
                         {{--
@@ -113,7 +128,7 @@
                             aria-labelledby="profile-tab-1">
                             <div class="row">
                                 <div class="card-body">
-                                    <form id="createCourseForm" method="get" enctype="multipart/form-data"
+                                    <form id="createCourseForm" method="post" enctype="multipart/form-data"
                                         action="{{ route('courses.create') }}">
                                         @csrf
                                         <div class="row">
@@ -163,7 +178,7 @@
                                             <div class="col-md-4">
                                                 <div class="mb-3">
                                                     <label class="form-label">Course End Date</label>
-                                                    <input type="date" name="cour_end_date" class="form-control"
+                                                    <input type="date" name="course_end_date" class="form-control"
                                                         required>
                                                 </div>
                                             </div>
@@ -247,7 +262,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Course image</label>
                                             <input type="file" name="course_image" class="form-control" placeholder=""
-                                                 cols="6">
+                                                cols="6">
                                         </div>
                                     </div>
                                 </div>
@@ -565,11 +580,10 @@
                                             <input class="form-check-input" type="radio" name="completion_tracking"
                                                 id="completion_tracking_yes" value="1" required>
                                             <label class="form-check-label" for="completion_tracking_yes">Yes</label>
-                                            &nbsp &nbsp
+                                            &nbsp; &nbsp;
                                             <input class="form-check-input" type="radio" name="completion_tracking"
-                                                id="completion_tracking_no" value="0">
+                                                id="completion_tracking_no" value="0" required>
                                             <label class="form-check-label" for="completion_tracking_no">No</label>
-
                                         </div>
                                     </div>
 
@@ -705,8 +719,22 @@
         </div>
     </div>
 </div>
+{{-- <script>
+    document.querySelectorAll('input[name="completion_tracking"]').forEach(input => {
+    console.log(input.name, input.focus());
+});
 
-{{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+document.querySelector('form').addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    console.log('Completion Tracking:', formData.get('completion_tracking'));
+});
+
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.getElementById('createCourseForm').addEventListener('submit', function (e) {
         e.preventDefault();
@@ -758,8 +786,8 @@
             });
         });
     });
-</script>
- --}}
+</script> --}}
+
 
 
 

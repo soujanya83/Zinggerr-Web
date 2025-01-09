@@ -65,7 +65,7 @@ Route::post('/check-email', [RegisterController::class, 'checkEmail'])->name('ch
 
 
 
-// Route::middleware(['web', ClearCacheAfterLogout::class, 'auth'])->group(function () {
+
 Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function () {
     Route::get('/app', function () {
         return view('app.dashboard');
@@ -81,21 +81,23 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
 
     Route::get('courses/change-status', [CourseController::class, 'couserchangeStatus'])->name('coursechangeStatus');
     Route::get('/api/users', [CourseController::class, 'getUsers']);
-    Route::get('/courses/assign', [CourseController::class, 'couserassign'])->name('course.assign');
-    Route::get('courses-create', [CourseController::class, 'createCourse'])->name('courses.create');
+    Route::post('/courses/assign', [CourseController::class, 'couserassign'])->name('course.assign');
+    Route::post('courses-create', [CourseController::class, 'createCourse'])->name('courses.create');
     Route::match(['get', 'post'], 'courses', [CourseController::class, 'courselist'])->name('courses');
     Route::get('courses/{id}', [CourseController::class, 'coursedetails'])->name('course_details');
     Route::get('courses-edit/{id}', [CourseController::class, 'courseedit'])->name('course_edit');
-    Route::get('courses-update/{id}', [CourseController::class, 'courseupdate'])->name('course_update');
+    Route::post('courses-update/{id}', [CourseController::class, 'courseupdate'])->name('course_update');
     Route::get('courses-add', [CourseController::class, 'courseadd'])->name('addCourse');
     Route::get('/courses-delete/{id}', [CourseController::class, 'coursedelete'])
-    ->name('course_delete')
-    ->middleware('can:role');
+        ->name('course_delete')
+        ->middleware('can:role');
 
 
     Route::get('assets-add/{id}', [CourseController::class, 'add_assets'])->name('add_assets');
 
     Route::post('assets/upload', [CourseController::class, 'submitAssets'])->name('assets.submit');
+
+    Route::post('/upload-chunk', [CourseController::class, 'uploadChunk']);
 
 
 
@@ -105,10 +107,10 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
         ->name('user_delete')
         ->middleware('can:role');
     Route::get('/users-edit/{id}', [UserController::class, 'useredit'])->name('user_edit')->middleware('can:role');
-    Route::get('/users-update', [UserController::class, 'updateuser'])->name('updateuser')->middleware('can:role');
+    Route::post('/users-update', [UserController::class, 'updateuser'])->name('updateuser')->middleware('can:role');
     Route::get('/change-status', [UserController::class, 'changeStatus'])->name('changeStatus');
     // Route::get('/changes-status', [UserController::class, 'changeStatus'])->name('changeStatus');
-    Route::post('users-add', [UserController::class, 'createuser'])->name('createuser');
+    // Route::post('users-add', [UserController::class, 'createuser'])->name('createuser');
 
     Route::post('add-user', [UserController::class, 'createuser'])->name('createuser');
     Route::get('users-create', [UserController::class, 'useradd'])->name('useradd');
@@ -122,7 +124,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
 
 
     // Route::delete('/student-delete/{id}', [StudentController::class, 'student_delete'])->name('student_delete')->middleware('can:role');
-    Route::get('/students-update', [StudentController::class, 'updatestudent'])->name('updatestudent');
+    Route::post('/students-update', [StudentController::class, 'updatestudent'])->name('updatestudent');
     Route::get('/student-edit/{id}', [StudentController::class, 'studentedit'])->name('student_edit');
 
     Route::get('/students/dashboard', [StudentController::class, 'studentdashboard'])->name('student.dashboard')->middleware('can:student-role');
@@ -136,7 +138,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
 
 
     // Route::delete('/teacher-delete/{id}', [TeacherController::class, 'teacher_delete'])->name('teacher_delete')->middleware('can:role');
-    Route::get('/teacher-update', [TeacherController::class, 'updateteacher'])->name('updateteacher');
+    Route::post('/teacher-update', [TeacherController::class, 'updateteacher'])->name('updateteacher');
     Route::get('/teacher-edit/{id}', [TeacherController::class, 'teacheredit'])->name('teacher_edit');
     Route::get('/teachers/dashboard', [TeacherController::class, 'teacherdashboard'])->name('teacher.dashboard')->middleware('can:teacher-role');
 
@@ -152,16 +154,16 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('users/change-password', [ProfileController::class, 'changePassword'])->name('user.changepassword');
 
     Route::get('permissions/create', [PermissionsController::class, 'create_permission'])->name('permissions.create');
-    Route::get('permission/submit', [PermissionsController::class, 'submit_permission'])->name('submit.permission');
-    Route::get('/permissions/update', [PermissionsController::class, 'update_permission'])->name('update.permission');
+    Route::post('permission/submit', [PermissionsController::class, 'submit_permission'])->name('submit.permission');
+    Route::post('/permissions/update', [PermissionsController::class, 'update_permission'])->name('update.permission');
     Route::get('permission/{id}/delete', [PermissionsController::class, 'destroy'])->name('permission.delete');
 
     Route::get('permissions/assign', [PermissionsController::class, 'role_permission'])->name('permissions.role');
     Route::get('permissions/assigned-list', [PermissionsController::class, 'permissions_assigned_list'])->name('permissions.assignedlist');
-    Route::get('permissions/role-assign', [PermissionsController::class, 'assignpermissions'])->name('role.permission.assign');
+    Route::post('permissions/role-assign', [PermissionsController::class, 'assignpermissions'])->name('role.permission.assign');
 
-    Route::get('roles/submit', [PermissionsController::class, 'submit_roles'])->name('roles.store');
-    Route::get('/role/update', [PermissionsController::class, 'update_role'])->name('update.role');
+    Route::post('roles/submit', [PermissionsController::class, 'submit_roles'])->name('roles.store');
+    Route::post('/role/update', [PermissionsController::class, 'update_role'])->name('update.role');
 
     Route::get('roles/create', [PermissionsController::class, 'createroles'])->name('roles.create');
     Route::get('/role-delete/{user}', [PermissionsController::class, 'role_delete'])
