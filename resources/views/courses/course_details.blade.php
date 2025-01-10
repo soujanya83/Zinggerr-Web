@@ -35,6 +35,7 @@
 
 
                             <div class="col-sm-6 col-lg-12 col-xxl-12">
+                                <h5>Course Full Details</h5>
                                 <div class="card border">
                                     <button class="btn btn-sm btn-outline-success align-items-start"
                                         style="margin-left: 92%;"
@@ -115,6 +116,10 @@
                                         <p><strong>Description:</strong> {{ $course->course_summary }}</p>
                                     </div>
                                 </div>
+
+
+                                <h5>Courses Assets List</h5>
+
                             </div>
 
                         </div>

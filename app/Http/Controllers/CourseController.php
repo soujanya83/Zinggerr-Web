@@ -18,46 +18,129 @@ use Illuminate\Support\Facades\Log;
 class CourseController extends Controller
 {
 
+
+
     // public function submitAssets(Request $request)
     // {
-    //     $validator = Validator::make($request->all(), [
-    //         'blog_name' => 'required|string|max:255',
-    //         // 'assets_description' => 'required|string|max:800',
-    //         'course_assets_video' => 'required|file|mimes:mp4,webm,ogv', // Specify allowed video formats
-    //     ]);
-    //     if ($validator->fails()) {
-    //         return back()
-    //             ->withErrors($validator)
-    //             ->withInput();
+    //     $fileName = $request->input('fileName');
+    //     $chunkNumber = $request->input('chunkNumber');
+    //     $totalChunks = $request->input('totalChunks');
+    //     $file = $request->file('file');
+
+    //     if (!$file) {
+    //         return response()->json(['error' => 'File not provided'], 400);
     //     }
-    //     $course = Course::find($request->course_id);
-    //     if ($course) {
-    //         $video = $request->file('course_assets_video');
-    //         $fileName = time() . '_' . $video->getClientOriginalName();
 
-    //         // Store the video using Laravel's Storage
-    //         Storage::disk('public')->putFileAs('assets_videos', $video, $fileName);
+    //     $tempDir = storage_path('app/chunks/' . md5($fileName));
 
-    //         CoursesAssets::create([
-    //             'id' => (string) Guid::uuid4(),
-    //             'course_id' => $request->course_id,
-    //             'blog_name' => $request->blog_name,
-    //             'course_assets_video' => $fileName,
-    //         ]);
-
-    //         return redirect()->back()->with('success', 'Assets created successfully!');
+    //     if (!is_dir($tempDir)) {
+    //         mkdir($tempDir, 0777, true);
     //     }
-    //     return redirect()->back()->with('error', 'Courses ID Not Found');
+
+    //     // Save chunk
+    //     $chunkPath = $tempDir . '/' . $chunkNumber;
+    //     $file->move($tempDir, $chunkNumber);
+
+    //     // Check if all chunks are uploaded
+    //     if ($chunkNumber == $totalChunks) {
+    //         $finalPath = storage_path('app/public/assets_videos/' . $fileName);
+
+    //         if (!is_dir(dirname($finalPath))) {
+    //             mkdir(dirname($finalPath), 0777, true);
+    //         }
+
+    //         // Merge chunks
+    //         $out = fopen($finalPath, 'wb');
+    //         for ($i = 1; $i <= $totalChunks; $i++) {
+    //             $chunkFile = $tempDir . '/' . $i;
+    //             $in = fopen($chunkFile, 'rb');
+    //             while ($buffer = fread($in, 4096)) {
+    //                 fwrite($out, $buffer);
+    //             }
+    //             fclose($in);
+    //             unlink($chunkFile); // Remove the chunk file
+    //         }
+    //         fclose($out);
+    //         rmdir($tempDir); // Remove the temporary directory
+
+    //         return response()->json(['success' => true, 'path' => 'assets_videos/' . $fileName]);
+    //     }
+
+    //     return response()->json(['success' => true]);
     // }
 
-    public function submitAssets(Request $request){
-        $video = $request->file('course_assets_video');
-        $path = $video->store('videos', 'public');
-        return response()->json(['path' => $path]);
+    public function submitAssets(Request $request)
+    {
+     
+        $fileName = $request->input('fileName');
+        $chunkNumber = $request->input('chunkNumber');
+        $totalChunks = $request->input('totalChunks');
+        $file = $request->file('file');
+        $courseId = $request->input('course_id'); // Get course_id
+        $blogName = $request->input('blog_name'); // Get blog_name
+
+        if (!$file) {
+            return response()->json(['error' => 'File not provided'], 400);
+        }
+
+        // Temporary directory for chunks
+        $tempDir = storage_path('app/chunks/' . md5($fileName));
+        if (!is_dir($tempDir)) {
+            mkdir($tempDir, 0777, true);
+        }
+
+        // Save the uploaded chunk
+        $chunkPath = $tempDir . '/' . $chunkNumber;
+        $file->move($tempDir, $chunkNumber);
+
+        // Check if all chunks are uploaded
+        if ($chunkNumber == $totalChunks) {
+            $finalPath = storage_path('app/public/assets_videos/' . $fileName);
+
+            if (!is_dir(dirname($finalPath))) {
+                mkdir(dirname($finalPath), 0777, true);
+            }
+
+            // Merge all chunks into a single file
+            $out = fopen($finalPath, 'wb');
+            for ($i = 1; $i <= $totalChunks; $i++) {
+                $chunkFile = $tempDir . '/' . $i;
+                $in = fopen($chunkFile, 'rb');
+                while ($buffer = fread($in, 4096)) {
+                    fwrite($out, $buffer);
+                }
+                fclose($in);
+                unlink($chunkFile); // Delete chunk after merging
+            }
+            fclose($out);
+            rmdir($tempDir); // Remove the temporary directory
+
+            // Save file details to the database
+            $course = Course::find($courseId);
+            if ($course) {
+                CoursesAssets::create([
+                    'id' => (string) Guid::uuid4(),
+                    'course_id' => $courseId,
+                    'blog_name' => $blogName,
+                    'course_assets_video' => 'assets_videos/' . $fileName, // Save the file path
+                ]);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Video uploaded and data saved successfully!',
+                    'path' => 'assets_videos/' . $fileName,
+                ]);
+            } else {
+                return response()->json(['error' => 'Course not found'], 404);
+            }
+        }
+
+        return response()->json(['success' => true, 'message' => 'Chunk uploaded successfully!']);
     }
 
 
 
+// ................................................................................
     public function uploadChunk(Request $request)
     {
         // Get chunk details
@@ -66,7 +149,7 @@ class CourseController extends Controller
         $totalChunks = $request->input('resumableTotalChunks'); // Total number of chunks
         $fileName = $request->input('resumableFilename'); // Original file name
 
-        // Create a unique temp directory for each upload
+
         $tempDir = storage_path('app/chunks/' . md5($fileName));
         if (!is_dir($tempDir)) {
             mkdir($tempDir, 0777, true);
