@@ -69,9 +69,34 @@
     }
 
     /* .......................................................... */
+
+    .pc-head-link-primary {
+        background-color: blue;
+        /* Set the background color */
+        border-radius: 50px;
+        /* Apply rounded corners */
+        overflow: hidden;
+        /* Clip content that overflows the container */
+    }
+
+    .user-avatar {
+        /* Existing styles */
+        position: relative;
+        /* Position the avatar */
+        left: 10px;
+        /* Adjust position as needed */
+    }
+
+    .pc-head-link-primary:hover .ti-settings {
+        color: white;
+        /* Change icon color to white on hover */
+    }
+
+
 </style>
 {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
 <meta name="csrf-token" content="{{ csrf_token() }}">
+
 
 <header class="pc-header">
     <div class="header-wrapper">
@@ -166,12 +191,17 @@
                         </div>
                     </div>
                 </li>
-                <li class="dropdown pc-h-item header-user-profile">
+                <li class="dropdown pc-h-item header-user-profile" style="margin-right: 12px">
                     <a class="pc-head-link head-link-primary dropdown-toggle arrow-none me-0" href="#" role="button"
-                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="{{ asset('asset/images/user/avatar-2.jpg') }}" alt="user-image" class="user-avatar">
-                        <span><i class="ti ti-settings"></i></span>
-                    </a>
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    style="height: 61px; width: 116px; padding: 5px; radius: 50px;">
+
+                    <img src="{{ asset('asset/images/user/avatar-2.jpg') }}" alt="user-image" class="user-avatar"
+                        style=" margin-top: 11px; margin-bottom: 11px; border-radius: 50%;margin-right: 29px;">
+
+                    <span><i class="ti ti-settings" style="font-size: 26px; margin-right: 13px;"></i></span>
+
+                </a>
                     <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                         <div class="dropdown-header">
                             <h4><span class=" text-muted">{{ Auth::user()->name }}</span></h4>

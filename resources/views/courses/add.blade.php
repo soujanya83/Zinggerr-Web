@@ -9,6 +9,113 @@
 @include('partials.headerdashboard')
 
 
+<style>
+    /* General nav-link styles */
+    .nav-tabs .nav-link {
+        color: #000;
+        border: none;
+        margin-right: 10px;
+    }
+
+    /* Active tab underline and font color */
+    .nav-tabs .nav-link.active {
+        color: #007bff;
+        font-weight: bold;
+        border: none;
+        position: relative;
+    }
+
+    .nav-tabs .nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: #007bff;
+        border-radius: 2px;
+
+    }
+
+    /* Active tab pane content styling */
+    .tab-pane.active {
+        color: #007bff;
+        /* Matches the line color */
+    }
+
+    /* ............................ */
+</style>
+<style>
+    .file-upload-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 2px dashed #007bff;
+        border-radius: 5px;
+        /* padding: 10px; */
+        cursor: pointer;
+        height: 140px;
+        width: 387px;
+        transition: background-color 0.3s ease;
+    }
+
+    .file-upload-label:hover {
+        background-color: #f0f8ff;
+    }
+
+    .file-upload-input {
+        display: none;
+    }
+
+    .upload-icon {
+        font-size: 2rem;
+        color: #007bff;
+    }
+
+
+
+    .css-pht88d {
+    /* font-size: 0.875rem; */
+    font-weight: 400;
+    line-height: 1.4375em;
+    font-family: Roboto, sans-serif;
+    color: rgb(54, 65, 82);
+    box-sizing: border-box;
+    cursor: text;
+    display: inline-flex
+;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    background: rgb(248, 250, 252);
+    border-radius: 8px;}
+
+
+
+
+
+
+
+
+</style>
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+</script>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+</script>
+
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs4.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs4.min.js"></script>
+
 <div class="pc-container">
     <div class="pc-content">
         <div class="page-header">
@@ -19,6 +126,13 @@
                             <h5 class="m-b-10">Courses View</h5>
                         </div>
                     </div>
+
+
+
+
+
+
+
                     <div class="col-auto">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -29,25 +143,46 @@
                 </div>
             </div>
         </div>
+
+        @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
+
+        @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
+
+        @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
+
+
         <div class="row">
 
-            <div class="card">
-                <div class="card-header  pb-0" style="    margin-left: -29px;">
+            <div class="card" style="    width: 98%;margin-left: 12px;">
+                <div class="card-header  pb-0">
                     <ul class="nav nav-tabs profile-tabs" id="myTab" role="tablist">
                         <li class="nav-item " role="presentation">
-                            <a class="nav-link active" id="profile-tab-1" data-bs-toggle="tab" href="#profile-1"
+                            <a class="nav-link active " id="profile-tab-1" data-bs-toggle="tab" href="#profile-1"
                                 role="tab" aria-selected="true">
                                 <i class="material-icons-two-tone me-2">account_circle</i>
                                 General
                             </a>
                         </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="profile-tab-2" data-bs-toggle="tab" href="#profile-2" role="tab"
-                                aria-selected="false" tabindex="-1">
-                                <i class="material-icons-two-tone me-2">book</i>
-                                Description
-                            </a>
-                        </li>
+
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" id="profile-tab-3" data-bs-toggle="tab" href="#profile-3" role="tab"
                                 aria-selected="false" tabindex="-1">
@@ -55,36 +190,7 @@
                                 Course format
                             </a>
                         </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="profile-tab-4" data-bs-toggle="tab" href="#profile-4" role="tab"
-                                aria-selected="false" tabindex="-1">
-                                <i class="material-icons-two-tone me-2">book</i>
-                                Appearance
-                            </a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="profile-tab-5" data-bs-toggle="tab" href="#profile-5" role="tab"
-                                aria-selected="false" tabindex="-1">
-                                <i class="material-icons-two-tone me-2">book</i>
-                                Files and uploads
-                            </a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="profile-tab-6" data-bs-toggle="tab" href="#profile-6" role="tab"
-                                aria-selected="false" tabindex="-1">
-                                <i class="material-icons-two-tone me-2">book</i>
-                                Completion tracking
-                            </a>
-                        </li>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="profile-tab-7" data-bs-toggle="tab" href="#profile-7" role="tab"
-                                aria-selected="false" tabindex="-1">
-                                <i class="material-icons-two-tone me-2">book</i>
-                                Groups
-                            </a>
-                        </li>
-                        </li>
+
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" id="profile-tab-8" data-bs-toggle="tab" href="#profile-8" role="tab"
                                 aria-selected="false" tabindex="-1">
@@ -92,31 +198,10 @@
                                 Tags
                             </a>
                         </li>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="profile-tab-9" data-bs-toggle="tab" href="#profile-9" role="tab"
-                                aria-selected="false" tabindex="-1">
-                                <i class="material-icons-two-tone me-2">book</i>
-                                Course custom fields
-                            </a>
-                        </li>
                     </ul>
                 </div>
 
-                @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-                @endif
-                @if (session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-                @endif
+
 
                 <div class="card-body">
                     <div class="tab-content" id="myTabContent">
@@ -126,166 +211,112 @@
 
                         <div class="tab-pane fade show active" id="profile-1" role="tabpanel"
                             aria-labelledby="profile-tab-1">
-                            <div class="row">
-                                <div class="card-body">
-                                    <form id="createCourseForm" method="post" enctype="multipart/form-data"
-                                        action="{{ route('courses.create') }}">
-                                        @csrf
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Course Full Name</label>
-                                                    <input type="text" name="course_full_name" class="form-control"
-                                                        placeholder="Enter Course Full Name" required>
-                                                </div>
+                            <div class="card-body">
+                                {{-- <form id="createCourseForm" method="POST" enctype="multipart/form-data"> --}}
+                                    <form action="{{ route('courses.create') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+
+                                                <input type="text" name="course_full_name" class="form-control"
+                                                    placeholder="Enter Course Full Name" id="floatingShortname">
+
+
+                                                <label style="align-content: center;" class="form-label"
+                                                    for="floatingShortname">Course Full
+                                                    Name</label>
                                             </div>
-
-                                            <div class="col-md-4">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Course Short Name</label>
-                                                    <input type="text" name="course_short_name" class="form-control"
-                                                        placeholder="Enter Course Short Name" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="mb-3">
-                                                    <label for="emailInput" class="form-label">Select Course
-                                                        Category</label>
-                                                    <select name="course_category" class="form-select" required>
-                                                        <option value=""></option>
-                                                        {{-- @foreach($role as $roledata)
-                                                        <option value="{{ $roledata->name }}">{{ $roledata->display_name
-                                                            }}</option>
-                                                        @endforeach --}}
-
-                                                        <option value="Art">Art</option>
-                                                        <option value="Science">Science</option>
-                                                        <option value="Math">Math</option>
-                                                        <option value="History">History</option>
-
-
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Course Start Date</label>
-                                                    <input type="date" name="course_start_date" class="form-control"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Course End Date</label>
-                                                    <input type="date" name="course_end_date" class="form-control"
-                                                        required>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="col-md-4">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Course ID Number</label>
-                                                    <input type="number" name="course_id_number" class="form-control"
-                                                        placeholder="Enter Course ID Number" required>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <div class="mb-3">
-                                                    <label for="status">Course Visibility:</label>
-                                                    <div style="margin-top: 10px;">
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="course_status" id="statusshow" value="1">
-                                                            <label class="form-check-label"
-                                                                for="statusshow">Show</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="course_status" id="statushide" value="0">
-                                                            <label class="form-check-label"
-                                                                for="statushide">Hide</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <div class="mb-3">
-                                                    <label for="status">Enabal Download Course Content:</label>
-                                                    <div style="margin-top: 10px;">
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="downloa_status" id="statusyes" value="1">
-                                                            <label class="form-check-label" for="statusyes">Yes</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="downloa_status" id="statusno" value="0">
-                                                            <label class="form-check-label" for="statusno">No</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            {{-- <div class="col-md-12 text-end">
-
-                                                <button type="submit" class="btn btn-primary">Create Course</button>
-                                            </div> --}}
                                         </div>
-                                        {{--
-                                    </form> --}}
 
-                                </div>
-                            </div>
-                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
 
-                        {{--
-                        ........................................................................................................................
-                        --}}
+                                                <input type="text" name="course_short_name" class="form-control"
+                                                    placeholder="Enter Course Short Name" id="floatingShortname">
+                                                <label style="align-content: center;" class="form-label"
+                                                    for="floatingShortname">Course Short
+                                                    Name</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+                                                <select name="course_category" class="form-select"
+                                                    id="floatingShortname">
 
-                        <div class="tab-pane fade" id="profile-2" role="tabpanel" aria-labelledby="profile-tab-2">
-                            <div class="card">
+                                                    <option value="Art">Art    </option>
+                                                    <option value="Science">Science</option>
+                                                    <option value="Math">Math</option>
+                                                    <option value="History">History</option>
+                                                </select>
+                                                <label style="align-content: center;" for="floatingShortname">Select
+                                                    Course
+                                                    Category</label>
+                                            </div>
 
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3">
+
+                                                <input type="number" name="course_id_number" class="form-control"
+                                                    placeholder="Enter Course ID Number">
+                                                <label style="align-content: center;" class="form-label">Course
+                                                    ID Number</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
                                             <label class="form-label">Course Summary</label>
-                                            <textarea type="text" name="course_summary" class="form-control"
-                                                placeholder="Enter Course Summary" required cols="6"></textarea>
+                                            <div class="form-floating mb-3">
+                                                <!-- Textarea for Summernote -->
+                                                <textarea id="summernote" name="course_summary" class="form-control">
+
+                                        </textarea>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Course Image Upload</label>
+
+                                            <div class="form-floating mb-3">
+
+                                                <div class="d-flex align-items-center border p-3 rounded">
+
+                                                    <div class="d-flex align-items-center" style="margin-left: 107px;">
+
+                                                        <label for="fileUpload" class="file-upload-label">
+                                                            <div class="upload-icon mb-3">
+                                                                <i
+                                                                    class="fas fa-cloud-upload-alt fa-3x text-primary"></i>
+                                                            </div>
+                                                            <span class="text-muted"
+                                                                style="    margin-top: -19px;">Click to
+                                                                upload
+                                                                file here</span>
+                                                            <span id="fileName" class="ms-2"></span>
+                                                            <input type="file" id="fileUpload" name="course_image"
+                                                                class="file-upload-input" onchange="showFileName(this)">
+                                                        </label>
+
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Course image</label>
-                                            <input type="file" name="course_image" class="form-control" placeholder=""
-                                                cols="6">
-                                        </div>
-                                    </div>
-                                </div>
-
-
                             </div>
                         </div>
-
-                        {{--
-                        ........................................................................................................................
-                        --}}
 
 
                         <div class="tab-pane fade" id="profile-3" role="tabpanel" aria-labelledby="profile-tab-3">
-                            <div class="card">
+                            <div class="">
                                 <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-floating mb-3">
 
+                                            <select name="course_layout" class="form-select">
 
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="emailInput" class="form-label">Hidden sections</label>
-                                            <select name="hidden_section" class="form-select" required>
                                                 <option value="Hidden sections are shown as not available">
                                                     Hidden sections are shown as not available
                                                 </option>
@@ -293,115 +324,129 @@
                                                     Hidden sections are completely invisible
                                                 </option>
                                             </select>
+                                            <label style="align-content: center;" for="emailInput"
+                                                class="form-label">Course layout</label>
+                                        </div>
 
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <label for="status" style="color: #000">Course
+                                                Visibility:</label>
+                                            <div>
+
+                                                <div class="form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="course_status"
+                                                        id="statusshow" value="1" checked>
+                                                    <label class="form-check-label" for="statusshow"
+                                                        style="color: #000">Show</label>
+                                                </div>
+
+
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="course_status"
+                                                        id="statushide" value="0">
+                                                    <label class="form-check-label" for="statushide"
+                                                        style="color: #000">Hide</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <label for="status" style="color: #000">Enable
+                                                Download Course Content:</label>
+                                            <div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="downloa_status"
+                                                        id="statusyes" value="1" checked>
+                                                    <label class="form-check-label" for="statusyes"
+                                                        style="color: #000">Yes</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="downloa_status"
+                                                        id="statusno" value="0">
+                                                    <label class="form-check-label" for="statusno"
+                                                        style="color: #000">No</label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="emailInput" class="form-label">Course layout</label>
-                                            <select name="course_layout" class="form-select" required>
-                                                <option value="Hidden sections are shown as not
-                                                    available">Hidden sections are shown as not
-                                                    available</option>
-                                                <option value="Hidden sections are completely
-                                                    invisible">Hidden sections are completely
-                                                    invisible</option>
-                                            </select>
-
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
+                                        <div class="form-floating mb-3">
                                             <div class="dropdown">
-                                                <label for="emailInput" class="form-label">Format:
+                                                <label style="align-content: center;" for="emailInput"
+                                                    class="form-label">Format:
                                                     &nbsp&nbsp&nbsp</label>
-                                                <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                <button class="btn btn-primary dropdown-toggle" type="button"
                                                     id="dropdownMenuButton" data-bs-toggle="dropdown"
                                                     aria-expanded="false">
                                                     Weekly sections
                                                 </button>
                                                 <ul class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
                                                     <li>
-                                                        <label class="dropdown-item d-flex align-items-start">
+                                                        <label style="align-content: center;"
+                                                            class="dropdown-item d-flex align-items-start">
                                                             <input type="radio" name="course_format"
                                                                 value="Custom sections" class="form-check-input me-2">
+                                                            &nbsp; &nbsp;
                                                             <div>
                                                                 <strong>Custom sections</strong><br>
-                                                                <span class="text-muted">The course is divided
-                                                                    into
+                                                                <span class="text-muted">The course is divided into
                                                                     customizable sections.</span>
                                                             </div>
                                                         </label>
                                                     </li>
                                                     <li>
-                                                        <label class="dropdown-item d-flex align-items-start">
+                                                        <label style="align-content: center;"
+                                                            class="dropdown-item d-flex align-items-start">
                                                             <input type="radio" name="course_format"
                                                                 value="Weekly sections" class="form-check-input me-2"
                                                                 checked>
+                                                            &nbsp; &nbsp;
                                                             <div>
                                                                 <strong>Weekly sections</strong><br>
-                                                                <span class="text-muted">The course is divided
-                                                                    into
-                                                                    sections
-                                                                    corresponding to each week, beginning from
-                                                                    the
-                                                                    course
-                                                                    start date.</span>
+                                                                <span class="text-muted">The course is divided into
+                                                                    sections corresponding to each week, beginning
+                                                                    from the course start date.</span>
                                                             </div>
                                                         </label>
                                                     </li>
                                                     <li>
-                                                        <label class="dropdown-item d-flex align-items-start">
+                                                        <label style="align-content: center;"
+                                                            class="dropdown-item d-flex align-items-start">
                                                             <input type="radio" name="course_format"
                                                                 value="Single activity" class="form-check-input me-2">
+                                                            &nbsp; &nbsp;
                                                             <div>
                                                                 <strong>Single activity</strong><br>
-                                                                <span class="text-muted">The course contains
-                                                                    only
-                                                                    one
-                                                                    activity or resource.</span>
+                                                                <span class="text-muted">The course contains only
+                                                                    one activity or resource.</span>
                                                             </div>
                                                         </label>
                                                     </li>
                                                     <li>
-                                                        <label class="dropdown-item d-flex align-items-start">
+                                                        <label style="align-content: center;"
+                                                            class="dropdown-item d-flex align-items-start">
                                                             <input type="radio" name="course_format" value="Social"
-                                                                class="form-check-input me-2">
+                                                                class="form-check-input me-2"> &nbsp; &nbsp;
                                                             <div>
                                                                 <strong>Social</strong><br>
                                                                 <span class="text-muted">The course is centred
-                                                                    around a main
-                                                                    forum on the course page. Additional
-                                                                    activities
-                                                                    and
-                                                                    resources can be added using the Social
-                                                                    activities
-                                                                    block.</span>
+                                                                    around a main forum on the course page.
+                                                                    Additional activities and resources can be added
+                                                                    using the Social activities block.</span>
                                                             </div>
                                                         </label>
                                                     </li>
                                                 </ul>
+
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="emailInput" class="form-label">Number of sections:</label>
-                                            <select name="course_sections" class="form-select" required>
-
-                                                @for ($i = 0; $i <= 52; $i++) <option value="{{ $i }}" {{ $i==10
-                                                    ? 'selected' : '' }}>
-                                                    {{ $i }}
-                                                    </option>
-                                                    @endfor
-                                            </select>
-                                        </div>
-                                    </div>
-
                                 </div>
 
 
@@ -409,283 +454,38 @@
 
                         </div>
 
-                        {{--
-                        ........................................................................................................................
-                        --}}
-
-                        <div class="tab-pane fade" id="profile-4" role="tabpanel" aria-labelledby="profile-tab-4">
-                            <div class="card">
-                                <div class="row">
-
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label for="themeSelect" class="form-label">Force theme:</label>
-                                            <select id="themeSelect" name="force_theme" class="form-select" required>
-                                                <option value="do_not_force" selected>Do not force</option>
-                                                <option value="boost">Boost</option>
-                                                <option value="classic">Classic</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label for="select_language" class="form-label">Force Language:</label>
-                                            <select id="select_language" name="force_language" class="form-select"
-                                                required>
-                                                <option value="do_not_force" selected>Do not force</option>
-                                                <option value="boost">Boost</option>
-                                                <option value="classic">Classic</option>
-                                                <option value="am">Amharic</option>
-                                                <option value="om">Afaan Oromoo</option>
-                                                <option value="af">Afrikaans</option>
-                                                <option value="an">Aragonese</option>
-                                                <option value="oc_es">Aranese</option>
-                                                <option value="ast">Asturian</option>
-                                                <option value="az">Azerbaijani</option>
-                                                <option value="id">Bahasa Indonesia</option>
-                                                <option value="ms">Bahasa Melayu</option>
-                                                <option value="bm">Bamanankan</option>
-                                                <option value="bi">Bislama</option>
-                                                <option value="bs">Bosnian</option>
-                                                <option value="br">Breton</option>
-                                                <option value="ca">Catalan</option>
-                                                <option value="ca_valencia">Catalan (Valencian)</option>
-                                                <option value="cs">Czech</option>
-                                                <option value="mis">Montenegrin</option>
-                                                <option value="cy">Welsh</option>
-                                                <option value="da">Danish</option>
-                                                <option value="se">Northern Sami</option>
-                                                <option value="de">German</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label for="emailInput" class="form-label">Number of announcements:</label>
-                                            <select name="no_announcements" id="emailInput" class="form-select"
-                                                required>
-
-                                                @for ($i = 0; $i <= 10; $i++) <option value="{{ $i }}" {{ $i==5
-                                                    ? 'selected' : '' }}>
-                                                    {{ $i }}
-                                                    </option>
-                                                    @endfor
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label for="gradebook_student" class="form-label">Show gradebook to
-                                                students:</label>
-                                            <br>
-                                            <input class="form-check-input" type="radio" name="gradebook_student"
-                                                id="gradebook_yes" value="1" required>
-                                            <label class="form-check-label" for="gradebook_yes">Yes</label>
-                                            &nbsp&nbsp
-
-                                            <input class="form-check-input" type="radio" name="gradebook_student"
-                                                id="gradebook_no" value="0">
-                                            <label class="form-check-label" for="gradebook_no">No</label>
-
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label for="activity_report" class="form-label">Show activity
-                                                reports:</label>
-                                            <br>
-                                            <input class="form-check-input" type="radio" name="activity_report"
-                                                id="activity_report_yes" value="1" required>
-                                            <label class="form-check-label" for="activity_report_yes">Yes</label>
-                                            &nbsp&nbsp
-                                            <input class="form-check-input" type="radio" name="activity_report"
-                                                id="activity_report_no" value="0">
-                                            <label class="form-check-label" for="activity_report_no">No</label>
-
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label for="activity_date" class="form-label">Show activity dates:</label>
-                                            <br>
-                                            <input class="form-check-input" type="radio" name="activity_date"
-                                                id="activity_date_yes" value="1" required>
-                                            <label class="form-check-label" for="activity_date_yes">Yes</label>
-                                            &nbsp&nbsp
-                                            <input class="form-check-input" type="radio" name="activity_date"
-                                                id="activity_date_no" value="0">
-                                            <label class="form-check-label" for="activity_date_no">No</label>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {{--
-                        ........................................................................................................................
-                        --}}
-
-                        <div class="tab-pane fade" id="profile-5" role="tabpanel" aria-labelledby="profile-tab-5">
-                            <div class="card">
-                                <div class="row">
-
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label for="file_uploads_size" class="form-label">Maximum upload
-                                                size:</label>
-                                            <select id="file_uploads_size" name="file_uploads_size" class="form-select"
-                                                required>
-                                                <option value="" selected>Site upload limit(256MB)</option>
-
-                                                <option value="256MB">256 MB</option>
-                                                <option value="250MB">250 MB</option>
-                                                <option value="100MB">100 MB</option>
-                                                <option value="50MB">50 MB</option>
-                                                <option value="20MB">20 MB</option>
-                                                <option value="10MB">10 MB</option>
-                                                <option value="5MB">5 MB</option>
-                                                <option value="2MB">2 MB</option>
-                                                <option value="1MB">1 MB</option>
-                                                <option value="500KB">500 KB</option>
-                                                <option value="100KB">100 KB</option>
-                                                <option value="50KB">50 KB</option>
-                                                <option value="10KB">10 KB</option>
-                                            </select>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {{--
-                        ........................................................................................................................
-                        --}}
-
-                        <div class="tab-pane fade" id="profile-6" role="tabpanel" aria-labelledby="profile-tab-6">
-                            <div class="card">
-                                <div class="row">
-
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label for="completion_tracking" class="form-label">Enable completion
-                                                tracking:</label>
-                                            <br>
-                                            <input class="form-check-input" type="radio" name="completion_tracking"
-                                                id="completion_tracking_yes" value="1" required>
-                                            <label class="form-check-label" for="completion_tracking_yes">Yes</label>
-                                            &nbsp; &nbsp;
-                                            <input class="form-check-input" type="radio" name="completion_tracking"
-                                                id="completion_tracking_no" value="0" required>
-                                            <label class="form-check-label" for="completion_tracking_no">No</label>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label class="form-label">Show activity completion conditions:</label>
-                                            <br>
-                                            <input class="form-check-input" type="radio"
-                                                name="activity_completion_conditions" id="completion_conditions_yes"
-                                                value="1" required>
-                                            <label class="form-check-label" for="completion_conditions_yes">Yes</label>
-                                            &nbsp &nbsp
-
-                                            <input class="form-check-input" type="radio"
-                                                name="activity_completion_conditions" id="completion_conditions_no"
-                                                value="0">
-                                            <label class="form-check-label" for="completion_conditions_no">No</label>
-
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        {{--
-                        ........................................................................................................................
-                        --}}
-
-                        <div class="tab-pane fade" id="profile-7" role="tabpanel" aria-labelledby="profile-tab-7">
-                            <div class="card">
-                                <div class="row">
-
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label for="group_mode" class="form-label">Group mode:</label>
-                                            <select name="group_mode" id="group_mode" class="form-select" required>
-                                                <option value="No Group">No Groups</option>
-                                                <option value="Separate Group">Separate Groups</option>
-                                                <option value="Visible Group">Visible Groups</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label class="form-label">Force group mode:</label>
-                                            <br>
-                                            <input class="form-check-input" type="radio" name="force_group_mode"
-                                                id="force_group_mode_yes" value="1" required>
-                                            <label class="form-check-label" for="force_group_mode_yes">Yes</label>
-                                            &nbsp&nbsp
-                                            <input class="form-check-input" type="radio" name="force_group_mode"
-                                                id="force_group_mode_no" value="0">
-                                            <label class="form-check-label" for="force_group_mode_no">No</label>
-
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label class="form-label">Default grouping:</label>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="default_group"
-                                                    id="default_group_none" value="None" checked required>
-                                                <label class="form-check-label" for="default_group_none">None</label>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        {{--
-                        ........................................................................................................................
-                        --}}
 
                         <div class="tab-pane fade" id="profile-8" role="tabpanel" aria-labelledby="profile-tab-8">
-                            <div class="card">
+                            <div class="">
                                 <div class="row">
-
+                                    <label style="align-content: center;" for="tags" class="form-label">Tags:</label>
+                                    &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
                                     <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label for="tags" class="form-label">Tags:</label>
-                                            <div class="form-check">
+                                        <div class="form-floating mb-3">
+
+                                            <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="checkbox" value="Basic" id="basic"
                                                     name="tags[]">
-                                                <label class="form-check-label" for="basic">Basic</label>
+                                                <label class="form-check-label" for="basic"
+                                                    style="color: black">Basic</label>
                                             </div>
-                                            <div class="form-check">
+                                            <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="checkbox" value="Advanced"
                                                     id="advanced" name="tags[]">
-                                                <label class="form-check-label" for="advanced">Advanced</label>
+                                                <label class="form-check-label" for="advanced"
+                                                    style="color: black">Advanced</label>
                                             </div>
-                                            <div class="form-check">
+                                            <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="checkbox" value="Intermediate"
                                                     id="intermediate" name="tags[]">
-                                                <label class="form-check-label" for="intermediate">Intermediate</label>
+                                                <label class="form-check-label" for="intermediate"
+                                                    style="color: black">Intermediate</label>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div class="col-md-12 text-end">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
                                     </div>
 
                                 </div>
@@ -694,45 +494,15 @@
                         {{--
                         ........................................................................................................................
                         --}}
-                        <div class="tab-pane fade" id="profile-9" role="tabpanel" aria-labelledby="profile-tab-9">
-                            <div class="card">
-                                <div class="row">
 
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label for="credits" class="form-label">Module credits:</label>
-
-                                            <input type="text" class="form-control" id="credits" name="module_credit"
-                                                value="25">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 text-end">
-                                        <button type="submit" class="btn btn-primary">Submit Course</button>
-                                    </div>
-                                </div>
-                                </form>
-                            </div>
-                        </div>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-{{-- <script>
-    document.querySelectorAll('input[name="completion_tracking"]').forEach(input => {
-    console.log(input.name, input.focus());
-});
 
-document.querySelector('form').addEventListener('submit', (event) => {
-    event.preventDefault();
-
-    const formData = new FormData(event.target);
-    console.log('Completion Tracking:', formData.get('completion_tracking'));
-});
-
-
-</script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
@@ -740,7 +510,7 @@ document.querySelector('form').addEventListener('submit', (event) => {
         e.preventDefault();
         var formData = new FormData(this);
         fetch('{{ route('courses.create') }}', {
-            method: 'get',
+            method: 'post',
             body: formData,
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -775,19 +545,53 @@ document.querySelector('form').addEventListener('submit', (event) => {
                 });
             }
         })
-        .catch(error => {
-            Swal.fire({
-                title: 'Error!',
-                text: 'Something went wrong. Please try again.',
-                icon: 'error',
-                showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true
-            });
+    //     .catch(error => {
+    //         Swal.fire({
+    //             title: 'Error!',
+    //             text: 'Something went wrong. Please try again.',
+    //             icon: 'error',
+    //             showConfirmButton: false,
+    // timer: 3000,
+    // timerProgressBar: true
+    //         });
+    //     });
+    });
+</script>
+
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        // Initialize Summernote on the textarea
+        $('#summernote').summernote({
+            placeholder: 'Enter course summary here...',
+            tabsize: 2,
+            height: 90, // Adjust the height as needed
+            toolbar: [
+                // Custom toolbar options
+                ['style', ['style']],
+                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['fontname', ['fontname']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                // ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ]
         });
     });
-</script> --}}
+</script>
 
+<script>
+    function showFileName(input) {
+        var fileName = input.files[0].name;
+        document.getElementById('fileName').textContent = fileName;
+    }
+</script>
 
 
 

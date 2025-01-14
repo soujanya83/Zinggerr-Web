@@ -28,6 +28,15 @@
                 </div>
             </div>
         </div>
+
+        @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
+
+
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -54,15 +63,12 @@
 
                             </form>
 
-                            {{-- <div><a href="{{ route('addCourse') }}" class="btn btn-success">Add New Course</a></div> --}}
+                            {{-- <div><a href="{{ route('addCourse') }}" class="btn btn-success">Add New Course</a>
+                            </div> --}}
                         </div>
                     </div>
 
-                    @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                    @endif
+
 
 
 
@@ -75,7 +81,7 @@
                                     <div class="card-body p-2">
                                         <div class="position-relative">
 
-                                            <div class="position-absolute top-0 end-0 p-2">
+                                            <div class="position-absolute top-0 p-2">
                                                 @if(Auth::user()->type === 'Superadmin')
 
                                                 <form action="{{ route('coursechangeStatus') }}" method="get"
@@ -108,141 +114,175 @@
                                                 </form>
                                                 @endif
                                             </div>
+
+                                            <div class="position-absolute end-0 top-0 p-2"
+                                                style="background-color: white; border-radius: 50px;margin: 6px;">
+
+                                                <div class="flex-shrink-0">
+                                                    <div class="dropdown">
+                                                        <!-- Dropdown toggle button -->
+                                                        <a class="dropdown-toggle text-primary opacity-50 arrow-none"
+                                                            href="#" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false" style="color: black !important">
+                                                            <i class="ti ti-dots f-20"></i>
+                                                        </a>
+
+                                                        <!-- Dropdown menu -->
+                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                            @if(Auth::user()->type === 'Superadmin' ||
+                                                            (isset($permissions) && in_array('cousers_assign',
+                                                            $permissions)))
+                                                            <a href="#" class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#assignUsersModal"
+                                                                data-course-id="{{ $course->id }}" data-type="users">
+                                                                <i class="ti ti-user-plus f-20"></i> Assign Students
+                                                            </a>
+                                                            @endif
+
+                                                            <!-- Assign Teachers Option -->
+                                                            @if(Auth::user()->type === 'Superadmin' ||
+                                                            (isset($permissions) && in_array('cousers_assign',
+                                                            $permissions)))
+                                                            <a href="#" class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#assignUsersModal"
+                                                                data-course-id="{{ $course->id }}" data-type="teachers">
+                                                                <i class="ti ti-user-check f-20"></i> Assign Teachers
+                                                            </a>
+                                                            @endif
+
+
+
+
+                                                            @if(Auth::user()->type === 'Superadmin' ||
+                                                            (isset($permissions) && in_array('courses_edit',
+                                                            $permissions)))
+                                                            <a href="{{ route('course_edit', $course->id) }}"
+                                                                class="dropdown-item">
+                                                                <i class="ti ti-edit f-20"></i> Course Edit
+                                                            </a>
+                                                            @endif
+
+                                                            <!-- Delete option -->
+                                                            @if(Auth::user()->type === 'Superadmin' ||
+                                                            (isset($permissions) && in_array('cousers_delete',
+                                                            $permissions)))
+                                                            <a href="{{ route('course_delete', $course->id) }}"
+                                                                class="dropdown-item"
+                                                                onclick="return confirmDelete(this)">
+                                                                <i class="ti ti-trash f-20 text-danger"></i> Course
+                                                                Delete
+                                                            </a>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+
+
+
+                                            </div>
+
+
                                             <img src="{{ asset('storage/' . $course->course_image) }}"
                                                 alt="Course Image" class="img-fluid w-100"
                                                 style="width: 210px;height:200px">
 
-                                            {{-- <div class="position-absolute top-0 end-0 p-2">
-                                                <span class="badge text-bg-light text-uppercase">
-                                                    @if($course->status == '1') Active @else Inactive @endif
-                                                </span>
-                                            </div>
-
-                                            <div class="position-absolute top-0 end-0 p-2">
-                                                <button
-                                                    class="btn btn-sm {{ $course->status == '1' ? 'btn-success' : 'btn-danger' }}"
-                                                    onclick="toggleStatus({{ $course->id }})">
-                                                    {{ $course->status == '1' ? 'Active' : 'Inactive' }}
-                                                </button>
-                                            </div> --}}
-
 
                                         </div>
                                         <ul class="list-group list-group-flush">
-                                            <li class="list-group-item px-0 py-1">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="flex-grow-1 me-2">
-                                                        <h6 class="mb-1">{{ $course->course_name }}</h6>
-                                                        <p class="mb-0 f-w-600"><i class="fas fa-star text-warning"></i>
-                                                            4.8</p>
 
-                                                    </div>
-
-
-                                                    {{-- @can('role',Auth::user()) --}}
-
-
-
-                                                    <div class="flex-shrink-0">
-                                                        @if(Auth::user()->type === 'Superadmin')
-                                                        <a href="{{ route('course_edit', $course->id) }}"
-                                                            class="avtar avtar-xs btn-link-secondary read-more-btn"
-                                                            data-id="{{ $course->id }}">
-                                                            <i class="ti ti-edit f-20"></i>
-                                                        </a>
-                                                        @elseif(isset($permissions) && in_array('courses_edit',
-                                                        $permissions))
-                                                        <a href="{{ route('course_edit', $course->id) }}"
-                                                            class="avtar avtar-xs btn-link-secondary read-more-btn"
-                                                            data-id="{{ $course->id }}">
-                                                            <i class="ti ti-edit f-20"></i>
-                                                        </a>
-                                                        @endif
-
-                                                        @if(Auth::user()->type === 'Superadmin')
-                                                        {{-- Super admin sees everything --}}
-                                                        <a href="{{ route('course_delete', $course->id) }}"
-                                                            class="avtar avtar-xs btn-link-secondary read-more-btn"
-                                                            data-id="{{ $course->id }}"
-                                                            onclick="return confirmDelete(this)">
-                                                            <i class="ti ti-trash f-20" style="color: red;"></i>
-                                                        </a>
-                                                        @elseif(isset($permissions) && in_array('cousers_delete',
-                                                        $permissions))
-                                                        {{-- Other roles see the button only if they have the "delete"
-                                                        permission --}}
-                                                        <a href="{{ route('course_delete', $course->id) }}"
-                                                            class="avtar avtar-xs btn-link-secondary read-more-btn"
-                                                            data-id="{{ $course->id }}"
-                                                            onclick="return confirmDelete(this)">
-                                                            <i class="ti ti-trash f-20" style="color: red;"></i>
-                                                        </a>
-                                                        @endif
-
-
-                                                        {{-- @endcan --}}
-
-
-                                                    </div>
-                                                </div>
-                                            </li>
                                             <li class="list-group-item px-0 py-2">
                                                 <div class="d-flex align-items-center">
-                                                    <div class="flex-grow-1 me-2">
-                                                        <p class="mb-0">Course:</p>
-                                                    </div>
+
                                                     <div class="flex-shrink-0">
-                                                        <p class="text-muted mb-0">{{ $course->course_full_name }}</p>
+                                                        <h3 class="text-muted mb-0" style="color:black !important">{{
+                                                            $course->course_full_name }}</h3>
                                                     </div>
+
                                                 </div>
-                                            </li>
-                                            <li class="list-group-item px-0 py-2">
-                                                <div class="d-flex align-items-center">
+                                                <div class="d-flex align-items-center mt-2">
                                                     <div class="flex-grow-1 me-2">
-                                                        <p class="mb-0">Time</p>
+                                                        <p class="mb-0">{{ $course->course_category }}</p>
                                                     </div>
-                                                    <div class="flex-shrink-0">
-                                                        <p class="text-muted mb-0">{{ $course->course_start_date }}
-                                                            <strong>To</strong> {{ $course->course_end_date }}
-                                                        </p>
-                                                    </div>
+
+
                                                 </div>
-                                            </li>
-                                            <li class="list-group-item px-0 py-2">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="flex-grow-1 me-2">
-                                                        <p class="mb-0">Category</p>
+
+                                                <div class="d-flex align-items-center mt-2">
+
+                                                    <!-- Star Rating Value -->
+                                                    <div class="flex-shrink-0 me-2">
+                                                        <strong class="text-muted">{{
+                                                            number_format($course->rating, 1) }}</strong>
                                                     </div>
-                                                    <div class="flex-shrink-0">
-                                                        <p class="text-muted mb-0">{{ $course->course_category }}</p>
+
+                                                    <!-- Star Icons -->
+                                                    <div class="flex-grow-1">
+                                                        @php
+                                                        $rating = round($course->rating * 2) / 2;
+
+                                                        $fullStars = floor($rating); // Full stars count
+                                                        $halfStar = ($rating - $fullStars == 0.5) ? 1 : 0; // Half
+                                                        // star logic
+                                                        $emptyStars = 5 - $fullStars - $halfStar; // Empty stars
+                                                        // count
+                                                        @endphp
+
+                                                        <!-- Full Stars -->
+                                                        @for ($i = 0; $i < $fullStars; $i++) <i
+                                                            class="fas fa-star text-warning"></i>
+                                                            @endfor
+
+                                                            <!-- Half Star -->
+                                                            @if ($halfStar)
+                                                            <i class="fas fa-star-half-alt text-warning"></i>
+                                                            @endif
+
+                                                            <!-- Empty Stars -->
+                                                            @for ($i = 0; $i < $emptyStars; $i++) <i
+                                                                class="far fa-star text-warning"></i>
+                                                                @endfor
+                                                                <small class="text-muted">({{
+                                                                    number_format($course->total_users) }})</small>
                                                     </div>
+                                                    <a href="{{ route('course_details', $course->id) }}"
+                                                        class="btn btn-sm btn-outline-primary mb-2 position-absolute end-0">Read
+                                                        More</a>
                                                 </div>
+
+
+
+
+
                                             </li>
+
+
+
+
+
+
                                         </ul>
 
-                                        <a href="{{ route('course_details', $course->id) }}"
-                                            class="btn btn-sm btn-outline-primary mb-2">Read More</a>
 
 
-                                        @if(Auth::user()->type === 'Superadmin')
-                                        <button class="btn btn-sm btn-outline-success mb-2" data-bs-toggle="modal"
-                                            style="margin-left: 100px;" data-bs-target="#assignUsersModal"
-                                            data-course-id="{{ $course->id }}">
-                                            Assign Users
-                                        </button>
-                                        @elseif(isset($permissions) && in_array('cousers_assign',
-                                        $permissions))
-                                        <button class="btn btn-sm btn-outline-success mb-2" data-bs-toggle="modal"
-                                            style="margin-left: 100px;" data-bs-target="#assignUsersModal"
-                                            data-course-id="{{ $course->id }}">
-                                            Assign Users
-                                        </button>
-                                        @endif
-                                        {{--
-                                        /////////////////////////////////////////model//////////////////////////////////////////
-                                        --}}
-                                        <!-- Assign Users Button -->
-                                        <!-- Modal -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                         <div class="modal fade" id="assignUsersModal" tabindex="-1"
                                             aria-labelledby="assignUsersModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
@@ -291,57 +331,59 @@
 
 
 
-                                        {{-- ///////////////////////////////////////////////////////////////// --}}
 
                                         <script>
                                             document.addEventListener('DOMContentLoaded', function () {
-    const userList = document.getElementById('userList');
-    const userSearch = document.getElementById('userSearch');
-    const assignUsersForm = document.getElementById('assignUsersForm');
+                                                const userList = document.getElementById('userList');
+                                                const userSearch = document.getElementById('userSearch');
+                                                const assignUsersForm = document.getElementById('assignUsersForm');
 
-    $('#assignUsersModal').on('show.bs.modal', function (event) {
-        const button = event.relatedTarget; // Button that triggered the modal
-        const courseId = button.getAttribute('data-course-id'); // Extract course ID
-        document.getElementById('course_id').value = courseId; // Set course ID in form
+                                                $('#assignUsersModal').on('show.bs.modal', function (event) {
+                                                    const button = event.relatedTarget; // Button that triggered the modal
+                                                    const courseId = button.getAttribute('data-course-id'); // Extract course ID
+                                                    const type = button.getAttribute('data-type'); // Determine if assigning users or teachers
+                                                    document.getElementById('course_id').value = courseId; // Set course ID in form
 
-        userList.innerHTML = 'Loading users...';
+                                                    userList.innerHTML = 'Loading...';
 
-        // Fetch users (replace with your API endpoint)
-        fetch(`/api/users`)
-            .then(response => response.json())
-            .then(users => {
-                const userCheckboxes = users.map(user => `
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="user-${user.id}" name="users[]" value="${user.id}">
-                        <label class="form-check-label" for="user-${user.id}">${user.name}</label>
-                        <span  class="badge rounded-pill f-14 ${
-                        user.type === 'Superadmin' ? 'bg-light-success' :
-                        user.type === 'Admin' ? 'bg-light-danger' :
-                        user.type === 'Student' ? 'bg-light-primary' :
-                        user.type === 'Staff' ? 'bg-light-warning' :
-                        user.type === 'Teacher' ? 'bg-light-info' : 'bg-light-secondary'
-                          }">${user.type}</span>
-                    </div>
-                `).join('');
-                userList.innerHTML = userCheckboxes;
-            })
-            .catch(() => {
-                userList.innerHTML = '<p>Error loading users</p>';
-            });
-    });
+                                                    // Fetch users or teachers based on type
+                                                    fetch(`/api/${type}`)
+                                                        .then(response => response.json())
+                                                        .then(data => {
+                                                            const checkboxes = data.map(item => `
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input" id="${type}-${item.id}" name="${type}[]" value="${item.id}">
+                                                                    <label class="form-check-label" for="${type}-${item.id}">${item.name}</label>
+                                                                    <span class="badge rounded-pill f-14 ${
+                                                                        item.type === 'Superadmin' ? 'bg-light-success' :
+                                                                        item.type === 'Admin' ? 'bg-light-danger' :
+                                                                        item.type === 'Student' ? 'bg-light-primary' :
+                                                                        item.type === 'Staff' ? 'bg-light-warning' :
+                                                                        item.type === 'Teacher' ? 'bg-light-info' : 'bg-light-secondary'
+                                                                    }">${item.type}</span>
+                                                                </div>
+                                                            `).join('');
+                                                            userList.innerHTML = checkboxes;
+                                                        })
+                                                        .catch(() => {
+                                                            userList.innerHTML = '<p>Error loading data</p>';
+                                                        });
+                                                });
 
-    // Search functionality
-    userSearch.addEventListener('input', function () {
-        const searchTerm = this.value.toLowerCase();
-        document.querySelectorAll('#userList .form-check').forEach(item => {
-            const label = item.querySelector('label').textContent.toLowerCase();
-            item.style.display = label.includes(searchTerm) ? 'block' : 'none';
-        });
-    });
-});
-
-
+                                                // Search functionality
+                                                userSearch.addEventListener('input', function () {
+                                                    const searchTerm = this.value.toLowerCase();
+                                                    document.querySelectorAll('#userList .form-check').forEach(item => {
+                                                        const label = item.querySelector('label').textContent.toLowerCase();
+                                                        item.style.display = label.includes(searchTerm) ? 'block' : 'none';
+                                                    });
+                                                });
+                                            });
                                         </script>
+
+
+
+
 
                                         {{-- //////////////////////////////////////////////////////// --}}
 

@@ -44,9 +44,23 @@
                             <h3>User Roles</h3>
                             <a href="{{ route('roles.create') }}" class="btn btn-primary mb-3">+ Add Role</a>
 
-                            @if(session('success'))
-                            <div class="alert alert-success">{{ session('success') }}</div>
+                            @if (session('error'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                {{ session('error') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
                             @endif
+
+                            @if (session('success'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ session('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+                            @endif
+
+                      
 
                             <table class="table table-striped">
                                 <thead>
@@ -96,4 +110,3 @@
 
 @include('partials.footer')
 @endsection
-

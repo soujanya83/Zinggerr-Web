@@ -81,6 +81,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
 
     Route::get('courses/change-status', [CourseController::class, 'couserchangeStatus'])->name('coursechangeStatus');
     Route::get('/api/users', [CourseController::class, 'getUsers']);
+    Route::get('/api/teachers', [CourseController::class, 'getTeachers']);
     Route::post('/courses/assign', [CourseController::class, 'couserassign'])->name('course.assign');
     Route::post('courses-create', [CourseController::class, 'createCourse'])->name('courses.create');
     Route::match(['get', 'post'], 'courses', [CourseController::class, 'courselist'])->name('courses');
@@ -93,11 +94,15 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
         ->middleware('can:role');
 
 
-    Route::get('assets-add/{id}', [CourseController::class, 'add_assets'])->name('add_assets');
+    Route::get('cousers/chapter-create/{id}', [CourseController::class, 'add_assets'])->name('add_assets');
+    Route::post('cousers/chapter-submit', [CourseController::class, 'chepter_submit'])->name('chepter.submit');
+    Route::get('cousers/chapter-assets', [CourseController::class, 'blog_assets'])->name('blogs.assets.form');
+    Route::post('cousers/blog-assets', [CourseController::class, 'blog_assets_submit'])->name('blog.assets.submit');
+
 
     Route::post('assets/upload', [CourseController::class, 'submitAssets'])->name('assets.submit');
 
-    Route::post('/upload-chunk', [CourseController::class, 'uploadChunk']);
+    // Route::post('/upload-chunk', [CourseController::class, 'uploadChunk']);
 
 
 

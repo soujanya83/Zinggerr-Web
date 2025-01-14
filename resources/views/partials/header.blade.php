@@ -7,72 +7,95 @@
         object-fit: cover;
     }
 
-/* ...................for pagination................................... */
+    /* ...................for pagination................................... */
 
-.datatable-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-}
+    .datatable-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+    }
 
-.datatable-info {
-    font-size: 14px;
-    color: #6c757d;
-}
+    .datatable-info {
+        font-size: 14px;
+        color: #6c757d;
+    }
 
-.datatable-pagination {
-    display: flex;
-}
+    .datatable-pagination {
+        display: flex;
+    }
 
-.datatable-pagination-list {
-    list-style: none;
-    display: flex;
-    gap: 5px;
-    padding: 0;
-    margin: 0;
-}
+    .datatable-pagination-list {
+        list-style: none;
+        display: flex;
+        gap: 5px;
+        padding: 0;
+        margin: 0;
+    }
 
-.datatable-pagination-list-item {
-    display: inline-block;
-}
+    .datatable-pagination-list-item {
+        display: inline-block;
+    }
 
-.datatable-pagination-list-item-link {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 30px;
-    height: 30px;
+    .datatable-pagination-list-item-link {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 30px;
+        height: 30px;
 
-    border-radius: 4px;
-    color: #6c757d;
-    text-decoration: none;
-}
+        border-radius: 4px;
+        color: #6c757d;
+        text-decoration: none;
+    }
 
-.datatable-pagination-list-item-link:hover {
-    background-color: #f8f9fa;
-    color: #000;
-}
+    .datatable-pagination-list-item-link:hover {
+        background-color: #f8f9fa;
+        color: #000;
+    }
 
-.datatable-pagination-list-item.datatable-active .datatable-pagination-list-item-link {
-    background-color: #e9ecef;
-    color: #000;
-    cursor: default;
-}
+    .datatable-pagination-list-item.datatable-active .datatable-pagination-list-item-link {
+        background-color: #e9ecef;
+        color: #000;
+        cursor: default;
+    }
 
-.datatable-pagination-list-item.datatable-disabled button {
-    background-color: #f8f9fa;
-    border: 1px solid #ddd;
-    color: #6c757d;
-    cursor: not-allowed;
-}
-/* .......................................................... */
+    .datatable-pagination-list-item.datatable-disabled button {
+        background-color: #f2f6f9;
+        border: 1px solid #ddd;
+        color: #6c757d;
+        cursor: not-allowed;
+    }
 
+    /* .......................................................... */
+    .pc-head-link-primary {
+        background-color: blue;
+        /* Set the background color */
+        border-radius: 50px;
+        /* Apply rounded corners */
+        overflow: hidden;
+        /* Clip content that overflows the container */
+    }
+
+    .user-avatar {
+        /* Existing styles */
+        position: relative;
+        /* Position the avatar */
+        left: 10px;
+        /* Adjust position as needed */
+    }
+
+    .pc-head-link-primary:hover .ti-settings {
+        color: white;
+        /* Change icon color to white on hover */
+    }
 </style>
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
 <header class="pc-header">
     {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
 
@@ -168,11 +191,16 @@
                         </div>
                     </div>
                 </li>
-                <li class="dropdown pc-h-item header-user-profile">
+                <li class="dropdown pc-h-item header-user-profile" style="margin-right: 12px">
                     <a class="pc-head-link head-link-primary dropdown-toggle arrow-none me-0" href="#" role="button"
-                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="{{ asset('asset/images/user/avatar-2.jpg') }}" alt="user-image" class="user-avatar">
-                        <span><i class="ti ti-settings"></i></span>
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                        style="height: 61px; width: 116px; padding: 5px; radius: 50px;">
+
+                        <img src="{{ asset('asset/images/user/avatar-2.jpg') }}" alt="user-image" class="user-avatar"
+                            style=" margin-top: 11px; margin-bottom: 11px; border-radius: 50%;margin-right: 29px;">
+
+                        <span><i class="ti ti-settings" style="font-size: 26px; margin-right: 13px;"></i></span>
+
                     </a>
                     <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                         <div class="dropdown-header">
@@ -188,7 +216,8 @@
                                         target="_blank" class="btn btn-warning">Buy Now</a>
                                 </div>
                                 <hr>
-                                {{-- ........................only set for Spueradmin................................ --}}
+                                {{-- ........................only set for Spueradmin................................
+                                --}}
                                 {{-- @can('role',Auth::user()) --}}
                                 <a href="{{ route('userprofile') }}" class="dropdown-item">
                                     <i class="ti ti-settings"></i>
@@ -196,7 +225,8 @@
                                 </a>
                                 {{-- @endcan --}}
 
-                                {{-- .........................set for auther............................................................. --}}
+                                {{-- .........................set for
+                                auther............................................................. --}}
 
                                 {{-- ......................................................................... --}}
                                 <a href="{{ route('user.socialprofile') }}" class="dropdown-item">
@@ -204,13 +234,14 @@
                                     <span>Social Profile</span>
                                 </a>
                                 <a class="dropdown-item" href="#"
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                 <i class="ti ti-logout"></i>
-                                 <span>Logout</span>
-                             </a>
-                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                 @csrf
-                             </form>
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <i class="ti ti-logout"></i>
+                                    <span>Logout</span>
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    style="display: none;">
+                                    @csrf
+                                </form>
                             </div>
                         </div>
                     </div>
