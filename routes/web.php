@@ -94,6 +94,17 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
         ->middleware('can:role');
 
 
+        Route::post('course/pause-users', [CourseController::class, 'courses_pause_users'])->name('course.pause_users');
+        Route::post('course/permissions/update', [CourseController::class, 'updatePermissions'])->name('course.update_permissions');
+        Route::get('/user/{userId}/permissions', [CourseController::class, 'getUserPermissions']);
+        Route::post('/courses/assigned-remove-with-remark', [CourseController::class, 'assigned_delete_with_remark'])->name('assigned_delete_with_remark');
+
+
+        Route::post('/category/update', [CourseController::class, 'update_category'])->name('update.category');
+
+    Route::post('category/submit', [CourseController::class, 'submit_category'])->name('category.store');
+    Route::get('/category-delete/{user}', [CourseController::class, 'category_delete'])->name('category_delete');
+
     Route::get('cousers/chapter-create/{id}', [CourseController::class, 'add_assets'])->name('add_assets');
     Route::post('cousers/chapter-submit', [CourseController::class, 'chepter_submit'])->name('chepter.submit');
     Route::get('cousers/chapter-assets', [CourseController::class, 'blog_assets'])->name('blogs.assets.form');
@@ -101,9 +112,10 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
 
 
     Route::post('assets/upload', [CourseController::class, 'submitAssets'])->name('assets.submit');
-
+    Route::get('courses/category/create', [CourseController::class, 'courses_category'])->name('course.category');
     // Route::post('/upload-chunk', [CourseController::class, 'uploadChunk']);
-
+    Route::get('assigned/user-delete/{user}', [CourseController::class, 'assigned_delete'])
+    ->name('assigned_delete');
 
 
 

@@ -67,7 +67,7 @@
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <ul>
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                <li>{{ $error }}</li>
                 @endforeach
             </ul>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -94,8 +94,10 @@
                                     enctype="multipart/form-data">
                                     @csrf
                                     <input type="hidden" name="course_id" value="{{ session('course_id') }}">
-                                    {{-- <input type="text" name="course_id" value="9c9e1d4a-de05-4499-9829-6d6803b1d8cb">
-                                    <input type="text" name="chapter_id" value="5f97065d-354f-4d3f-aac2-ef5e9e9eb970"> --}}
+                                    {{-- <input type="text" name="course_id"
+                                        value="9c9e1d4a-de05-4499-9829-6d6803b1d8cb">
+                                    <input type="text" name="chapter_id" value="5f97065d-354f-4d3f-aac2-ef5e9e9eb970">
+                                    --}}
                                     <input type="hidden" name="chapter_id" value="{{ session('chapter_id') }}">
 
                                     <div class="row">

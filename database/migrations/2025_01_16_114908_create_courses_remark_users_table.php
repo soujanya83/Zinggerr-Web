@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('courses_assign', function (Blueprint $table) {
+        Schema::create('courses_remarks', function (Blueprint $table) {
             $table->char('id', 36)->primary();
-            $table->string('users_id',255);
-            $table->string('courses_id',255);
-            $table->integer('status')->default(1)->nullable();
+            $table->string('courses_id');
+            $table->string('users_id');
+            $table->text('remarks');
             $table->timestamps();
 
-            $table->unique(['courses_id', 'users_id']);
             $table->foreign('courses_id')->references('id')->on('courses')->onDelete('cascade');
             $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade');
+
         });
     }
 
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('course_assign');
+        Schema::dropIfExists('courses_remark_users');
     }
 };

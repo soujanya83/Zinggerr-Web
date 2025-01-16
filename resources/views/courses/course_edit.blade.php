@@ -137,14 +137,19 @@
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <ul>
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                <li>{{ $error }}</li>
                 @endforeach
             </ul>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         @endif
 
-
+        @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
 
 
         <div class="row">
@@ -175,8 +180,15 @@
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link" id="profile-tab-8" data-bs-toggle="tab" href="#profile-8" role="tab"
                                     aria-selected="false" tabindex="-1">
-                                    <i class="material-icons-two-tone me-2">book</i>
-                                    Tags
+                                    <i class="material-icons-two-tone me-2">group</i>
+                                    Teachers Asseign
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="profile-tab-9" data-bs-toggle="tab" href="#profile-9" role="tab"
+                                    aria-selected="false" tabindex="-1">
+                                    <i class="material-icons-two-tone me-2">group</i>
+                                    Users Asseign
                                 </a>
                             </li>
 
@@ -192,8 +204,8 @@
                                 aria-labelledby="profile-tab-1">
                                 <div class="row">
                                     <div class="card-body">
-                                        {{-- <form id="createCourseForm" method="post" enctype="multipart/form-data" --}}
-                                        <form  method="post" enctype="multipart/form-data"
+                                        {{-- <form id="createCourseForm" method="post" enctype="multipart/form-data"
+                                            --}} <form method="post" enctype="multipart/form-data"
                                             action="{{ route('course_update', $course->id) }}">
                                             @csrf
                                             <div class="row">
@@ -226,18 +238,13 @@
                                                     <div class="form-floating mb-3">
                                                         <select name="course_category" class="form-select"
                                                             id="floatingShortname">
-                                                            <option value="Art" {{ old('course_category', $course->
-                                                                course_category ?? '') == 'Art' ? 'selected' : '' }}>Art
+                                                            @foreach($categories as $category)
+                                                            <option value="{{ $category->name }}" {{
+                                                                old('course_category', $course->course_category ?? '')
+                                                                == $category->name ? 'selected' : '' }}>
+                                                                {{ $category->display_name }}
                                                             </option>
-                                                            <option value="Science" {{ old('course_category', $course->
-                                                                course_category ?? '') == 'Science' ? 'selected' : ''
-                                                                }}>Science</option>
-                                                            <option value="Math" {{ old('course_category', $course->
-                                                                course_category ?? '') == 'Math' ? 'selected' : ''
-                                                                }}>Math</option>
-                                                            <option value="History" {{ old('course_category', $course->
-                                                                course_category ?? '') == 'History' ? 'selected' : ''
-                                                                }}>History</option>
+                                                            @endforeach
                                                         </select>
                                                         <label style="align-content: center;"
                                                             for="floatingShortname">Select Course Category</label>
@@ -246,12 +253,10 @@
                                                 </div>
 
                                                 <input type="hidden" name="course_start_date" class="form-control"
-
                                                     value="{{ old('course_start_date', $course->course_start_date ?? '') }}">
 
 
                                                 <input type="hidden" name="course_end_date" class="form-control"
-
                                                     value="{{ old('course_start_date', $course->course_end_date ?? '') }}">
 
 
@@ -261,37 +266,37 @@
 
                                                         <input type="number" name="course_id_number"
                                                             class="form-control" placeholder="Enter Course ID Number"
-
                                                             value="{{ old('course_id_number', $course->course_id_number ?? '') }}">
                                                         <label style="align-content: center;" class="form-label">Course
                                                             ID Number</label>
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-12">
                                                     <label class="form-label">Course Summary</label>
                                                     <div class="form-floating mb-3">
                                                         <!-- Textarea for Summernote -->
                                                         <textarea id="summernote" name="course_summary"
-                                                            class="form-control" >
+                                                            class="form-control">
                                                             {{ old('course_summary', $course->course_summary ?? '') }}
                                                         </textarea>
 
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-12">
                                                     <label class="form-label">Course Image Upload</label>
 
                                                     <div class="form-floating mb-3">
 
-                                                        <div class="d-flex align-items-center border p-3 rounded">
+                                                        <div class="d-flex align-items-center  rounded">
                                                             <div class="me-3">
 
                                                                 @if(isset($course->course_image))
                                                                 <img src="{{ url('storage/'.$course->course_image) }}"
-                                                                    alt="Existing Image" width="100px" height="100px"
-                                                                    class="border rounded">
+                                                                    alt="Existing Image" width="150px" height="138px"
+                                                                    class="border rounded"
+                                                                    style="margin-top: -9px;margin-left: -2px;">
                                                                 @else
                                                                 <img src="{{ asset('path-to-default-image.jpg') }}"
                                                                     alt="Default Image" width="100px" height="100px"
@@ -300,7 +305,8 @@
                                                             </div>
                                                             <div class="d-flex align-items-center">
 
-                                                                <label for="fileUpload" class="file-upload-label">
+                                                                <label for="fileUpload" class="file-upload-label"
+                                                                    style="width:1318px;    margin-left: -167px;">
                                                                     <div class="upload-icon mb-3">
                                                                         <i
                                                                             class="fas fa-cloud-upload-alt fa-3x text-primary"></i>
@@ -325,13 +331,14 @@
                             </div>
 
 
-                            <div class="tab-pane fade" id="profile-3" role="tabpanel" aria-labelledby="profile-tab-3">
+                            <div class="tab-pane fade mt-3" id="profile-3" role="tabpanel"
+                                aria-labelledby="profile-tab-3">
                                 <div class="">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-floating mb-3">
 
-                                                <select name="course_layout" class="form-select" >
+                                                <select name="course_layout" class="form-select">
                                                     <option value="Hidden sections are shown as not available" {{
                                                         old('course_layout', $course->course_layout) == 'Hidden sections
                                                         are shown as not available' ? 'selected' : '' }}>
@@ -402,7 +409,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-floating mb-3">
                                                 <div class="dropdown">
                                                     <label style="align-content: center;" for="emailInput"
@@ -482,16 +489,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="tab-pane fade" id="profile-8" role="tabpanel" aria-labelledby="profile-tab-8">
-                                <div class="">
-                                    <div class="row">
-                                        <label style="align-content: center;" for="tags"
-                                            class="form-label">Tags:</label> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+
+
                                         <div class="col-md-4">
+                                            <label style="align-content: center;" for="tags"
+                                                class="form-label">Tags:</label> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
                                             <div class="form-floating mb-3">
                                                 @php
                                                 // Ensure $tags is always an array
@@ -522,18 +525,1054 @@
                                                         style="color: black;">Intermediate</label>
                                                 </div>
                                             </div>
-                                            <div class="col-md-12 text-end" style="margin-left: 56%;">
+                                            <div class="col-md-12 text-end" style="margin-left: 100%;">
                                                 <button type="submit" class="btn btn-primary">Update Course</button>
+                                            </div>
+                                        </div>
+
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- <div class="tab-pane fade" id="profile-8" role="tabpanel"
+                                aria-labelledby="profile-tab-8">
+                                <div class="">
+                                    <div class="row">
+
+                                    </div>
+                                </div>
+                            </div> --}}
+
+                            <div class="tab-pane fade" id="profile-8" role="tabpanel" aria-labelledby="profile-tab-8">
+                                <div class="nested-tabs">
+                                    <!-- Nested Tabs Navigation -->
+                                    <ul class="nav nav-tabs mb-3" id="nestedTabs" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active" id="assigned-tab" data-bs-toggle="tab"
+                                                data-bs-target="#assigned" type="button" role="tab"
+                                                aria-controls="assigned" aria-selected="true">
+                                                <i class="ti ti-user-plus f-20"></i> Assigned Teachers
+                                            </button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="available-tab" data-bs-toggle="tab"
+                                                data-bs-target="#available" type="button" role="tab"
+                                                aria-controls="available" aria-selected="false">
+                                                <i class="ti ti-user-plus f-20"></i> Available Teachers
+                                            </button>
+                                        </li>
+                                    </ul>
+
+                                    <!-- Nested Tab Content -->
+                                    <div class="tab-content" id="nestedTabsContent">
+                                        <div class="tab-pane fade show active" id="assigned" role="tabpanel"
+                                            aria-labelledby="assigned-tab">
+                                            <div class="row">
+                                                <!-- [ sample-page ] start -->
+                                                <div class="col-sm-12">
+                                                    <div class="card table-card">
+                                                        <div class="card-header">
+                                                            <div class="row align-items-center">
+                                                                <h5>Teachers List Assigned For This Courses</h5>
+
+
+                                                                <div class="col-auto"
+                                                                    style=" margin-top: -21px; margin-left: 78%">
+                                                                    <div class="col-md-12">
+                                                                        <input type="text" id="searchInput"
+                                                                            class="form-control"
+                                                                            placeholder="Search...">
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <script>
+                                                                    $(document).ready(function(){
+                                                                        $("#searchInput").on("keyup", function() {
+                                                                            var value = $(this).val().toLowerCase();
+                                                                            $("#userTableBody tr").filter(function() {
+                                                                                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                                                                            });
+                                                                        });
+                                                                    });
+                                                                </script>
+
+
+
+                                                                {{-- <div class="col">
+                                                                    <select id="entriesPerPage">
+                                                                        <option value="5" selected>5</option>
+                                                                        <option value="10">10</option>
+                                                                        <option value="15">15</option>
+                                                                        <option value="20">20</option>
+                                                                        <option value="25">25</option>
+                                                                    </select> entries per page
+                                                                </div> --}}
+
+                                                            </div>
+
+                                                            <div class="card-body pt-0">
+                                                                <div class="table-responsive">
+
+
+
+
+                                                                    <table class="table table-hover">
+                                                                        <thead>
+                                                                            <tr id="showtr">
+                                                                                <th>#</th>
+                                                                                <th>Teachers Profile</th>
+                                                                                <th>Username</th>
+                                                                                <th>Phone</th>
+                                                                                <th>Type</th>
+                                                                                <th>Gender</th>
+                                                                                <th>Status</th>
+                                                                                @if(Auth::user()->can('role') ||
+                                                                                (isset($permissions) &&
+                                                                                in_array('teachers_edit', $permissions))
+                                                                                ||
+                                                                                (isset($permissions) &&
+                                                                                in_array('teachers_delete',
+                                                                                $permissions)))
+                                                                                <th class="text-center">Action</th>
+                                                                                @endif
+
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="userTableBody">
+
+
+                                                                            @if ($data->count() > 0)
+
+                                                                            @foreach ($data as $keys=> $user)
+                                                                            <tr>
+                                                                                <td>{{ ++$keys }}</td>
+                                                                                <td>
+                                                                                    <div
+                                                                                        class="d-flex align-items-center">
+                                                                                        <div
+                                                                                            class="flex-shrink-0 wid-40">
+                                                                                            @if ($user->profile_picture)
+                                                                                            <img class="img-radius"
+                                                                                                src="{{ asset('storage/' . $user->profile_picture) }}"
+                                                                                                alt="User image"
+                                                                                                style="height:52px;width: 52px;">
+                                                                                            @else
+                                                                                            <img class="img-radius"
+                                                                                                src="{{ asset('asset/images/user/avatar-1.jpg') }}"
+                                                                                                alt="Default image"
+                                                                                                style="height:52px;width: 52px;">
+                                                                                            @endif
+                                                                                        </div>
+                                                                                        <div class="flex-grow-1 ms-3">
+                                                                                            <h5 class="mb-1">{{
+                                                                                                $user->name }}</h5>
+                                                                                            <p
+                                                                                                class="text-muted f-12 mb-0">
+                                                                                                {{ $user->email }}</p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td>{{ $user->username }}</td>
+                                                                                <td>{{ $user->phone }}</td>
+                                                                                <td>
+                                                                                    <span
+                                                                                        class="badge bg-light-info  rounded-pill f-14">
+                                                                                        {{ $user->type }}</span>
+                                                                                </td>
+                                                                                <td>{{ $user->gender }}</td>
+                                                                                <td>
+                                                                                    @if($user->status == 1)
+                                                                                    <span
+                                                                                        class="badge rounded-pill f-14 bg-light-success">Active</span>
+                                                                                    @else
+                                                                                    <span
+                                                                                        class="badge bg-light-danger rounded-pill f-14">Inactive
+                                                                                    </span>
+                                                                                    @endif
+                                                                                </td>
+
+                                                                                <td class="text-center">
+                                                                                    @if(Auth::user()->can('role') ||
+                                                                                    (isset($permissions) &&
+                                                                                    in_array('teachers_edit',
+                                                                                    $permissions)))
+                                                                                    <!-- Manage Button -->
+                                                                                    <a href="javascript:void(0);"
+                                                                                        class="btn btn-sm btn-secondary mx-1 manage-permissions-btn"
+                                                                                        data-bs-toggle="modal"
+                                                                                        data-bs-target="#assignPermissionsModal"
+                                                                                        data-user-id="{{ $user->id }}">
+                                                                                        <i class="ti ti-edit"></i>
+                                                                                        Manage
+                                                                                    </a>
+                                                                                    @endif
+                                                                                    @if(Auth::user()->can('role') ||
+                                                                                    (isset($permissions) &&
+                                                                                    in_array('assign_remove',
+                                                                                    $permissions)))
+                                                                                    <a href="{{ route('assigned_delete', $user->assignId) }}"
+                                                                                        class="btn btn-sm btn-danger"
+                                                                                        data-id="{{ $user->id }}"
+                                                                                        onclick="return confirmDelete(this)">
+                                                                                        Remove
+                                                                                    </a>
+                                                                                    @endif
+
+                                                                                </td>
+
+                                                                            </tr>
+                                                                            @endforeach
+
+
+                                                                            @else
+                                                                            <tr>
+                                                                                <td colspan="8" class="text-center">No
+                                                                                    Data Found!</td>
+                                                                            </tr>
+                                                                            @endif
+
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <div class="datatable-bottom">
+                                                                        @if ($data->count() > 0)
+                                                                        <div class="datatable-info">
+                                                                            Showing {{ $data->firstItem() }} to {{
+                                                                            $data->lastItem() }} of {{ $data->total()
+                                                                            }}
+                                                                            entries
+                                                                        </div>
+
+
+
+                                                                        <nav class="datatable-pagination">
+                                                                            <ul class="datatable-pagination-list">
+                                                                                @if ($data->onFirstPage())
+                                                                                <li
+                                                                                    class="datatable-pagination-list-item datatable-disabled">
+                                                                                    <button disabled
+                                                                                        aria-label="Previous Page">‹</button>
+                                                                                </li>
+                                                                                @else
+                                                                                <li
+                                                                                    class="datatable-pagination-list-item">
+                                                                                    <a href="{{ $data->previousPageUrl() }}"
+                                                                                        class="datatable-pagination-list-item-link"
+                                                                                        aria-label="Previous Page">‹</a>
+                                                                                </li>
+                                                                                @endif
+
+                                                                                @foreach ($data->getUrlRange(1,
+                                                                                $data->lastPage()) as $page => $url)
+                                                                                <li
+                                                                                    class="datatable-pagination-list-item {{ $data->currentPage() == $page ? 'datatable-active' : '' }}">
+                                                                                    <a href="{{ $url }}"
+                                                                                        class="datatable-pagination-list-item-link"
+                                                                                        aria-label="Page {{ $page }}">{{
+                                                                                        $page
+                                                                                        }}</a>
+                                                                                </li>
+                                                                                @endforeach
+
+                                                                                @if ($data->hasMorePages())
+                                                                                <li
+                                                                                    class="datatable-pagination-list-item">
+                                                                                    <a href="{{ $data->nextPageUrl() }}"
+                                                                                        class="datatable-pagination-list-item-link"
+                                                                                        aria-label="Next Page">›</a>
+                                                                                </li>
+                                                                                @else
+                                                                                <li
+                                                                                    class="datatable-pagination-list-item datatable-disabled">
+                                                                                    <button disabled
+                                                                                        aria-label="Next Page">›</button>
+                                                                                </li>
+                                                                                @endif
+                                                                            </ul>
+                                                                        </nav>
+                                                                        @endif
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+
+                                        <div class="tab-pane fade" id="available" role="tabpanel"
+                                            aria-labelledby="available-tab">
+                                            <div class="row">
+                                                <!-- [ sample-page ] start -->
+                                                <div class="col-sm-12">
+                                                    <div class="card table-card">
+                                                        <div class="card-header">
+                                                            <div class="row align-items-center g-2">
+                                                                <h5>Teachers List Available For This Courses </h5>
+
+                                                                <div class="col-auto"
+                                                                    style=" margin-top: -21px; margin-left: 78%">
+                                                                    <div class="col-md-12">
+                                                                        <input type="text" id="searchInput2"
+                                                                            class="form-control"
+                                                                            placeholder="Search...">
+                                                                    </div>
+                                                                </div>
+
+                                                                <script>
+                                                                    $(document).ready(function(){
+                                                                    $("#searchInput2").on("keyup", function() {
+                                                                        var value = $(this).val().toLowerCase();
+                                                                        $("#userTableBody2 tr").filter(function() {
+                                                                            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                                                                        });
+                                                                    });
+                                                                });
+                                                                </script>
+
+                                                            </div>
+                                                            <hr>
+                                                            <div class="card-body pt-0">
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-hover">
+                                                                        <thead>
+                                                                            <tr id="showtr">
+                                                                                <th>#</th>
+                                                                                <th>Teachers Profile</th>
+                                                                                <th>Username</th>
+                                                                                <th>Phone</th>
+                                                                                <th>Type</th>
+                                                                                <th>Gender</th>
+                                                                                <th>Status</th>
+                                                                                @if(Auth::user()->can('role') ||
+                                                                                (isset($permissions) &&
+                                                                                in_array('teachers_edit', $permissions))
+                                                                                ||
+                                                                                (isset($permissions) &&
+                                                                                in_array('teachers_delete',
+                                                                                $permissions)))
+                                                                                <th class="text-center">Action</th>
+                                                                                @endif
+
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="userTableBody2">
+
+
+                                                                            @if ($availableTeachers->count() > 0)
+
+                                                                            @foreach ($availableTeachers as $keys=>
+                                                                            $user)
+                                                                            <tr>
+                                                                                <td>{{ ++$keys }}</td>
+                                                                                <td>
+                                                                                    <div
+                                                                                        class="d-flex align-items-center">
+                                                                                        <div
+                                                                                            class="flex-shrink-0 wid-40">
+                                                                                            @if ($user->profile_picture)
+                                                                                            <img class="img-radius"
+                                                                                                src="{{ asset('storage/' . $user->profile_picture) }}"
+                                                                                                alt="User image"
+                                                                                                style="height:52px;width: 52px;">
+                                                                                            @else
+                                                                                            <img class="img-radius"
+                                                                                                src="{{ asset('asset/images/user/avatar-1.jpg') }}"
+                                                                                                alt="Default image"
+                                                                                                style="height:52px;width: 52px;">
+                                                                                            @endif
+                                                                                        </div>
+                                                                                        <div class="flex-grow-1 ms-3">
+                                                                                            <h5 class="mb-1">{{
+                                                                                                $user->name }}</h5>
+                                                                                            <p
+                                                                                                class="text-muted f-12 mb-0">
+                                                                                                {{ $user->email }}</p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td>{{ $user->username }}</td>
+                                                                                <td>{{ $user->phone }}</td>
+                                                                                <td>
+                                                                                    <span
+                                                                                        class="badge bg-light-info  rounded-pill f-14">
+                                                                                        {{ $user->type }}</span>
+                                                                                </td>
+                                                                                <td>{{ $user->gender }}</td>
+                                                                                <td>
+                                                                                    @if($user->status == 1)
+                                                                                    <span
+                                                                                        class="badge rounded-pill f-14 bg-light-success">Active</span>
+                                                                                    @else
+                                                                                    <span
+                                                                                        class="badge bg-light-danger rounded-pill f-14">Inactive
+                                                                                    </span>
+                                                                                    @endif
+                                                                                </td>
+
+                                                                                <td class="text-center">
+                                                                                    @if(Auth::user()->can('role') ||
+                                                                                    (isset($permissions) &&
+                                                                                    in_array('teachers_edit',
+                                                                                    $permissions)))
+                                                                                    <!-- Manage Button -->
+                                                                                    <a href="javascript:void(0);"
+                                                                                        class="btn btn-sm btn-secondary mx-1 manage-permissions-btn"
+                                                                                        data-bs-toggle="modal"
+                                                                                        data-bs-target="#assignPermissionsModal"
+                                                                                        data-user-id="{{ $user->id }}">
+                                                                                        <i class="ti ti-edit"></i>
+                                                                                        Manage
+                                                                                    </a>
+                                                                                    @endif
+
+                                                                                    @if(Auth::user()->type ===
+                                                                                    'Superadmin' || (isset($permissions)
+                                                                                    && in_array('cousers_assign',
+                                                                                    $permissions)))
+                                                                                    <!-- Assign Button -->
+                                                                                    <form
+                                                                                        action="{{ route('course.assign') }}"
+                                                                                        method="post"
+                                                                                        style="display: inline;">
+                                                                                        @csrf
+                                                                                        <!-- Hidden Input for Course ID -->
+                                                                                        <input type="hidden"
+                                                                                            name="course_id"
+                                                                                            value="{{ $id }}">
+                                                                                        <input type="hidden"
+                                                                                            name="user_id"
+                                                                                            value="{{ $user->id }}">
+                                                                                        <button type="submit"
+                                                                                            class="btn btn-sm btn-primary mx-1">
+                                                                                            <i
+                                                                                                class="ti ti-user-plus"></i>
+                                                                                            Assign
+                                                                                        </button>
+                                                                                    </form>
+                                                                                    @endif
+                                                                                </td>
+
+                                                                            </tr>
+                                                                            @endforeach
+
+
+                                                                            @else
+                                                                            <tr>
+                                                                                <td colspan="8" class="text-center">No
+                                                                                    Data Found!</td>
+                                                                            </tr>
+                                                                            @endif
+
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <div class="datatable-bottom">
+                                                                        @if ($availableTeachers->count() > 0)
+                                                                        <div class="datatable-info">
+                                                                            Showing {{ $availableTeachers->firstItem()
+                                                                            }} to {{
+                                                                            $availableTeachers->lastItem() }} of {{
+                                                                            $availableTeachers->total()
+                                                                            }}
+                                                                            entries
+                                                                        </div>
+
+
+
+                                                                        <nav class="datatable-pagination">
+                                                                            <ul class="datatable-pagination-list">
+                                                                                @if ($availableTeachers->onFirstPage())
+                                                                                <li
+                                                                                    class="datatable-pagination-list-item datatable-disabled">
+                                                                                    <button disabled
+                                                                                        aria-label="Previous Page">‹</button>
+                                                                                </li>
+                                                                                @else
+                                                                                <li
+                                                                                    class="datatable-pagination-list-item">
+                                                                                    <a href="{{ $availableTeachers->previousPageUrl() }}"
+                                                                                        class="datatable-pagination-list-item-link"
+                                                                                        aria-label="Previous Page">‹</a>
+                                                                                </li>
+                                                                                @endif
+
+
+                                                                                @foreach($availableTeachers->getUrlRange(1,
+                                                                                $availableTeachers->lastPage()) as $page
+                                                                                => $url)
+
+                                                                                <li
+                                                                                    class="datatable-pagination-list-item {{ $availableTeachers->currentPage() == $page ? 'datatable-active' : '' }}">
+                                                                                    <a href="{{ $url }}"
+                                                                                        class="datatable-pagination-list-item-link"
+                                                                                        aria-label="Page {{ $page }}">{{
+                                                                                        $page
+                                                                                        }}</a>
+                                                                                </li>
+                                                                                @endforeach
+
+                                                                                @if ($availableTeachers->hasMorePages())
+                                                                                <li
+                                                                                    class="datatable-pagination-list-item">
+                                                                                    <a href="{{ $availableTeachers->nextPageUrl() }}"
+                                                                                        class="datatable-pagination-list-item-link"
+                                                                                        aria-label="Next Page">›</a>
+                                                                                </li>
+                                                                                @else
+                                                                                <li
+                                                                                    class="datatable-pagination-list-item datatable-disabled">
+                                                                                    <button disabled
+                                                                                        aria-label="Next Page">›</button>
+                                                                                </li>
+                                                                                @endif
+                                                                            </ul>
+                                                                        </nav>
+                                                                        @endif
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="profile-9" role="tabpanel" aria-labelledby="profile-tab-9">
+                                <div class="nested-tabs">
+                                    <!-- Nested Tabs Navigation -->
+                                    <ul class="nav nav-tabs mb-3" id="nestedTabs" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active" id="usersassigned-tab" data-bs-toggle="tab"
+                                                data-bs-target="#assignedusers" type="button" role="tab"
+                                                aria-controls="assigned" aria-selected="true">
+                                                <i class="ti ti-user-plus f-20"></i> Assigned Users
+                                            </button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="useravailable-tab" data-bs-toggle="tab"
+                                                data-bs-target="#usersavailable" type="button" role="tab"
+                                                aria-controls="available" aria-selected="false">
+                                                <i class="ti ti-user-plus f-20"></i> Available Users
+                                            </button>
+                                        </li>
+                                    </ul>
+
+                                    <!-- Nested Tab Content -->
+                                    <div class="tab-content" id="nestedTabsContent">
+                                        <div class="tab-pane fade show active" id="assignedusers" role="tabpanel"
+                                            aria-labelledby="usersassigned-tab">
+                                            <div class="row">
+                                                <!-- [ sample-page ] start -->
+                                                <div class="col-sm-12">
+                                                    <div class="card table-card">
+                                                        <div class="card-header">
+                                                            <div class="row align-items-center g-2">
+                                                                <h5>Users List Assigned For This Courses</h5>
+
+                                                                <div class="col-auto"
+                                                                    style=" margin-top: -21px; margin-left: 78%">
+                                                                    <div class="col-md-12">
+                                                                        <input type="text" id="searchInput3"
+                                                                            class="form-control"
+                                                                            placeholder="Search...">
+                                                                    </div>
+                                                                </div>
+
+                                                                <script>
+                                                                    $(document).ready(function(){
+                                                                    $("#searchInput3").on("keyup", function() {
+                                                                        var value = $(this).val().toLowerCase();
+                                                                        $("#userTableBody3 tr").filter(function() {
+                                                                            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                                                                        });
+                                                                    });
+                                                                });
+                                                                </script>
+
+                                                            </div>
+                                                            <hr>
+                                                            <div class="card-body pt-0">
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-hover">
+                                                                        <thead>
+                                                                            <tr id="showtr">
+                                                                                <th>#</th>
+                                                                                <th>Students Profile</th>
+                                                                                <th>Username</th>
+                                                                                <th>Phone</th>
+                                                                                <th>Type</th>
+                                                                                <th>Gender</th>
+                                                                                <th>Status</th>
+                                                                                @if(Auth::user()->can('role') ||
+                                                                                (isset($permissions) &&
+                                                                                in_array('teachers_edit', $permissions))
+                                                                                ||
+                                                                                (isset($permissions) &&
+                                                                                in_array('teachers_delete',
+                                                                                $permissions)))
+                                                                                <th class="text-center">Action</th>
+                                                                                @endif
+
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="userTableBody3">
+
+
+                                                                            @if ($userdata->count() > 0)
+
+                                                                            @foreach ($userdata as $keys=> $user)
+                                                                            <tr>
+                                                                                <td>{{ ++$keys }}</td>
+                                                                                <td>
+                                                                                    <div
+                                                                                        class="d-flex align-items-center">
+                                                                                        <div
+                                                                                            class="flex-shrink-0 wid-40">
+                                                                                            @if ($user->profile_picture)
+                                                                                            <img class="img-radius"
+                                                                                                src="{{ asset('storage/' . $user->profile_picture) }}"
+                                                                                                alt="User image"
+                                                                                                style="height:52px;width: 52px;">
+                                                                                            @else
+                                                                                            <img class="img-radius"
+                                                                                                src="{{ asset('asset/images/user/avatar-1.jpg') }}"
+                                                                                                alt="Default image"
+                                                                                                style="height:52px;width: 52px;">
+                                                                                            @endif
+                                                                                        </div>
+                                                                                        <div class="flex-grow-1 ms-3">
+                                                                                            <h5 class="mb-1">{{
+                                                                                                $user->name }}</h5>
+                                                                                            <p
+                                                                                                class="text-muted f-12 mb-0">
+                                                                                                {{ $user->email }}</p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td>{{ $user->username }}</td>
+                                                                                <td>{{ $user->phone }}</td>
+                                                                                <td>
+                                                                                    <span
+                                                                                        class="badge bg-light-info  rounded-pill f-14">
+                                                                                        {{ $user->type }}</span>
+                                                                                </td>
+                                                                                <td>{{ $user->gender }}</td>
+                                                                                <td>
+                                                                                    @if($user->status == 1)
+                                                                                    <span
+                                                                                        class="badge rounded-pill f-14 bg-light-success">Active</span>
+                                                                                    @else
+                                                                                    <span
+                                                                                        class="badge bg-light-danger rounded-pill f-14">Inactive
+                                                                                    </span>
+                                                                                    @endif
+                                                                                </td>
+
+                                                                                <td class="text-center">
+                                                                                    @if(Auth::user()->can('role') ||
+                                                                                    (isset($permissions) &&
+                                                                                    in_array('teachers_edit',
+                                                                                    $permissions)))
+                                                                                    @if($user->assignStatus == 1)
+                                                                                    <form
+                                                                                        action="{{ route('course.pause_users') }}"
+                                                                                        method="post"
+                                                                                        style="display: inline;">
+                                                                                        @csrf
+                                                                                        <!-- Hidden Input for Course ID -->
+                                                                                        <input type="hidden"
+                                                                                            name="assign_id"
+                                                                                            value="{{ $user->assignId }}">
+
+                                                                                        <button type="submit"
+                                                                                            class="btn btn-sm btn-secondary mx-1">
+                                                                                            <i
+                                                                                                class="ti ti-user-plus"></i>
+                                                                                            Pausa
+                                                                                        </button>
+                                                                                    </form>
+                                                                                    @else
+                                                                                    <form
+                                                                                        action="{{ route('course.pause_users') }}"
+                                                                                        method="post"
+                                                                                        style="display: inline;">
+                                                                                        @csrf
+                                                                                        <!-- Hidden Input for Course ID -->
+                                                                                        <input type="hidden"
+                                                                                            name="assign_id"
+                                                                                            value="{{ $user->assignId }}">
+
+                                                                                        <button type="submit"
+                                                                                            class="btn btn-sm btn-success mx-1">
+                                                                                            <i
+                                                                                                class="ti ti-user-plus"></i>
+                                                                                            Active
+                                                                                        </button>
+                                                                                    </form>
+                                                                                    @endif
+                                                                                    @endif
+                                                                                    {{-- @if(Auth::user()->can('role')
+                                                                                    ||
+                                                                                    (isset($permissions) &&
+                                                                                    in_array('assign_remove',
+                                                                                    $permissions)))
+                                                                                    <a href="{{ route('assigned_delete', $user->assignId) }}"
+                                                                                        class="btn btn-sm btn-danger"
+                                                                                        data-id="{{ $user->id }}"
+                                                                                        onclick="return confirmDelete(this)">
+                                                                                        Remove
+                                                                                    </a>
+                                                                                    @endif --}}
+                                                                                    @if(Auth::user()->can('role') ||
+                                                                                    (isset($permissions) &&
+                                                                                    in_array('assign_remove',
+                                                                                    $permissions)))
+                                                                                    <button type="button"
+                                                                                        class="btn btn-sm btn-danger open-remark-modal"
+                                                                                        data-id="{{ $user->assignId }}"
+                                                                                        data-bs-toggle="modal"
+                                                                                        data-bs-target="#remarkModal">
+                                                                                        Remove
+                                                                                    </button>
+                                                                                    @endif
+
+
+
+                                                                                </td>
+
+                                                                            </tr>
+                                                                            @endforeach
+
+
+                                                                            @else
+                                                                            <tr>
+                                                                                <td colspan="8" class="text-center">No
+                                                                                    Data Found!</td>
+                                                                            </tr>
+                                                                            @endif
+
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <div class="datatable-bottom">
+                                                                        @if ($userdata->count() > 0)
+                                                                        <div class="datatable-info">
+                                                                            Showing {{ $userdata->firstItem() }} to {{
+                                                                            $userdata->lastItem() }} of {{
+                                                                            $userdata->total()
+                                                                            }}
+                                                                            entries
+                                                                        </div>
+
+
+
+                                                                        <nav class="datatable-pagination">
+                                                                            <ul class="datatable-pagination-list">
+                                                                                @if ($userdata->onFirstPage())
+                                                                                <li
+                                                                                    class="datatable-pagination-list-item datatable-disabled">
+                                                                                    <button disabled
+                                                                                        aria-label="Previous Page">‹</button>
+                                                                                </li>
+                                                                                @else
+                                                                                <li
+                                                                                    class="datatable-pagination-list-item">
+                                                                                    <a href="{{ $userdata->previousPageUrl() }}"
+                                                                                        class="datatable-pagination-list-item-link"
+                                                                                        aria-label="Previous Page">‹</a>
+                                                                                </li>
+                                                                                @endif
+
+                                                                                @foreach ($userdata->getUrlRange(1,
+                                                                                $userdata->lastPage()) as $page => $url)
+                                                                                <li
+                                                                                    class="datatable-pagination-list-item {{ $userdata->currentPage() == $page ? 'datatable-active' : '' }}">
+                                                                                    <a href="{{ $url }}"
+                                                                                        class="datatable-pagination-list-item-link"
+                                                                                        aria-label="Page {{ $page }}">{{
+                                                                                        $page
+                                                                                        }}</a>
+                                                                                </li>
+                                                                                @endforeach
+
+                                                                                @if ($userdata->hasMorePages())
+                                                                                <li
+                                                                                    class="datatable-pagination-list-item">
+                                                                                    <a href="{{ $userdata->nextPageUrl() }}"
+                                                                                        class="datatable-pagination-list-item-link"
+                                                                                        aria-label="Next Page">›</a>
+                                                                                </li>
+                                                                                @else
+                                                                                <li
+                                                                                    class="datatable-pagination-list-item datatable-disabled">
+                                                                                    <button disabled
+                                                                                        aria-label="Next Page">›</button>
+                                                                                </li>
+                                                                                @endif
+                                                                            </ul>
+                                                                        </nav>
+                                                                        @endif
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="usersavailable" role="tabpanel"
+                                            aria-labelledby="useravailable-tab">
+                                            <div class="row">
+                                                <!-- [ sample-page ] start -->
+                                                <div class="col-sm-12">
+                                                    <div class="card table-card">
+                                                        <div class="card-header">
+                                                            <div class="row align-items-center g-2">
+                                                                <h5>Users List Available For This Courses </h5>
+
+                                                                <div class="col-auto"
+                                                                    style=" margin-top: -21px; margin-left: 78%">
+                                                                    <div class="col-md-12">
+                                                                        <input type="text" id="searchInput4"
+                                                                            class="form-control"
+                                                                            placeholder="Search...">
+                                                                    </div>
+                                                                </div>
+
+                                                                <script>
+                                                                    $(document).ready(function(){
+                                                                    $("#searchInput4").on("keyup", function() {
+                                                                        var value = $(this).val().toLowerCase();
+                                                                        $("#userTableBody4 tr").filter(function() {
+                                                                            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                                                                        });
+                                                                    });
+                                                                });
+                                                                </script>
+
+                                                            </div>
+                                                            <hr>
+                                                            <div class="card-body pt-0">
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-hover">
+                                                                        <thead>
+                                                                            <tr id="showtr">
+                                                                                <th>#</th>
+                                                                                <th>Students Profile</th>
+                                                                                <th>Username</th>
+                                                                                <th>Phone</th>
+                                                                                <th>Type</th>
+                                                                                <th>Gender</th>
+                                                                                <th>Status</th>
+                                                                                @if(Auth::user()->can('role') ||
+                                                                                (isset($permissions) &&
+                                                                                in_array('teachers_edit', $permissions))
+                                                                                ||
+                                                                                (isset($permissions) &&
+                                                                                in_array('teachers_delete',
+                                                                                $permissions)))
+                                                                                <th class="text-center">Action</th>
+                                                                                @endif
+
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="userTableBody4">
+
+
+                                                                            @if ($availableUsers->count() > 0)
+
+                                                                            @foreach ($availableUsers as $keys=>
+                                                                            $user)
+                                                                            <tr>
+                                                                                <td>{{ ++$keys }}</td>
+                                                                                <td>
+                                                                                    <div
+                                                                                        class="d-flex align-items-center">
+                                                                                        <div
+                                                                                            class="flex-shrink-0 wid-40">
+                                                                                            @if ($user->profile_picture)
+                                                                                            <img class="img-radius"
+                                                                                                src="{{ asset('storage/' . $user->profile_picture) }}"
+                                                                                                alt="User image"
+                                                                                                style="height:52px;width: 52px;">
+                                                                                            @else
+                                                                                            <img class="img-radius"
+                                                                                                src="{{ asset('asset/images/user/avatar-1.jpg') }}"
+                                                                                                alt="Default image"
+                                                                                                style="height:52px;width: 52px;">
+                                                                                            @endif
+                                                                                        </div>
+                                                                                        <div class="flex-grow-1 ms-3">
+                                                                                            <h5 class="mb-1">{{
+                                                                                                $user->name }}</h5>
+                                                                                            <p
+                                                                                                class="text-muted f-12 mb-0">
+                                                                                                {{ $user->email }}</p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td>{{ $user->username }}</td>
+                                                                                <td>{{ $user->phone }}</td>
+                                                                                <td>
+                                                                                    <span
+                                                                                        class="badge bg-light-info  rounded-pill f-14">
+                                                                                        {{ $user->type }}</span>
+                                                                                </td>
+                                                                                <td>{{ $user->gender }}</td>
+                                                                                <td>
+                                                                                    @if($user->status == 1)
+                                                                                    <span
+                                                                                        class="badge rounded-pill f-14 bg-light-success">Active</span>
+                                                                                    @else
+                                                                                    <span
+                                                                                        class="badge bg-light-danger rounded-pill f-14">Inactive
+                                                                                    </span>
+                                                                                    @endif
+                                                                                </td>
+
+
+
+                                                                                <td class="text-center">
+                                                                                    {{-- @if(Auth::user()->can('role')
+                                                                                    ||
+                                                                                    (isset($permissions) &&
+                                                                                    in_array('teachers_edit',
+                                                                                    $permissions)))
+                                                                                    <!-- Edit Button -->
+                                                                                    <a href="{{ route('teacher_edit', $user->id) }}"
+                                                                                        class="btn btn-sm btn-secondary mx-1">
+                                                                                        <i class="ti ti-edit"></i> Edit
+                                                                                    </a>
+                                                                                    @endif --}}
+
+                                                                                    @if(Auth::user()->type ===
+                                                                                    'Superadmin' || (isset($permissions)
+                                                                                    && in_array('cousers_assign',
+                                                                                    $permissions)))
+                                                                                    <!-- Assign Button -->
+                                                                                    <form
+                                                                                        action="{{ route('course.assign') }}"
+                                                                                        method="post"
+                                                                                        style="display: inline;">
+                                                                                        @csrf
+                                                                                        <!-- Hidden Input for Course ID -->
+                                                                                        <input type="hidden"
+                                                                                            name="course_id"
+                                                                                            value="{{ $id }}">
+                                                                                        <input type="hidden"
+                                                                                            name="user_id"
+                                                                                            value="{{ $user->id }}">
+                                                                                        <button type="submit"
+                                                                                            class="btn btn-sm btn-primary mx-1">
+                                                                                            <i
+                                                                                                class="ti ti-user-plus"></i>
+                                                                                            Assign
+                                                                                        </button>
+                                                                                    </form>
+                                                                                    @endif
+                                                                                </td>
+
+                                                                            </tr>
+                                                                            @endforeach
+
+
+                                                                            @else
+                                                                            <tr>
+                                                                                <td colspan="8" class="text-center">No
+                                                                                    Data Found!</td>
+                                                                            </tr>
+                                                                            @endif
+
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <div class="datatable-bottom">
+                                                                        @if ($availableUsers->count() > 0)
+                                                                        <div class="datatable-info">
+                                                                            Showing {{ $availableUsers->firstItem() }}
+                                                                            to {{
+                                                                            $availableUsers->lastItem() }} of {{
+                                                                            $availableUsers->total()
+                                                                            }}
+                                                                            entries
+                                                                        </div>
+
+
+
+                                                                        <nav class="datatable-pagination">
+                                                                            <ul class="datatable-pagination-list">
+                                                                                @if ($availableUsers->onFirstPage())
+                                                                                <li
+                                                                                    class="datatable-pagination-list-item datatable-disabled">
+                                                                                    <button disabled
+                                                                                        aria-label="Previous Page">‹</button>
+                                                                                </li>
+                                                                                @else
+                                                                                <li
+                                                                                    class="datatable-pagination-list-item">
+                                                                                    <a href="{{ $availableUsers->previousPageUrl() }}"
+                                                                                        class="datatable-pagination-list-item-link"
+                                                                                        aria-label="Previous Page">‹</a>
+                                                                                </li>
+                                                                                @endif
+
+
+                                                                                @foreach($availableUsers->getUrlRange(1,
+                                                                                $availableUsers->lastPage()) as $page =>
+                                                                                $url)
+                                                                                <li
+                                                                                    class="datatable-pagination-list-item {{ $availableUsers->currentPage() == $page ? 'datatable-active' : '' }}">
+                                                                                    <a href="{{ $url }}"
+                                                                                        class="datatable-pagination-list-item-link"
+                                                                                        aria-label="Page {{ $page }}">{{
+                                                                                        $page
+                                                                                        }}</a>
+                                                                                </li>
+                                                                                @endforeach
+
+                                                                                @if ($availableUsers->hasMorePages())
+                                                                                <li
+                                                                                    class="datatable-pagination-list-item">
+                                                                                    <a href="{{ $data->nextPageUrl() }}"
+                                                                                        class="datatable-pagination-list-item-link"
+                                                                                        aria-label="Next Page">›</a>
+                                                                                </li>
+                                                                                @else
+                                                                                <li
+                                                                                    class="datatable-pagination-list-item datatable-disabled">
+                                                                                    <button disabled
+                                                                                        aria-label="Next Page">›</button>
+                                                                                </li>
+                                                                                @endif
+                                                                            </ul>
+                                                                        </nav>
+                                                                        @endif
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            {{--
-                            ........................................................................................................................
-                            --}}
 
-                            </form>
+
+
                         </div>
                     </div>
                 </div>
@@ -543,8 +1582,206 @@
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Remark Modal -->
+<div class="modal fade" id="remarkModal" tabindex="-1" aria-labelledby="remarkModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="remarkForm" action="{{ route('assigned_delete_with_remark') }}" method="POST">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="remarkModalLabel">Add Remark</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="assign_id" id="assignId">
+                    <div class="mb-3">
+                        <label for="remark" class="form-label">Remove Remark For This User</label>
+                        <textarea class="form-control" name="remark" id="remark" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    {{-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button> --}}
+                    <button type="submit" class="btn btn-danger">Submit and Remove</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const remarkModal = document.getElementById('remarkModal');
+        const assignIdInput = document.getElementById('assignId');
+        const remarkButtons = document.querySelectorAll('.open-remark-modal');
+
+        remarkButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const assignId = this.getAttribute('data-id');
+                assignIdInput.value = assignId;
+            });
+        });
+    });
+</script>
+
+{{-- ...............................model............................ --}}
+
+<div class="modal fade" id="assignPermissionsModal" tabindex="-1" aria-labelledby="assignPermissionsModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="assignPermissionsModalLabel">Assign Permissions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="assignPermissionForm" action="{{ route('course.update_permissions') }}" method="post">
+                    @csrf
+
+                    <!-- Hidden Input for User ID -->
+                    {{-- <input type="hidden" name="user_id" id="modalUserId"> --}}
+                    <input type="hidden" id="modalUserId" name="user_id" value="">
+                    <input type="hidden" name="course_id" value="{{ $id }}">
+
+                    <!-- Search Box -->
+                    <div class="mb-3">
+                        <input type="text" id="searchPermissions" class="form-control"
+                            placeholder="Search Permissions...">
+                    </div>
+
+                    <!-- Permissions Table -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Permission Name</th>
+                                    <th>Select</th>
+                                </tr>
+                            </thead>
+                            <tbody id="permissionsTable">
+                                @foreach ($permissions as $index => $permission)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $permission['display_name'] }}</td>
+                                    <td>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" name="permissions[]"
+                                                value="{{ $permission['id'] }}" id="permission{{ $permission['id'] }}">
+                                            <label class="form-check-label"
+                                                for="permission{{ $permission['id'] }}"></label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-end mt-3">
+                        <button type="submit" class="btn btn-primary">Assign Permissions</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{-- <script>
+    document.addEventListener('DOMContentLoaded', function () {
+                // Search functionality for permissions
+                const searchInput = document.getElementById('searchPermissions');
+                const permissionsTable = document.getElementById('permissionsTable');
+
+                searchInput.addEventListener('input', function () {
+                const searchTerm = searchInput.value.toLowerCase();
+                const rows = permissionsTable.querySelectorAll('tr');
+
+                rows.forEach(row => {
+                const permissionName = row.children[1].textContent.toLowerCase();
+                row.style.display = permissionName.includes(searchTerm) ? '' : 'none';
+                });
+                });
+
+                // Update modal user_id dynamically
+                const manageButtons = document.querySelectorAll('.manage-permissions-btn');
+                const modalUserIdField = document.getElementById('modalUserId');
+
+                manageButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                const userId = this.getAttribute('data-user-id');
+                modalUserIdField.value = userId; // Set the hidden user_id in the modal form
+                });
+                });
+                });
+
+
+</script> --}}
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    // Search functionality for permissions
+    const searchInput = document.getElementById('searchPermissions');
+    const permissionsTable = document.getElementById('permissionsTable');
+
+    searchInput.addEventListener('input', function () {
+        const searchTerm = searchInput.value.toLowerCase();
+        const rows = permissionsTable.querySelectorAll('tr');
+
+        rows.forEach(row => {
+            const permissionName = row.children[1].textContent.toLowerCase();
+            row.style.display = permissionName.includes(searchTerm) ? '' : 'none';
+        });
+    });
+
+    // Update modal user_id dynamically and fetch user's assigned permissions
+    const manageButtons = document.querySelectorAll('.manage-permissions-btn');
+    const modalUserIdField = document.getElementById('modalUserId');
+    const checkboxes = document.querySelectorAll('input[name="permissions[]"]');
+
+    manageButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const userId = this.getAttribute('data-user-id');
+            modalUserIdField.value = userId; // Set the hidden user_id in the modal form
+
+            // Reset all checkboxes
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+
+            // Fetch user's assigned permissions
+            fetch(`/user/${userId}/permissions`) // Update the endpoint as per your route
+                .then(response => response.json())
+                .then(assignedPermissions => {
+                    // Pre-check the checkboxes for assigned permissions
+                    assignedPermissions.forEach(permissionId => {
+                        const checkbox = document.querySelector(`input[value="${permissionId}"]`);
+                        if (checkbox) {
+                            checkbox.checked = true;
+                        }
+                    });
+                })
+                .catch(error => console.error('Error fetching permissions:', error));
+        });
+    });
+});
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{{-- <script>
     document.getElementById('createCourseForm').addEventListener('submit', function (e) {
         e.preventDefault();
         var formData = new FormData(this);
@@ -594,7 +1831,7 @@
             });
         });
     });
-</script>
+</script> --}}
 
 {{-- <script>
     const browseLink = document.querySelector('.browse-link');
@@ -634,6 +1871,38 @@ browseLink.addEventListener('click', () => {
         document.getElementById('fileName').textContent = fileName;
     }
 </script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmDelete(element) {
+    event.preventDefault(); // Prevent the default link behavior
+    const url = element.href;
+
+    Swal.fire({
+        title: 'Are you sure? For Remove',
+        text: 'This action cannot be undone!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, Remove it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // If confirmed, redirect to the delete URL
+            window.location.href = url;
+        }
+    });
+
+    return false; // Prevent immediate navigation
+}
+
+</script>
+
+
 
 
 @include('partials.footer')

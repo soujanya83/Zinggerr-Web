@@ -76,28 +76,20 @@
 
 
     .css-pht88d {
-    /* font-size: 0.875rem; */
-    font-weight: 400;
-    line-height: 1.4375em;
-    font-family: Roboto, sans-serif;
-    color: rgb(54, 65, 82);
-    box-sizing: border-box;
-    cursor: text;
-    display: inline-flex
-;
-    align-items: center;
-    width: 100%;
-    position: relative;
-    background: rgb(248, 250, 252);
-    border-radius: 8px;}
-
-
-
-
-
-
-
-
+        /* font-size: 0.875rem; */
+        font-weight: 400;
+        line-height: 1.4375em;
+        font-family: Roboto, sans-serif;
+        color: rgb(54, 65, 82);
+        box-sizing: border-box;
+        cursor: text;
+        display: inline-flex;
+        align-items: center;
+        width: 100%;
+        position: relative;
+        background: rgb(248, 250, 252);
+        border-radius: 8px;
+    }
 </style>
 
 
@@ -162,7 +154,7 @@
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <ul>
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                <li>{{ $error }}</li>
                 @endforeach
             </ul>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -172,7 +164,7 @@
 
         <div class="row">
 
-            <div class="card" style="    width: 98%;margin-left: 12px;">
+            <div class="card" style="width: 98%;margin-left: 12px;">
                 <div class="card-header  pb-0">
                     <ul class="nav nav-tabs profile-tabs" id="myTab" role="tablist">
                         <li class="nav-item " role="presentation">
@@ -191,13 +183,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="profile-tab-8" data-bs-toggle="tab" href="#profile-8" role="tab"
-                                aria-selected="false" tabindex="-1">
-                                <i class="material-icons-two-tone me-2">book</i>
-                                Tags
-                            </a>
-                        </li>
+
                     </ul>
                 </div>
 
@@ -205,106 +191,108 @@
 
                 <div class="card-body">
                     <div class="tab-content" id="myTabContent">
-                        {{--
-                        ..............................................................................................................
-                        --}}
 
                         <div class="tab-pane fade show active" id="profile-1" role="tabpanel"
                             aria-labelledby="profile-tab-1">
                             <div class="card-body">
                                 {{-- <form id="createCourseForm" method="POST" enctype="multipart/form-data"> --}}
-                                    <form action="{{ route('courses.create') }}" method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-floating mb-3">
+                                    <form action="{{ route('courses.create') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3">
 
-                                                <input type="text" name="course_full_name" class="form-control"
-                                                    placeholder="Enter Course Full Name" id="floatingShortname">
+                                                    <input type="text" name="course_full_name" class="form-control"
+                                                        placeholder="Enter Course Full Name" id="floatingShortname">
 
 
-                                                <label style="align-content: center;" class="form-label"
-                                                    for="floatingShortname">Course Full
-                                                    Name</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-floating mb-3">
-
-                                                <input type="text" name="course_short_name" class="form-control"
-                                                    placeholder="Enter Course Short Name" id="floatingShortname">
-                                                <label style="align-content: center;" class="form-label"
-                                                    for="floatingShortname">Course Short
-                                                    Name</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-floating mb-3">
-                                                <select name="course_category" class="form-select"
-                                                    id="floatingShortname">
-
-                                                    <option value="Art">Art    </option>
-                                                    <option value="Science">Science</option>
-                                                    <option value="Math">Math</option>
-                                                    <option value="History">History</option>
-                                                </select>
-                                                <label style="align-content: center;" for="floatingShortname">Select
-                                                    Course
-                                                    Category</label>
+                                                    <label style="align-content: center;" class="form-label"
+                                                        for="floatingShortname">Course Full
+                                                        Name</label>
+                                                </div>
                                             </div>
 
-                                        </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3">
 
-                                        <div class="col-md-6">
-                                            <div class="form-floating mb-3">
-
-                                                <input type="number" name="course_id_number" class="form-control"
-                                                    placeholder="Enter Course ID Number">
-                                                <label style="align-content: center;" class="form-label">Course
-                                                    ID Number</label>
+                                                    <input type="text" name="course_short_name" class="form-control"
+                                                        placeholder="Enter Course Short Name" id="floatingShortname">
+                                                    <label style="align-content: center;" class="form-label"
+                                                        for="floatingShortname">Course Short
+                                                        Name</label>
+                                                </div>
                                             </div>
-                                        </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3">
+                                                    <select name="course_category" class="form-select"
+                                                        id="floatingShortname">
+                                                        @foreach($categories as $category)
+                                                        <option value="{{ $category->name }}">{{ $category->display_name
+                                                            }}</option>
+                                                        @endforeach
 
-                                        <div class="col-md-6">
-                                            <label class="form-label">Course Summary</label>
-                                            <div class="form-floating mb-3">
-                                                <!-- Textarea for Summernote -->
-                                                <textarea id="summernote" name="course_summary" class="form-control">
-
-                                        </textarea>
+                                                    </select>
+                                                    <label style="align-content: center;" for="floatingShortname">Select
+                                                        Course
+                                                        Category</label>
+                                                </div>
 
                                             </div>
-                                        </div>
 
-                                        <div class="col-md-6">
-                                            <label class="form-label">Course Image Upload</label>
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3">
 
-                                            <div class="form-floating mb-3">
+                                                    <input type="number" name="course_id_number" class="form-control"
+                                                        placeholder="Enter Course ID Number">
+                                                    <label style="align-content: center;" class="form-label">Course
+                                                        ID Number</label>
+                                                </div>
+                                            </div>
 
-                                                <div class="d-flex align-items-center border p-3 rounded">
+                                            <div class="col-md-12">
+                                                <label class="form-label">Course Summary</label>
+                                                <div class="form-floating mb-3">
+                                                    <!-- Textarea for Summernote -->
+                                                    <textarea id="summernote" name="course_summary"
+                                                        class="form-control">
 
-                                                    <div class="d-flex align-items-center" style="margin-left: 107px;">
+                                                     </textarea>
 
-                                                        <label for="fileUpload" class="file-upload-label">
-                                                            <div class="upload-icon mb-3">
-                                                                <i
-                                                                    class="fas fa-cloud-upload-alt fa-3x text-primary"></i>
-                                                            </div>
-                                                            <span class="text-muted"
-                                                                style="    margin-top: -19px;">Click to
-                                                                upload
-                                                                file here</span>
-                                                            <span id="fileName" class="ms-2"></span>
-                                                            <input type="file" id="fileUpload" name="course_image"
-                                                                class="file-upload-input" onchange="showFileName(this)">
-                                                        </label>
+                                                </div>
+                                            </div>
 
+                                            <div class="col-md-12">
+                                                <label class="form-label" style="margin-bottom: -11px">Course Image
+                                                    Upload</label>
+
+                                                <div class="form-floating mb-3">
+
+                                                    <div class="d-flex align-items-center  p-3 rounded">
+
+                                                        <div class="d-flex align-items-center">
+
+                                                            <label for="fileUpload" class="file-upload-label"
+                                                                style="width:1263px;    margin-left: -16px;">
+                                                                <div class="upload-icon mb-3">
+                                                                    <i
+                                                                        class="fas fa-cloud-upload-alt fa-3x text-primary"></i>
+                                                                </div>
+                                                                <span class="text-muted"
+                                                                    style="    margin-top: -19px;">Click to
+                                                                    upload
+                                                                    file here</span>
+                                                                <span id="fileName" class="ms-2"></span>
+                                                                <input type="file" id="fileUpload" name="course_image"
+                                                                    class="file-upload-input"
+                                                                    onchange="showFileName(this)">
+                                                            </label>
+
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
                             </div>
                         </div>
 
@@ -329,6 +317,9 @@
                                         </div>
 
                                     </div>
+
+
+
 
                                     <div class="col-md-3">
                                         <div class="mb-3">
@@ -375,7 +366,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6">
+
+                                    <div class="col-md-4">
                                         <div class="form-floating mb-3">
                                             <div class="dropdown">
                                                 <label style="align-content: center;" for="emailInput"
@@ -447,20 +439,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
 
-                            </div>
-
-                        </div>
-
-
-                        <div class="tab-pane fade" id="profile-8" role="tabpanel" aria-labelledby="profile-tab-8">
-                            <div class="">
-                                <div class="row">
-                                    <label style="align-content: center;" for="tags" class="form-label">Tags:</label>
-                                    &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
                                     <div class="col-md-4">
+                                        <label style="align-content: center;" for="tags"
+                                            class="form-label">Tags:</label>
+                                        &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
                                         <div class="form-floating mb-3">
 
                                             <div class="form-check form-check-inline">
@@ -484,17 +468,22 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-12 text-end">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                    </div>
+
+
+
+
+
+
 
                                 </div>
+
+
+                            </div>
+
+                            <div class="col-md-12 text-end">
+                                <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </div>
-                        {{--
-                        ........................................................................................................................
-                        --}}
-
                     </div>
                     </form>
                 </div>

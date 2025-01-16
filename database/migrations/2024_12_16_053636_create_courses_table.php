@@ -12,6 +12,7 @@ return new class extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->char('id', 36)->primary();
             $table->string('course_full_name', 255);
+            $table->string('slug', 255);
             $table->string('course_short_name', 255);
             $table->string('course_category', 100);
             $table->date('course_start_date')->nullable();

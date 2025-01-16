@@ -67,10 +67,10 @@
                         <li class="pc-item">
                             <a class="pc-link" href="{{ route('courses') }}" data-i18n="Active List">Courses List</a>
                         </li>
-                        {{-- <li class="pc-item">
-                            <a class="pc-link" href="#" data-i18n="Drafted List">Drafted List</a>
-                        </li>
                         <li class="pc-item">
+                            <a class="pc-link" href="{{ route('course.category') }}" data-i18n="Expired List">Courses Category</a>
+                        </li>
+                       {{--  <li class="pc-item">
                             <a class="pc-link" href="#" data-i18n="Expired List">Expired List</a>
                         </li>
                         <li class="pc-item">

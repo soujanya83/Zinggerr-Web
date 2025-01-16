@@ -50,17 +50,23 @@
                                     <input type="text" id="name" class="form-control" name="name"
                                         placeholder="Course Name" value="{{ request('name') }}"
                                         style="margin-top: -10px;width: 216px;margin-left: -185px;" />
-                                    <input type="text" id="teacher_name" class="form-control" name="teacher_name"
-                                        placeholder="Course Category" value="{{ request('teacher_name') }}"
-                                        style="margin-top: -42px; margin-left: 47px;width: 216px;" />
+                                    <select id="category" class="form-select" name="category"
+                                        style="margin-top: -42px; margin-left: 47px;width: 216px;">
+                                        <option value="">All Categories</option>
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category->name }}"
+                                                {{ request('category') == $category->name ? 'selected' : '' }}>
+                                                {{ $category->display_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                                <div style="margin-left: 276px;    margin-top: -42px;">
+                                <div style="margin-left: 276px; margin-top: -42px;">
                                     <button type="submit" class="btn btn-primary">Filter</button>
-
-                                    <span style="    margin-left: 35px;"> <a
-                                            href="{{ route('courses') }}">Refresh</a></span>
+                                    <span style="margin-left: 35px;">
+                                        <a href="{{ route('courses') }}">Refresh</a>
+                                    </span>
                                 </div>
-
                             </form>
 
                             {{-- <div><a href="{{ route('addCourse') }}" class="btn btn-success">Add New Course</a>
@@ -158,7 +164,7 @@
                                                             $permissions)))
                                                             <a href="{{ route('course_edit', $course->id) }}"
                                                                 class="dropdown-item">
-                                                                <i class="ti ti-edit f-20"></i> Course Edit
+                                                                <i class="ti ti-edit f-20"></i> Edit Course
                                                             </a>
                                                             @endif
 
@@ -169,8 +175,7 @@
                                                             <a href="{{ route('course_delete', $course->id) }}"
                                                                 class="dropdown-item"
                                                                 onclick="return confirmDelete(this)">
-                                                                <i class="ti ti-trash f-20 text-danger"></i> Course
-                                                                Delete
+                                                                <i class="ti ti-trash f-20 text-danger"></i> Delete Course
                                                             </a>
                                                             @endif
                                                         </div>
@@ -250,39 +255,8 @@
                                                         class="btn btn-sm btn-outline-primary mb-2 position-absolute end-0">Read
                                                         More</a>
                                                 </div>
-
-
-
-
-
                                             </li>
-
-
-
-
-
-
                                         </ul>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                                         <div class="modal fade" id="assignUsersModal" tabindex="-1"
                                             aria-labelledby="assignUsersModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
@@ -327,11 +301,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
-
-
-
                                         <script>
                                             document.addEventListener('DOMContentLoaded', function () {
                                                 const userList = document.getElementById('userList');

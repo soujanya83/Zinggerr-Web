@@ -113,7 +113,8 @@
 
                                     <!-- Description Section (Below Image and Details) -->
                                     <div class="card-footer bg-light">
-                                        <p><strong>Description:</strong> {{ $course->course_summary }}</p>
+                                        <p><strong>Description:</strong> {{ strip_tags($course->course_summary) }}</p>
+
                                     </div>
                                 </div>
 
