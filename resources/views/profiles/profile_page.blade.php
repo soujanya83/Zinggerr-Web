@@ -430,7 +430,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="card-footer text-end">
-                                                        <button type="submit" class="btn btn-danger">Change
+                                                        <button type="submit" class="btn btn-primary">Change
                                                             Password</button>
                                                         <button type="reset"
                                                             class="btn btn-outline-dark ms-2">Clear</button>
