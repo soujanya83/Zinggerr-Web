@@ -48,7 +48,7 @@
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <ul>
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                <li>{{ $error }}</li>
                 @endforeach
             </ul>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -82,7 +82,8 @@
                                     <div class=" mb-3">
                                         <label for="usernameInput">Username</label>
                                         <input type="text" class="form-control" id="usernameInput" placeholder=""
-                                            name="username" required  value="{{ old('username') }}">
+                                            name="username" required value="{{ old('username') }}"
+                                            oninput="this.value = this.value.replace(/\s/g, '')">
 
                                         <small id="usernameError" class="text-danger"></small>
                                         @error('username')
@@ -119,7 +120,8 @@
                                     <div class="mb-3">
                                         <label for="passwordInput">Password</label>
                                         <div class="input-group">
-                                            <input type="password" class="form-control" id="passwordInput" name="password" placeholder="Enter your password" required>
+                                            <input type="password" class="form-control" id="passwordInput"
+                                                name="password" placeholder="Enter your password" required>
                                             <button type="button" class="btn btn-outline-secondary" id="togglePassword">
                                                 <i class="fas fa-eye"></i>
                                             </button>
@@ -172,7 +174,7 @@
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="status"
                                                     id="statusActive" value="1" checked>
-                                                <label class="form-check-label" for="statusActive" >Active</label>
+                                                <label class="form-check-label" for="statusActive">Active</label>
                                             </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="status"

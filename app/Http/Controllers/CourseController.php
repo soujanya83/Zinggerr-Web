@@ -351,6 +351,7 @@ class CourseController extends Controller
             return redirect()->back()
                 ->with('success', 'Category created successfully!');
         } catch (\Exception $e) {
+            dd($e);
             return redirect()->back()
                 ->with('error', 'Something went wrong. Please try again.');
         }

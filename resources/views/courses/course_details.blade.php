@@ -75,30 +75,30 @@
                                                         <span class="text-muted">{{ $course->course_short_name }}</span>
                                                     </div>
                                                 </li>
-                                                <li class="list-group-item px-0 py-2">
+                                                {{-- <li class="list-group-item px-0 py-2">
                                                     <div class="d-flex align-items-center justify-content-between">
                                                         <span class="fw-bold">Course Start Date:</span>
                                                         <span class="text-muted">{{ $course->course_start_date }}</span>
                                                     </div>
-                                                </li>
-                                                <li class="list-group-item px-0 py-2">
+                                                </li> --}}
+                                                {{-- <li class="list-group-item px-0 py-2">
                                                     <div class="d-flex align-items-center justify-content-between">
                                                         <span class="fw-bold">Course End Date:</span>
                                                         <span class="text-muted">{{ $course->course_end_date }}</span>
                                                     </div>
-                                                </li>
+                                                </li> --}}
                                                 <li class="list-group-item px-0 py-2">
                                                     <div class="d-flex align-items-center justify-content-between">
                                                         <span class="fw-bold">Course Category:</span>
                                                         <span class="text-muted">{{ $course->course_category }}</span>
                                                     </div>
                                                 </li>
-                                                <li class="list-group-item px-0 py-2">
+                                                {{-- <li class="list-group-item px-0 py-2">
                                                     <div class="d-flex align-items-center justify-content-between">
                                                         <span class="fw-bold">Course Section:</span>
                                                         <span class="text-muted">{{ $course->course_sections }}</span>
                                                     </div>
-                                                </li>
+                                                </li> --}}
                                                 <li class="list-group-item px-0 py-2">
                                                     <div class="d-flex align-items-center justify-content-between">
                                                         <span class="fw-bold">File Uploads Size:</span>
@@ -119,7 +119,7 @@
                                 </div>
 
 
-                                <h5>Courses Assets List</h5>
+                                <h5>Courses Chapters List</h5>
 
                             </div>
 

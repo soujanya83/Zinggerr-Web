@@ -204,7 +204,8 @@
                                                 <div class="form-floating mb-3">
 
                                                     <input type="text" name="course_full_name" class="form-control"
-                                                        placeholder="Enter Course Full Name" id="floatingShortname" required value="{{ old('course_full_name') }}">
+                                                        placeholder="Enter Course Full Name" id="floatingShortname"
+                                                        required value="{{ old('course_full_name') }}">
 
 
                                                     <label style="align-content: center;" class="form-label"
@@ -213,16 +214,31 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            {{-- <div class="col-md-6">
                                                 <div class="form-floating mb-3">
 
                                                     <input type="text" name="course_short_name" class="form-control"
-                                                        placeholder="Enter Course Short Name" id="floatingShortname" required value="{{ old('course_short_name') }}">
+                                                        placeholder="Enter Course Short Name" id="floatingShortname"
+                                                        required value="{{ old('course_short_name') }}">
                                                     <label style="align-content: center;" class="form-label"
                                                         for="floatingShortname">Course Short
                                                         Name</label>
                                                 </div>
+                                            </div> --}}
+
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" name="course_short_name" class="form-control"
+                                                        placeholder="Enter Course Short Name" id="floatingShortname"
+                                                        required value="{{ old('course_short_name') }}"
+                                                        oninput="this.value = this.value.replace(/\s/g, '')">
+                                                    <label style="align-content: center;" class="form-label"
+                                                        for="floatingShortname">
+                                                        Course Short Name
+                                                    </label>
+                                                </div>
                                             </div>
+
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3">
                                                     <select name="course_category" class="form-select"
@@ -244,7 +260,8 @@
                                                 <div class="form-floating mb-3">
 
                                                     <input type="number" name="course_id_number" class="form-control"
-                                                        placeholder="Enter Course ID Number" required value="{{ old('course_id_number') }}">
+                                                        placeholder="Enter Course ID Number" required
+                                                        value="{{ old('course_id_number') }}">
                                                     <label style="align-content: center;" class="form-label">Course
                                                         ID Number</label>
                                                 </div>
@@ -254,8 +271,8 @@
                                                 <label class="form-label">Course Summary</label>
                                                 <div class="form-floating mb-3">
                                                     <!-- Textarea for Summernote -->
-                                                    <textarea id="summernote" name="course_summary"
-                                                        class="form-control" required>{{ old('course_summary') }}
+                                                    <textarea id="summernote" name="course_summary" class="form-control"
+                                                        required>{{ old('course_summary') }}
 
                                                      </textarea>
 
@@ -467,19 +484,8 @@
                                             </div>
                                         </div>
                                     </div>
-
-
-
-
-
-
-
-
                                 </div>
-
-
                             </div>
-
                             <div class="col-md-12 text-end">
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>

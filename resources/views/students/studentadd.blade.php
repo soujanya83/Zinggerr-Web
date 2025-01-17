@@ -48,7 +48,7 @@
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <ul>
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                <li>{{ $error }}</li>
                 @endforeach
             </ul>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -78,7 +78,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                {{-- <div class="col-md-4">
                                     <div class=" mb-3">
                                         <label for="usernameInput">Username</label>
                                         <input type="text" class="form-control" id="usernameInput" placeholder=""
@@ -89,7 +89,24 @@
                                         <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
+                                </div> --}}
+
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="usernameInput">Username</label>
+                                        <input type="text" class="form-control" id="usernameInput"
+                                            placeholder="Enter Username" name="username" required
+                                            value="{{ old('username') }}"
+                                            oninput="this.value = this.value.replace(/\s/g, '')">
+                                        <small id="usernameError" class="text-danger"></small>
+                                        @error('username')
+                                        <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
                                 </div>
+
+
+
                                 <div class="col-md-4">
                                     <div class=" mb-3">
                                         <label for="phoneInput">Phone</label>

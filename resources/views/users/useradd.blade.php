@@ -49,7 +49,7 @@
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <ul>
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                <li>{{ $error }}</li>
                 @endforeach
             </ul>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -62,15 +62,16 @@
                         <h5 class="mb-0">Users Create</h5>
                     </div>
                     <div class="card-body">
-                        <form id="registerForm"  action="{{ route('createuser') }}" method="post"
-                            autocomplete="off" enctype="multipart/form-data">
+                        <form id="registerForm" action="{{ route('createuser') }}" method="post" autocomplete="off"
+                            enctype="multipart/form-data">
                             @csrf
 
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class=" mb-3">
                                         <label for="nameInput">Full Name</label>
-                                        <input type="text" class="form-control" id="nameInput" name="name" required value="{{ old('name') }}">
+                                        <input type="text" class="form-control" id="nameInput" name="name" required
+                                            value="{{ old('name') }}">
 
                                         <small id="nameError" class="text-danger"></small>
                                         @error('name')
@@ -82,7 +83,8 @@
                                     <div class=" mb-3">
                                         <label for="usernameInput">Username</label>
                                         <input type="text" class="form-control" id="usernameInput" placeholder=""
-                                            name="username" required value="{{ old('username') }}">
+                                            name="username" required value="{{ old('username') }}"
+                                            oninput="this.value = this.value.replace(/\s/g, '')">
 
                                         <small id="usernameError" class="text-danger"></small>
                                         @error('username')
@@ -119,8 +121,8 @@
                                     <div class=" mb-3">
                                         <label for="passwordInput">Password</label>
                                         <div class="input-group">
-                                            <input type="password" id="passwordInput" class="form-control" name="password"
-                                                placeholder="Enter new password" required>
+                                            <input type="password" id="passwordInput" class="form-control"
+                                                name="password" placeholder="Enter new password" required>
                                             <button type="button" class="btn btn-outline-secondary" id="togglePassword">
                                                 <i class="fas fa-eye"></i>
                                             </button>
