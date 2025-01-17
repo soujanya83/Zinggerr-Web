@@ -168,7 +168,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('user/account-profile', [ProfileController::class, 'profilepage'])->name('userprofile');
     Route::get('user/social-profile', [ProfileController::class, 'socialprofilepage'])->name('user.socialprofile');
     Route::post('users/profile-update', [ProfileController::class, 'updateProfile'])->name('user.profile.update');
-    Route::get('users/change-password', [ProfileController::class, 'changePassword'])->name('user.changepassword');
+    Route::post('users/change-password', [ProfileController::class, 'changePassword'])->name('user.changepassword');
 
     Route::get('permissions/create', [PermissionsController::class, 'create_permission'])->name('permissions.create');
     Route::post('permission/submit', [PermissionsController::class, 'submit_permission'])->name('submit.permission');

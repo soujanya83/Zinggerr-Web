@@ -212,7 +212,7 @@
 
 <script>
     document.getElementById('togglePassword').addEventListener('click', function () {
-        const passwordField = document.getElementById('password');
+        const passwordField = document.getElementById('passwordInput');
         const icon = this.querySelector('i');
         if (passwordField.type === 'password') {
             passwordField.type = 'text';

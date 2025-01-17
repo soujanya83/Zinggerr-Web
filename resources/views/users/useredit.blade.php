@@ -126,19 +126,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label for="profile_picture">Profile Picture</label>
 
-                                            <input type="file" name="profile_picture" class="form-control"
-                                                accept="image/*">
-                                            @if ($user->profile_picture)
-                                            <img src="{{ asset('storage/' . $user->profile_picture) }}"
-                                                alt="Profile Picture" class="img-thumbnail mb-2" width="150px"
-                                                height="150px">
-                                            @endif
-                                        </div>
-                                    </div>
                                     <div class="col-md-4">
                                         <div class=" mb-3">
                                             <label for="emailInput">Role Type</label>
@@ -159,6 +147,21 @@
                                             </select>
                                         </div>
                                     </div>
+
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="profile_picture">Profile Picture</label>
+
+                                            <input type="file" name="profile_picture" class="form-control"
+                                                accept="image/*">
+                                            @if ($user->profile_picture)
+                                            <img src="{{ asset('storage/' . $user->profile_picture) }}"
+                                                alt="Profile Picture" class="img-thumbnail mb-2" width="150px"
+                                                height="150px">
+                                            @endif
+                                        </div>
+                                    </div>
+
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label for="gender">Gender</label>
@@ -371,7 +374,7 @@
 
 <script>
     document.getElementById('togglePassword').addEventListener('click', function () {
-        const passwordField = document.getElementById('password');
+        const passwordField = document.getElementById('passwordInput');
         const icon = this.querySelector('i');
         if (passwordField.type === 'password') {
             passwordField.type = 'text';

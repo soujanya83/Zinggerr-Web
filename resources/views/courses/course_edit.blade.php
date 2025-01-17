@@ -181,14 +181,14 @@
                                 <a class="nav-link" id="profile-tab-8" data-bs-toggle="tab" href="#profile-8" role="tab"
                                     aria-selected="false" tabindex="-1">
                                     <i class="material-icons-two-tone me-2">group</i>
-                                    Teachers Asseign
+                                    Teachers Assign
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link" id="profile-tab-9" data-bs-toggle="tab" href="#profile-9" role="tab"
                                     aria-selected="false" tabindex="-1">
                                     <i class="material-icons-two-tone me-2">group</i>
-                                    Users Asseign
+                                    Students Assign
                                 </a>
                             </li>
 
@@ -1057,14 +1057,14 @@
                                             <button class="nav-link active" id="usersassigned-tab" data-bs-toggle="tab"
                                                 data-bs-target="#assignedusers" type="button" role="tab"
                                                 aria-controls="assigned" aria-selected="true">
-                                                <i class="ti ti-user-plus f-20"></i> Assigned Users
+                                                <i class="ti ti-user-plus f-20"></i> Assigned Students
                                             </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link" id="useravailable-tab" data-bs-toggle="tab"
                                                 data-bs-target="#usersavailable" type="button" role="tab"
                                                 aria-controls="available" aria-selected="false">
-                                                <i class="ti ti-user-plus f-20"></i> Available Users
+                                                <i class="ti ti-user-plus f-20"></i> Available Students
                                             </button>
                                         </li>
                                     </ul>
@@ -1079,7 +1079,7 @@
                                                     <div class="card table-card">
                                                         <div class="card-header">
                                                             <div class="row align-items-center g-2">
-                                                                <h5>Users List Assigned For This Courses</h5>
+                                                                <h5>Students List Assigned For This Courses</h5>
 
                                                                 <div class="col-auto"
                                                                     style=" margin-top: -21px; margin-left: 78%">
@@ -1340,7 +1340,7 @@
                                                     <div class="card table-card">
                                                         <div class="card-header">
                                                             <div class="row align-items-center g-2">
-                                                                <h5>Users List Available For This Courses </h5>
+                                                                <h5>Students List Available For This Courses </h5>
 
                                                                 <div class="col-auto"
                                                                     style=" margin-top: -21px; margin-left: 78%">

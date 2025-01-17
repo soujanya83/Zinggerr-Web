@@ -62,7 +62,16 @@
         </div>
         @endif
 
-
+        @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
         <div class="row">
             <div class="">
@@ -107,9 +116,6 @@
                         </ul>
                     </div>
 
-                    @error('current_password')
-                    <small class="text-danger">{{ $message }}</small>
-                    @enderror
 
 
                     <div class="card-body">
@@ -126,7 +132,7 @@
 
 
                                                 @if(Auth::user()->profile_picture)
-                                                <img src="{{ asset('storage/users pictures/' . Auth::user()->profile_picture) }}"
+                                                <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}"
                                                     class="rounded-circle" width="100" height="100">
                                                 @else
                                                 <img src="{{ asset('asset/images/user/avatar-1.jpg') }}"
@@ -258,7 +264,7 @@
                                                     <td class="col-md-4">
 
                                                         @if(Auth::user()->profile_picture)
-                                                        <img src="{{ asset('storage/users_pictures/' . Auth::user()->profile_picture) }}"
+                                                        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}"
                                                             class="rounded-circle" width="100" height="100">
                                                         @else
                                                         <img src="{{ asset('asset/images/user/avatar-1.jpg') }}"
@@ -367,7 +373,7 @@
                                                 <p class="mb-0"><b>Do not share your password</b></p>
                                             </div>
 
-                                            <form action="{{ route('user.changepassword') }}" method="get">
+                                            <form action="{{ route('user.changepassword') }}" method="post">
                                                 @csrf
                                                 <div class="card border">
                                                     <div class="card-header">
@@ -412,7 +418,7 @@
                                                                     <label class="form-label">Confirm Password <span
                                                                             class="text-danger">*</span></label>
                                                                     <input type="password" id="confirmPassword"
-                                                                        name="confirm_password" class="form-control"
+                                                                        name="new_password_confirmation" class="form-control"
                                                                         placeholder="Confirm your new password">
                                                                     <button type="button"
                                                                         class="btn btn-outline-secondary toggle-password eyebutton"

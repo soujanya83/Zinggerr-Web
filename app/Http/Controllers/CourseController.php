@@ -16,12 +16,102 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Guid\Guid;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class CourseController extends Controller
 {
+
+    public function createCourse(Request $request)
+    {
+
+
+        $validator = Validator::make($request->all(), [
+            'course_full_name' => 'required|string|max:255',
+            'course_short_name' => 'required|string|max:255',
+            'course_category' => 'required|string|max:100',
+            'course_id_number' => 'required|nullable|string|max:50',
+            'course_status' => 'required|boolean',
+            'downloa_status' => 'nullable|boolean',
+            'course_summary' => 'required|nullable|string|max:1000',
+            'course_image' => 'required|nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'course_layout' => 'nullable|string|max:255',
+            'course_format' => 'nullable|string|max:100',
+            'tags' => 'required|nullable|array',
+            'tags.*' => 'string|max:50',
+        ]);
+
+
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $tags = $request->tags; // This should be an array like ['Basic', 'Advanced', 'Intermediate']
+        $tagsString = implode(',', $tags);
+        $uuid = (string) Guid::uuid4();
+
+        $slug = $this->generateUniqueSlug($request->course_full_name);
+
+        try {
+            $course = new Course();
+            $course->id = $uuid;
+            $course->slug = $slug;
+            $course->course_full_name = $request->course_full_name;
+            $course->course_short_name = $request->course_short_name;
+            $course->course_category = $request->course_category;
+            $course->course_start_date = null;
+            $course->course_end_date = null;
+            $course->course_id_number = $request->course_id_number;
+            $course->course_status = $request->course_status;
+            $course->downloa_status = $request->downloa_status ?? 0;
+            $course->course_summary = $request->course_summary;
+            $course->hidden_section = null;
+            $course->course_layout = $request->course_layout;
+            $course->course_sections = null;
+            $course->force_theme = null;
+            $course->force_language = null;
+            $course->no_announcements = null;
+            $course->gradebook_student = null;
+            $course->activity_report = null;
+            $course->activity_date = null;
+            $course->file_uploads_size = null;
+            $course->completion_tracking = null;
+            $course->activity_completion_conditions = null;
+            $course->group_mode = null;
+            $course->force_group_mode = null;
+            $course->default_group = null;
+            $course->course_format = $request->course_format;
+            $course->tags = $tagsString;
+            $course->module_credit = null;
+
+
+            if ($request->hasFile('course_image')) {
+                $filePath = $request->file('course_image')->store('courses', 'public');
+                $course->course_image = $filePath;
+            }
+            $course->save();
+            return redirect('courses')->with('success', 'Course Create successfully.');
+        } catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()->with('error', 'Something went wrong. Please try again.');
+        }
+    }
+    private function generateUniqueSlug($courseFullName)
+    {
+        $slug = Str::slug($courseFullName);
+        $originalSlug = $slug;
+        $counter = 1;
+        while (Course::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+        return $slug;
+    }
+
 
     public function courses_pause_users(Request $request)
     {
@@ -715,79 +805,7 @@ class CourseController extends Controller
     }
 
 
-    public function createCourse(Request $request)
-    {
 
-        $validator = Validator::make($request->all(), [
-            'course_full_name' => 'required|string|max:255',
-            'course_short_name' => 'required|string|max:255',
-            'course_category' => 'required|string|max:100',
-            'course_id_number' => 'required|nullable|string|max:50',
-            'course_status' => 'required|boolean',
-            'downloa_status' => 'nullable|boolean',
-            'course_summary' => 'required|nullable|string|max:1000',
-            'course_image' => 'required|nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'course_layout' => 'nullable|string|max:255',
-            'course_format' => 'nullable|string|max:100',
-            'tags' => 'required|nullable|array',
-            'tags.*' => 'string|max:50',
-        ]);
-
-
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        $tags = $request->tags; // This should be an array like ['Basic', 'Advanced', 'Intermediate']
-        $tagsString = implode(',', $tags);
-        $uuid = (string) Guid::uuid4();
-
-        try {
-            $course = new Course();
-            $course->id = $uuid;
-            $course->course_full_name = $request->course_full_name;
-            $course->course_short_name = $request->course_short_name;
-            $course->course_category = $request->course_category;
-            $course->course_start_date = null;
-            $course->course_end_date = null;
-            $course->course_id_number = $request->course_id_number;
-            $course->course_status = $request->course_status;
-            $course->downloa_status = $request->downloa_status ?? 0;
-            $course->course_summary = $request->course_summary;
-            $course->hidden_section = null;
-            $course->course_layout = $request->course_layout;
-            $course->course_sections = null;
-            $course->force_theme = null;
-            $course->force_language = null;
-            $course->no_announcements = null;
-            $course->gradebook_student = null;
-            $course->activity_report = null;
-            $course->activity_date = null;
-            $course->file_uploads_size = null;
-            $course->completion_tracking = null;
-            $course->activity_completion_conditions = null;
-            $course->group_mode = null;
-            $course->force_group_mode = null;
-            $course->default_group = null;
-            $course->course_format = $request->course_format;
-            $course->tags = $tagsString;
-            $course->module_credit = null;
-
-            if ($request->hasFile('course_image')) {
-                $filePath = $request->file('course_image')->store('courses', 'public');
-                $course->course_image = $filePath;
-            }
-
-            $course->save();
-
-            return redirect('courses')->with('success', 'Course Create successfully.');
-        } catch (\Exception $e) {
-
-            return redirect()->back()->with('error', 'Something went wrong. Please try again.');
-        }
-    }
 
     public function courselist(Request $request)
     {
@@ -878,9 +896,10 @@ class CourseController extends Controller
         }
         $tags = $request->tags;
         $tagsString = implode(',', $tags);
-
+        $slug = $this->generateUniqueSlug($request->course_full_name);
         try {
             $course->course_full_name = $request->course_full_name;
+            $course->slug = $slug;
             $course->course_short_name = $request->course_short_name;
             $course->course_category = $request->course_category;
             $course->course_start_date = $request->course_start_date;

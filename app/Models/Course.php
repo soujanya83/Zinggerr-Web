@@ -34,6 +34,7 @@ class Course extends Model
         'default_group',
         'course_format',
         'tags',
+        'slug',
         'module_credit',
     ];
 

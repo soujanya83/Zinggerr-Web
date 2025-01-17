@@ -78,7 +78,7 @@
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <ul>
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                <li>{{ $error }}</li>
                 @endforeach
             </ul>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -237,7 +237,7 @@
                                                 (isset($permissions) && in_array('permissions_delete', $permissions)))
                                                 &nbsp &nbsp
                                                 <a href="{{ route('permission.delete', $permission['id']) }}"
-                                                    class="btn btn-sm btn-danger">
+                                                    class="btn btn-sm btn-danger" onclick="return confirmDelete(this)">
                                                     Delete
                                                 </a>
                                                 @endif
@@ -254,6 +254,7 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -284,14 +285,33 @@ document.getElementById('searchPermissions').addEventListener('keyup', function 
         row.style.display = permissionName.includes(searchText) ? '' : 'none';
     });
 });
-
-
-
-
-
 </script>
 
+<script>
+    function confirmDelete(element) {
+    event.preventDefault(); // Prevent the default link behavior
+    const url = element.href;
 
+    Swal.fire({
+        title: 'Are you sure? For Delete',
+        text: 'This action cannot be undone!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // If confirmed, redirect to the delete URL
+            window.location.href = url;
+        }
+    });
+
+    return false; // Prevent immediate navigation
+}
+
+</script>
 
 
 @include('partials.footer')

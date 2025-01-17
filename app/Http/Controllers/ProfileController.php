@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
 {
@@ -67,25 +68,39 @@ class ProfileController extends Controller
 
     public function changePassword(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'current_password' => 'required',
+            'new_password' => 'required|min:6|confirmed',
+            'new_password_confirmation' => 'required',
+        ]);
 
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         $uid = Auth::user()->id;
-        // $request->validate([
-        //     'current_password' => 'required',
-        //     'new_password' => 'required|min:6|confirmed',
-        //     'new_password_confirmation' => 'required',
-        // ]);
-
         $user = User::findOrFail($uid);
 
+        // Check if the current password matches
         if (!Hash::check($request->current_password, $user->password)) {
-            return redirect()->back()->withErrors(['current_password' => 'Current password is incorrect']);
+            // Return with an error message for current_password
+            return redirect()->back()
+                ->withErrors(['current_password' => 'The current password is incorrect.'])
+                ->withInput();
         }
+
+        // Update the password
         $user->password = Hash::make($request->new_password);
         $user->save();
 
-        return redirect()->back()->with('success', 'Password changed successfully');
+        return redirect()->back()->with('success', 'Password changed successfully.');
     }
+
+
+
+
 
 
 

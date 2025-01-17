@@ -32,9 +32,9 @@
                     </a>
                     <ul class="pc-submenu">
                         <li class="pc-item"><a class="pc-link" href="{{ route('teacheradd') }}"
-                                data-i18n="Pricing">Create Teachers</a></li>
+                                data-i18n="Pricing">Create</a></li>
                         <li class="pc-item"><a class="pc-link" href="{{ route('teacherlist') }}"
-                                data-i18n="List">Teachers List</a></li>
+                                data-i18n="List">List</a></li>
                     </ul>
                 </li>
 
@@ -48,9 +48,9 @@
                     </a>
                     <ul class="pc-submenu">
                         <li class="pc-item"><a class="pc-link" href="{{ route('studentadd') }}"
-                                data-i18n="Pricing">Create Students</a></li>
+                                data-i18n="Pricing">Create</a></li>
                         <li class="pc-item"><a class="pc-link" href="{{ route('studentlist') }}"
-                                data-i18n="List">Students List</a></li>
+                                data-i18n="List">List</a></li>
                     </ul>
                 </li>
 
@@ -62,13 +62,13 @@
                     </a>
                     <ul class="pc-submenu">
                         <li class="pc-item">
-                            <a class="pc-link" href="{{ route('addCourse') }}" data-i18n="Add New">Create Courses</a>
+                            <a class="pc-link" href="{{ route('addCourse') }}" data-i18n="Add New">Create</a>
                         </li>
                         <li class="pc-item">
-                            <a class="pc-link" href="{{ route('courses') }}" data-i18n="Active List">Courses List</a>
+                            <a class="pc-link" href="{{ route('courses') }}" data-i18n="Active List">List</a>
                         </li>
                         <li class="pc-item">
-                            <a class="pc-link" href="{{ route('course.category') }}" data-i18n="Expired List">Courses Category</a>
+                            <a class="pc-link" href="{{ route('course.category') }}" data-i18n="Expired List">Category</a>
                         </li>
                        {{--  <li class="pc-item">
                             <a class="pc-link" href="#" data-i18n="Expired List">Expired List</a>
@@ -92,8 +92,8 @@
                     </a>
                     <ul class="pc-submenu">
                         <li class="pc-item"><a class="pc-link" href="{{ route('useradd') }}" data-i18n="Pricing">Create
-                                Users</a></li>
-                        <li class="pc-item"><a class="pc-link" href="{{ route('userlist') }}" data-i18n="List">Users
+                                </a></li>
+                        <li class="pc-item"><a class="pc-link" href="{{ route('userlist') }}" data-i18n="List">
                                 List</a>
                         </li>
                     </ul>
@@ -111,7 +111,7 @@
                     </a>
                     <ul class="pc-submenu">
                         <li class="pc-item"><a class="pc-link" href="{{ route('roles.create') }}"
-                                data-i18n="Pricing">Create Roles</a></li>
+                                data-i18n="Pricing">Create</a></li>
                     </ul>
                 </li>
                 @endif
@@ -127,12 +127,12 @@
                     </a>
                     <ul class="pc-submenu">
                         <li class="pc-item"><a class="pc-link" href="{{ route('permissions.create') }}"
-                                data-i18n="Pricing">Create Permissions</a></li>
+                                data-i18n="Pricing">Create</a></li>
                         <li class="pc-item"><a class="pc-link" href="{{ route('permissions.role') }}"
-                                data-i18n="List">Permissions Assign</a></li>
+                                data-i18n="List">Assign</a></li>
 
                         <li class="pc-item"><a class="pc-link" href="{{ route('permissions.assignedlist') }}"
-                                data-i18n="List">Permissions Assigned List</a></li>
+                                data-i18n="List">Assigned List</a></li>
                     </ul>
 
                 </li>
