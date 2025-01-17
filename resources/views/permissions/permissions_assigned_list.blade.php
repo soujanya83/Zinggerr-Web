@@ -109,6 +109,8 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Permissions Name</th>
+                                            <th>Permissions Display Name</th>
+
                                             <th>Role Name</th>
                                             <th>Action</th>
                                         </tr>
@@ -117,7 +119,9 @@
                                         @foreach ($permissions as $index => $permission)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
+                                            <td>{{ $permission['name'] }}</td>
                                             <td>{{ $permission['display_name'] }}</td>
+
                                             <td>{{ $permission['role_name'] }}</td>
                                             <td> <a href="{{ route('permission_assigned_delete', $permission->id) }}"
                                                     class="avtar avtar-xs btn-link-secondary read-more-btn"
@@ -170,8 +174,9 @@
     const rows = document.querySelectorAll('table tbody tr');
 
     rows.forEach(row => {
-        const permissionName = row.cells[1,2].textContent.toLowerCase();
-        row.style.display = permissionName.includes(searchText) ? '' : 'none';
+        const cellsToSearch = [row.cells[3], row.cells[1], row.cells[2]];
+        const matches = cellsToSearch.some(cell => cell.textContent.toLowerCase().includes(searchText));
+        row.style.display = matches ? '' : 'none';
     });
 });
 

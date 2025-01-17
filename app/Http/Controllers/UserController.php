@@ -96,6 +96,14 @@ class UserController extends Controller
 
             $user->save();
 
+            if($request->input('role')=='Teacher'){
+                $route_name='teacherlist';
+            }elseif($request->input('role')=='Student'){
+                $route_name='studentlist';
+            }else{
+                $route_name='userlist';
+            }
+
             // $verificationUrl = URL::temporarySignedRoute(
             //     'verification.verify',
             //     now()->addMinutes(60),
@@ -103,7 +111,8 @@ class UserController extends Controller
             // );
             // Mail::to($user->email)->send(new VerifyEmail($user, $verificationUrl));
 
-            return redirect()->back()->with('success', 'User created successfully!');
+            return redirect()->route($route_name)->with('success', $request->input('role') . ' created successfully!');
+
         } catch (\Exception $e) {
             // Redirect back with an error message
             return redirect()->back()->with('error', 'Something went wrong. Please try again.');

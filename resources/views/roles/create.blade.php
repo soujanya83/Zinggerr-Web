@@ -126,6 +126,7 @@
                                         <th>#</th>
                                         <th>Role Name</th>
                                         <th>Role Display Name</th>
+                                        <th>Description</th>
                                         @if(Auth::user()->can('role') ||
                                         (isset($permissions) && in_array('roles_edit', $permissions)) ||
                                         (isset($permissions) && in_array('roles_delete', $permissions)))
@@ -139,6 +140,7 @@
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $role['name'] }}</td>
                                         <td>{{ $role['display_name'] }}</td>
+                                        <td>{{ $role['description'] }}</td>
                                         <td class="text-center">
                                             @if(Auth::user()->can('role') ||
                                             (isset($permissions) && in_array('roles_edit', $permissions)))

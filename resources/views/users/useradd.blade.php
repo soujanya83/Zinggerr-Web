@@ -70,7 +70,7 @@
                                 <div class="col-md-4">
                                     <div class=" mb-3">
                                         <label for="nameInput">Full Name</label>
-                                        <input type="text" class="form-control" id="nameInput" name="name" required>
+                                        <input type="text" class="form-control" id="nameInput" name="name" required value="{{ old('name') }}">
 
                                         <small id="nameError" class="text-danger"></small>
                                         @error('name')
@@ -82,7 +82,7 @@
                                     <div class=" mb-3">
                                         <label for="usernameInput">Username</label>
                                         <input type="text" class="form-control" id="usernameInput" placeholder=""
-                                            name="username" required>
+                                            name="username" required value="{{ old('username') }}">
 
                                         <small id="usernameError" class="text-danger"></small>
                                         @error('username')
@@ -94,7 +94,7 @@
                                     <div class=" mb-3">
                                         <label for="phoneInput">Phone</label>
                                         <input type="tel" class="form-control" id="phoneInput" placeholder=""
-                                            name="phone" required>
+                                            name="phone" required value="{{ old('phone') }}">
 
                                         <small id="phoneError" class="text-danger"></small>
                                         @error('phone')
@@ -107,7 +107,7 @@
                                     <div class=" mb-3">
                                         <label for="emailInput">Email</label>
                                         <input type="email" class="form-control" id="emailInput" placeholder=""
-                                            name="email" required>
+                                            name="email" required value="{{ old('email') }}">
 
                                         <small id="emailError" class="text-danger"></small>
                                         @error('email')
@@ -153,7 +153,7 @@
                                     <div class=" mb-3">
                                         <label for="profile">Profile Picture</label>
                                         <input type="file" name="profile_picture" class="form-control" accept="image/*"
-                                            placeholder="Profile Picture" id="profile">
+                                            placeholder="Profile Picture" id="profile" required>
                                     </div>
                                 </div>
 
@@ -187,7 +187,7 @@
                                         <div style="margin-top: 10px;">
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="status"
-                                                    id="statusActive" value="1">
+                                                    id="statusActive" value="1" checked>
                                                 <label class="form-check-label" for="statusActive">Active</label>
                                             </div>
                                             <div class="form-check form-check-inline">

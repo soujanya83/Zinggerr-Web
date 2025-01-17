@@ -204,7 +204,7 @@
                                                 <div class="form-floating mb-3">
 
                                                     <input type="text" name="course_full_name" class="form-control"
-                                                        placeholder="Enter Course Full Name" id="floatingShortname">
+                                                        placeholder="Enter Course Full Name" id="floatingShortname" required value="{{ old('course_full_name') }}">
 
 
                                                     <label style="align-content: center;" class="form-label"
@@ -217,7 +217,7 @@
                                                 <div class="form-floating mb-3">
 
                                                     <input type="text" name="course_short_name" class="form-control"
-                                                        placeholder="Enter Course Short Name" id="floatingShortname">
+                                                        placeholder="Enter Course Short Name" id="floatingShortname" required value="{{ old('course_short_name') }}">
                                                     <label style="align-content: center;" class="form-label"
                                                         for="floatingShortname">Course Short
                                                         Name</label>
@@ -244,7 +244,7 @@
                                                 <div class="form-floating mb-3">
 
                                                     <input type="number" name="course_id_number" class="form-control"
-                                                        placeholder="Enter Course ID Number">
+                                                        placeholder="Enter Course ID Number" required value="{{ old('course_id_number') }}">
                                                     <label style="align-content: center;" class="form-label">Course
                                                         ID Number</label>
                                                 </div>
@@ -255,7 +255,7 @@
                                                 <div class="form-floating mb-3">
                                                     <!-- Textarea for Summernote -->
                                                     <textarea id="summernote" name="course_summary"
-                                                        class="form-control">
+                                                        class="form-control" required>{{ old('course_summary') }}
 
                                                      </textarea>
 
@@ -285,7 +285,7 @@
                                                                 <span id="fileName" class="ms-2"></span>
                                                                 <input type="file" id="fileUpload" name="course_image"
                                                                     class="file-upload-input"
-                                                                    onchange="showFileName(this)">
+                                                                    onchange="showFileName(this)" required>
                                                             </label>
 
                                                         </div>
@@ -449,7 +449,7 @@
 
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="checkbox" value="Basic" id="basic"
-                                                    name="tags[]">
+                                                    name="tags[]" required>
                                                 <label class="form-check-label" for="basic"
                                                     style="color: black">Basic</label>
                                             </div>

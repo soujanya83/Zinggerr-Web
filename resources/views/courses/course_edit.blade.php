@@ -290,23 +290,11 @@
                                                     <div class="form-floating mb-3">
 
                                                         <div class="d-flex align-items-center  rounded">
-                                                            <div class="me-3">
 
-                                                                @if(isset($course->course_image))
-                                                                <img src="{{ url('storage/'.$course->course_image) }}"
-                                                                    alt="Existing Image" width="150px" height="138px"
-                                                                    class="border rounded"
-                                                                    style="margin-top: -9px;margin-left: -2px;">
-                                                                @else
-                                                                <img src="{{ asset('path-to-default-image.jpg') }}"
-                                                                    alt="Default Image" width="100px" height="100px"
-                                                                    class="border rounded">
-                                                                @endif
-                                                            </div>
                                                             <div class="d-flex align-items-center">
 
                                                                 <label for="fileUpload" class="file-upload-label"
-                                                                    style="width:1318px;    margin-left: -167px;">
+                                                                    style="width:1313px">
                                                                     <div class="upload-icon mb-3">
                                                                         <i
                                                                             class="fas fa-cloud-upload-alt fa-3x text-primary"></i>
@@ -321,8 +309,25 @@
                                                                 </label>
 
                                                             </div>
+
                                                         </div>
                                                     </div>
+
+                                                    <div class="me-3">
+
+                                                        @if(isset($course->course_image))
+                                                        <img src="{{ url('storage/'.$course->course_image) }}"
+                                                            alt="Existing Image" width="150px" height="138px"
+                                                            class="border rounded"
+                                                            style="margin-top: -16px">
+                                                        @else
+                                                        <img src="{{ asset('path-to-default-image.jpg') }}"
+                                                            alt="Default Image" width="100px" height="100px"
+                                                            class="border rounded">
+                                                        @endif
+                                                    </div>
+
+
                                                 </div>
                                             </div>
 

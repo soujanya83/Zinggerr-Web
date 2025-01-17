@@ -212,6 +212,8 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Permissions Name</th>
+                                        <th>Permissions Display Name</th>
+                                        <th>Description</th>
                                         @if(Auth::user()->can('role') ||
                                         (isset($permissions) && in_array('permissions_edit', $permissions)) ||
                                         (isset($permissions) && in_array('permissions_delete', $permissions)))
@@ -223,7 +225,9 @@
                                     @foreach ($permissions as $index => $permission)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
+                                        <td>{{ $permission['name'] }}</td>
                                         <td>{{ $permission['display_name'] }}</td>
+                                        <td>{{ $permission['description'] }}</td>
                                         <td>
                                             <div class="btn-group">
                                                 @if(Auth::user()->can('role') ||
@@ -281,8 +285,9 @@ document.getElementById('searchPermissions').addEventListener('keyup', function 
     const rows = document.querySelectorAll('table tbody tr');
 
     rows.forEach(row => {
-        const permissionName = row.cells[1].textContent.toLowerCase();
-        row.style.display = permissionName.includes(searchText) ? '' : 'none';
+        const cellsToSearch = [row.cells[3], row.cells[1], row.cells[2]];
+        const matches = cellsToSearch.some(cell => cell.textContent.toLowerCase().includes(searchText));
+        row.style.display = matches ? '' : 'none';
     });
 });
 </script>
