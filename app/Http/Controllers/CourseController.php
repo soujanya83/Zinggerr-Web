@@ -96,7 +96,7 @@ class CourseController extends Controller
             $course->save();
             return redirect('courses')->with('success', 'Course Create successfully.');
         } catch (\Exception $e) {
-            dd($e);
+
             return redirect()->back()->with('error', 'Something went wrong. Please try again.');
         }
     }

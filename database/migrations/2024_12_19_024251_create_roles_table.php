@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->char('id', 36)->primary();
             $table->string('name')->unique();
-            $table->string('user_display')->nullable();
+            $table->string('display_name')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
         });
@@ -26,6 +26,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('roles');
-        $table->dropColumn(['user_display', 'description']);
+
+
+        // $table->dropColumn(['user_display', 'description']);
     }
 };

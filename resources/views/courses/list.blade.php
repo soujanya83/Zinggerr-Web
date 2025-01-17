@@ -135,7 +135,7 @@
 
                                                         <!-- Dropdown menu -->
                                                         <div class="dropdown-menu dropdown-menu-end">
-                                                            @if(Auth::user()->type === 'Superadmin' ||
+                                                            {{-- @if(Auth::user()->type === 'Superadmin' ||
                                                             (isset($permissions) && in_array('cousers_assign',
                                                             $permissions)))
                                                             <a href="#" class="dropdown-item" data-bs-toggle="modal"
@@ -154,7 +154,7 @@
                                                                 data-course-id="{{ $course->id }}" data-type="teachers">
                                                                 <i class="ti ti-user-check f-20"></i> Assign Teachers
                                                             </a>
-                                                            @endif
+                                                            @endif --}}
 
 
 
@@ -164,7 +164,7 @@
                                                             $permissions)))
                                                             <a href="{{ route('course_edit', $course->id) }}"
                                                                 class="dropdown-item">
-                                                                <i class="ti ti-edit f-20"></i> Edit Course
+                                                                <i class="ti ti-edit f-20"></i> Edit
                                                             </a>
                                                             @endif
 
@@ -175,7 +175,7 @@
                                                             <a href="{{ route('course_delete', $course->id) }}"
                                                                 class="dropdown-item"
                                                                 onclick="return confirmDelete(this)">
-                                                                <i class="ti ti-trash f-20 text-danger"></i> Delete Course
+                                                                <i class="ti ti-trash f-20 text-danger"></i> Delete
                                                             </a>
                                                             @endif
                                                         </div>
