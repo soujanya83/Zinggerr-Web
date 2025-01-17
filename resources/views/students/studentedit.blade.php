@@ -83,7 +83,7 @@
                                         <div class="mb-3">
                                             <label for="usernameInput">Username</label>
                                             <input type="text" class="form-control" id="usernameInput" name="username"
-                                                value="{{ old('username', $user->username) }}" required>
+                                                value="{{ old('username', $user->username) }}" required  oninput="this.value = this.value.replace(/\s/g, '')">
                                             @error('username')
                                             <small class="text-danger">{{ $message }}</small>
                                             @enderror

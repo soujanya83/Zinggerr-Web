@@ -228,7 +228,7 @@
                                                         <input type="text" name="course_short_name" class="form-control"
                                                             placeholder="Enter Course Short Name"
                                                             value="{{ old('course_short_name'). $course->course_short_name }}"
-                                                            id="floatingShortname">
+                                                            id="floatingShortname"  oninput="this.value = this.value.replace(/\s/g, '')">
                                                         <label style="align-content: center;" class="form-label"
                                                             for="floatingShortname">Course Short
                                                             Name</label>
