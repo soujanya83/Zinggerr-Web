@@ -958,6 +958,6 @@ class CourseController extends Controller
         $user->course_status = $request->status;
         $user->save();
 
-        return redirect()->back()->with('success', 'User status updated successfully!');
+        return redirect()->back()->with('success', 'Courses status updated successfully!');
     }
 }
