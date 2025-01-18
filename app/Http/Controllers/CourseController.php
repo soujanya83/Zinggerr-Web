@@ -351,14 +351,6 @@ class CourseController extends Controller
             return redirect()->back()
                 ->with('success', 'Category created successfully!');
         } catch (\Exception $e) {
-
-            dd($e);
-
-            Log::error('An error occurred: ' . $e->getMessage(), [
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString(),
-            ]);
             return redirect()->back()
                 ->with('error', 'Something went wrong. Please try again.');
         }
