@@ -11,6 +11,7 @@ use App\Models\PermissionRole;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 use App\Mail\VerifyEmail;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
@@ -75,10 +76,12 @@ class UserController extends Controller
         }
 
         try {
+            $slug = $this->generateUniqueSlug($request->name);
             $uuid = (string) Guid::uuid4();
             $user = new User([
                 'id' => $uuid,
                 'name' => $request->input('name'),
+                'slug' => $slug,
                 'username' => $request->input('username'),
                 'email' => $request->input('email'),
                 'phone' => $request->input('phone'),
@@ -119,6 +122,19 @@ class UserController extends Controller
         }
     }
 
+    private function generateUniqueSlug($Name)
+    {
+        $slug = Str::slug($Name);
+        $originalSlug = $slug;
+        $counter = 1;
+        while (User::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+        return $slug;
+    }
+
+
 
     public function updateuser(Request $request)
     {
@@ -141,11 +157,12 @@ class UserController extends Controller
                 ->withInput();
         }
         try {
-
+            $slug = $this->generateUniqueSlug($request->name);
             $user = User::findOrFail($request->userid);
 
 
             $user->name = $request->input('name');
+            $user->slug = $slug;
             $user->username = $request->input('username');
             $user->email = $request->input('email');
             $user->phone = $request->input('phone');
@@ -195,9 +212,9 @@ class UserController extends Controller
 
 
 
-    public function useredit($id)
+    public function useredit($slug)
     {
-        $user = user::find($id);
+        $user = user::where('slug',$slug)->first();
         $role = role::all();
         return view('users.useredit', compact('user', 'role'));
     }

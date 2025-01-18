@@ -91,8 +91,6 @@
         color: white;
         /* Change icon color to white on hover */
     }
-
-
 </style>
 {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -193,15 +191,21 @@
                 </li>
                 <li class="dropdown pc-h-item header-user-profile" style="margin-right: 12px">
                     <a class="pc-head-link head-link-primary dropdown-toggle arrow-none me-0" href="#" role="button"
-                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                    style="height: 61px; width: 116px; padding: 5px; radius: 50px;">
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                        style="height: 61px; width: 116px; padding: 5px; radius: 50px;">
 
-                    <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="user-image" class="user-avatar"
-                        style=" margin-top: 11px; margin-bottom: 11px; border-radius: 50%;margin-right: 29px;">
+                        @if(Auth::user()->profile_picture)
+                        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="user-image"
+                            class="user-avatar"
+                            style="margin-top: 11px; margin-bottom: 11px; border-radius: 50%; margin-right: 29px;">
+                        @else
+                        <img src="{{ asset('asset/images/download.jpg') }}" alt="image" class="user-avatar"
+                            style="margin-top: 11px; margin-bottom: 11px; border-radius: 50%; margin-right: 29px;">
+                        @endif
 
-                    <span><i class="ti ti-settings" style="font-size: 26px; margin-right: 13px;"></i></span>
+                        <span><i class="ti ti-settings" style="font-size: 26px; margin-right: 13px;"></i></span>
 
-                </a>
+                    </a>
                     <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                         <div class="dropdown-header">
                             <h4><span class=" text-muted">{{ Auth::user()->name }}</span></h4>

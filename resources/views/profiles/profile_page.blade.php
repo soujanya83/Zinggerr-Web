@@ -21,6 +21,26 @@
         right: 0px;
         height: 43px;
     }
+
+    .nav-tabs .nav-link.active {
+    border-bottom: 3px solid blue; /* Blue underline for the active tab */
+    color: #007bff; /* Optional: Change the active tab text color */
+    font-weight: bold; /* Optional: Make the active tab text bold */
+}
+
+.nav-tabs .nav-link {
+    border: none; /* Remove default tab borders for a cleaner look */
+    color: #6c757d; /* Default inactive tab text color */
+    transition: color 0.2s ease-in-out; /* Smooth transition for hover effects */
+}
+
+.nav-tabs .nav-link:hover {
+    color: #0056b3; /* Hover effect for inactive tabs */
+}
+
+
+
+
 </style>
 
 
@@ -76,45 +96,30 @@
         <div class="row">
             <div class="">
                 <div class="card">
+
                     <div class="card-header pb-0">
                         <ul class="nav nav-tabs profile-tabs" id="myTab" role="tablist">
-                            <li class="nav-item " role="presentation">
-                                <a class="nav-link active" id="profile-tab-1" data-bs-toggle="tab" href="#profile-1"
-                                    role="tab" aria-selected="true">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="profile-tab-1" data-bs-toggle="tab" href="#profile-1" role="tab" aria-selected="true">
                                     <i class="material-icons-two-tone me-2">account_circle</i>
                                     Profile
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="profile-tab-2" data-bs-toggle="tab" href="#profile-2" role="tab"
-                                    aria-selected="false" tabindex="-1">
+                                <a class="nav-link" id="profile-tab-2" data-bs-toggle="tab" href="#profile-2" role="tab" aria-selected="false" tabindex="-1">
                                     <i class="material-icons-two-tone me-2">edit</i>
                                     Edit Profile
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="profile-tab-3" data-bs-toggle="tab" href="#profile-3" role="tab"
-                                    aria-selected="false" tabindex="-1">
+                                <a class="nav-link" id="profile-tab-3" data-bs-toggle="tab" href="#profile-3" role="tab" aria-selected="false" tabindex="-1">
                                     <i class="material-icons-two-tone me-2">lock</i>
                                     Change Password
                                 </a>
                             </li>
-                            {{-- <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="profile-tab-4" data-bs-toggle="tab" href="#profile-4" role="tab"
-                                    aria-selected="false" tabindex="-1">
-                                    <i class="material-icons-two-tone me-2">lock</i>
-                                    Change Password
-                                </a>
-                            </li> --}}
-                            {{-- <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="profile-tab-5" data-bs-toggle="tab" href="#profile-5" role="tab"
-                                    aria-selected="false" tabindex="-1">
-                                    <i class="material-icons-two-tone me-2">email</i>
-                                    Settings
-                                </a>
-                            </li> --}}
                         </ul>
                     </div>
+
 
 
 

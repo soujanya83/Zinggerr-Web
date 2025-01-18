@@ -157,7 +157,7 @@
                                     <div class=" mb-3">
                                         <label for="emailInput">Profile Picture</label>
                                         <input type="file" name="profile_picture" class="form-control" accept="image/*"
-                                            placeholder="Profile Picture" required>
+                                            placeholder="Profile Picture">
                                     </div>
                                 </div>
                                 <div class="col-md-4">

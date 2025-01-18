@@ -10,7 +10,7 @@
                 <img class="img-radius" src="{{ asset('storage/' . $user->profile_picture) }}" alt="User image"
                     style="height:52px;width: 52px;">
                 @else
-                <img class="img-radius" src="{{ asset('asset/images/user/avatar-1.jpg') }}" alt="Default image"
+                <img class="img-radius" src="{{ asset('asset/images/download.jpg') }}" alt="Default image"
                     style="height:52px;width: 52px;">
                 @endif
             </div>
@@ -53,7 +53,7 @@
         @if(Auth::user()->can('role') ||
         (isset($permissions) && in_array('users_edit', $permissions)))
 
-        <a href="{{ route('user_edit', $user->id) }}" class="avtar avtar-xs btn-link-secondary read-more-btn"
+        <a href="{{ route('user_edit', $user->slug) }}" class="avtar avtar-xs btn-link-secondary read-more-btn"
             data-id="{{ $user->id }}">
             <i class="ti ti-edit f-20"></i>
         </a>

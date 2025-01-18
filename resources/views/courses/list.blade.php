@@ -162,7 +162,7 @@
                                                             @if(Auth::user()->type === 'Superadmin' ||
                                                             (isset($permissions) && in_array('courses_edit',
                                                             $permissions)))
-                                                            <a href="{{ route('course_edit', $course->id) }}"
+                                                            <a href="{{ route('course_edit', $course->slug) }}"
                                                                 class="dropdown-item">
                                                                 <i class="ti ti-edit f-20"></i> Edit
                                                             </a>

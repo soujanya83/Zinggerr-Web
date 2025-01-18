@@ -196,8 +196,19 @@
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                         style="height: 61px; width: 116px; padding: 5px; radius: 50px;">
 
-                        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="user-image" class="user-avatar"
-                            style=" margin-top: 11px; margin-bottom: 11px; border-radius: 50%;margin-right: 29px;">
+                        @if(Auth::user()->profile_picture)
+                        <img
+                            src="{{ asset('storage/' . Auth::user()->profile_picture) }}"
+                            alt="user-image"
+                            class="user-avatar"
+                            style="margin-top: 11px; margin-bottom: 11px; border-radius: 50%; margin-right: 29px;">
+                    @else
+                        <img
+                            src="{{ asset('asset/images/download.jpg') }}"
+                            alt="image"
+                            class="user-avatar"
+                            style="margin-top: 11px; margin-bottom: 11px; border-radius: 50%; margin-right: 29px;">
+                    @endif
 
                         <span><i class="ti ti-settings" style="font-size: 26px; margin-right: 13px;"></i></span>
 

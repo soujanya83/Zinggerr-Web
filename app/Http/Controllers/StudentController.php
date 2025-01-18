@@ -96,9 +96,9 @@ class StudentController extends Controller
 
 
 
-    public function studentedit($id)
+    public function studentedit($slug)
     {
-        $user = User::find($id);
+        $user = User::where('slug',$slug)->first();
 
         return view('students.studentedit', compact('user'));
     }

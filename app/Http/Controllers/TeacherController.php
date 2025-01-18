@@ -72,9 +72,9 @@ class TeacherController extends Controller
 
 
 
-    public function teacheredit($id)
+    public function teacheredit($slug)
     {
-        $user = User::find($id);
+        $user = User::where('slug',$slug)->first();
 
         return view('teachers.teacheredit', compact('user'));
     }

@@ -155,7 +155,7 @@
                                     <div class=" mb-3">
                                         <label for="profile">Profile Picture</label>
                                         <input type="file" name="profile_picture" class="form-control" accept="image/*"
-                                            placeholder="Profile Picture" id="profile" required>
+                                            placeholder="Profile Picture" id="profile">
                                     </div>
                                 </div>
 

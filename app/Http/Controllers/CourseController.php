@@ -157,7 +157,7 @@ class CourseController extends Controller
         if ($courseAssign) {
             // Log the remark (optional: create a separate table for remarks if needed)
             CoursesRemark::create([
-                'id'=>$uuid,
+                'id' => $uuid,
                 'users_id' => $courseAssign->users_id,
                 'courses_id' => $courseAssign->courses_id,
                 'remarks' => $remark,
@@ -187,13 +187,13 @@ class CourseController extends Controller
 
 
     public function getUserPermissions(Request $request, $userId)
-{
-    $assignedPermissions = UsersPermission::where('user_id', $userId)
-        ->pluck('permission_id') // Get only the permission IDs
-        ->toArray();
+    {
+        $assignedPermissions = UsersPermission::where('user_id', $userId)
+            ->pluck('permission_id') // Get only the permission IDs
+            ->toArray();
 
-    return response()->json($assignedPermissions);
-}
+        return response()->json($assignedPermissions);
+    }
 
     // public function updatePermissions(Request $request)
     // {
@@ -274,13 +274,14 @@ class CourseController extends Controller
 
 
 
-    public function courseedit(Request $request, $id)
+    public function courseedit(Request $request, $slug)
     {
 
-        $course = Course::find($id);
-        if ($course) {
+        $course = Course::where('slug', $slug)->first();
 
-            $data = CoursesAssign::select('users.*','courses_assign.id as assignId','courses_assign.status as assignStatus')
+        if ($course) {
+            $id = $course->id;
+            $data = CoursesAssign::select('users.*', 'courses_assign.id as assignId', 'courses_assign.status as assignStatus')
                 ->where('courses_id', $id)->where('users.type', 'Teacher')
                 ->join('users', 'users.id', 'courses_assign.users_id')
                 ->paginate(10);
@@ -293,7 +294,7 @@ class CourseController extends Controller
                 ->paginate(10);
 
 
-            $userdata = CoursesAssign::select('users.*','courses_assign.id as assignId','courses_assign.status as assignStatus')
+            $userdata = CoursesAssign::select('users.*', 'courses_assign.id as assignId', 'courses_assign.status as assignStatus')
                 ->where('courses_id', $id)->where('users.type', 'Student')
                 ->join('users', 'users.id', 'courses_assign.users_id')
                 ->paginate(10);
@@ -308,9 +309,9 @@ class CourseController extends Controller
             $categories = CoursesCategory::all();
 
             $courseName = 'course';
-            $permissions = Permission::where('name', 'LIKE','%'.'course'.'%')->get();
+            $permissions = Permission::where('name', 'LIKE', '%' . 'course' . '%')->get();
 
-            return view('courses.course_edit', compact('course', 'categories', 'data', 'availableTeachers', 'userdata', 'availableUsers','id','permissions'));
+            return view('courses.course_edit', compact('course', 'categories', 'data', 'availableTeachers', 'userdata', 'availableUsers', 'id', 'permissions'));
         } else {
             return redirect()->route('courses')->with('error', 'Course not found.');
         }
@@ -796,11 +797,11 @@ class CourseController extends Controller
     {
         $courseId = $request->input('course_id');
         $userIds = $request->input('user_id');
-            $uuid = (string) Guid::uuid4();
-            CoursesAssign::updateOrCreate(
-                ['courses_id' => $courseId, 'users_id' => $userIds],
-                ['id' => $uuid]
-            );
+        $uuid = (string) Guid::uuid4();
+        CoursesAssign::updateOrCreate(
+            ['courses_id' => $courseId, 'users_id' => $userIds],
+            ['id' => $uuid]
+        );
         return redirect()->back()->with('success', 'Courses assigned successfully!');
     }
 
