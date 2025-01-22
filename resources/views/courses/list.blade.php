@@ -200,7 +200,7 @@
                                             <li class="list-group-item px-0 py-2">
                                                 <div class="d-flex align-items-center">
 
-                                                    <div class="flex-shrink-0">
+                                                    <div class="">
                                                         <h3 class="text-muted mb-0" style="color:black !important">{{
                                                             $course->course_full_name }}</h3>
                                                     </div>
