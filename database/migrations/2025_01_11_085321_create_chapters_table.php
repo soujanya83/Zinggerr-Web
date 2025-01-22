@@ -16,10 +16,10 @@ return new class extends Migration
             $table->char('id', 36)->primary();
             $table->string('courses_id');
             $table->string('chepter_name');
-            $table->string('chepter_discription');
-            $table->integer('no_of_chepter');
+            $table->string('chepter_discription')->nullable()->default(null);
+            $table->integer('no_of_chepter')->nullable()->default(null);
             $table->integer('status');
-            $table->integer('mode');
+            $table->integer('mode')->nullable()->default(null);
 
             $table->timestamps();
             $table->foreign('courses_id')->references('id')->on('courses')->onDelete('cascade');

@@ -13,17 +13,19 @@ return new class extends Migration
     {
         Schema::create('courses_assets', function (Blueprint $table) {
             $table->char('id', 36)->primary();
-            $table->string('blog_name');
+            $table->string('assets_type');
+            $table->string('topic_name');
             $table->string('course_id');
             $table->string('chapter_id');
+            $table->text('blog_description')->nullable()->default(null);
+            $table->string('images')->nullable()->default(null);
+            $table->string('assets_video')->nullable()->default(null);
+            $table->string('video_url')->nullable()->default(null);
+            $table->string('youtube_links')->nullable()->default(null);
+            $table->boolean('status')->default(1);
 
-            $table->integer('blogstatus')->default(1);
-            $table->string('no_of_blog')->nullable();
-            $table->string('topic_image')->nullable();
-            $table->string('topic_name')->nullable();
-            $table->string('video_links')->nullable();
-            $table->string('assets_discription');
-            $table->string('course_assets_video')->nullable();
+
+
             $table->timestamps();
 
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');

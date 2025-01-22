@@ -92,7 +92,14 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('/courses-delete/{id}', [CourseController::class, 'coursedelete'])
         ->name('course_delete')
         ->middleware('can:role');
+        Route::post('courses/chapter-status', [CourseController::class, 'chapterStatus'])->name('chapterStatus');
+        Route::post('courses/chapter-update', [CourseController::class, 'chapterupdate'])->name('chapter.update');
 
+
+
+        Route::get('/chapter-delete/{id}', [CourseController::class, 'chapterdelete'])->name('chapter_delete');
+        Route::get('/assets-delete/{id}', [CourseController::class, 'assetsdelete'])->name('assets_delete');
+        Route::post('/assets-edit', [CourseController::class, 'assetsedit'])->name('edit_assets');
 
         Route::post('course/pause-users', [CourseController::class, 'courses_pause_users'])->name('course.pause_users');
         Route::post('course/permissions/update', [CourseController::class, 'updatePermissions'])->name('course.update_permissions');
@@ -105,13 +112,14 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::post('category/submit', [CourseController::class, 'submit_category'])->name('category.store');
     Route::get('/category-delete/{user}', [CourseController::class, 'category_delete'])->name('category_delete');
 
-    Route::get('cousers/chapter-create/{id}', [CourseController::class, 'add_assets'])->name('add_assets');
+    Route::get('cousers/chapter-create/{slug}', [CourseController::class, 'add_assets'])->name('add_assets');
     Route::post('cousers/chapter-submit', [CourseController::class, 'chepter_submit'])->name('chepter.submit');
     Route::get('cousers/chapter-assets', [CourseController::class, 'blog_assets'])->name('blogs.assets.form');
     Route::post('cousers/blog-assets', [CourseController::class, 'blog_assets_submit'])->name('blog.assets.submit');
 
 
     Route::post('assets/upload', [CourseController::class, 'submitAssets'])->name('assets.submit');
+    Route::post('assets/update', [CourseController::class, 'updateAssets'])->name('assets.update');
     Route::get('courses/category/create', [CourseController::class, 'courses_category'])->name('course.category');
     // Route::post('/upload-chunk', [CourseController::class, 'uploadChunk']);
     Route::get('assigned/user-delete/{user}', [CourseController::class, 'assigned_delete'])

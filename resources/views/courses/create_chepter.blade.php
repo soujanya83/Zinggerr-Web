@@ -67,7 +67,7 @@
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <ul>
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                <li>{{ $error }}</li>
                 @endforeach
             </ul>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -94,41 +94,17 @@
                                     @csrf
                                     <input type="hidden" name="course_id" value="{{ $id }}">
                                     <div class="row">
-
-                                        <!-- Form Fields -->
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="chepter_name">Chapter Name:</label>
                                                 <input type="text" id="chepter_name" name="chepter_name"
-                                                    class="form-control" placeholder="Enter Chepter Name" required
+                                                    class="form-control" placeholder="Enter Chapter Name" required
                                                     value="{{ old('chepter_name') }}">
                                             </div>
                                         </div>
-
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label for="chepter_discription">Chapter Description:</label>
-                                                <textarea id="chepter_discription" name="chepter_discription"
-                                                    class="form-control" placeholder="Enter Chepter Description"
-                                                    required cols="3">{{ old('chepter_discription') }}</textarea>
-                                            </div>
-                                        </div>
-
                                         <div class="col-md-4">
                                             <div class="mb-3">
-                                                <label for="no_of_chepter" class="form-label">Number of
-                                                    Chapters:</label>
-                                                <select name="no_of_chepter" class="form-select" required>
-                                                    @for ($i = 1; $i <= 10; $i++) <option value="{{ $i }}" {{ $i==1
-                                                        ? 'selected' : '' }}>{{ $i }}</option>
-                                                        @endfor
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="mb-3">
-                                                <label for="status">Chapter Status:</label>
+                                                <label for="status">Chapter Visible:</label>
                                                 <div style="margin-top: 10px;">
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input" type="radio" name="status"
@@ -143,90 +119,290 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="col-md-4">
-                                            <div class="mb-3">
-                                                <label for="mode">Chapter Mode:</label>
-                                                <div style="margin-top: 10px;">
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="mode"
-                                                            id="modepublic" value="1" checked>
-                                                        <label class="form-check-label" for="modepublic">Public</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="mode"
-                                                            id="modeprivate" value="0">
-                                                        <label class="form-check-label"
-                                                            for="modeprivate">Private</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Add Assets Button -->
                                         <div class="upload-area text-end p-2">
-                                            <input id="uploadButton_form" type="Submit" class="btn btn-primary" value="Submit">
+                                            <input id="uploadButton_form" type="Submit" class="btn btn-primary"
+                                                value="Submit">
                                         </div>
-
                                     </div>
-
                                 </form>
-
-
                             </div>
+                            <hr>
+                            <div class="card-body pt-0">
+                                <div class="table-responsive">
+                                    <h3>Chapters List</h3>
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr id="showtr">
+                                                <th style="width:5%">#</th>
+                                                <th style="width:50%">Chapter Name</th>
+                                                <th style="width:2%">Status</th>
+                                                <th style="width:5%">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="userTableBody">
+                                            @if ($data->count() > 0)
+                                            @foreach ($data as $keys => $user)
+                                            <tr>
+                                                <td>{{ $keys + 1 }}</td>
+                                                <td>
+                                                    <div class="accordion" id="accordionChapter{{ $user->id }}">
+                                                        <div class="accordion-item">
+                                                            <h2 class="accordion-header"
+                                                                id="headingChapter{{ $user->id }}">
+                                                                <button class="accordion-button collapsed" type="button"
+                                                                    data-bs-toggle="collapse"
+                                                                    data-bs-target="#collapseChapter{{ $user->id }}"
+                                                                    aria-expanded="false"
+                                                                    aria-controls="collapseChapter{{ $user->id }}">
+                                                                    <span>{{ $user->chepter_name }}</span>
+                                                                </button>
+                                                            </h2>
+                                                            <div id="collapseChapter{{ $user->id }}"
+                                                                class="accordion-collapse collapse"
+                                                                aria-labelledby="headingChapter{{ $user->id }}"
+                                                                data-bs-parent="#accordionChapter{{ $user->id }}">
+                                                                <div class="accordion-body">
+
+                                                                    {{-- Add the list of assets here if necessary --}}
+
+                                                                    <form action="{{ route('blogs.assets.form') }}"
+                                                                        method="get" style="margin-left: 85%;">
+                                                                        @csrf
+                                                                        <input type="hidden" name="chapter_id"
+                                                                            value="{{ $user->id }}">
+                                                                        <input type="hidden" name="course_id"
+                                                                            value="{{ $user->courses_id }}">
+                                                                        <button type="submit"
+                                                                            class="btn btn-sm btn-primary">
+                                                                            Manage Assets
+                                                                        </button>
+                                                                    </form>
+                                                                    <div class="accordion-body">
+                                                                        @php
+                                                                        $assetsdata =
+                                                                        DB::table('courses_assets')->where('chapter_id',
+                                                                        $user->id)->get();
+                                                                        @endphp
+                                                                        @if($assetsdata->count() > 0)
+                                                                        <table class="table table-bordered">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    {{-- <th>#</th> --}}
+                                                                                    <th>Assets Topic</th>
+                                                                                    <th>Videos</th>
+                                                                                    {{-- <th>Actions</th> --}}
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                @foreach($assetsdata as $key => $asset)
+                                                                                <tr>
+                                                                                    {{-- <td>{{ $key + 1 }} .</td> --}}
+                                                                                    <td>{{ $asset->topic_name }}</td>
+
+
+                                                                                    <td>
+
+                                                                                        @if ($asset->assets_video)
+
+                                                                                        <a href="#"
+                                                                                            onclick="playVideo('{{ asset('storage/' . $asset->assets_video) }}')"
+                                                                                            class="text-primary">
+                                                                                            {{
+                                                                                            ($asset->assets_video)
+                                                                                            }}
+                                                                                        </a>
+
+                                                                                        @elseif ($asset->video_url ??
+                                                                                        $asset->youtube_links)
+                                                                                        <a href="{{ $asset->video_url ?? $asset->youtube_links }}"
+                                                                                            target="_blank">
+                                                                                            {{ $asset->video_url ??
+                                                                                            $asset->youtube_links }}
+                                                                                        </a>
+                                                                                        @else
+                                                                                        ....
+                                                                                        @endif
+                                                                                    </td>
 
 
 
 
+                                                                                    {{-- <td>
 
+                                                                                        <a href="{{ route('edit_asset', $asset->id) }}"
+                                                                                            class="btn btn-sm btn-warning">Edit</a>
+                                                                                        <a href="{{ route('delete_asset', $asset->id) }}"
+                                                                                            class="btn btn-sm btn-danger"
+                                                                                            onclick="return confirm('Are you sure you want to delete this asset?');">Delete</a>
 
+                                                                                    </td> --}}
+                                                                                </tr>
+                                                                                @endforeach
+                                                                            </tbody>
+                                                                        </table>
+                                                                        @else
+                                                                        <p>No assets found for this chapter.</p>
+                                                                        @endif
 
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
 
+                                                <td>
+                                                    <form action="{{ route('chapterStatus') }}" method="post"
+                                                        style="display: inline;">
+                                                        @csrf
+                                                        <input type="hidden" name="id" value="{{ $user->id }}">
+                                                        <input type="hidden" name="status"
+                                                            value="{{ $user->status == 1 ? 0 : 1 }}">
 
-                            {{-- <form id="createCourseForm" method="POST" action="{{ route('assets.submit') }}"
-                                enctype="multipart/form-data">
-                                @csrf
-                                <input type="hidden" name="course_id" value="{{ $id }}">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="blog_name">Blog Name:</label>
-                                            <input type="text" id="blog_name" name="blog_name" class="form-control"
-                                                placeholder="Enter Blog Name" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="course_assets_video">Assets Video:</label>
-                                            <input type="file" id="course_assets_video" name="course_assets_video"
-                                                class="form-control">
-                                        </div>
-                                    </div>
-                                    <div id="progressWrapper" style="display: none; margin-top: 20px;">
-                                        <div class="progress">
-                                            <div id="progressBar"
-                                                class="progress-bar progress-bar-striped progress-bar-animated"
-                                                role="progressbar" style="width: 0%;" aria-valuemin="0"
-                                                aria-valuemax="100"></div>
-                                        </div>
-                                        <p id="progressText" class="mt-2 text-center">0%</p>
-                                    </div>
-                                    <div id="uploadArea" class="upload-area">
-                                        <button id="uploadButton" class="btn btn-primary">Upload Video</button>
-                                    </div>
+                                                        <button type="submit"
+                                                            class="btn {{ $user->status == 1 ? 'btn-success' : 'btn-danger' }}">
+                                                            {{ $user->status == 1 ? 'Active' : 'Inactive' }}
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                                <td class="text-center">
+                                                    <!-- Edit Button -->
+                                                    <a href="#" class="btn btn-sm btn-primary me-2 editButton"
+                                                        data-id="{{ $user->id }}" data-name="{{ $user->chepter_name }}"
+                                                        data-status="{{ $user->status }}" data-bs-toggle="modal"
+                                                        data-bs-target="#editChapterModal">
+                                                        <i class="ti ti-edit"></i>
+                                                    </a>
+
+                                                    <!-- Delete Button -->
+                                                    <a href="{{ route('chapter_delete', $user->id) }}"
+                                                        class="btn btn-sm btn-danger"
+                                                        onclick="return confirmDelete(this)">
+                                                        <i class="ti ti-trash"></i>
+                                                    </a>
+                                                </td>
+
+                                            </tr>
+                                            @endforeach
+                                            @else
+                                            <tr>
+                                                <td colspan="8" class="text-center">No Data Found!</td>
+                                            </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
+
                                 </div>
-                            </form> --}}
-
-
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Video Modal -->
+<div id="videoModal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Video Player</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <video id="videoPlayer" width="100%" controls>
+                    <source src="" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+
+<div class="modal fade" id="editChapterModal" tabindex="-1" aria-labelledby="editChapterModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ route('chapter.update') }}" method="post">
+                @csrf
+                <input type="hidden" name="id" id="editChapterId">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editChapterModalLabel">Edit Chapter</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="editChapterName">Chapter Name:</label>
+                        <input type="text" id="editChapterName" name="chepter_name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editChapterStatus">Chapter Visible:</label>
+                        <div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="status" id="editStatusYes" value="1">
+                                <label class="form-check-label" for="editStatusYes">Yes</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="status" id="editStatusNo" value="0">
+                                <label class="form-check-label" for="editStatusNo">No</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    {{-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button> --}}
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const editButtons = document.querySelectorAll('.editButton');
+
+    editButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const chapterId = this.getAttribute('data-id');
+            const chapterName = this.getAttribute('data-name');
+            const chapterStatus = this.getAttribute('data-status');
+
+            // Populate modal fields
+            document.getElementById('editChapterId').value = chapterId;
+            document.getElementById('editChapterName').value = chapterName;
+            document.getElementById(chapterStatus == 1 ? 'editStatusYes' : 'editStatusNo').checked = true;
+        });
+    });
+});
+
+</script>
+
+<script>
+    function playVideo(videoPath) {
+        // Set the video source
+        const videoPlayer = document.getElementById('videoPlayer');
+        videoPlayer.src = videoPath;
+
+        // Show the modal
+        const videoModal = new bootstrap.Modal(document.getElementById('videoModal'));
+        videoModal.show();
+    }
+
+    // Stop video playback when the modal is closed
+    document.getElementById('videoModal').addEventListener('hidden.bs.modal', function () {
+        const videoPlayer = document.getElementById('videoPlayer');
+        videoPlayer.pause(); // Pause the video
+        videoPlayer.currentTime = 0; // Reset video playback to the beginning
+    });
+</script>
+
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
@@ -240,7 +416,31 @@
             });
     });
 </script>
+<script>
+    function confirmDelete(element) {
+        event.preventDefault(); // Prevent the default link behavior
+        const url = element.href;
 
+        Swal.fire({
+            title: 'Are you sure? For Delete',
+            text: 'This action cannot be undone!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If confirmed, redirect to the delete URL
+                window.location.href = url;
+            }
+            });
+
+            return false; // Prevent immediate navigation
+            }
+
+</script>
 
 {{-- <script>
     document.addEventListener('DOMContentLoaded', function () {

@@ -1,3 +1,4 @@
+
 <nav class="pc-sidebar">
     <div class="navbar-wrapper">
         <div class="m-header">
@@ -68,9 +69,10 @@
                             <a class="pc-link" href="{{ route('courses') }}" data-i18n="Active List">List</a>
                         </li>
                         <li class="pc-item">
-                            <a class="pc-link" href="{{ route('course.category') }}" data-i18n="Expired List">Category</a>
+                            <a class="pc-link" href="{{ route('course.category') }}"
+                                data-i18n="Expired List">Category</a>
                         </li>
-                       {{--  <li class="pc-item">
+                        {{-- <li class="pc-item">
                             <a class="pc-link" href="#" data-i18n="Expired List">Expired List</a>
                         </li>
                         <li class="pc-item">
@@ -92,7 +94,7 @@
                     </a>
                     <ul class="pc-submenu">
                         <li class="pc-item"><a class="pc-link" href="{{ route('useradd') }}" data-i18n="Pricing">Create
-                                </a></li>
+                            </a></li>
                         <li class="pc-item"><a class="pc-link" href="{{ route('userlist') }}" data-i18n="List">
                                 List</a>
                         </li>

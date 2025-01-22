@@ -116,7 +116,7 @@
 
                 <div class="card-body">
                     <div class="tab-content" id="myTabContent">
-                        <h5>Create Chapters Assets</h5>
+                        <h5>Update Chapters Assets</h5>
 
                         <div class="row">
                             <div class="card-body">
@@ -124,32 +124,40 @@
                                 {{--
                                 ..............................................................................................--}}
 
-                                <form id="createCourseForm" method="POST" action="{{ route('assets.submit') }}"
+                                <form id="createCourseForm" method="POST" action="{{ route('assets.update') }}"
                                     enctype="multipart/form-data">
                                     @csrf
-                                    <input type="hidden" name="course_id" value="{{$courseId }}">
-                                    <input type="hidden" name="chapter_id" value="{{$chapterId }}">
+                                    <input type="hidden" name="assets_id" value="{{ $data->id }}">
+                                    <input type="hidden" name="course_id" value="{{$data->course_id }}">
+                                    <input type="hidden" name="chapter_id" value="{{$data->chapter_id }}">
                                     <div class="row align-items-center">
                                         <!-- Assets Type -->
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="assetstype" class="form-label">Assets Type:</label>
-                                                <select name="assetstype" id="blog" class="form-select" required>
+                                                <select name="assetstype" id="assetstype" class="form-select" required
+                                                    onchange="toggleAssetContent()">
                                                     <option value="">Select</option>
-                                                    <option value="blog">Blog</option>
-                                                    <option value="url">Url</option>
-                                                    <option value="videos">Videos</option>
-                                                    <option value="youtube">Youtube Videos Link</option>
+                                                    <option value="blog" {{ old('assetstype', $data->assets_type) ==
+                                                        'blog' ? 'selected' : '' }}>Blog</option>
+                                                    <option value="url" {{ old('assetstype', $data->assets_type) ==
+                                                        'url' ? 'selected' : '' }}>Url</option>
+                                                    <option value="videos" {{ old('assetstype', $data->assets_type) ==
+                                                        'videos' ? 'selected' : '' }}>Videos</option>
+                                                    <option value="youtube" {{ old('assetstype', $data->assets_type) ==
+                                                        'youtube' ? 'selected' : '' }}>Youtube Videos Link</option>
                                                 </select>
                                             </div>
                                         </div>
+
 
                                         <!-- Topic Name -->
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="topicname" class="form-label">Topic Name:</label>
                                                 <input type="text" id="topicname" name="topicname" class="form-control"
-                                                    required placeholder="Enter Topic Name ">
+                                                    required placeholder="Enter Topic Name "
+                                                    value="{{ old('topicname', $data->topic_name)}}">
                                             </div>
                                         </div>
 
@@ -158,136 +166,112 @@
                                             <div class="mb-3">
                                                 <label for="status" class="form-label">Status:</label>
                                                 <div class="d-flex align-items-center">
+                                                    <!-- Yes Option -->
                                                     <div class="form-check me-3">
-                                                        <input class="form-check-input" type="radio" name="status"
-                                                            value="1" id="status" checked>
+                                                        <input class="form-check-input" type="radio" name="status" value="1" id="statusYes"
+                                                            {{ old('status', $data->status) == '1' ? 'checked' : '' }}>
                                                         <label class="form-check-label" for="statusYes">Yes</label>
                                                     </div>
+                                                    <!-- No Option -->
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="status"
-                                                            value="0" id="status">
+                                                        <input class="form-check-input" type="radio" name="status" value="0" id="statusNo"
+                                                            {{ old('status', $data->status) == '0' ? 'checked' : '' }}>
                                                         <label class="form-check-label" for="statusNo">No</label>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
 
+
+
+                                    <!-- Blog Content -->
                                     <div id="blogContent" class="asset-content" style="display: none;">
                                         <div class="col-md-12">
                                             <div class="mb-3">
                                                 <label for="assets_discription">Blog Description:</label>
                                                 <textarea id="assets_discription" name="assets_discription"
-                                                    class="form-control"></textarea>
+                                                    class="form-control">{{ old('assets_discription', $data->blog_description) }}</textarea>
                                             </div>
                                         </div>
                                     </div>
 
+                                    <!-- URL Content -->
                                     <div id="urlContent" class="asset-content" style="display: none;">
                                         <div class="col-md-12">
                                             <div class="mb-3">
                                                 <label for="videourl">Video Url:</label>
-                                                <input type="text" id="videourl" name="videourl" class="form-control">
+                                                <input type="text" id="videourl" name="videourl" class="form-control"
+                                                    value="{{ old('videourl', $data->video_url) }}">
                                             </div>
                                         </div>
                                     </div>
+
+                                    <!-- Videos Content -->
                                     <div id="videosContent" class="asset-content" style="display: none;">
                                         <label for="course_assets_video">Assets Video:</label>
                                         <div class="form-floating mb-3">
 
-                                            <div class="d-flex align-items-center  rounded">
-
-                                                <div class="d-flex align-items-center">
-
-                                                    <label for="fileUpload" class="file-upload-label"
-                                                        style="width:1270px">
-                                                        <div class="upload-icon mb-3">
-                                                            <i class="fas fa-cloud-upload-alt fa-3x text-primary"></i>
-                                                        </div>
-                                                        <span class="text-muted" style="    margin-top: -19px;">Click to
-                                                            upload
-                                                            file here</span>
-                                                        <span id="fileName" class="ms-2"></span>
-                                                        <input type="file" id="fileUpload" name="course_assets_video"
-                                                            class="file-upload-input" onchange="showFileName(this)">
-                                                    </label>
-                                                </div>
+                                            <div class="d-flex align-items-center rounded">
+                                                <label for="fileUpload" class="file-upload-label" style="width: 100%;">
+                                                    <div class="upload-icon mb-3 text-center">
+                                                        <i class="fas fa-cloud-upload-alt fa-3x text-primary"></i>
+                                                    </div>
+                                                    <span class="text-muted d-block text-center">Click to upload a
+                                                        file</span>
+                                                    <span id="fileName" class="ms-2 text-center d-block"></span>
+                                                    <input type="file" id="fileUpload" name="course_assets_video"
+                                                        class="file-upload-input" onchange="showFileName(this)">
+                                                </label>
                                             </div>
+
+                                            <div id="progressWrapper" style="display: none; margin-top: 20px;">
+                                                <div class="progress">
+                                                    <div id="progressBar"
+                                                        class="progress-bar progress-bar-striped progress-bar-animated"
+                                                        role="progressbar" style="width: 0%;" aria-valuemin="0"
+                                                        aria-valuemax="100">
+                                                    </div>
+                                                </div>
+                                                <p id="progressText" class="mt-2 text-center">0%</p>
+                                            </div>
+
+
+                                            <!-- Show the current video file if it exists -->
+                                            @if (!empty($data->assets_video))
+                                            <div class="mt-3">
+                                                <label class="form-label">Current Video:</label>
+
+                                                <p class="mt-2"><strong>File Name:</strong> {{ $data->assets_video }}
+                                                </p>
+                                            </div>
+                                            @endif
                                         </div>
 
-                                        <div id="progressWrapper" style="display: none; margin-top: 20px;">
-                                            <div class="progress">
-                                                <div id="progressBar"
-                                                    class="progress-bar progress-bar-striped progress-bar-animated"
-                                                    role="progressbar" style="width: 0%;" aria-valuemin="0"
-                                                    aria-valuemax="100">
-                                                </div>
-                                            </div>
-                                            <p id="progressText" class="mt-2 text-center">0%</p>
-                                        </div>
+
+
+
+
                                     </div>
 
+
+                                    <!-- Youtube Content -->
                                     <div id="youtubeContent" class="asset-content" style="display: none;">
                                         <div class="col-md-12">
                                             <div class="mb-3">
                                                 <label for="youtubelink">Youtube Video Link:</label>
                                                 <input type="text" id="youtubelink" name="youtubelink"
-                                                    class="form-control">
+                                                    class="form-control"
+                                                    value="{{ old('youtubelink', $data->youtube_links) }}">
                                             </div>
                                         </div>
-
                                     </div>
+
                                     <button type="submit" id="uploadButton" class="btn btn-primary"
-                                        style="margin-left: 87%;">Submit</button>
+                                        style="margin-left: 87%;">Update</button>
                                 </form>
                             </div>
-<hr>
-                            <h4>Assets List</h4>
-                            <div class="accordion-body">
-
-                                @if($assetsdata->count() > 0)
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Assets Topic</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($assetsdata as $key => $asset)
-                                        <tr>
-                                            <td>{{ $key + 1 }} .</td>
-                                            <td>{{ $asset->topic_name }}</td>
-                                            <td>
-
-                                                <form action="{{ route('edit_assets')}}" method="post" style="display: inline;">
-                                                    @csrf
-                                                    <input type="hidden" name="assets_id" value="{{ $asset->id }}">
-                                                    <button type="submit" class="btn btn-sm btn-primary">
-                                                        <i class="ti ti-edit" style="color: #f0f8ff"></i>
-                                                    </button>
-                                                </form>
-                                                <a
-                                                href="{{ route('assets_delete', $asset->id) }}"
-                                                    class="btn btn-sm btn-danger"
-                                                    onclick="return confirmDelete(this)"> <i style="color: #f0f8ff" class="ti ti-trash"></i></a>
-
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                @else
-                                <p>No assets found for this chapter.</p>
-                                @endif
-
-                            </div>
-
-
-
-
-
 
 
 
@@ -300,25 +284,35 @@
     </div>
 </div>
 
+<script>
+    function showFileName(input) {
+        const fileName = input.files[0]?.name || "No file selected";
+        document.getElementById('fileName').textContent = fileName;
+    }
+</script>
 
 <script>
-    // Show corresponding div based on selected option
-    document.getElementById('blog').addEventListener('change', function () {
-        var value = this.value;
-        // Hide all contents first
-        document.querySelectorAll('.asset-content').forEach(function (div) {
-            div.style.display = 'none';
-        });
-        // Show selected content
-        if (value === 'blog') {
+    // Show/hide content based on the selected asset type
+    function toggleAssetContent() {
+        const assetType = document.getElementById('assetstype').value;
+        const contents = document.querySelectorAll('.asset-content');
+
+        contents.forEach(content => content.style.display = 'none');
+
+        if (assetType === 'blog') {
             document.getElementById('blogContent').style.display = 'block';
-        } else if (value === 'url') {
+        } else if (assetType === 'url') {
             document.getElementById('urlContent').style.display = 'block';
-        } else if (value === 'videos') {
+        } else if (assetType === 'videos') {
             document.getElementById('videosContent').style.display = 'block';
-        } else if (value === 'youtube') {
+        } else if (assetType === 'youtube') {
             document.getElementById('youtubeContent').style.display = 'block';
         }
+    }
+
+    // Trigger toggle on page load for editing
+    document.addEventListener('DOMContentLoaded', () => {
+        toggleAssetContent();
     });
 </script>
 
@@ -357,31 +351,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script src="https://cdn.ckeditor.com/ckeditor5/38.0.1/classic/ckeditor.js"></script>
-<script>
-    function confirmDelete(element) {
-        event.preventDefault(); // Prevent the default link behavior
-        const url = element.href;
 
-        Swal.fire({
-            title: 'Are you sure? For Delete',
-            text: 'This action cannot be undone!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // If confirmed, redirect to the delete URL
-                window.location.href = url;
-            }
-            });
-
-            return false; // Prevent immediate navigation
-            }
-
-</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -392,14 +362,15 @@
         const fileInput = document.getElementById('fileUpload');
         const file = fileInput?.files[0]; // Allow empty file
 
-        const status = document.getElementById('status')?.value;
-        const assetstype = document.getElementById('blog')?.value; // Updated ID
+        const status = document.querySelector('input[name="status"]:checked')?.value;
+        const assetstype = document.getElementById('assetstype')?.value; // Updated ID
         const topicName = document.getElementById('topicname')?.value;
         const youtubelink = document.getElementById('youtubelink')?.value || ''; // Accept empty value
         const videourl = document.getElementById('videourl')?.value || ''; // Accept empty value
         const assetsDescription = document.getElementById('assets_discription')?.value || ''; // Optional description
         const courseId = document.querySelector('input[name="course_id"]')?.value;
         const chapterId = document.querySelector('input[name="chapter_id"]')?.value;
+        const assetsId = document.querySelector('input[name="assets_id"]')?.value;
 
         // Validate required fields
         if (!courseId || !chapterId || !assetstype || !topicName) {
@@ -442,6 +413,7 @@
             formData.append('assetstype', assetstype);
             formData.append('topicName', topicName);
             formData.append('chapter_id', chapterId);
+            formData.append('assets_id', assetsId);
             formData.append('status', status);
             formData.append('videourl', videourl);
             formData.append('youtubelink', youtubelink);
@@ -451,7 +423,7 @@
             formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
 
             const xhr = new XMLHttpRequest();
-            xhr.open('POST', '{{ route('assets.submit') }}', true);
+            xhr.open('POST', '{{ route('assets.update') }}', true);
 
             xhr.upload.onprogress = function (event) {
                 if (event.lengthComputable && file) {
@@ -472,7 +444,7 @@
                         Swal.fire({
                             icon: 'success',
                             title: 'Upload Complete',
-                            text: 'Your data has been submitted successfully!',
+                            text: 'Your data has been Updated successfully!',
                             showConfirmButton: false,
                             timer: 2000,
                             willClose: () => {
@@ -505,6 +477,7 @@
             // Submit form without file upload
             const formData = new FormData();
             formData.append('course_id', courseId);
+            formData.append('assets_id', assetsId);
             formData.append('chapter_id', chapterId);
             formData.append('assetstype', assetstype);
             formData.append('topicName', topicName);
@@ -514,7 +487,7 @@
             formData.append('assets_discription', assetsDescription);
             formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
 
-            fetch('{{ route('assets.submit') }}', {
+            fetch('{{ route('assets.update') }}', {
                 method: 'POST',
                 body: formData,
             })

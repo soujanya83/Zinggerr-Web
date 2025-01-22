@@ -100,6 +100,7 @@
     <div class="header-wrapper">
         <div class="me-auto pc-mob-drp">
             <ul class="list-unstyled">
+
                 <li class="pc-h-item header-mobile-collapse">
                     <a href="#" class="pc-head-link head-link-secondary ms-0" id="sidebar-hide">
                         <i class="ti ti-menu-2"></i>
@@ -110,6 +111,8 @@
                         <i class="ti ti-menu-2"></i>
                     </a>
                 </li>
+
+
                 <li class="dropdown pc-h-item d-inline-flex d-md-none">
                     <a class="pc-head-link head-link-secondary dropdown-toggle arrow-none m-0" data-bs-toggle="dropdown"
                         href="#" role="button" aria-haspopup="false" aria-expanded="false">

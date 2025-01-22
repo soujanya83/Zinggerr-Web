@@ -20,9 +20,369 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\session;
 
 class CourseController extends Controller
 {
+
+    // public function updateAssets(Request $request)
+    // {
+
+
+    //     try {
+    //         // Validation
+    //         $validator = Validator::make($request->all(), [
+    //             'assets_id' => 'required|exists:courses_assets,id',
+    //             'course_id' => 'required|exists:courses,id',
+    //             'chapter_id' => 'required|exists:courses_chapters,id',
+    //             'topicName' => 'required|string|max:255',
+    //             'assetstype' => 'required|in:blog,url,videos,youtube',
+    //             'status' => 'required|boolean',
+    //             'fileName' => 'required_if:assetstype,videos|string',
+    //             'chunkNumber' => 'required_if:assetstype,videos|integer',
+    //             'totalChunks' => 'required_if:assetstype,videos|integer',
+    //             'file' => 'required_if:assetstype,videos|file',
+    //             'assets_discription' => 'nullable|string',
+    //             'videourl' => 'nullable|url',
+    //             'youtubelink' => 'nullable|url',
+    //         ]);
+
+    //         if ($validator->fails()) {
+    //             return response()->json([
+    //                 'success' => false,
+    //                 'message' => $validator->errors()->first(),
+    //             ], 400);
+    //         }
+
+    //         // Fetch the existing asset
+    //         $asset = CoursesAssets::findOrFail($request->assets_id);
+
+    //         // Handle video uploads for 'videos' type
+    //         $videoPath = $asset->assets_video; // Preserve the current video path
+    //         if ($request->input('assetstype') === 'videos') {
+    //             $fileName = $request->input('fileName');
+    //             $chunkNumber = $request->input('chunkNumber');
+    //             $totalChunks = $request->input('totalChunks');
+    //             $file = $request->file('file');
+
+    //             $tempDir = storage_path('app/chunks/' . md5($fileName));
+    //             if (!is_dir($tempDir)) {
+    //                 mkdir($tempDir, 0777, true);
+    //             }
+
+    //             $chunkPath = $tempDir . '/' . $chunkNumber;
+    //             $file->move($tempDir, $chunkNumber);
+
+    //             if ($chunkNumber == $totalChunks) {
+    //                 $finalPath = storage_path('app/public/assets_videos/' . $fileName);
+    //                 if (!is_dir(dirname($finalPath))) {
+    //                     mkdir(dirname($finalPath), 0777, true);
+    //                 }
+
+    //                 try {
+    //                     $out = fopen($finalPath, 'wb');
+    //                     for ($i = 1; $i <= $totalChunks; $i++) {
+    //                         $chunkFile = $tempDir . '/' . $i;
+
+    //                         if (!file_exists($chunkFile)) {
+    //                             throw new \Exception("Chunk {$i} is missing.");
+    //                         }
+
+    //                         $in = fopen($chunkFile, 'rb');
+    //                         while ($buffer = fread($in, 4096)) {
+    //                             fwrite($out, $buffer);
+    //                         }
+    //                         fclose($in);
+    //                         unlink($chunkFile);
+    //                     }
+    //                     fclose($out);
+    //                     rmdir($tempDir);
+
+    //                     $videoPath = 'assets_videos/' . $fileName; // Update video path
+    //                 } catch (\Exception $e) {
+    //                     return response()->json([
+    //                         'success' => false,
+    //                         'message' => 'Error merging video chunks.',
+    //                     ], 500);
+    //                 }
+    //             }
+
+    //             return response()->json([
+    //                 'success' => true,
+    //                 'message' => 'Video chunks uploaded. Waiting for merge.',
+    //             ]);
+    //         }
+
+    //         // Update the asset record
+    //         $asset->update([
+    //             'course_id' => $request->input('course_id'),
+    //             'chapter_id' => $request->input('chapter_id'),
+    //             'topic_name' => $request->input('topicName'),
+    //             'assets_type' => $request->input('assetstype'),
+    //             'blog_description' => $request->input('assets_discription', ''),
+    //             'video_url' => $request->input('videourl', ''),
+    //             'youtube_links' => $request->input('youtubelink', ''),
+    //             'assets_video' => $videoPath, // Updated or original video path
+    //             'status' => $request->input('status'),
+    //         ]);
+
+    //         return response()->json([
+    //             'success' => true,
+    //             'message' => 'Assets updated successfully!',
+    //         ]);
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Something went wrong. Please try again.',
+    //         ], 500);
+    //     }
+    // }
+
+    public function updateAssets(Request $request)
+    {
+        try {
+            // Validation
+            $validator = Validator::make($request->all(), [
+                'assets_id' => 'required|exists:courses_assets,id',
+                'course_id' => 'required|exists:courses,id',
+                'chapter_id' => 'required|exists:courses_chapters,id',
+                'topicName' => 'required|string|max:255',
+                'assetstype' => 'required|in:blog,url,videos,youtube',
+                'status' => 'required|boolean',
+                'fileName' => 'required_if:assetstype,videos|string',
+                'chunkNumber' => 'required_if:assetstype,videos|integer',
+                'totalChunks' => 'required_if:assetstype,videos|integer',
+                'file' => 'required_if:assetstype,videos|file',
+                'assets_discription' => 'nullable|string',
+                'videourl' => 'nullable|url',
+                'youtubelink' => 'nullable|url',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $validator->errors()->first(),
+                ], 400);
+            }
+
+            // Fetch the existing asset
+            $asset = CoursesAssets::findOrFail($request->assets_id);
+
+            // Handle video uploads for 'videos' type
+            $videoPath = $asset->assets_video; // Preserve the current video path
+            if ($request->input('assetstype') === 'videos') {
+                $fileName = $request->input('fileName');
+                $chunkNumber = $request->input('chunkNumber');
+                $totalChunks = $request->input('totalChunks');
+                $file = $request->file('file');
+
+                $tempDir = storage_path('app/chunks/' . md5($fileName));
+                if (!is_dir($tempDir)) {
+                    mkdir($tempDir, 0777, true);
+                }
+
+                $chunkPath = $tempDir . '/' . $chunkNumber;
+                $file->move($tempDir, $chunkNumber);
+
+                if ($chunkNumber == $totalChunks) {
+                    $finalPath = storage_path('app/public/assets_videos/' . $fileName);
+                    if (!is_dir(dirname($finalPath))) {
+                        mkdir(dirname($finalPath), 0777, true);
+                    }
+
+                    try {
+                        $out = fopen($finalPath, 'wb');
+                        for ($i = 1; $i <= $totalChunks; $i++) {
+                            $chunkFile = $tempDir . '/' . $i;
+
+                            if (!file_exists($chunkFile)) {
+                                throw new \Exception("Chunk {$i} is missing.");
+                            }
+
+                            $in = fopen($chunkFile, 'rb');
+                            while ($buffer = fread($in, 4096)) {
+                                fwrite($out, $buffer);
+                            }
+                            fclose($in);
+                            unlink($chunkFile);
+                        }
+                        fclose($out);
+                        rmdir($tempDir);
+
+                        $videoPath = 'assets_videos/' . $fileName; // Update video path
+                    } catch (\Exception $e) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Error merging video chunks.',
+                        ], 500);
+                    }
+                } else {
+                    // Respond for intermediate chunks
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Video chunks uploaded. Waiting for merge.',
+                    ]);
+                }
+            }
+
+            // Update the asset record
+            $asset->update([
+                'course_id' => $request->input('course_id'),
+                'chapter_id' => $request->input('chapter_id'),
+                'topic_name' => $request->input('topicName'),
+                'assets_type' => $request->input('assetstype'),
+                'blog_description' => $request->input('assets_discription', ''),
+                'video_url' => $request->input('videourl', ''),
+                'youtube_links' => $request->input('youtubelink', ''),
+                'assets_video' => $videoPath, // Updated or original video path
+                'status' => $request->input('status'),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Assets updated successfully!',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong. Please try again.',
+            ], 500);
+        }
+    }
+
+
+
+    public function assetsedit(Request $request){
+
+        $id=$request->assets_id;
+        $data=CoursesAssets::find($id);
+        return view('courses.assets_edit',compact('data'));
+    }
+
+    public function blog_assets(Request $request)
+    {
+        $chapterId = $request->chapter_id;
+        $courseId = $request->course_id;
+    $assetsdata=CoursesAssets::where('chapter_id',$chapterId)->get();
+
+
+        return view('courses.create_blogs_assets', compact('chapterId', 'courseId','assetsdata'));
+    }
+
+    public function assetsdelete($id)
+    {
+        $course = CoursesAssets::find($id);
+        if ($course) {
+            $course->delete();
+            return redirect()->back()->with('success', 'Assets deleted successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Assets ID not found.');
+        }
+    }
+
+
+    public function chapterupdate(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:courses_chapters,id',
+            'chepter_name' => 'required|string|max:255',
+            'status' => 'required|boolean',
+        ]);
+
+        $chapter = CoursesChepters::findOrFail($request->id);
+        $chapter->chepter_name = $request->chepter_name;
+        $chapter->status = $request->status;
+        $chapter->save();
+
+        return redirect()->back()->with('success', 'Chapter updated successfully!');
+    }
+
+
+    public function chapterdelete($id)
+    {
+        $course = CoursesChepters::find($id);
+        if ($course) {
+            $course->delete();
+            return redirect()->back()->with('success', 'Chapter deleted successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Chapter ID not found.');
+        }
+    }
+    public function chapterStatus(Request $request)
+    {
+        $user = CoursesChepters::findOrFail($request->id);
+        $user->status = $request->status;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Chapter status updated successfully!');
+    }
+    public function add_assets(Request $request, $slug)
+    {
+        $courseId = Course::where('slug', $slug)->first();
+        $id = $courseId->id;
+
+        $data = CoursesChepters::where('courses_id', $id)->latest()->get();
+
+        return view('courses.create_chepter', compact('id', 'data'));
+    }
+
+    public function chepter_submit(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'chepter_name' => 'required|max:255',
+            'status' => 'required|in:1,0',
+
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+        try {
+            $chapter = CoursesChepters::create(
+                [
+                    'id' => (string) Guid::uuid4(),
+                    'chepter_name' => $request->chepter_name,
+                    'courses_id' => $request->course_id,
+                    'chepter_discription' => null,
+                    'no_of_chepter' => null,
+                    'status' => $request->status,
+                    'mode' => null,
+                ]
+
+            );
+            $chapter_id = $chapter->id;
+            $course_id = $request->course_id;
+
+            session::put('courses_id', $course_id);
+            session::put('chapter_id', $chapter_id);
+
+            return redirect()->back()->with('success', 'Chapter created successfully!');
+            // ->route('blogs.assets.form')
+
+
+        } catch (\Exception $e) {
+
+            return redirect()->back()->with('error', 'Something want wrong');
+        }
+    }
+
+
+
+
+    public function blog_assets_submit(Request $request)
+    {
+        dd($request);
+    }
+
+
+
+
+
+
+
+
 
     public function createCourse(Request $request)
     {
@@ -382,396 +742,128 @@ class CourseController extends Controller
 
         return redirect()->route('course.category')->with('success', 'Category updated successfully!');
     }
-    // public function submitAssets(Request $request)
-    // {
-    //     $fileName = $request->input('fileName');
-    //     $chunkNumber = $request->input('chunkNumber');
-    //     $totalChunks = $request->input('totalChunks');
-    //     $file = $request->file('file');
-
-    //     if (!$file) {
-    //         return response()->json(['error' => 'File not provided'], 400);
-    //     }
-
-    //     $tempDir = storage_path('app/chunks/' . md5($fileName));
-
-    //     if (!is_dir($tempDir)) {
-    //         mkdir($tempDir, 0777, true);
-    //     }
-
-    //     // Save chunk
-    //     $chunkPath = $tempDir . '/' . $chunkNumber;
-    //     $file->move($tempDir, $chunkNumber);
-
-    //     // Check if all chunks are uploaded
-    //     if ($chunkNumber == $totalChunks) {
-    //         $finalPath = storage_path('app/public/assets_videos/' . $fileName);
-
-    //         if (!is_dir(dirname($finalPath))) {
-    //             mkdir(dirname($finalPath), 0777, true);
-    //         }
-
-    //         // Merge chunks
-    //         $out = fopen($finalPath, 'wb');
-    //         for ($i = 1; $i <= $totalChunks; $i++) {
-    //             $chunkFile = $tempDir . '/' . $i;
-    //             $in = fopen($chunkFile, 'rb');
-    //             while ($buffer = fread($in, 4096)) {
-    //                 fwrite($out, $buffer);
-    //             }
-    //             fclose($in);
-    //             unlink($chunkFile); // Remove the chunk file
-    //         }
-    //         fclose($out);
-    //         rmdir($tempDir); // Remove the temporary directory
-
-    //         return response()->json(['success' => true, 'path' => 'assets_videos/' . $fileName]);
-    //     }
-
-    //     return response()->json(['success' => true]);
-    // }
-
-    // public function submitAssets(Request $request)
-    // {
-
-    //     $fileName = $request->input('fileName');
-    //     $chunkNumber = $request->input('chunkNumber');
-    //     $totalChunks = $request->input('totalChunks');
-    //     $file = $request->file('file');
-
-    //     $courseId = $request->input('course_id'); // Get course_id
-    //     $chapterId = $request->input('chapter_id'); // Get course_id
-    //     $blogName = $request->input('blog_name'); // Get blog_name
-
-    //     $assetsdiscription = $request->input('assetsdiscription'); // Get blog_name
-    //     $blog = $request->input('blog'); // Get blog_name
-    //     $topicimage = $request->input('topicimage'); // Get blog_name
-    //     $videolinks = $request->input('videolinks'); // Get blog_name
-    //     $blogstatus = $request->input('blogstatus'); // Get blog_name
-
-    //     if (!$file) {
-    //         return response()->json(['error' => 'File not provided'], 400);
-    //     }
-
-    //     // Temporary directory for chunks
-    //     $tempDir = storage_path('app/chunks/' . md5($fileName));
-    //     if (!is_dir($tempDir)) {
-    //         mkdir($tempDir, 0777, true);
-    //     }
-
-    //     // Save the uploaded chunk
-    //     $chunkPath = $tempDir . '/' . $chunkNumber;
-    //     $file->move($tempDir, $chunkNumber);
-
-    //     // Check if all chunks are uploaded
-    //     if ($chunkNumber == $totalChunks) {
-    //         $finalPath = storage_path('app/public/assets_videos/' . $fileName);
-
-    //         if (!is_dir(dirname($finalPath))) {
-    //             mkdir(dirname($finalPath), 0777, true);
-    //         }
-
-    //         // Merge all chunks into a single file
-    //         $out = fopen($finalPath, 'wb');
-    //         for ($i = 1; $i <= $totalChunks; $i++) {
-    //             $chunkFile = $tempDir . '/' . $i;
-    //             $in = fopen($chunkFile, 'rb');
-    //             while ($buffer = fread($in, 4096)) {
-    //                 fwrite($out, $buffer);
-    //             }
-    //             fclose($in);
-    //             unlink($chunkFile); // Delete chunk after merging
-    //         }
-    //         fclose($out);
-    //         rmdir($tempDir); // Remove the temporary directory
-
-    //         // Save file details to the database
-    //         $course = Course::find($courseId);
-    //         if ($course) {
-    //             CoursesAssets::create([
-    //                 'id' => (string) Guid::uuid4(),
-    //                 'course_id' => $courseId,
-    //                 'blog_name' => $blogName,
-    //                 'chapter_id' => $chapterId,
-    //                 'assets_discription' => $assetsdiscription,
-    //                 'topicimage' => $topicimage,
-    //                 'no_of_blog' => $blog,
-    //                 'videolinks' => $videolinks,
-    //                 'blogstatus' => $blogstatus,
-    //                 'course_assets_video' => 'assets_videos/' . $fileName, // Save the file path
-    //             ]);
-
-    //             return response()->json([
-    //                 'success' => true,
-    //                 'message' => 'Video uploaded and data saved successfully!',
-    //                 'path' => 'assets_videos/' . $fileName,
-    //             ]);
-    //         } else {
-    //             return response()->json(['error' => 'Course not found'], 404);
-    //         }
-    //     }
-
-    //     return response()->json(['success' => true, 'message' => 'Chunk uploaded successfully!']);
-    // }
-
-    // public function submitAssets(Request $request)
-    // {
-
-    //     $fileName = $request->input('fileName');
-    //     $chunkNumber = $request->input('chunkNumber');
-    //     $totalChunks = $request->input('totalChunks');
-    //     $file = $request->file('file');
-    //     $courseId = $request->input('course_id');
-    //     $chapterId = $request->input('chapter_id');
-    //     $topicName = $request->input('topicName');
-    //     $blogName = $request->input('blog_name');
-    //     $assetsDiscription = $request->input('assets_discription', ''); // Optional
-    //     $blog = $request->input('blog', ''); // Optional
-    //     $topicImage = $request->input('topicimage', null); // Optional
-    //     $videoLinks = $request->input('video_links', ''); // Optional
-    //     $blogStatus = $request->input('blogstatus'); // Required
-
-
-    //     // File validation
-    //     if (!$file) {
-    //         return response()->json(['error' => 'File not provided'], 400);
-    //     }
-
-    //     // Validate required fields
-    //     if (!$courseId || !$chapterId || !$blogName || !$blogStatus) {
-    //         return response()->json(['error' => 'Required fields missing: Course ID, Chapter ID, Blog Name, and Blog Status'], 400);
-    //     }
-
-    //     // Temporary directory for chunks
-    //     $tempDir = storage_path('app/chunks/' . md5($fileName));
-    //     if (!is_dir($tempDir)) {
-    //         mkdir($tempDir, 0777, true);
-    //     }
-
-    //     // Save the uploaded chunk
-    //     $chunkPath = $tempDir . '/' . $chunkNumber;
-    //     $file->move($tempDir, $chunkNumber);
-
-    //     // Check if all chunks are uploaded
-    //     if ($chunkNumber == $totalChunks) {
-    //         $finalPath = storage_path('app/public/assets_videos/' . $fileName);
-
-    //         if (!is_dir(dirname($finalPath))) {
-    //             mkdir(dirname($finalPath), 0777, true);
-    //         }
-
-    //         // Merge all chunks into a single file
-    //         $out = fopen($finalPath, 'wb');
-    //         for ($i = 1; $i <= $totalChunks; $i++) {
-    //             $chunkFile = $tempDir . '/' . $i;
-    //             $in = fopen($chunkFile, 'rb');
-    //             while ($buffer = fread($in, 4096)) {
-    //                 fwrite($out, $buffer);
-    //             }
-    //             fclose($in);
-    //             unlink($chunkFile); // Delete chunk after merging
-    //         }
-    //         fclose($out);
-    //         rmdir($tempDir); // Remove the temporary directory
-
-    //         // Save file details to the database
-    //         $course = Course::find($courseId);
-    //         if ($course) {
-    //             CoursesAssets::create([
-    //                 'id' => (string) Guid::uuid4(),
-    //                 'course_id' => $courseId,
-    //                 'chapter_id' => $chapterId,
-    //                 'blog_name' => $blogName,
-    //                 'topic_name' => $topicName,
-    //                 'assets_discription' => $assetsDiscription,
-    //                 'topic_image' => $topicImage,
-    //                 'no_of_blog' => $blog,
-    //                 'video_links' => $videoLinks,
-    //                 'blogstatus' => $blogStatus,
-    //                 'course_assets_video' => 'assets_videos/' . $fileName, // Save the file path
-    //             ]);
-
-    //             return response()->json([
-    //                 'success' => true,
-    //                 'message' => 'Video uploaded and data saved successfully!',
-    //                 'path' => 'assets_videos/' . $fileName,
-    //             ]);
-    //         } else {
-    //             return response()->json(['error' => 'Course not found'], 404);
-    //         }
-    //     }
-
-    //     return response()->json(['success' => true, 'message' => 'Chunk uploaded successfully!']);
-    // }
 
     public function submitAssets(Request $request)
     {
+        try {
+            // Validation
+            $validator = Validator::make($request->all(), [
+                'course_id' => 'required|exists:courses,id',
+                'chapter_id' => 'required|exists:courses_chapters,id',
+                'topicName' => 'required|string|max:255',
+                'assetstype' => 'required|in:blog,url,videos,youtube',
+                'status' => 'required|boolean',
+                'fileName' => 'required_if:assetstype,videos|string',
+                'chunkNumber' => 'required_if:assetstype,videos|integer',
+                'totalChunks' => 'required_if:assetstype,videos|integer',
+                'file' => 'required_if:assetstype,videos|file',
+                'assets_discription' => 'nullable|string',
+                'videourl' => 'nullable|url',
+                'youtubelink' => 'nullable|url',
+            ]);
 
-
-
-        $fileName = $request->input('fileName');
-        $chunkNumber = $request->input('chunkNumber');
-        $totalChunks = $request->input('totalChunks');
-        $file = $request->file('file');
-        $courseId = $request->input('course_id');
-        $chapterId = $request->input('chapter_id');
-        $topicName = $request->input('topicName');
-        $blogName = $request->input('blog_name');
-        $assetsDiscription = $request->input('assets_discription', ''); // Optional
-        $blog = $request->input('blog', ''); // Optional
-        $topicImage = $request->file('topic_image'); // Image file (use file() instead of input())
-        $videoLinks = $request->input('video_links', ''); // Optional
-        $blogStatus = $request->input('blogstatus'); // Required
-
-        // File validation
-        if (!$file) {
-            return response()->json(['error' => 'File not provided'], 400);
-        }
-
-        // Validate required fields
-        if (!$courseId || !$chapterId || !$blogName || !$blogStatus) {
-            return response()->json(['error' => 'Required fields missing: Course ID, Chapter ID, Blog Name, and Blog Status'], 400);
-        }
-
-        // Temporary directory for chunks
-        $tempDir = storage_path('app/chunks/' . md5($fileName));
-        if (!is_dir($tempDir)) {
-            mkdir($tempDir, 0777, true);
-        }
-
-        // Save the uploaded chunk
-        $chunkPath = $tempDir . '/' . $chunkNumber;
-        $file->move($tempDir, $chunkNumber);
-
-        // Check if all chunks are uploaded
-        if ($chunkNumber == $totalChunks) {
-            $finalPath = storage_path('app/public/assets_videos/' . $fileName);
-
-            if (!is_dir(dirname($finalPath))) {
-                mkdir(dirname($finalPath), 0777, true);
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $validator->errors()->first(),
+                ], 400);
             }
 
-            // Merge all chunks into a single file
-            $out = fopen($finalPath, 'wb');
-            for ($i = 1; $i <= $totalChunks; $i++) {
-                $chunkFile = $tempDir . '/' . $i;
-                $in = fopen($chunkFile, 'rb');
-                while ($buffer = fread($in, 4096)) {
-                    fwrite($out, $buffer);
+            $videoPath = null;
+
+            // Handle chunk-based video uploads
+            if ($request->input('assetstype') === 'videos') {
+                $fileName = $request->input('fileName');
+                $chunkNumber = $request->input('chunkNumber');
+                $totalChunks = $request->input('totalChunks');
+                $file = $request->file('file');
+
+                $tempDir = storage_path('app/chunks/' . md5($fileName));
+                if (!is_dir($tempDir)) {
+                    mkdir($tempDir, 0777, true);
                 }
-                fclose($in);
-                unlink($chunkFile); // Delete chunk after merging
-            }
-            fclose($out);
-            rmdir($tempDir); // Remove the temporary directory
 
-            // Handle topic image upload
-            $topicImagePath = null;
+                $chunkPath = $tempDir . '/' . $chunkNumber;
+                $file->move($tempDir, $chunkNumber);
 
+                if ($chunkNumber == $totalChunks) {
+                    $finalPath = storage_path('app/public/assets_videos/' . $fileName);
+                    if (!is_dir(dirname($finalPath))) {
+                        mkdir(dirname($finalPath), 0777, true);
+                    }
 
+                    try {
+                        $out = fopen($finalPath, 'wb');
+                        for ($i = 1; $i <= $totalChunks; $i++) {
+                            $chunkFile = $tempDir . '/' . $i;
 
-            if ($topicImage) {
-                $imageName = uniqid() . '.' . $topicImage->getClientOriginalExtension();
-                $destinationPath = storage_path('app/public/assets_images');
-                if (!file_exists($destinationPath)) {
-                    mkdir($destinationPath, 0777, true);
+                            if (!file_exists($chunkFile)) {
+                                throw new \Exception("Chunk {$i} is missing.");
+                            }
+
+                            $in = fopen($chunkFile, 'rb');
+                            while ($buffer = fread($in, 4096)) {
+                                fwrite($out, $buffer);
+                            }
+                            fclose($in);
+                            unlink($chunkFile);
+                        }
+                        fclose($out);
+                        rmdir($tempDir);
+
+                        $videoPath = 'assets_videos/' . $fileName;
+
+                        // Create the database record after merging all chunks
+                        CoursesAssets::create([
+                            'id' => (string) Guid::uuid4(),
+                            'course_id' => $request->input('course_id'),
+                            'chapter_id' => $request->input('chapter_id'),
+                            'topic_name' => $request->input('topicName'),
+                            'assets_type' => $request->input('assetstype'),
+                            'blog_description' => $request->input('assets_discription', ''),
+                            'video_url' => $request->input('videourl', ''),
+                            'youtube_links' => $request->input('youtubelink', ''),
+                            'assets_video' => $videoPath,
+                            'status' => $request->input('status'),
+                        ]);
+                    } catch (\Exception $e) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Error merging video chunks.',
+                        ], 500);
+                    }
                 }
-                $topicImage->move($destinationPath, $imageName);
-                $topicImagePath = 'assets_images/' . $imageName;
-                Log::info('Image successfully uploaded to: ' . $destinationPath . '/' . $imageName);
-            }
-
-
-            // Save file details to the database
-            $course = Course::find($courseId);
-            if ($course) {
-                CoursesAssets::create([
-                    'id' => (string) Guid::uuid4(),
-                    'course_id' => $courseId,
-                    'chapter_id' => $chapterId,
-                    'blog_name' => $blogName,
-                    'topic_name' => $topicName,
-                    'assets_discription' => $assetsDiscription,
-                    'topic_image' => $topicImagePath, // Save image path
-                    'no_of_blog' => $blog,
-                    'video_links' => $videoLinks,
-                    'blogstatus' => $blogStatus,
-                    'course_assets_video' => 'assets_videos/' . $fileName, // Save video path
-                ]);
 
                 return response()->json([
                     'success' => true,
-                    'message' => 'Video and image uploaded, and data saved successfully!',
-                    'video_path' => 'assets_videos/' . $fileName,
-                    'image_path' => $topicImagePath,
+                    'message' => 'Video chunks uploaded. Waiting for merge.',
                 ]);
-            } else {
-                return response()->json(['error' => 'Course not found'], 404);
             }
-        }
 
-        return response()->json(['success' => true, 'message' => 'Chunk uploaded successfully!']);
-    }
+            // Handle other asset types (blog, url, youtube)
+            CoursesAssets::create([
+                'id' => (string) Guid::uuid4(),
+                'course_id' => $request->input('course_id'),
+                'chapter_id' => $request->input('chapter_id'),
+                'topic_name' => $request->input('topicName'),
+                'assets_type' => $request->input('assetstype'),
+                'blog_description' => $request->input('assets_discription', ''),
+                'video_url' => $request->input('videourl', ''),
+                'youtube_links' => $request->input('youtubelink', ''),
+                'assets_video' => null,
+                'status' => $request->input('status'),
+            ]);
 
-
-
-    public function add_assets(Request $request, $id)
-    {
-        return view('courses.create_chepter', compact('id'));
-        // return view('courses.assets_create', compact('id'));
-    }
-
-    public function chepter_submit(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'chepter_name' => 'required|max:255',
-            'chepter_discription' => 'required',
-            'no_of_chepter' => 'required|in:1,0',
-            'mode' => 'required|in:1,0',
-            'status' => 'required|in:1,0',
-
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-        try {
-            $chapter = CoursesChepters::create(
-                [
-                    'id' => (string) Guid::uuid4(),
-                    'chepter_name' => $request->chepter_name,
-                    'courses_id' => $request->course_id,
-                    'chepter_discription' => $request->chepter_discription,
-                    'no_of_chepter' => $request->status,
-                    'status' => $request->status,
-                    'mode' => $request->mode,
-                ]
-
-            );
-            $chapter_id = $chapter->id;
-            $course_id = $request->course_id;
-            return redirect()
-                ->route('blogs.assets.form')
-                ->with('success', 'Chapter created successfully!')
-                ->with('course_id', $course_id)
-                ->with('chapter_id', $chapter_id);
+            return response()->json([
+                'success' => true,
+                'message' => 'Assets Created successfully!',
+            ]);
         } catch (\Exception $e) {
-
-            return redirect()->back()->with('error', 'Something want wrong');
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong. Please try again.',
+            ], 500);
         }
-    }
-
-    public function blog_assets()
-    {
-        return view('courses.create_blogs_assets');
-    }
-
-
-    public function blog_assets_submit(Request $request)
-    {
-        dd($request);
     }
 
 

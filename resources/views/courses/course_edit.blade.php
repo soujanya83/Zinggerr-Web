@@ -489,12 +489,45 @@
                                                                 </div>
                                                             </label>
                                                         </li>
+
+
                                                     </ul>
+                                                    <a href="{{ route('add_assets', $course->slug) }}" id="createChapterButton" class="btn btn-success mt-3" style="display: none;width: 158px; margin-left: 75px;">
+                                                        Manage Sections
+                                                    </a>
 
                                                 </div>
                                             </div>
                                         </div>
 
+                                            <!-- Create Chapter Button -->
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const radioButtons = document.querySelectorAll('input[name="course_format"]');
+    const createChapterButton = document.getElementById('createChapterButton');
+
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', function () {
+            if (this.value === 'Custom sections') {
+                createChapterButton.style.display = 'block'; // Show the button
+            } else {
+                createChapterButton.style.display = 'none'; // Hide the button
+            }
+        });
+    });
+
+    // Initialize the button state based on the current selection
+    const selectedRadio = document.querySelector('input[name="course_format"]:checked');
+    if (selectedRadio && selectedRadio.value === 'Custom sections') {
+        createChapterButton.style.display = 'block';
+    }
+});
+
+</script>
 
 
                                         <div class="col-md-4">
