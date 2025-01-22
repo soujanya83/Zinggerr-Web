@@ -392,7 +392,8 @@
         const fileInput = document.getElementById('fileUpload');
         const file = fileInput?.files[0]; // Allow empty file
 
-        const status = document.getElementById('status')?.value;
+        const status = document.querySelector('input[name="status"]:checked')?.value;
+
         const assetstype = document.getElementById('blog')?.value; // Updated ID
         const topicName = document.getElementById('topicname')?.value;
         const youtubelink = document.getElementById('youtubelink')?.value || ''; // Accept empty value
