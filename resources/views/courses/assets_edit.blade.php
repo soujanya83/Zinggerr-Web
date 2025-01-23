@@ -380,7 +380,7 @@
 
         // Disable the button to prevent multiple uploads
         uploadButton.disabled = true;
-        uploadButton.textContent = 'Submit...';
+        uploadButton.textContent = 'Submit';
 
         const chunkSize = 2 * 1024 * 1024; // 2 MB per chunk
         const totalChunks = file ? Math.ceil(file.size / chunkSize) : 0;
@@ -448,24 +448,27 @@
                             showConfirmButton: false,
                             timer: 2000,
                             willClose: () => {
-                                location.reload();
+                                // location.reload();
+                                // window.location.href = '/cousers/chapter-assets';
+                                window.history.back();
+
                             },
                         });
                         uploadButton.disabled = false;
-                        uploadButton.textContent = 'Upload Video';
+                        uploadButton.textContent = 'Submit';
                     }
                 } else {
                     Swal.fire('Error', 'Error uploading chunk.', 'error');
                     console.error(xhr.responseText);
                     uploadButton.disabled = false;
-                    uploadButton.textContent = 'Upload Video';
+                    uploadButton.textContent = 'Submit';
                 }
             };
 
             xhr.onerror = function () {
                 Swal.fire('Error', 'Error during upload.', 'error');
                 uploadButton.disabled = false;
-                uploadButton.textContent = 'Upload Video';
+                uploadButton.textContent = 'Submit';
             };
 
             xhr.send(formData);
@@ -495,24 +498,26 @@
                     if (response.ok) {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Submission Complete',
+                            title: 'Update Complete',
                             text: 'Your data has been submitted successfully!',
                             showConfirmButton: false,
                             timer: 2000,
                             willClose: () => {
-                                location.reload();
+                                // location.reload();
+                                // window.location.href = '/cousers/chapter-assets';
+                                window.history.back();
                             },
                         });
                     } else {
                         Swal.fire('Error', 'Error submitting data.', 'error');
                     }
                     uploadButton.disabled = false;
-                    uploadButton.textContent = 'Upload Video';
+                    uploadButton.textContent = 'Submit';
                 })
                 .catch((error) => {
                     Swal.fire('Error', 'Error during submission.', 'error');
                     uploadButton.disabled = false;
-                    uploadButton.textContent = 'Upload Video';
+                    uploadButton.textContent = 'Submit';
                     console.error(error);
                 });
         }
