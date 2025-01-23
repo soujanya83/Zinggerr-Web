@@ -91,7 +91,7 @@
                     <div class="col-auto">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item" aria-current="page">Courses Views</li>
+                            <li class="breadcrumb-item" aria-current="page">Courses Chapters</li>
                         </ul>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
                                             <li> <strong>Summary:</strong> {{ strip_tags($course->course_summary) }}
                                             </li>
                                             <li><strong>Category:</strong> {{ ucfirst($course->course_category) }}</li>
-                                            <li>Id:{{ $course->course_id_number }}</li>
+                                            <li>Id: {{ $course->course_id_number }}</li>
                                             <li>{{ $course->tags }}</li>
                                             <li>
                                                 @php
@@ -188,7 +188,12 @@
                                             @if ($chapters->count() > 0)
                                             @foreach ($chapters as $keys => $user)
                                             <tr>
-
+                                                @php
+                                                $assetsdata =
+                                                DB::table('courses_assets')->where('chapter_id',
+                                                $user->id)->get();
+                                                $assets_count=$assetsdata->count();
+                                                @endphp
                                                 <td>
                                                     <div class="accordion" id="accordionChapter{{ $user->id }}">
                                                         <div class="accordion-item">
@@ -200,6 +205,10 @@
                                                                     aria-expanded="false"
                                                                     aria-controls="collapseChapter{{ $user->id }}">
                                                                     <span>{{ $user->chepter_name }}</span>
+                                                                    <span class="position-absolute end-0  p-2"
+                                                                        style="margin-right: 59px;">Lectures: {{
+                                                                        $assets_count }}</span>
+
                                                                 </button>
                                                             </h2>
                                                             <div id="collapseChapter{{ $user->id }}"
@@ -209,18 +218,15 @@
                                                                 <div class="accordion-body">
 
                                                                     <div class="accordion-body">
-                                                                        @php
-                                                                        $assetsdata =
-                                                                        DB::table('courses_assets')->where('chapter_id',
-                                                                        $user->id)->get();
-                                                                        @endphp
+
                                                                         @if($assetsdata->count() > 0)
                                                                         <table class="table table-bordered">
                                                                             <thead>
                                                                                 <tr>
                                                                                     {{-- <th>#</th> --}}
                                                                                     <th style="width: 85%;">Topic</th>
-                                                                                    <th style="width: 15%;">Assets</th>
+                                                                                    <th style="width: 15%;">Lectures
+                                                                                    </th>
                                                                                     {{-- <th>Actions</th> --}}
                                                                                 </tr>
                                                                             </thead>
@@ -228,28 +234,41 @@
                                                                                 @foreach($assetsdata as $key => $asset)
                                                                                 <tr>
                                                                                     {{-- <td>{{ $key + 1 }} .</td> --}}
-                                                                                    <td>&nbsp; {{ $asset->topic_name }}</td>
+                                                                                    <td>&nbsp; {{ $asset->topic_name }}
+                                                                                    </td>
 
 
                                                                                     <td>
 
                                                                                         @if ($asset->assets_video)
-                                                                                        <i class="ti ti-video"  style="background-color: #c1d3e2;padding: 4px;border-radius: 50px;"></i> &nbsp;&nbsp;
+                                                                                        <i class="ti ti-video"
+                                                                                            style="color:aliceblue;background-color: #1862a9;padding: 4px;border-radius: 50px;"></i>&nbsp;
                                                                                         <a href="#"
-                                                                                            onclick="playVideo('{{ asset('storage/' . $asset->assets_video) }}')"
+                                                                                            onclick="playVideo('{{ asset('storage/' . $asset->assets_video) }}', '{{ $asset->topic_name }}')"
                                                                                             class="text-primary">
-                                                                                          <u>Preview</u>
+                                                                                            <u>Preview</u>
                                                                                         </a>
 
                                                                                         @elseif ($asset->video_url ??
                                                                                         $asset->youtube_links)
-                                                                                        <i class="ti ti-link"  style="background-color: #c1d3e2;padding: 4px;border-radius: 50px;"></i>&nbsp;&nbsp;
+                                                                                        <i class="ti ti-link"
+                                                                                            style="color:aliceblue;background-color: #1862a9;padding: 4px;border-radius: 50px;"></i>&nbsp;&nbsp;
                                                                                         <a href="{{ $asset->video_url ?? $asset->youtube_links }}"
                                                                                             target="_blank">
-                                                                                           <u>View</u>
+                                                                                            <u>View</u>
                                                                                         </a>
                                                                                         @else
-                                                                                        <i class="ti ti-notes" style="background-color: #c1d3e2;padding: 4px;border-radius: 50px;"></i>&nbsp;&nbsp; <u>Blog</u>
+
+                                                                                        <i class="ti ti-notes"
+                                                                                            style="color:aliceblue;background-color: #1862a9;padding: 4px;border-radius: 50px;"></i>&nbsp;&nbsp;
+                                                                                        <a href="#blogModal"
+                                                                                            data-bs-toggle="modal"
+                                                                                            data-bs-target="#blogModal"
+                                                                                            data-description="{{ strip_tags($asset->blog_description) }}"
+                                                                                            data-topic="{{ $asset->topic_name }}">
+                                                                                            <u>Blog</u>
+                                                                                        </a>
+
                                                                                         @endif
                                                                                     </td>
 
@@ -267,10 +286,6 @@
                                                         </div>
                                                     </div>
                                                 </td>
-
-
-
-
                                             </tr>
                                             @endforeach
                                             @else
@@ -290,8 +305,6 @@
 
 
 
-
-
                     </div>
                 </div>
             </div>
@@ -299,32 +312,54 @@
     </div>
 </div>
 
+<!--blog description Modal -->
+
+<div class="modal fade" id="blogModal" tabindex="-1" aria-labelledby="blogModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #ececec">
+                <h5 class="modal-title" id="blogModalLabel"></h5> <!-- Header will be dynamically updated -->
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="modalBlogDescription" style="font-size: 16px"></p>
+                <!-- Blog description will be dynamically updated -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Video Modal -->
 <div id="videoModal" class="modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Course Preview</h5>
+                <h5 class="modal-title">Assets Videos</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-
             <div class="modal-body">
                 <video id="videoPlayer" width="100%" controls>
                     <source src="" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                <h4>{{ $course->course_full_name }}</h4>
+                <h4 id="videoTopic" class="mt-0"></h4> <!-- Display topic name dynamically here -->
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    function playVideo(videoPath) {
+    function playVideo(videoPath, topicName) {
         // Set the video source
         const videoPlayer = document.getElementById('videoPlayer');
         videoPlayer.src = videoPath;
+
+        // Set the topic name below the video
+        const videoTopic = document.getElementById('videoTopic');
+        videoTopic.textContent = topicName;
 
         // Show the modal
         const videoModal = new bootstrap.Modal(document.getElementById('videoModal'));
@@ -339,7 +374,22 @@
     });
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const blogModal = document.getElementById('blogModal');
+        blogModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget; // Button that triggered the modal
+            const description = button.getAttribute('data-description'); // Extract blog description
+            const topic = button.getAttribute('data-topic'); // Extract topic name
 
+            // Update modal content
+            const modalDescription = document.getElementById('modalBlogDescription');
+            const modalTitle = document.getElementById('blogModalLabel');
+            modalDescription.textContent = description; // Set blog description
+            modalTitle.textContent = topic; // Set topic name as modal header
+        });
+    });
+</script>
 
 
 
