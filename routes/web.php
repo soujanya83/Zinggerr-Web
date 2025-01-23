@@ -160,6 +160,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('student-list', [StudentController::class, 'studentlist'])->name('studentlist');
 
     // Route::put('/teacher/{id}/change-status', [TeacherController::class, 'changeStatus'])->name('change_teacher_status');
+    Route::get('courses/assets-view/{slug}', [StudentController::class, 'courses_views'])->name('courses.viwes');
 
 
     // Route::delete('/teacher-delete/{id}', [TeacherController::class, 'teacher_delete'])->name('teacher_delete')->middleware('can:role');

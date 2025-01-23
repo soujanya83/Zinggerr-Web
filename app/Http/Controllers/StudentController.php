@@ -10,12 +10,24 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Course;
+use App\Models\CoursesChepters;
+use App\Models\CoursesAssets;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 
 class StudentController extends Controller
 {
+    public function courses_views($slug){
+
+        $course=Course::where('slug',$slug)->first();
+        $chapters=CoursesChepters::where('courses_id',$course->id)->get();
+
+
+
+        return view('students.courses_views',compact('course','chapters'));
+
+    }
 
     public function studentdashboard(){
 

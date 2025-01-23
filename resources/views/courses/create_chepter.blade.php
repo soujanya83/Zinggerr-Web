@@ -188,8 +188,8 @@
                                                                             <thead>
                                                                                 <tr>
                                                                                     {{-- <th>#</th> --}}
-                                                                                    <th>Assets Topic</th>
-                                                                                    <th>Videos</th>
+                                                                                    <th>Topic Name</th>
+                                                                                    <th>Assets</th>
                                                                                     {{-- <th>Actions</th> --}}
                                                                                 </tr>
                                                                             </thead>
@@ -203,7 +203,7 @@
                                                                                     <td>
 
                                                                                         @if ($asset->assets_video)
-
+                                                                                        <i class="ti ti-video"></i>
                                                                                         <a href="#"
                                                                                             onclick="playVideo('{{ asset('storage/' . $asset->assets_video) }}')"
                                                                                             class="text-primary">
@@ -213,8 +213,9 @@
                                                                                         </a>
 
                                                                                         @elseif ($asset->video_url ??
-                                                                                        $asset->youtube_links)
-                                                                                        <a href="{{ $asset->video_url ?? $asset->youtube_links }}"
+                                                                                     $asset->youtube_links)
+                                                                                    <i class="ti ti-link"></i>
+                                                                                     <a href="{{ $asset->video_url ?? $asset->youtube_links }}"
                                                                                             target="_blank">
                                                                                             {{ $asset->video_url ??
                                                                                             $asset->youtube_links }}

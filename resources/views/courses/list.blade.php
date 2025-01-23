@@ -54,10 +54,10 @@
                                         style="margin-top: -42px; margin-left: 47px;width: 216px;">
                                         <option value="">All Categories</option>
                                         @foreach($categories as $category)
-                                            <option value="{{ $category->name }}"
-                                                {{ request('category') == $category->name ? 'selected' : '' }}>
-                                                {{ $category->display_name }}
-                                            </option>
+                                        <option value="{{ $category->name }}" {{ request('category')==$category->name ?
+                                            'selected' : '' }}>
+                                            {{ $category->display_name }}
+                                        </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -195,6 +195,7 @@
 
 
                                         </div>
+                                        <a href="{{ route('courses.viwes', $course->slug) }}" class="text-decoration-none">
                                         <ul class="list-group list-group-flush">
 
                                             <li class="list-group-item px-0 py-2">
@@ -208,7 +209,7 @@
                                                 </div>
                                                 <div class="d-flex align-items-center mt-2">
                                                     <div class="flex-grow-1 me-2">
-                                                        <p class="mb-0">{{ $course->course_category }}</p>
+                                                        <p class="mb-0" style="color:black">{{ ucfirst($course->course_category) }}</p>
                                                     </div>
 
 
@@ -257,6 +258,10 @@
                                                 </div>
                                             </li>
                                         </ul>
+                                        </a>
+
+
+
                                         <div class="modal fade" id="assignUsersModal" tabindex="-1"
                                             aria-labelledby="assignUsersModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
