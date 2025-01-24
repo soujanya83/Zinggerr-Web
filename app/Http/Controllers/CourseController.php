@@ -20,8 +20,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+// use Illuminate\Support\Facades\session;
 use Illuminate\Support\Facades\session;
-
 class CourseController extends Controller
 {
 
