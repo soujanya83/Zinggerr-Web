@@ -37,11 +37,11 @@
                             <div class="col-sm-6 col-lg-12 col-xxl-12">
                                 <h5>Course Full Details</h5>
                                 <div class="card border">
-                                    <button class="btn btn-sm btn-outline-success align-items-start"
+                                    {{-- <button class="btn btn-sm btn-outline-success align-items-start"
                                         style="margin-left: 92%;"
                                         onclick="window.location.href='{{ route('add_assets', ['id' => $course->id]) }}';">
                                         Add Assets
-                                    </button>
+                                    </button> --}}
 
 
                                     <div class="card-body d-flex align-items-start p-0">
