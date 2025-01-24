@@ -187,6 +187,7 @@
 
 
                                             </div>
+                                            <a href="{{ route('courses.viwes', $course->slug) }}" class="text-decoration-none">
 
 
                                             <img src="{{ asset('storage/' . $course->course_image) }}"
@@ -195,7 +196,6 @@
 
 
                                         </div>
-                                        <a href="{{ route('courses.viwes', $course->slug) }}" class="text-decoration-none">
                                         <ul class="list-group list-group-flush">
 
                                             <li class="list-group-item px-0 py-2">
