@@ -903,7 +903,7 @@ class CourseController extends Controller
         if ($userType == 'Superadmin' || $userType == 'Admin' || $userType == 'Staff') {
             $query = Course::query();
         } else {
-            $query = CoursesAssign::where('users_id', $userId)->where('courses.course_status', 1)->join('courses', 'courses.id', '=', 'courses_assign.courses_id');
+            $query = CoursesAssign::where('users_id', $userId)->where('courses.course_status', 1)->where('courses_assign.status',1)->join('courses', 'courses.id', '=', 'courses_assign.courses_id');
         }
 
         if ($request->has('name')) {
