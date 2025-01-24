@@ -20,7 +20,6 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-// use Illuminate\Support\Facades\session;
 use Illuminate\Support\Facades\session;
 class CourseController extends Controller
 {
@@ -355,8 +354,8 @@ class CourseController extends Controller
             $chapter_id = $chapter->id;
             $course_id = $request->course_id;
 
-            session::put('courses_id', $course_id);
-            session::put('chapter_id', $chapter_id);
+            // session::put('courses_id', $course_id);
+            // session::put('chapter_id', $chapter_id);
 
             return redirect()->back()->with('success', 'Chapter created successfully!');
             // ->route('blogs.assets.form')
