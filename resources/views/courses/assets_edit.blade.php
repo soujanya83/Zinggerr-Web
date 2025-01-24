@@ -214,7 +214,7 @@
                                         <div class="form-floating mb-3">
 
                                             <div class="d-flex align-items-center rounded">
-                                                <label for="fileUpload" class="file-upload-label" style="width: 100%;">
+                                                <label for="fileUpload" class="file-upload-label" style="width: 100%; height:0%">
                                                     <div class="upload-icon mb-3 text-center">
                                                         <i class="fas fa-cloud-upload-alt fa-3x text-primary"></i>
                                                     </div>
