@@ -84,7 +84,7 @@
                             @foreach($courses as $course)
                             <div class="col-sm-6 col-lg-4 col-xxl-3">
                                 <div class="card border">
-                                    <div class="card-body p-2">
+                                    <div class="card-body p-2" style="    height: 342px;">
                                         <div class="position-relative">
 
                                             <div class="position-absolute top-0 p-2">
@@ -122,14 +122,15 @@
                                             </div>
 
                                             <div class="position-absolute end-0 top-0 p-2"
-                                                style="background-color: white; border-radius: 50px;margin: 6px;">
+                                                style="background-color: rgb(255, 255, 255); border-radius: 50px;margin: 6px;">
 
                                                 <div class="flex-shrink-0">
                                                     <div class="dropdown">
                                                         <!-- Dropdown toggle button -->
                                                         <a class="dropdown-toggle text-primary opacity-50 arrow-none"
                                                             href="#" data-bs-toggle="dropdown" aria-haspopup="true"
-                                                            aria-expanded="false" style="color: black !important">
+                                                            aria-expanded="false"
+                                                            style="color: rgb(0, 0, 0) !important">
                                                             <i class="ti ti-dots f-20"></i>
                                                         </a>
 
@@ -187,12 +188,13 @@
 
 
                                             </div>
-                                            <a href="{{ route('courses.viwes', $course->slug) }}" class="text-decoration-none">
+                                            <a href="{{ route('courses.viwes', $course->slug) }}"
+                                                class="text-decoration-none">
 
 
-                                            <img src="{{ asset('storage/' . $course->course_image) }}"
-                                                alt="Course Image" class="img-fluid w-100"
-                                                style="width: 210px;height:200px">
+                                                <img src="{{ asset('storage/' . $course->course_image) }}"
+                                                    alt="Course Image" class="img-fluid w-100"
+                                                    style="width: 210px;height:200px">
 
 
                                         </div>
@@ -201,15 +203,19 @@
                                             <li class="list-group-item px-0 py-2">
                                                 <div class="d-flex align-items-center">
 
-                                                    <div class="">
-                                                        <h3 class="text-muted mb-0" style="color:black !important">{{
-                                                            $course->course_full_name }}</h3>
+                                                    <div class="" style="height: 52px;">
+                                                        <h3 class="text-muted mb-0" style="color:black !important">
+                                                            {{ \Illuminate\Support\Str::limit($course->course_full_name,
+                                                            60, '...') }}
+
+                                                        </h3>
                                                     </div>
 
                                                 </div>
                                                 <div class="d-flex align-items-center mt-2">
                                                     <div class="flex-grow-1 me-2">
-                                                        <p class="mb-0" style="color:black">{{ ucfirst($course->course_category) }}</p>
+                                                        <p class="mb-0" style="color:black">{{
+                                                            ucfirst($course->course_category) }}</p>
                                                     </div>
 
 
@@ -224,7 +230,8 @@
                                                     </div>
 
                                                     <!-- Star Icons -->
-                                                    <div class="flex-grow-1">
+                                                    <div class="flex-grow-1"
+                                                        style="margin-left: 25px;margin-top: -21px;">
                                                         @php
                                                         $rating = round($course->rating * 2) / 2;
 
@@ -249,7 +256,7 @@
                                                             @for ($i = 0; $i < $emptyStars; $i++) <i
                                                                 class="far fa-star text-warning"></i>
                                                                 @endfor
-                                                                <small class="text-muted">({{
+                                                                <small class="text-muted">&nbsp; ({{
                                                                     number_format($course->total_users) }})</small>
                                                     </div>
                                                     <a href="{{ route('course_details', $course->id) }}"
