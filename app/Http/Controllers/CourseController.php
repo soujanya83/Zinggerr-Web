@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\session;
+
 class CourseController extends Controller
 {
 
@@ -251,21 +252,22 @@ class CourseController extends Controller
 
 
 
-    public function assetsedit(Request $request){
+    public function assetsedit(Request $request)
+    {
 
-        $id=$request->assets_id;
-        $data=CoursesAssets::find($id);
-        return view('courses.assets_edit',compact('data'));
+        $id = $request->assets_id;
+        $data = CoursesAssets::find($id);
+        return view('courses.assets_edit', compact('data'));
     }
 
     public function blog_assets(Request $request)
     {
         $chapterId = $request->chapter_id;
         $courseId = $request->course_id;
-    $assetsdata=CoursesAssets::where('chapter_id',$chapterId)->get();
+        $assetsdata = CoursesAssets::where('chapter_id', $chapterId)->get();
 
 
-        return view('courses.create_blogs_assets', compact('chapterId', 'courseId','assetsdata'));
+        return view('courses.create_blogs_assets', compact('chapterId', 'courseId', 'assetsdata'));
     }
 
     public function assetsdelete($id)
@@ -348,19 +350,14 @@ class CourseController extends Controller
                     'no_of_chepter' => null,
                     'status' => $request->status,
                     'mode' => null,
-                ]
-
-            );
-            $chapter_id = $chapter->id;
-            $course_id = $request->course_id;
+                ]);
+            // $chapter_id = $chapter->id;
+            // $course_id = $request->course_id;
 
             // session::put('courses_id', $course_id);
             // session::put('chapter_id', $chapter_id);
 
             return redirect()->back()->with('success', 'Chapter created successfully!');
-            // ->route('blogs.assets.form')
-
-
         } catch (\Exception $e) {
 
             return redirect()->back()->with('error', 'Something want wrong');
