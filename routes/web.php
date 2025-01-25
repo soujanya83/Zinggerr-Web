@@ -93,6 +93,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
         ->name('course_delete')
         ->middleware('can:role');
         Route::post('courses/chapter-status', [CourseController::class, 'chapterStatus'])->name('chapterStatus');
+        Route::post('courses/assets-status', [CourseController::class, 'assetsStatus'])->name('assetsStatus');
         Route::post('courses/chapter-update', [CourseController::class, 'chapterupdate'])->name('chapter.update');
 
 

@@ -241,7 +241,7 @@
                                         style="margin-left: 87%;">Submit</button>
                                 </form>
                             </div>
-<hr>
+                            <hr>
                             <h4>Assets List</h4>
                             <div class="accordion-body">
 
@@ -251,6 +251,7 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Assets Topic</th>
+                                            <th>Status</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -260,18 +261,32 @@
                                             <td>{{ $key + 1 }} .</td>
                                             <td>{{ $asset->topic_name }}</td>
                                             <td>
+                                                <form action="{{ route('assetsStatus') }}" method="post"
+                                                    style="display: inline;">
+                                                    @csrf
+                                                    <input type="hidden" name="asset_id" value="{{ $asset->id }}">
+                                                    <input type="hidden" name="status"
+                                                        value="{{ $asset->status == 1 ? 0 : 1 }}">
 
-                                                <form action="{{ route('edit_assets')}}" method="post" style="display: inline;">
+                                                    <button type="submit"
+                                                        class="btn {{ $asset->status == 1 ? 'btn-success' : 'btn-danger' }}" style="padding:4px">
+                                                        {{ $asset->status == 1 ? 'Active' : 'Inactive' }}
+                                                    </button>
+                                                </form>
+                                            </td>
+                                            <td>
+
+                                                <form action="{{ route('edit_assets')}}" method="post"
+                                                    style="display: inline;">
                                                     @csrf
                                                     <input type="hidden" name="assets_id" value="{{ $asset->id }}">
                                                     <button type="submit" class="btn btn-sm btn-primary">
                                                         <i class="ti ti-edit" style="color: #f0f8ff"></i>
                                                     </button>
                                                 </form>
-                                                <a
-                                                href="{{ route('assets_delete', $asset->id) }}"
-                                                    class="btn btn-sm btn-danger"
-                                                    onclick="return confirmDelete(this)"> <i style="color: #f0f8ff" class="ti ti-trash"></i></a>
+                                                <a href="{{ route('assets_delete', $asset->id) }}"
+                                                    class="btn btn-sm btn-danger" onclick="return confirmDelete(this)">
+                                                    <i style="color: #f0f8ff" class="ti ti-trash"></i></a>
 
                                             </td>
                                         </tr>

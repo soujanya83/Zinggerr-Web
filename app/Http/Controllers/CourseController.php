@@ -317,6 +317,16 @@ class CourseController extends Controller
 
         return redirect()->back()->with('success', 'Chapter status updated successfully!');
     }
+
+    public function assetsStatus(Request $request)
+    {
+        $user = CoursesAssets::findOrFail($request->asset_id);
+        $user->status = $request->status;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Assets status updated successfully!');
+    }
+
     public function add_assets(Request $request, $slug)
     {
         $courseId = Course::where('slug', $slug)->first();
