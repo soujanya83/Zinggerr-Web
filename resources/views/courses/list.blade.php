@@ -15,7 +15,7 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Courses View</h5>
+                            <h5 class="m-b-10">Courses List</h5>
                         </div>
                     </div>
 

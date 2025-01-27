@@ -85,10 +85,10 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::post('/courses/assign', [CourseController::class, 'couserassign'])->name('course.assign');
     Route::post('courses-create', [CourseController::class, 'createCourse'])->name('courses.create');
     Route::match(['get', 'post'], 'courses', [CourseController::class, 'courselist'])->name('courses');
-    Route::get('courses/{id}', [CourseController::class, 'coursedetails'])->name('course_details');
-    Route::get('courses-edit/{slug}', [CourseController::class, 'courseedit'])->name('course_edit');
-    Route::post('courses-update/{id}', [CourseController::class, 'courseupdate'])->name('course_update');
-    Route::get('courses-add', [CourseController::class, 'courseadd'])->name('addCourse');
+    Route::get('course/{id}', [CourseController::class, 'coursedetails'])->name('course_details');
+    Route::get('course/:{slug}/edit', [CourseController::class, 'courseedit'])->name('course_edit');
+    Route::post('course-update/{id}', [CourseController::class, 'courseupdate'])->name('course_update');
+    Route::get('courses/create', [CourseController::class, 'courseadd'])->name('addCourse');
     Route::get('/courses-delete/{id}', [CourseController::class, 'coursedelete'])
         ->name('course_delete')
         ->middleware('can:role');

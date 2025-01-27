@@ -92,18 +92,7 @@
     }
 </style>
 
-
-
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-</script>
-
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
-</script>
 
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs4.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs4.min.js"></script>
@@ -115,7 +104,7 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Courses View</h5>
+                            <h5 class="m-b-10">Course Create</h5>
                         </div>
                     </div>
 
@@ -128,8 +117,8 @@
                     <div class="col-auto">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">Courses</a></li>
-                            <li class="breadcrumb-item" aria-current="page">Add</li>
+                            <li class="breadcrumb-item"><a href="#">Course</a></li>
+                            <li class="breadcrumb-item" aria-current="page">Create</li>
                         </ul>
                     </div>
                 </div>
@@ -280,36 +269,33 @@
                                             </div>
 
                                             <div class="col-md-12">
-                                                <label class="form-label" style="margin-bottom: -11px">Course Image
+                                                <label class="form-label" style="margin-bottom: 5px;">Course Image
                                                     Upload</label>
-
                                                 <div class="form-floating mb-3">
-
-                                                    <div class="d-flex align-items-center  p-3 rounded">
-
-                                                        <div class="d-flex align-items-center">
-
-                                                            <label for="fileUpload" class="file-upload-label"
-                                                                style="width:1263px;    margin-left: -16px;">
-                                                                <div class="upload-icon mb-3">
-                                                                    <i
-                                                                        class="fas fa-cloud-upload-alt fa-3x text-primary"></i>
-                                                                </div>
-                                                                <span class="text-muted"
-                                                                    style="    margin-top: -19px;">Click to
-                                                                    upload
-                                                                    file here</span>
-                                                                <span id="fileName" class="ms-2"></span>
-                                                                <input type="file" id="fileUpload" name="course_image"
-                                                                    class="file-upload-input"
-                                                                    onchange="showFileName(this)" required>
-                                                            </label>
-
-                                                        </div>
+                                                    <div class="d-flex align-items-center rounded w-100 col-md-12">
+                                                        <label for="fileUpload"
+                                                            class="file-upload-label w-100 text-center col-md-12">
+                                                            <div class="upload-icon mb-3">
+                                                                <i
+                                                                    class="fas fa-cloud-upload-alt fa-3x text-primary"></i>
+                                                            </div>
+                                                            <span class="text-muted" style="margin-top: -19px;">Click to
+                                                                upload file here</span>
+                                                            <span id="fileName" class="ms-2"></span>
+                                                            <input type="file" id="fileUpload" name="course_image"
+                                                                class="file-upload-input" onchange="showFileName(this)"
+                                                                required style="display: none;">
+                                                        </label>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="col-md-12 text-end">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+
+
                             </div>
                         </div>
 
@@ -317,74 +303,9 @@
                         <div class="tab-pane fade" id="profile-3" role="tabpanel" aria-labelledby="profile-tab-3">
                             <div class="">
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-floating mb-3">
-
-                                            <select name="course_layout" class="form-select">
-
-                                                <option value="Hidden sections are shown as not available">
-                                                    Hidden sections are shown as not available
-                                                </option>
-                                                <option value="Hidden sections are completely invisible">
-                                                    Hidden sections are completely invisible
-                                                </option>
-                                            </select>
-                                            <label style="align-content: center;" for="emailInput"
-                                                class="form-label">Course layout</label>
-                                        </div>
-
-                                    </div>
-
-
 
 
                                     <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <label for="status" style="color: #000">Course
-                                                Visibility:</label>
-                                            <div>
-
-                                                <div class="form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="course_status"
-                                                        id="statusshow" value="1" checked>
-                                                    <label class="form-check-label" for="statusshow"
-                                                        style="color: #000">Show</label>
-                                                </div>
-
-
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="course_status"
-                                                        id="statushide" value="0">
-                                                    <label class="form-check-label" for="statushide"
-                                                        style="color: #000">Hide</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <div class="mb-3">
-                                            <label for="status" style="color: #000">Enable
-                                                Download Course Content:</label>
-                                            <div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="downloa_status"
-                                                        id="statusyes" value="1" checked>
-                                                    <label class="form-check-label" for="statusyes"
-                                                        style="color: #000">Yes</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="downloa_status"
-                                                        id="statusno" value="0">
-                                                    <label class="form-check-label" for="statusno"
-                                                        style="color: #000">No</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-md-4">
                                         <div class="form-floating mb-3">
                                             <div class="dropdown">
                                                 <label style="align-content: center;" for="emailInput"
@@ -458,7 +379,77 @@
                                     </div>
 
 
-                                    <div class="col-md-4">
+                                    {{-- <div class="col-md-4"> --}}
+                                        <div class="form-floating mb-3" style="display: none">
+
+                                            <select name="course_layout" class="form-select">
+
+                                                <option value="Hidden sections are shown as not available" cheacked>
+                                                    Hidden sections are shown as not available
+                                                </option>
+                                                <option value="Hidden sections are completely invisible">
+                                                    Hidden sections are completely invisible
+                                                </option>
+                                            </select>
+                                            <label style="align-content: center;" for="emailInput"
+                                                class="form-label">Course layout</label>
+                                        </div>
+
+                                    {{-- </div> --}}
+
+
+
+
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <label for="status" style="color: #000">Course
+                                                Visibility:</label>
+                                            <div>
+
+                                                <div class="form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="course_status"
+                                                        id="statusshow" value="1" >
+                                                    <label class="form-check-label" for="statusshow"
+                                                        style="color: #000">Show</label>
+                                                </div>
+
+
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="course_status"
+                                                        id="statushide" value="0" checked>
+                                                    <label class="form-check-label" for="statushide"
+                                                        style="color: #000" >Hide</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <label for="status" style="color: #000">Enable
+                                                Download Course Content:</label>
+                                            <div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="downloa_status"
+                                                        id="statusyes" value="1" checked>
+                                                    <label class="form-check-label" for="statusyes"
+                                                        style="color: #000">Yes</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="downloa_status"
+                                                        id="statusno" value="0">
+                                                    <label class="form-check-label" for="statusno"
+                                                        style="color: #000">No</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+
+                                    <div class="col-md-3">
                                         <label style="align-content: center;" for="tags"
                                             class="form-label">Tags:</label>
                                         &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
@@ -486,9 +477,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12 text-end">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
+
                         </div>
                     </div>
                     </form>

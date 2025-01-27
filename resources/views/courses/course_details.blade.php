@@ -13,14 +13,14 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Courses View</h5>
+                            <h5 class="m-b-10">Course Details</h5>
                         </div>
                     </div>
 
                     <div class="col-auto">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item" aria-current="page">Courses Details</li>
+                            <li class="breadcrumb-item" aria-current="page">Course Details</li>
                         </ul>
                     </div>
                 </div>

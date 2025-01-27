@@ -88,24 +88,6 @@
 @include('partials.header')
 
 
-
-{{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> --}}
-
-<!-- include summernote css/js -->
-
-
-<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-</script>
-
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
-</script>
-
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs4.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs4.min.js"></script>
 
@@ -119,14 +101,14 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Courses View</h5>
+                            <h5 class="m-b-10">Course Edit</h5>
                         </div>
                     </div>
                     <div class="col-auto">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">Courses</a></li>
-                            <li class="breadcrumb-item" aria-current="page">Update</li>
+                            <li class="breadcrumb-item"><a href="#">Course</a></li>
+                            <li class="breadcrumb-item" aria-current="page">Edit</li>
                         </ul>
                     </div>
                 </div>
@@ -289,12 +271,12 @@
 
                                                     <div class="form-floating mb-3">
 
-                                                        <div class="d-flex align-items-center  rounded">
+                                                        <div class="d-flex align-items-center  rounded col-md-12">
 
-                                                            <div class="d-flex align-items-center">
+                                                            <div class="d-flex align-items-center col-md-12">
 
-                                                                <label for="fileUpload" class="file-upload-label"
-                                                                    style="width:1313px">
+                                                                <label for="fileUpload" class="file-upload-label col-md-12"
+                                                                   >
                                                                     <div class="upload-icon mb-3">
                                                                         <i
                                                                             class="fas fa-cloud-upload-alt fa-3x text-primary"></i>
@@ -319,7 +301,7 @@
                                                         <img src="{{ url('storage/'.$course->course_image) }}"
                                                             alt="Existing Image" width="150px" height="138px"
                                                             class="border rounded"
-                                                            style="margin-top: -16px">
+                                                            style="margin-top: -7px">
                                                         @else
                                                         <img src="{{ asset('path-to-default-image.jpg') }}"
                                                             alt="Default Image" width="100px" height="100px"
