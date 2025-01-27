@@ -276,7 +276,7 @@
                                                         <input type="hidden" name="status"
                                                             value="{{ $user->status == 1 ? 0 : 1 }}">
 
-                                                        <button type="submit"
+                                                        <button type="submit" style="padding:4px"
                                                             class="btn {{ $user->status == 1 ? 'btn-success' : 'btn-danger' }}">
                                                             {{ $user->status == 1 ? 'Active' : 'Inactive' }}
                                                         </button>
