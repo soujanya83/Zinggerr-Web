@@ -269,7 +269,8 @@
                                                         value="{{ $asset->status == 1 ? 0 : 1 }}">
 
                                                     <button type="submit"
-                                                        class="btn {{ $asset->status == 1 ? 'btn-success' : 'btn-danger' }}" style="padding:4px">
+                                                        class="btn {{ $asset->status == 1 ? 'btn-success' : 'btn-danger' }}"
+                                                        style="padding:4px">
                                                         {{ $asset->status == 1 ? 'Active' : 'Inactive' }}
                                                     </button>
                                                 </form>
@@ -296,17 +297,7 @@
                                 @else
                                 <p>No assets found for this chapter.</p>
                                 @endif
-
                             </div>
-
-
-
-
-
-
-
-
-
                         </div>
                     </div>
                 </div>

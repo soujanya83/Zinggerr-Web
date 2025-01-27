@@ -145,8 +145,8 @@
                                             <tr>
                                                 @php
                                                 $assetsdata =
-                                                DB::table('courses_assets')->where('chapter_id',
-                                                $user->id)->get();
+                                                DB::table('courses_assets')->where(['chapter_id'=>
+                                                $user->id,'status'=>1])->get();
                                                 $assets_count=$assetsdata->count();
                                                 @endphp
 
