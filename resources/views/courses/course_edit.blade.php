@@ -143,6 +143,9 @@
                 <div class="card">
                     <div class="card-header  pb-0">
                         <ul class="nav nav-tabs profile-tabs" id="myTab" role="tablist">
+                            @if (Request::is('course/*/format'))
+                            <!-- Do not render this tab if the URL matches -->
+                            @else
                             <li class="nav-item " role="presentation">
                                 <a class="nav-link active " id="profile-tab-1" data-bs-toggle="tab" href="#profile-1"
                                     role="tab" aria-selected="true">
@@ -150,10 +153,22 @@
                                     General
                                 </a>
                             </li>
+                            @endif
 
-                            <li class="nav-item" role="presentation">
+                            {{-- <li class="nav-item" role="presentation">
                                 <a class="nav-link" id="profile-tab-3" data-bs-toggle="tab" href="#profile-3" role="tab"
                                     aria-selected="false" tabindex="-1">
+                                    <i class="material-icons-two-tone me-2">book</i>
+                                    Course format
+                                </a>
+                            </li> --}}
+
+
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link {{ Request::is('course/*/format') ? 'active' : '' }}"
+                                    id="profile-tab-3" data-bs-toggle="tab" href="#profile-3" role="tab"
+                                    aria-selected="{{ Request::is('course/*/format') ? 'true' : 'false' }}"
+                                    tabindex="-1">
                                     <i class="material-icons-two-tone me-2">book</i>
                                     Course format
                                 </a>
@@ -182,8 +197,8 @@
                     <div class="card-body">
                         <div class="tab-content" id="myTabContent">
 
-                            <div class="tab-pane fade show active" id="profile-1" role="tabpanel"
-                                aria-labelledby="profile-tab-1">
+                            <div class="tab-pane fade show active {{ Request::is('course/*/format') ? 'd-none' : '' }}"
+                                id="profile-1" role="tabpanel" aria-labelledby="profile-tab-1">
                                 <div class="row">
                                     <div class="card-body">
                                         {{-- <form id="createCourseForm" method="post" enctype="multipart/form-data"
@@ -210,7 +225,8 @@
                                                         <input type="text" name="course_short_name" class="form-control"
                                                             placeholder="Enter Course Short Name"
                                                             value="{{ old('course_short_name'). $course->course_short_name }}"
-                                                            id="floatingShortname"  oninput="this.value = this.value.replace(/\s/g, '')">
+                                                            id="floatingShortname"
+                                                            oninput="this.value = this.value.replace(/\s/g, '')">
                                                         <label style="align-content: center;" class="form-label"
                                                             for="floatingShortname">Course Short
                                                             Name</label>
@@ -275,8 +291,8 @@
 
                                                             <div class="d-flex align-items-center col-md-12">
 
-                                                                <label for="fileUpload" class="file-upload-label col-md-12"
-                                                                   >
+                                                                <label for="fileUpload"
+                                                                    class="file-upload-label col-md-12">
                                                                     <div class="upload-icon mb-3">
                                                                         <i
                                                                             class="fas fa-cloud-upload-alt fa-3x text-primary"></i>
@@ -300,8 +316,7 @@
                                                         @if(isset($course->course_image))
                                                         <img src="{{ url('storage/'.$course->course_image) }}"
                                                             alt="Existing Image" width="150px" height="138px"
-                                                            class="border rounded"
-                                                            style="margin-top: -7px">
+                                                            class="border rounded" style="margin-top: -7px">
                                                         @else
                                                         <img src="{{ asset('path-to-default-image.jpg') }}"
                                                             alt="Default Image" width="100px" height="100px"
@@ -318,11 +333,11 @@
                             </div>
 
 
-                            <div class="tab-pane fade mt-3" id="profile-3" role="tabpanel"
-                                aria-labelledby="profile-tab-3">
+                            <div class="tab-pane fade mt-3 {{ Request::is('course/*/format') ? 'show active' : '' }}"
+                                id="profile-3" role="tabpanel" aria-labelledby="profile-tab-3">
                                 <div class="">
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-4" style="display:none">
                                             <div class="form-floating mb-3">
 
                                                 <select name="course_layout" class="form-select">
@@ -343,60 +358,8 @@
 
                                         </div>
 
-                                        <div class="col-md-3">
-                                            <div class="mb-3">
-                                                <label for="status" style="color: #000">Course
-                                                    Visibility:</label>
-                                                <div>
-
-                                                    <div class="form-check-inline">
-                                                        <input class="form-check-input" type="radio"
-                                                            name="course_status" id="statusshow" value="1" {{
-                                                            old('course_status', $course->course_status) == 1 ?
-                                                        'checked' : '' }}>
-                                                        <label class="form-check-label" for="statusshow"
-                                                            style="color: #000">Show</label>
-                                                    </div>
-
-
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio"
-                                                            name="course_status" id="statushide" value="0" {{
-                                                            old('course_status', $course->course_status) == 0 ?
-                                                        'checked' : '' }}>
-                                                        <label class="form-check-label" for="statushide"
-                                                            style="color: #000">Hide</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
 
                                         <div class="col-md-3">
-                                            <div class="mb-3">
-                                                <label for="status" style="color: #000">Enable
-                                                    Download Course Content:</label>
-                                                <div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio"
-                                                            name="downloa_status" id="statusyes" value="1" {{
-                                                            old('course_status', $course->downloa_status) == 1 ?
-                                                        'checked' : '' }}>
-                                                        <label class="form-check-label" for="statusyes"
-                                                            style="color: #000">Yes</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio"
-                                                            name="downloa_status" id="statusno" value="0" {{
-                                                            old('course_status', $course->downloa_status) == 0 ?
-                                                        'checked' : '' }}>
-                                                        <label class="form-check-label" for="statusno"
-                                                            style="color: #000">No</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4">
                                             <div class="form-floating mb-3">
                                                 <div class="dropdown">
                                                     <label style="align-content: center;" for="emailInput"
@@ -455,7 +418,7 @@
                                                                 </div>
                                                             </label>
                                                         </li>
-                                                        <li>
+                                                        {{-- <li>
                                                             <label style="align-content: center;"
                                                                 class="dropdown-item d-flex align-items-start">
                                                                 <input type="radio" name="course_format" value="Social"
@@ -470,49 +433,165 @@
                                                                         using the Social activities block.</span>
                                                                 </div>
                                                             </label>
-                                                        </li>
+                                                        </li> --}}
 
 
                                                     </ul>
-                                                    <a href="{{ route('add_assets', $course->slug) }}" id="createChapterButton" class="btn btn-success mt-3" style="display: none;width: 158px; margin-left: 75px;">
-                                                        Manage Sections
+                                                    <a href="{{ route('add_assets', $course->slug) }}"
+                                                        id="createChapterButton" class="btn btn-success mt-3"
+                                                        style="display: none;width: 158px; margin-left: 63px;">
+                                                        Manage Assets
                                                     </a>
 
+                                                    <a href="{{ route('create_section', $course->slug) }}"
+                                                        id="createsectionButton" class="btn btn-success mt-3"
+                                                        style="display: none;width: 158px; margin-left: 63px;">
+                                                        Create Sections
+                                                    </a>
+                                                    <a href="{{ route('manage_activity', $course->slug) }}"
+                                                        id="createactivityButton" class="btn btn-success mt-3"
+                                                        style="display: none;width: 158px; margin-left: 63px;">
+                                                        Manage Activity
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label for="status" style="color: #000">Course
+                                                    Visibility:</label>
+                                                <div>
+
+                                                    <div class="form-check-inline">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="course_status" id="statusshow" value="1" {{
+                                                            old('course_status', $course->course_status) == 1 ?
+                                                        'checked' : '' }}>
+                                                        <label class="form-check-label" for="statusshow"
+                                                            style="color: #000">Show</label>
+                                                    </div>
+
+
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="course_status" id="statushide" value="0" {{
+                                                            old('course_status', $course->course_status) == 0 ?
+                                                        'checked' : '' }}>
+                                                        <label class="form-check-label" for="statushide"
+                                                            style="color: #000">Hide</label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                            <!-- Create Chapter Button -->
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label for="status" style="color: #000">Enable
+                                                    Download Course Content:</label>
+                                                <div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="downloa_status" id="statusyes" value="1" {{
+                                                            old('course_status', $course->downloa_status) == 1 ?
+                                                        'checked' : '' }}>
+                                                        <label class="form-check-label" for="statusyes"
+                                                            style="color: #000">Yes</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="downloa_status" id="statusno" value="0" {{
+                                                            old('course_status', $course->downloa_status) == 0 ?
+                                                        'checked' : '' }}>
+                                                        <label class="form-check-label" for="statusno"
+                                                            style="color: #000">No</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
 
+
+                                        <!-- Create Chapter Button -->
 
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const radioButtons = document.querySelectorAll('input[name="course_format"]');
-    const createChapterButton = document.getElementById('createChapterButton');
+                            document.addEventListener('DOMContentLoaded', function () {
+        const radioButtons = document.querySelectorAll('input[name="course_format"]');
+        const createChapterButton = document.getElementById('createChapterButton');
 
-    radioButtons.forEach(radio => {
-        radio.addEventListener('change', function () {
-            if (this.value === 'Custom sections') {
-                createChapterButton.style.display = 'block'; // Show the button
-            } else {
-                createChapterButton.style.display = 'none'; // Hide the button
-            }
+        radioButtons.forEach(radio => {
+            radio.addEventListener('change', function () {
+                if (this.value === 'Custom sections') {
+                    createChapterButton.style.display = 'block'; // Show the button
+                } else {
+                    createChapterButton.style.display = 'none'; // Hide the button
+                }
+            });
         });
+
+        // Initialize the button state based on the current selection
+        const selectedRadio = document.querySelector('input[name="course_format"]:checked');
+        if (selectedRadio && selectedRadio.value === 'Custom sections') {
+            createChapterButton.style.display = 'block';
+        }
     });
 
-    // Initialize the button state based on the current selection
-    const selectedRadio = document.querySelector('input[name="course_format"]:checked');
-    if (selectedRadio && selectedRadio.value === 'Custom sections') {
-        createChapterButton.style.display = 'block';
-    }
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+const radioButtons = document.querySelectorAll('input[name="course_format"]');
+const createsectionButton = document.getElementById('createsectionButton');
+
+radioButtons.forEach(radio => {
+radio.addEventListener('change', function () {
+if (this.value === 'Weekly sections') {
+    createsectionButton.style.display = 'block'; // Show the button
+} else {
+    createsectionButton.style.display = 'none'; // Hide the button
+}
+});
+});
+
+// Initialize the button state based on the current selection
+const selectedRadio = document.querySelector('input[name="course_format"]:checked');
+if (selectedRadio && selectedRadio.value === 'Weekly sections') {
+    createsectionButton.style.display = 'block';
+}
+});
+
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+const radioButtons = document.querySelectorAll('input[name="course_format"]');
+const createactivityButton = document.getElementById('createactivityButton');
+
+radioButtons.forEach(radio => {
+radio.addEventListener('change', function () {
+if (this.value === 'Single activity') {
+    createactivityButton.style.display = 'block'; // Show the button
+} else {
+    createactivityButton.style.display = 'none'; // Hide the button
+}
+});
+});
+
+// Initialize the button state based on the current selection
+const selectedRadio = document.querySelector('input[name="course_format"]:checked');
+if (selectedRadio && selectedRadio.value === 'Single activity') {
+    createactivityButton.style.display = 'block';
+}
 });
 
 </script>
 
 
-                                        <div class="col-md-4">
+
+
+
+                                        <div class="col-md-3">
                                             <label style="align-content: center;" for="tags"
                                                 class="form-label">Tags:</label> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
                                             <div class="form-floating mb-3">
@@ -545,11 +624,11 @@ document.addEventListener('DOMContentLoaded', function () {
                                                         style="color: black;">Intermediate</label>
                                                 </div>
                                             </div>
-                                            <div class="col-md-12 text-end" style="margin-left: 100%;">
-                                                <button type="submit" class="btn btn-primary">Update Course</button>
-                                            </div>
-                                        </div>
 
+                                        </div>
+                                        <div class="col-md-12 mt-5" style="margin-left: 85%;">
+                                            <button type="submit" class="btn btn-primary">Update Course</button>
+                                        </div>
                                         </form>
 
                                     </div>

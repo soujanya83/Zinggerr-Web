@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('pageTitle', 'Courses')
+@section('pageTitle', 'Courses View')
 @section('content')
 @include('partials.sidebar')
 @include('partials.headerdashboard')
@@ -91,7 +91,7 @@
                     <div class="col-auto">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item" aria-current="page">Courses Chapters</li>
+                            <li class="breadcrumb-item" aria-current="page">Courses {{ $pageName }}</li>
                         </ul>
                     </div>
                 </div>
@@ -100,6 +100,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
+                    @if($chapters !== null)
                     <div class="card-header">
 
 
@@ -306,6 +307,70 @@
 
 
                     </div>
+                    @else
+                    <div class="card-header">
+
+                        <h3>Course: {{ $course->course_full_name }}</h3>
+                        <div class="container">
+
+                            @if($assetsData->assets_type == 'blog')
+                            <strong style="font-size:20px">{{ $assetsData->topic_name }}</strong> : <span
+                                style="font-size:20px">{{ strip_tags($assetsData->blog_description) }}</span>
+                            <div class="text-end"><a href="{{ route('courses') }}" class="btn btn-success">Back</a>
+                            </div>
+
+                            @elseif($assetsData->assets_type == 'url')
+
+                            <script>
+                                // Automatically redirect to the URL in a new tab
+                                window.open("{{ $assetsData->video_url }}", "_blank");
+                            </script>
+                            <p>Redirecting you to the URL...</p>
+                            <div class="text-end">
+                                <a href="{{ route('courses') }}" class="btn btn-success">Back</a>
+                            </div>
+
+
+                            @elseif($assetsData->assets_type == 'videos')
+
+                            <video controls width="100%" height="600">
+                                <source src="{{ asset('storage/' . $assetsData->assets_video) }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+
+                            <div class="text-end">
+                                <a href="{{ route('courses') }}" class="btn btn-success">Back</a>
+                            </div>
+                            @else
+
+                            @php
+                            // Use $assetsData->youtube_links for the YouTube URL
+                            $youtubeUrl = $assetsData->youtube_links;
+                            preg_match('/(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/',
+                            $youtubeUrl, $matches);
+                            $videoId = $matches[1] ?? null;
+                            @endphp
+
+                            @if($videoId)
+                          
+                            <iframe width="100%" height="600" src="https://www.youtube.com/embed/{{ $videoId }}"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen>
+                            </iframe>
+                            <h3>{{ $assetsData->topic_name }}</h3>
+                            @else
+                            <p>Invalid YouTube URL or unsupported video type.</p>
+                            @endif
+
+                            <div class="text-end">
+                                <a href="{{ route('courses') }}" class="btn btn-success">Back</a>
+                            </div>
+
+                            @endif
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>

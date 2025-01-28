@@ -18,16 +18,27 @@ use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
-    public function courses_views($slug){
+    public function courses_views($slug)
+    {
+        $course = Course::where('slug', $slug)->firstOrFail();
+        $existsData = CoursesAssets::where('course_id', $course->id)
+            ->where('chapter_id', '!=', 11)
+            ->exists();
 
-        $course=Course::where('slug',$slug)->first();
-        $chapters=CoursesChepters::where('courses_id',$course->id)->get();
-
-
-
-        return view('students.courses_views',compact('course','chapters'));
-
+        if ($existsData) {
+            $chapters = CoursesChepters::where('courses_id', $course->id)->get();
+            $assetsData = null; // Set to null for clarity
+            $pageName = 'Chapters';
+        } else {
+            $assetsData = CoursesAssets::where('course_id', $course->id)
+                ->where('chapter_id', '=', 11)
+                ->first();
+            $chapters = null; // Set to null for clarity
+            $pageName = 'Assets';
+        }
+        return view('students.courses_views', compact('course', 'chapters', 'assetsData', 'pageName'));
     }
+
 
     public function studentdashboard(){
 

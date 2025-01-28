@@ -104,7 +104,7 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Course Create</h5>
+                            <h5 class="m-b-10">Create Course</h5>
                         </div>
                     </div>
 
@@ -358,7 +358,7 @@
                                                             </div>
                                                         </label>
                                                     </li>
-                                                    <li>
+                                                    {{-- <li>
                                                         <label style="align-content: center;"
                                                             class="dropdown-item d-flex align-items-start">
                                                             <input type="radio" name="course_format" value="Social"
@@ -371,7 +371,7 @@
                                                                     using the Social activities block.</span>
                                                             </div>
                                                         </label>
-                                                    </li>
+                                                    </li> --}}
                                                 </ul>
 
                                             </div>
@@ -457,7 +457,7 @@
 
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="checkbox" value="Basic" id="basic"
-                                                    name="tags[]">
+                                                    name="tags[]" checked>
                                                 <label class="form-check-label" for="basic"
                                                     style="color: black">Basic</label>
                                             </div>

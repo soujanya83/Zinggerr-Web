@@ -6,27 +6,16 @@
 
 @extends('layouts.app')
 
-@section('pageTitle', 'Create Chapter')
+@section('pageTitle', 'Create Sections')
 
 @section('content')
 @include('partials.sidebar')
 @include('partials.headerdashboard')
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/resumable.js/1.0.0/resumable.min.js"></script> --}}
-<style>
-    #uploadProgress {
-        width: 100%;
-        height: 20px;
-        background-color: #e0e0e0;
-        margin: 10px 0;
-        position: relative;
-    }
 
-    #uploadProgress div {
-        width: 0%;
-        height: 100%;
-        background-color: #4caf50;
-    }
-</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
+
 
 <div class="pc-container">
     <div class="pc-content">
@@ -35,14 +24,14 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Create Chapter</h5>
+                            <h5 class="m-b-10">Create Section</h5>
                         </div>
                     </div>
                     <div class="col-auto">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item"><a href="#">Course</a></li>
-                            <li class="breadcrumb-item" aria-current="page">Create Chapter</li>
+                            <li class="breadcrumb-item" aria-current="page">Create Section</li>
                         </ul>
                     </div>
                 </div>
@@ -82,29 +71,32 @@
 
                 <div class="card-body">
                     <div class="tab-content" id="myTabContent">
-                        <h5>Create Chapters</h5>
+                        <h5>Create Sections</h5>
 
                         <div class="row">
                             <div class="card-body">
+                                <button class="btn btn-sm btn-outline-success align-items-start"
+                                    style="margin-left: 92%;" onclick="window.location.href='{{ route('section.list', ['slug' => $slug]) }}';">
+                                    Sections List
+                                </button>
 
-                                {{--
-                                ..............................................................................................--}}
-
-                                <form action="{{ route('chepter.submit')}}" method="post">
+                                <form action="{{ route('section.submit')}}" method="post">
                                     @csrf
                                     <input type="hidden" name="course_id" value="{{ $id }}">
+
                                     <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label for="chepter_name">Chapter Name:</label>
-                                                <input type="text" id="chepter_name" name="chepter_name"
-                                                    class="form-control" placeholder="Enter Chapter Name" required
-                                                    value="{{ old('chepter_name') }}">
-                                            </div>
-                                        </div>
                                         <div class="col-md-4">
                                             <div class="mb-3">
-                                                <label for="status">Chapter Visible:</label>
+                                                <h5 class="p-2 bg-light border rounded">📅 Select Course Start Date</h5>
+                                                <input type="date" id="course_start_date" name="course_start_date"
+                                                    class="form-control" required
+                                                    value="{{ old('course_start_date') }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 mt-4">
+                                            <div class="mb-3">
+                                                <label for="status">Section Visible:</label>
                                                 <div style="margin-top: 10px;">
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input" type="radio" name="status"
@@ -119,198 +111,93 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="upload-area text-end p-2">
-                                            <input id="uploadButton_form" type="Submit" class="btn btn-primary"
-                                                value="Submit">
-                                        </div>
+
+
+                                    </div>
+
+                                    <div id="sections-container" class="row mt-3"></div>
+
+                                    <div class="upload-area text-end p-2">
+                                        <input id="uploadButton_form" type="Submit" class="btn btn-primary"
+                                            value="Submit">
                                     </div>
                                 </form>
+
+
                             </div>
-                            <hr>
-                            <div class="card-body pt-0">
-                                <div class="table-responsive">
-                                    <h3>Chapters List</h3>
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr id="showtr">
-                                                <th style="width:5%">#</th>
-                                                <th style="width:50%">Chapter Name</th>
-                                                <th style="width:2%">Status</th>
-                                                <th style="width:5%">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="userTableBody">
-                                            @if ($data->count() > 0)
-                                            @foreach ($data as $keys => $user)
-                                            <tr>
-                                                @php
-                                                $assetsdata =
-                                                DB::table('courses_assets')->where(['chapter_id'=>
-                                                $user->id,'status'=>1])->get();
-                                                $assets_count=$assetsdata->count();
-                                                @endphp
+                           
+                            <script>
+                                $(document).ready(function () {
+                                    $("#course_start_date").on("change", function () {
+                                        let startDate = new Date($(this).val());
+                                        let container = $("#sections-container");
+                                        container.empty(); // Clear previous sections
 
-                                                <td>{{ $keys + 1 }}</td>
-                                                <td>
-                                                    <div class="accordion" id="accordionChapter{{ $user->id }}">
-                                                        <div class="accordion-item">
-                                                            <h2 class="accordion-header"
-                                                                id="headingChapter{{ $user->id }}">
-                                                                <button class="accordion-button collapsed" type="button"
-                                                                    data-bs-toggle="collapse"
-                                                                    data-bs-target="#collapseChapter{{ $user->id }}"
-                                                                    aria-expanded="false"
-                                                                    aria-controls="collapseChapter{{ $user->id }}">
-                                                                    <span>{{ $user->chepter_name }}</span>
-                                                                    <span class="position-absolute end-0  p-2"
-                                                                    style="margin-right: 59px;">Lectures: {{
-                                                                    $assets_count }}</span>
-                                                                </button>
-                                                            </h2>
-                                                            <div id="collapseChapter{{ $user->id }}"
-                                                                class="accordion-collapse collapse"
-                                                                aria-labelledby="headingChapter{{ $user->id }}"
-                                                                data-bs-parent="#accordionChapter{{ $user->id }}">
-                                                                <div class="accordion-body">
+                                        if (!isNaN(startDate)) {
+                                            for (let i = 0; i < 7; i++) {
+                                                let newDate = new Date(startDate);
+                                                newDate.setDate(startDate.getDate() + i);
+                                                let formattedDate = newDate.toISOString().split('T')[0];
 
-                                                                    {{-- Add the list of assets here if necessary --}}
-
-                                                                    <form action="{{ route('blogs.assets.form') }}"
-                                                                        method="get" style="margin-left: 85%;">
-                                                                        @csrf
-                                                                        <input type="hidden" name="chapter_id"
-                                                                            value="{{ $user->id }}">
-                                                                        <input type="hidden" name="course_id"
-                                                                            value="{{ $user->courses_id }}">
-                                                                        <button type="submit"
-                                                                            class="btn btn-sm btn-primary">
-                                                                            Manage Assets
-                                                                        </button>
-                                                                    </form>
-                                                                    <div class="accordion-body">
-
-                                                                        @if($assetsdata->count() > 0)
-                                                                        <table class="table table-bordered">
-                                                                            <thead>
-                                                                                <tr>
-                                                                                    {{-- <th>#</th> --}}
-                                                                                    <th style="width: 85%;">Topic</th>
-                                                                                    <th style="width: 15%;">Lectures
-                                                                                    </th>
-                                                                                    {{-- <th>Actions</th> --}}
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody>
-                                                                                @foreach($assetsdata as $key => $asset)
-                                                                                <tr>
-                                                                                    {{-- <td>{{ $key + 1 }} .</td> --}}
-                                                                                    <td>{{ $asset->topic_name }}</td>
-
-
-                                                                                    <td>
-
-                                                                                        @if ($asset->assets_video)
-                                                                                        <i class="ti ti-video"
-                                                                                            style="color:aliceblue;background-color: #1862a9;padding: 4px;border-radius: 50px;"></i>&nbsp;
-                                                                                        <a href="#"
-                                                                                            onclick="playVideo('{{ asset('storage/' . $asset->assets_video) }}', '{{ $asset->topic_name }}')"
-                                                                                            class="text-primary">
-                                                                                            <u>Preview</u>
-                                                                                        </a>
-
-                                                                                        @elseif ($asset->video_url ??
-                                                                                        $asset->youtube_links)
-                                                                                        <i class="ti ti-link"
-                                                                                            style="color:aliceblue;background-color: #1862a9;padding: 4px;border-radius: 50px;"></i>&nbsp;&nbsp;
-                                                                                        <a href="{{ $asset->video_url ?? $asset->youtube_links }}"
-                                                                                            target="_blank">
-                                                                                            <u>View</u>
-                                                                                        </a>
-                                                                                        @else
-
-                                                                                        <i class="ti ti-notes"
-                                                                                            style="color:aliceblue;background-color: #1862a9;padding: 4px;border-radius: 50px;"></i>&nbsp;&nbsp;
-                                                                                        <a href="#blogModal"
-                                                                                            data-bs-toggle="modal"
-                                                                                            data-bs-target="#blogModal"
-                                                                                            data-description="{{ strip_tags($asset->blog_description) }}"
-                                                                                            data-topic="{{ $asset->topic_name }}">
-                                                                                            <u>Blog</u>
-                                                                                        </a>
-
-                                                                                        @endif
-                                                                                    </td>
-
-
-
-
-                                                                                    {{-- <td>
-
-                                                                                        <a href="{{ route('edit_asset', $asset->id) }}"
-                                                                                            class="btn btn-sm btn-warning">Edit</a>
-                                                                                        <a href="{{ route('delete_asset', $asset->id) }}"
-                                                                                            class="btn btn-sm btn-danger"
-                                                                                            onclick="return confirm('Are you sure you want to delete this asset?');">Delete</a>
-
-                                                                                    </td> --}}
-                                                                                </tr>
-                                                                                @endforeach
-                                                                            </tbody>
-                                                                        </table>
-                                                                        @else
-                                                                        <p>No assets found for this chapter.</p>
-                                                                        @endif
-
-                                                                    </div>
-                                                                </div>
+                                                // Create collapsible section with delete button
+                                                let sectionHtml = `
+                                                    <div class="col-md-12 mt-2 section-item" id="section-wrapper-${i}">
+                                                        <div class="p-2 border rounded">
+                                                            <h6 class="cursor-pointer p-2 bg-light border rounded d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#section-${i}">
+                                                                📅 ${formattedDate}
+                                                                <span class="d-flex">
+                                                                    <span class="dropdown-icon">⬇️</span>
+                                                                    <span class="delete-section text-danger ms-2" data-target="#section-wrapper-${i}" style="cursor: pointer;">❌</span>
+                                                                </span>
+                                                            </h6>
+                                                            <div id="section-${i}" class="collapse">
+                                                                <textarea class="summernote" name="sections[${formattedDate}]"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </td>
+                                                `;
 
-                                                <td>
-                                                    <form action="{{ route('chapterStatus') }}" method="post"
-                                                        style="display: inline;">
-                                                        @csrf
-                                                        <input type="hidden" name="id" value="{{ $user->id }}">
-                                                        <input type="hidden" name="status"
-                                                            value="{{ $user->status == 1 ? 0 : 1 }}">
+                                                container.append(sectionHtml);
+                                            }
 
-                                                        <button type="submit" style="padding:4px"
-                                                            class="btn {{ $user->status == 1 ? 'btn-success' : 'btn-danger' }}">
-                                                            {{ $user->status == 1 ? 'Active' : 'Inactive' }}
-                                                        </button>
-                                                    </form>
-                                                </td>
-                                                <td class="text-center">
-                                                    <!-- Edit Button -->
-                                                    <a href="#" class="btn btn-sm btn-primary me-2 editButton"
-                                                        data-id="{{ $user->id }}" data-name="{{ $user->chepter_name }}"
-                                                        data-status="{{ $user->status }}" data-bs-toggle="modal"
-                                                        data-bs-target="#editChapterModal">
-                                                        <i class="ti ti-edit"></i>
-                                                    </a>
+                                            // Initialize Summernote for newly added textareas
+                                            $(".summernote").summernote({
+                                                height: 150,
+                                                toolbar: [
+                                                    ['style', ['style']],
+                                                    ['font', ['bold', 'italic', 'underline', 'clear']],
+                                                    ['fontname', ['fontname']],
+                                                    ['fontsize', ['fontsize']],
+                                                    ['color', ['color']],
+                                                    ['para', ['ul', 'ol', 'paragraph']],
+                                                    ['table', ['table']],
+                                                    ['view', ['fullscreen', 'codeview', 'help']]
+                                                ]
+                                            });
 
-                                                    <!-- Delete Button -->
-                                                    <a href="{{ route('chapter_delete', $user->id) }}"
-                                                        class="btn btn-sm btn-danger"
-                                                        onclick="return confirmDelete(this)">
-                                                        <i class="ti ti-trash"></i>
-                                                    </a>
-                                                </td>
+                                            // Handle dropdown icon toggle (⬇️/⬆️)
+                                            $(".cursor-pointer").on("click", function () {
+                                                let icon = $(this).find(".dropdown-icon");
+                                                if (icon.text() === "⬇️") {
+                                                    icon.text("⬆️");
+                                                } else {
+                                                    icon.text("⬇️");
+                                                }
+                                            });
 
-                                            </tr>
-                                            @endforeach
-                                            @else
-                                            <tr>
-                                                <td colspan="8" class="text-center">No Data Found!</td>
-                                            </tr>
-                                            @endif
-                                        </tbody>
-                                    </table>
+                                            // Handle section delete
+                                            $(".delete-section").on("click", function () {
+                                                let target = $(this).data("target");
+                                                $(target).remove();
+                                            });
+                                        }
+                                    });
+                                });
+                            </script>
 
-                                </div>
-                            </div>
+
+
+
                         </div>
                     </div>
                 </div>

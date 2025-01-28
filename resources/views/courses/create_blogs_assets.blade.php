@@ -241,6 +241,10 @@
                                         style="margin-left: 87%;">Submit</button>
                                 </form>
                             </div>
+
+
+                           
+
                             <hr>
                             <h4>Assets List</h4>
                             <div class="accordion-body">
@@ -298,6 +302,9 @@
                                 <p>No assets found for this chapter.</p>
                                 @endif
                             </div>
+
+
+
                         </div>
                     </div>
                 </div>
@@ -416,7 +423,7 @@
 
         // Disable the button to prevent multiple uploads
         uploadButton.disabled = true;
-        uploadButton.textContent = 'Submit...';
+        uploadButton.textContent = 'Submit';
 
         const chunkSize = 2 * 1024 * 1024; // 2 MB per chunk
         const totalChunks = file ? Math.ceil(file.size / chunkSize) : 0;
@@ -487,20 +494,20 @@
                             },
                         });
                         uploadButton.disabled = false;
-                        uploadButton.textContent = 'Upload Video';
+                        uploadButton.textContent = 'Submit';
                     }
                 } else {
                     Swal.fire('Error', 'Error uploading chunk.', 'error');
                     console.error(xhr.responseText);
                     uploadButton.disabled = false;
-                    uploadButton.textContent = 'Upload Video';
+                    uploadButton.textContent = 'Submit';
                 }
             };
 
             xhr.onerror = function () {
                 Swal.fire('Error', 'Error during upload.', 'error');
                 uploadButton.disabled = false;
-                uploadButton.textContent = 'Upload Video';
+                uploadButton.textContent = 'Submit';
             };
 
             xhr.send(formData);
@@ -541,12 +548,12 @@
                         Swal.fire('Error', 'Error submitting data.', 'error');
                     }
                     uploadButton.disabled = false;
-                    uploadButton.textContent = 'Upload Video';
+                    uploadButton.textContent = 'Submit';
                 })
                 .catch((error) => {
                     Swal.fire('Error', 'Error during submission.', 'error');
                     uploadButton.disabled = false;
-                    uploadButton.textContent = 'Upload Video';
+                    uploadButton.textContent = 'Submit';
                     console.error(error);
                 });
         }

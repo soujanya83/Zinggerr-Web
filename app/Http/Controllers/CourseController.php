@@ -12,6 +12,7 @@ use App\Models\UsersPermission;
 use App\Models\Permission;
 use App\Models\CoursesRemark;
 use App\Models\CoursesCategory;
+use App\Models\CourseSection;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Storage;
@@ -24,6 +25,83 @@ use Illuminate\Support\Facades\session;
 
 class CourseController extends Controller
 {
+
+    public function delete_section($id)
+    {
+        $course = CourseSection::find($id);
+        if ($course) {
+            $course->delete();
+            return redirect()->back()->with('success', 'Section delete successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Section ID not found.');
+        }
+    }
+    public function create_section(Request $request, $slug)
+    {
+        $courseId = Course::where('slug', $slug)->first();
+        $id = $courseId->id;
+        return view('courses.create_sections', compact('id', 'slug'));
+    }
+
+    public function section_list($slug)
+    {
+
+        $sections = Course::select('courses_sections.*')->where('slug', $slug)->join('courses_sections', 'courses_sections.courses_id', '=', 'courses.id')->get();
+
+        return view('courses.section_list', compact('sections'));
+    }
+
+    public function update_section(Request $request)
+    {
+        $section = CourseSection::find($request->id);
+        if (!$section) {
+            return response()->json(['error' => 'Section not found'], 404);
+        }
+
+        $section->update([
+            'sections_remark' => $request->sections_remark
+        ]);
+
+        return response()->json(['success' => 'Section updated successfully']);
+    }
+
+
+
+
+
+    public function section_submit(Request $request)
+    {
+        // Validate the request
+        $validator = Validator::make($request->all(), [
+            'course_id' => 'required|uuid',
+            'course_start_date' => 'required|date',
+            'sections' => 'required|array',
+            'sections.*' => 'string|max:500', // Increased max length
+            'status' => 'required|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // Loop through sections and save each date as a new record
+        foreach ($request->sections as $date => $content) {
+            CourseSection::create([
+                'id' => (string) Guid::uuid4(),
+                'courses_id' => $request->course_id,
+                'course_start_date' => $request->course_start_date,
+                'sections_remark_date' => $date, // Store the section date
+                'sections_remark' => $content, // Store the section content
+                'status' => $request->status,
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Sections create successfully.');
+    }
+
+
 
     // public function updateAssets(Request $request)
     // {
@@ -145,7 +223,7 @@ class CourseController extends Controller
             $validator = Validator::make($request->all(), [
                 'assets_id' => 'required|exists:courses_assets,id',
                 'course_id' => 'required|exists:courses,id',
-                'chapter_id' => 'required|exists:courses_chapters,id',
+                'chapter_id' => 'required',
                 'topicName' => 'required|string|max:255',
                 'assetstype' => 'required|in:blog,url,videos,youtube',
                 'status' => 'required|boolean',
@@ -154,8 +232,8 @@ class CourseController extends Controller
                 'totalChunks' => 'required_if:assetstype,videos|integer',
                 'file' => 'required_if:assetstype,videos|file',
                 'assets_discription' => 'nullable|string',
-                'videourl' => 'nullable|url',
-                'youtubelink' => 'nullable|url',
+                'videourl' => 'nullable',
+                'youtubelink' => 'nullable',
             ]);
 
             if ($validator->fails()) {
@@ -270,6 +348,17 @@ class CourseController extends Controller
         return view('courses.create_blogs_assets', compact('chapterId', 'courseId', 'assetsdata'));
     }
 
+    public function manage_activity($slug)
+    {
+        $chapterId ='11';
+        $coursesdata=Course::where('slug',$slug)->first();
+        $courseId = $coursesdata->id;
+        $assetsdata = CoursesAssets::where(['course_id'=> $courseId,'chapter_id'=>11])->get();
+
+        return view('courses.create_blogs_assets', compact('chapterId', 'courseId','assetsdata'));
+    }
+
+
     public function assetsdelete($id)
     {
         $course = CoursesAssets::find($id);
@@ -337,6 +426,9 @@ class CourseController extends Controller
         return view('courses.create_chepter', compact('id', 'data'));
     }
 
+
+
+
     public function chepter_submit(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -360,7 +452,8 @@ class CourseController extends Controller
                     'no_of_chepter' => null,
                     'status' => $request->status,
                     'mode' => null,
-                ]);
+                ]
+            );
             // $chapter_id = $chapter->id;
             // $course_id = $request->course_id;
 
@@ -460,7 +553,7 @@ class CourseController extends Controller
                 $course->course_image = $filePath;
             }
             $course->save();
-            return redirect('courses')->with('success', 'Course Create successfully.');
+            return redirect()->route('after_course_create', ['slug' => $slug])->with('success', 'Course Create successfully.');
         } catch (\Exception $e) {
 
             return redirect()->back()->with('error', 'Something went wrong. Please try again.');
@@ -751,11 +844,11 @@ class CourseController extends Controller
 
     public function submitAssets(Request $request)
     {
-        try {
+
             // Validation
             $validator = Validator::make($request->all(), [
                 'course_id' => 'required|exists:courses,id',
-                'chapter_id' => 'required|exists:courses_chapters,id',
+                'chapter_id' => 'required',
                 'topicName' => 'required|string|max:255',
                 'assetstype' => 'required|in:blog,url,videos,youtube',
                 'status' => 'required|boolean',
@@ -764,8 +857,8 @@ class CourseController extends Controller
                 'totalChunks' => 'required_if:assetstype,videos|integer',
                 'file' => 'required_if:assetstype,videos|file',
                 'assets_discription' => 'nullable|string',
-                'videourl' => 'nullable|url',
-                'youtubelink' => 'nullable|url',
+                'videourl' => 'nullable',
+                'youtubelink' => 'nullable',
             ]);
 
             if ($validator->fails()) {
@@ -775,6 +868,8 @@ class CourseController extends Controller
                 ], 400);
             }
 
+
+            try {
             $videoPath = null;
 
             // Handle chunk-based video uploads
@@ -913,7 +1008,7 @@ class CourseController extends Controller
         if ($userType == 'Superadmin' || $userType == 'Admin' || $userType == 'Staff') {
             $query = Course::query();
         } else {
-            $query = CoursesAssign::where('users_id', $userId)->where('courses.course_status', 1)->where('courses_assign.status',1)->join('courses', 'courses.id', '=', 'courses_assign.courses_id');
+            $query = CoursesAssign::where('users_id', $userId)->where('courses.course_status', 1)->where('courses_assign.status', 1)->join('courses', 'courses.id', '=', 'courses_assign.courses_id');
         }
 
         if ($request->has('name')) {
