@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('blog_description')->nullable()->default(null);
             $table->string('images')->nullable()->default(null);
             $table->string('assets_video')->nullable()->default(null);
-            $table->string('video_url')->nullable()->default(null);
+            $table->string('video_url',555)->nullable()->default(null);
             $table->string('youtube_links')->nullable()->default(null);
             $table->boolean('status')->default(1);
 

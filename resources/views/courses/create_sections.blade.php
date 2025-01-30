@@ -72,13 +72,13 @@
                 <div class="card-body">
                     <div class="tab-content" id="myTabContent">
                         <h5>Create Sections</h5>
-
+                        <button class="btn btn-sm btn-outline-success align-items-start" style="margin-left: 92%;"
+                            onclick="window.location.href='{{ route('section.list', ['slug' => $slug]) }}';">
+                            Sections List
+                        </button>
                         <div class="row">
                             <div class="card-body">
-                                <button class="btn btn-sm btn-outline-success align-items-start"
-                                    style="margin-left: 92%;" onclick="window.location.href='{{ route('section.list', ['slug' => $slug]) }}';">
-                                    Sections List
-                                </button>
+
 
                                 <form action="{{ route('section.submit')}}" method="post">
                                     @csrf
@@ -111,22 +111,21 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
                                     </div>
-
                                     <div id="sections-container" class="row mt-3"></div>
 
                                     <div class="upload-area text-end p-2">
                                         <input id="uploadButton_form" type="Submit" class="btn btn-primary"
                                             value="Submit">
+                                        <button type="button" id="restoreButton"
+                                            class="btn btn-outline-secondary">Restore
+                                            Removed Dates</button>
+
                                     </div>
                                 </form>
-
-
                             </div>
-                           
-                            <script>
+
+                            {{-- <script>
                                 $(document).ready(function () {
                                     $("#course_start_date").on("change", function () {
                                         let startDate = new Date($(this).val());
@@ -193,8 +192,85 @@
                                         }
                                     });
                                 });
-                            </script>
+                            </script> --}}
+                            <script>
+                                $(document).ready(function () {
+                                            let removedDates = JSON.parse(localStorage.getItem("removedDates")) || []; // Store removed dates
 
+                                            $("#course_start_date").on("change", function () {
+                                                let startDate = new Date($(this).val());
+                                                let container = $("#sections-container");
+                                                container.empty(); // Clear previous sections
+
+                                                if (!isNaN(startDate)) {
+                                                    for (let i = 0; i < 7; i++) {
+                                                        let newDate = new Date(startDate);
+                                                        newDate.setDate(startDate.getDate() + i);
+                                                        let formattedDate = newDate.toISOString().split('T')[0];
+
+                                                        // Skip removed dates
+                                                        if (removedDates.includes(formattedDate)) continue;
+
+                                                        let sectionHtml = `
+                                                            <div class="col-md-12 mt-2 section-item" id="section-wrapper-${formattedDate}">
+                                                                <div class="p-2 border rounded">
+                                                                    <h6 class="cursor-pointer p-2 bg-light border rounded d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#section-${formattedDate}">
+                                                                        📅 ${formattedDate}
+                                                                        <span class="d-flex">
+                                                                            <span class="dropdown-icon">⬇️</span>
+                                                                            <span class="delete-section text-danger ms-2" data-date="${formattedDate}" style="cursor: pointer;">❌</span>
+                                                                        </span>
+                                                                    </h6>
+                                                                    <div id="section-${formattedDate}" class="collapse">
+                                                                        <textarea class="summernote" name="sections[${formattedDate}]"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        `;
+
+                                                        container.append(sectionHtml);
+                                                    }
+
+                                                    // Initialize Summernote
+                                                    $(".summernote").summernote({
+                                                        height: 150,
+                                                        toolbar: [
+                                                            ['style', ['style']],
+                                                            ['font', ['bold', 'italic', 'underline', 'clear']],
+                                                            ['fontname', ['fontname']],
+                                                            ['fontsize', ['fontsize']],
+                                                            ['color', ['color']],
+                                                            ['para', ['ul', 'ol', 'paragraph']],
+                                                            ['table', ['table']],
+                                                            ['view', ['fullscreen', 'codeview', 'help']]
+                                                        ]
+                                                    });
+
+                                                    // Toggle dropdown icon
+                                                    $(".cursor-pointer").on("click", function () {
+                                                        let icon = $(this).find(".dropdown-icon");
+                                                        icon.text(icon.text() === "⬇️" ? "⬆️" : "⬇️");
+                                                    });
+
+                                                    // Handle section delete
+                                                    $(".delete-section").on("click", function () {
+                                                        let date = $(this).data("date");
+                                                        removedDates.push(date);
+                                                        localStorage.setItem("removedDates", JSON.stringify(removedDates));
+                                                        $("#section-wrapper-" + date).remove();
+                                                    });
+                                                }
+                                            });
+
+                                            // Restore removed dates
+                                            $("#restoreButton").on("click", function () {
+                                                removedDates = [];
+                                                localStorage.setItem("removedDates", JSON.stringify(removedDates));
+                                                $("#course_start_date").trigger("change"); // Refresh sections
+                                            });
+                                        });
+
+                            </script>
 
 
 

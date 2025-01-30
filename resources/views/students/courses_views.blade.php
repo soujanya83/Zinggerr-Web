@@ -307,29 +307,24 @@
 
 
                     </div>
-                    @else
+                    @elseif($assetsData != null)
                     <div class="card-header">
 
                         <h3>Course: {{ $course->course_full_name }}</h3>
+                        <div class="text-end"><a href="{{ route('courses') }}" class="btn btn-success"
+                                style="margin-top: -56px;">Back</a>
+                        </div>
                         <div class="container">
 
                             @if($assetsData->assets_type == 'blog')
                             <strong style="font-size:20px">{{ $assetsData->topic_name }}</strong> : <span
                                 style="font-size:20px">{{ strip_tags($assetsData->blog_description) }}</span>
-                            <div class="text-end"><a href="{{ route('courses') }}" class="btn btn-success">Back</a>
-                            </div>
+
 
                             @elseif($assetsData->assets_type == 'url')
-
-                            <script>
-                                // Automatically redirect to the URL in a new tab
-                                window.open("{{ $assetsData->video_url }}", "_blank");
-                            </script>
-                            <p>Redirecting you to the URL...</p>
-                            <div class="text-end">
-                                <a href="{{ route('courses') }}" class="btn btn-success">Back</a>
-                            </div>
-
+                            <p>Click your go to the page...
+                                <a href="{{ $assetsData->video_url }}" class="btn btn-primary" target="_blank">Link</a>
+                            </p>
 
                             @elseif($assetsData->assets_type == 'videos')
 
@@ -337,10 +332,9 @@
                                 <source src="{{ asset('storage/' . $assetsData->assets_video) }}" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
+                            <h3>{{ $assetsData->topic_name }}</h3>
 
-                            <div class="text-end">
-                                <a href="{{ route('courses') }}" class="btn btn-success">Back</a>
-                            </div>
+
                             @else
 
                             @php
@@ -352,7 +346,7 @@
                             @endphp
 
                             @if($videoId)
-                          
+
                             <iframe width="100%" height="600" src="https://www.youtube.com/embed/{{ $videoId }}"
                                 frameborder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -362,13 +356,12 @@
                             @else
                             <p>Invalid YouTube URL or unsupported video type.</p>
                             @endif
-
-                            <div class="text-end">
-                                <a href="{{ route('courses') }}" class="btn btn-success">Back</a>
-                            </div>
-
                             @endif
                         </div>
+                    </div>
+                    @else
+                    <div class="card-header">
+                        No data found!
                     </div>
                     @endif
                 </div>

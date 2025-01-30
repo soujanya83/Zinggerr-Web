@@ -86,8 +86,8 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::post('courses-create', [CourseController::class, 'createCourse'])->name('courses.create');
     Route::match(['get', 'post'], 'courses', [CourseController::class, 'courselist'])->name('courses');
     Route::get('course/{id}', [CourseController::class, 'coursedetails'])->name('course_details');
-    Route::get('course/:{slug}/edit', [CourseController::class, 'courseedit'])->name('course_edit');
-    Route::get('course/:{slug}/format', [CourseController::class, 'courseedit'])->name('after_course_create');
+    Route::get('course/{slug}/edit', [CourseController::class, 'courseedit'])->name('course_edit');
+    Route::get('course/{slug}/format', [CourseController::class, 'courseedit'])->name('after_course_create');
     Route::post('course-update/{id}', [CourseController::class, 'courseupdate'])->name('course_update');
     Route::get('create/course', [CourseController::class, 'courseadd'])->name('addCourse');
     Route::get('/courses-delete/{id}', [CourseController::class, 'coursedelete'])
@@ -114,14 +114,14 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::post('category/submit', [CourseController::class, 'submit_category'])->name('category.store');
     Route::get('/category-delete/{user}', [CourseController::class, 'category_delete'])->name('category_delete');
 
-    Route::get('cousers/:{slug}/create-chapter', [CourseController::class, 'add_assets'])->name('add_assets');
-    Route::get('cousers/:{slug}/create-section', [CourseController::class, 'create_section'])->name('create_section');
+    Route::get('cousers/{slug}/create-chapter', [CourseController::class, 'add_assets'])->name('add_assets');
+    Route::get('cousers/{slug}/create-section', [CourseController::class, 'create_section'])->name('create_section');
     Route::post('cousers/section-submit', [CourseController::class, 'section_submit'])->name('section.submit');
-    Route::get('cousers/section/:{slug}/list', [CourseController::class, 'section_list'])->name('section.list');
+    Route::get('cousers/section/{slug}/list', [CourseController::class, 'section_list'])->name('section.list');
     Route::post('cousers/section/update', [CourseController::class, 'update_section'])->name('section.update');
 
     Route::get('cousers/section/delete/{id}', [CourseController::class, 'delete_section'])->name('section.delete');
-    Route::get('cousers/:{slug}/manage-activity', [CourseController::class, 'manage_activity'])->name('manage_activity');
+    Route::get('cousers/{slug}/manage-activity', [CourseController::class, 'manage_activity'])->name('manage_activity');
 
 
 
@@ -172,7 +172,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('student-list', [StudentController::class, 'studentlist'])->name('studentlist');
 
     // Route::put('/teacher/{id}/change-status', [TeacherController::class, 'changeStatus'])->name('change_teacher_status');
-    Route::get('courses/:{slug}/view', [StudentController::class, 'courses_views'])->name('courses.viwes');
+    Route::get('courses/{slug}/view', [StudentController::class, 'courses_views'])->name('courses.viwes');
 
 
     // Route::delete('/teacher-delete/{id}', [TeacherController::class, 'teacher_delete'])->name('teacher_delete')->middleware('can:role');

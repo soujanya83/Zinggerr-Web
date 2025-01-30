@@ -128,8 +128,52 @@
         /* Green for upward trend */
         margin-left: 5px;
     }
-</style>
 
+
+
+
+
+    .css-xas8z8 svg {
+        width: 50px;
+        height: 50px;
+        color: rgb(103, 58, 183);
+        border-radius: 14px;
+        padding: 10px;
+        background-color: rgb(227, 242, 253);
+    }
+</style>
+<style>
+    .stats-card {
+        background: #f9fafb;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .icon-box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        background: #eaf1ff;
+        margin: auto;
+    }
+
+    .stat-value {
+        font-size: 22px;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .stat-label {
+        font-size: 14px;
+        color: gray;
+        text-transform: uppercase;
+    }
+</style>
 <div class="pc-container">
     <div class="pc-content">
         <div class="page-header">
@@ -160,7 +204,7 @@
                             <div class="content">
 
                                 <div class="container-fluid">
-                                    <div class="row g-4" style="    margin-top: -10px;">
+                                    <div class="row g-4" style="margin-top:-10px">
                                         <div class="col-sm-6 col-xl-2">
                                             <div class="rounded d-flex align-items-center justify-content-between p-4"
                                                 style="background-color:#3bcd78; height: 88px;color:#fff">
@@ -255,17 +299,263 @@
                                             </div>
                                         </div>
 
-                                        <!-- Calendar Section -->
+
+
                                         <div class="col-lg-4">
-                                            <div class="card p-3">
-                                                <div id="calendar"></div>
-                                            </div>
+                                            {{-- <div class="card p-3"> --}}
+
+                                                <div class="container mt-5">
+                                                    <div class="card p-4">
+                                                        <div class="row g-3">
+                                                            <div class="col-md-6">
+                                                                <div class="stats-card">
+                                                                    <div class="icon-box">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="30" height="30" viewBox="0 0 24 24"
+                                                                            fill="none" stroke="purple" stroke-width="2"
+                                                                            stroke-linecap="round"
+                                                                            stroke-linejoin="round">
+                                                                            <path
+                                                                                d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0">
+                                                                            </path>
+                                                                            <path
+                                                                                d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0">
+                                                                            </path>
+                                                                            <path
+                                                                                d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0">
+                                                                            </path>
+                                                                            <path d="M8.7 10.7l6.6 -3.4"></path>
+                                                                            <path d="M8.7 13.3l6.6 3.4"></path>
+                                                                        </svg>
+                                                                    </div>
+                                                                    <div class="stat-value">1000</div>
+                                                                    <div class="stat-label">Shares</div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="stats-card">
+                                                                    <div class="icon-box">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="30" height="30" viewBox="0 0 24 24"
+                                                                            fill="none" stroke="purple" stroke-width="2"
+                                                                            stroke-linecap="round"
+                                                                            stroke-linejoin="round">
+                                                                            <path d="M12 12l0 .01"></path>
+                                                                            <path d="M14.828 9.172a4 4 0 0 1 0 5.656">
+                                                                            </path>
+                                                                            <path d="M17.657 6.343a8 8 0 0 1 0 11.314">
+                                                                            </path>
+                                                                            <path d="M9.168 14.828a4 4 0 0 1 0 -5.656">
+                                                                            </path>
+                                                                            <path d="M6.337 17.657a8 8 0 0 1 0 -11.314">
+                                                                            </path>
+                                                                        </svg>
+                                                                    </div>
+                                                                    <div class="stat-value">600</div>
+                                                                    <div class="stat-label">Network</div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="stats-card">
+                                                                    <div class="icon-box">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="30" height="30" viewBox="0 0 24 24"
+                                                                            fill="none" stroke="purple" stroke-width="2"
+                                                                            stroke-linecap="round"
+                                                                            stroke-linejoin="round">
+                                                                            <path
+                                                                                d="M12 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0">
+                                                                            </path>
+                                                                            <path
+                                                                                d="M6.5 17m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0">
+                                                                            </path>
+                                                                            <path
+                                                                                d="M17.5 17m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0">
+                                                                            </path>
+                                                                        </svg>
+                                                                    </div>
+                                                                    <div class="stat-value">3550</div>
+                                                                    <div class="stat-label">Returns</div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="stats-card">
+                                                                    <div class="icon-box">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="30" height="30" viewBox="0 0 24 24"
+                                                                            fill="none" stroke="purple" stroke-width="2"
+                                                                            stroke-linecap="round"
+                                                                            stroke-linejoin="round">
+                                                                            <path
+                                                                                d="M3 5m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z">
+                                                                            </path>
+                                                                            <path d="M3 10l18 0"></path>
+                                                                            <path d="M7 15l.01 0"></path>
+                                                                            <path d="M11 15l2 0"></path>
+                                                                        </svg>
+                                                                    </div>
+                                                                    <div class="stat-value">100%</div>
+                                                                    <div class="stat-label">Order</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {{--
+                                            </div> --}}
                                         </div>
 
 
 
+                                        {{-- <div class="col-lg-4">
+                                            <div class="card p-3">
+                                                <div
+                                                    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-xas8z8">
+                                                    <div class="MuiGrid-root MuiGrid-container css-v3z1wi">
+                                                        <div
+                                                            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-cz50lb">
+                                                            <div
+                                                                class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-1 css-1lguhm4">
+                                                                <div class="MuiGrid-root MuiGrid-item css-1wxaqej"><svg
+                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                                        stroke="currentColor" stroke-width="1.5"
+                                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                                        class="tabler-icon tabler-icon-share">
+                                                                        <path
+                                                                            d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0">
+                                                                        </path>
+                                                                        <path
+                                                                            d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0">
+                                                                        </path>
+                                                                        <path
+                                                                            d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0">
+                                                                        </path>
+                                                                        <path d="M8.7 10.7l6.6 -3.4"></path>
+                                                                        <path d="M8.7 13.3l6.6 3.4"></path>
+                                                                    </svg></div>
+                                                                <div
+                                                                    class="MuiGrid-root MuiGrid-item MuiGrid-zeroMinWidth MuiGrid-grid-sm-true css-1p1r6xg">
+                                                                    <h5
+                                                                        class="MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter css-zbq3wc">
+                                                                        1000</h5>
+                                                                    <h6
+                                                                        class="MuiTypography-root MuiTypography-subtitle2 MuiTypography-alignCenter css-2br1w7">
+                                                                        SHARES</h6>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-cz50lb">
+                                                            <div
+                                                                class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-1 css-1lguhm4">
+                                                                <div class="MuiGrid-root MuiGrid-item css-1wxaqej"><svg
+                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                                        stroke="currentColor" stroke-width="1.5"
+                                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                                        class="tabler-icon tabler-icon-access-point">
+                                                                        <path d="M12 12l0 .01"></path>
+                                                                        <path d="M14.828 9.172a4 4 0 0 1 0 5.656">
+                                                                        </path>
+                                                                        <path d="M17.657 6.343a8 8 0 0 1 0 11.314">
+                                                                        </path>
+                                                                        <path d="M9.168 14.828a4 4 0 0 1 0 -5.656">
+                                                                        </path>
+                                                                        <path d="M6.337 17.657a8 8 0 0 1 0 -11.314">
+                                                                        </path>
+                                                                    </svg></div>
+                                                                <div
+                                                                    class="MuiGrid-root MuiGrid-item MuiGrid-zeroMinWidth MuiGrid-grid-sm-true css-1p1r6xg">
+                                                                    <h5
+                                                                        class="MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter css-zbq3wc">
+                                                                        600</h5>
+                                                                    <h6
+                                                                        class="MuiTypography-root MuiTypography-subtitle2 MuiTypography-alignCenter css-2br1w7">
+                                                                        NETWORK</h6>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="MuiGrid-root MuiGrid-container css-v3z1wi">
+                                                        <div
+                                                            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-cz50lb">
+                                                            <div
+                                                                class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-1 css-1lguhm4">
+                                                                <div class="MuiGrid-root MuiGrid-item css-1wxaqej"><svg
+                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                                        stroke="currentColor" stroke-width="1.5"
+                                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                                        class="tabler-icon tabler-icon-circles">
+                                                                        <path
+                                                                            d="M12 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0">
+                                                                        </path>
+                                                                        <path
+                                                                            d="M6.5 17m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0">
+                                                                        </path>
+                                                                        <path
+                                                                            d="M17.5 17m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0">
+                                                                        </path>
+                                                                    </svg></div>
+                                                                <div
+                                                                    class="MuiGrid-root MuiGrid-item MuiGrid-zeroMinWidth MuiGrid-grid-sm-true css-1p1r6xg">
+                                                                    <h5
+                                                                        class="MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter css-zbq3wc">
+                                                                        3550</h5>
+                                                                    <h6
+                                                                        class="MuiTypography-root MuiTypography-subtitle2 MuiTypography-alignCenter css-2br1w7">
+                                                                        RETURNS</h6>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-cz50lb">
+                                                            <div
+                                                                class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-1 css-1lguhm4">
+                                                                <div class="MuiGrid-root MuiGrid-item css-1wxaqej"><svg
+                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                                        stroke="currentColor" stroke-width="1.5"
+                                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                                        class="tabler-icon tabler-icon-credit-card">
+                                                                        <path
+                                                                            d="M3 5m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z">
+                                                                        </path>
+                                                                        <path d="M3 10l18 0"></path>
+                                                                        <path d="M7 15l.01 0"></path>
+                                                                        <path d="M11 15l2 0"></path>
+                                                                    </svg></div>
+                                                                <div
+                                                                    class="MuiGrid-root MuiGrid-item MuiGrid-zeroMinWidth MuiGrid-grid-sm-true css-1p1r6xg">
+                                                                    <h5
+                                                                        class="MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter css-zbq3wc">
+                                                                        100%</h5>
+                                                                    <h6
+                                                                        class="MuiTypography-root MuiTypography-subtitle2 MuiTypography-alignCenter css-2br1w7">
+                                                                        ORDER</h6>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div> --}}
+
+
+
+                                        <!-- Calendar Section -->
+                                        {{-- <div class="col-lg-4">
+                                            <div class="card p-3">
+                                                <div id="calendar"></div>
+                                            </div>
+                                        </div> --}}
+
                                     </div>
+
                                 </div>
+
 
 
                                 <!-- Widgets Start -->
