@@ -151,27 +151,115 @@
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-    .icon-box {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 60px;
-        height: 60px;
-        border-radius: 12px;
-        background: #eaf1ff;
-        margin: auto;
+    .stat-icon {
+        margin-bottom: 10px;
     }
 
     .stat-value {
         font-size: 22px;
         font-weight: bold;
-        margin-top: 10px;
     }
 
     .stat-label {
         font-size: 14px;
         color: gray;
         text-transform: uppercase;
+    }
+
+
+    .css-2yksad {
+        box-shadow: none;
+        background-image: none;
+        background-color: rgb(103, 58, 183);
+        position: relative;
+        color: rgb(255, 255, 255);
+        transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+
+    .test11 {
+        width: 50px;
+        height: 50px;
+        color: rgb(103, 58, 183);
+        border-radius: 14px;
+        padding: 10px;
+        background-color: rgb(227, 242, 253);
+
+    }
+
+    .card {
+        background-color: #fff;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        /* Ensures SVG stays within card bounds */
+    }
+
+    .card-content {
+        display: flex;
+        flex-direction: column;
+        /* Stack icon and text vertically */
+        align-items: flex-start;
+        /* Align items to the left */
+        padding: 16px;
+    }
+
+    .icon {
+        display: flex;
+        justify-content: center;
+        /* Center the SVG horizontally */
+        align-items: center;
+        /* Center the SVG vertically */
+        width: 100%;
+        /* Make sure the icon container takes full width */
+        margin-bottom: 10px;
+        /* Add some space below the icon */
+    }
+
+    .icon svg {
+        width: 100px;
+        /* Set the desired SVG width */
+        height: 100px;
+        /* Set the desired SVG height */
+        fill: #b39ddb;
+        /* Example: Gray icon color */
+    }
+
+    .icon2 svg {
+
+        fill: #90cbf9;
+        /* Example: Gray icon color */
+    }
+
+    .text-content {
+        width: 100%;
+        /* Ensure text content takes full width */
+    }
+
+    .title {
+        font-size: 1rem;
+        color: #555;
+        margin-bottom: 4px;
+    }
+
+    .value {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 4px;
+    }
+
+    .comparison {
+        font-size: 0.875rem;
+        color: #757575;
+    }
+
+    /* Optional: Add some padding to the text content */
+    .text-content {
+        padding: 0 10px;
+        /* Add left and right padding */
     }
 </style>
 <div class="pc-container">
@@ -184,648 +272,382 @@
                             <h5 class="m-b-10">Dashboard View</h5>
                         </div>
                     </div>
-                    {{-- <div class="col-auto">
-                        <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">Students</a></li>
-                            <li class="breadcrumb-item" aria-current="page">Add New</li>
-                        </ul>
-                    </div> --}}
+
                 </div>
             </div>
         </div>
 
         <div class="row" style="width: 100%;margin-left: 0px;">
             {{-- <div class="col-12"> --}}
-                <div class="card">
-                    {{-- <div class="card-header"> --}}
-                        <div class="container-fluid">
 
+                {{-- <div class="card-header"> --}}
+                    <div class="container-fluid">
+                        <div class="card" style="width: 905px;    margin-left: -13px;">
                             <div class="content">
-
-                                <div class="container-fluid">
-                                    <div class="row g-4" style="margin-top:-10px">
-                                        <div class="col-sm-6 col-xl-2">
-                                            <div class="rounded d-flex align-items-center justify-content-between p-4"
-                                                style="background-color:#3bcd78; height: 88px;color:#fff">
-
-                                                <div class="ms-3">
-                                                    <p class="mb-2">
-                                                        <i class="ti ti-users f-24"></i> Total Students
-                                                    </p>
-                                                    <h6 class="mb-0">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp {{ $student }}</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-6 col-xl-2">
-                                            <div class="rounded d-flex align-items-center justify-content-between p-4"
-                                                style="background-color:#ba5dd8; height: 88px;color:#fff">
-
-                                                <div class="ms-3">
-                                                    <p class="mb-2">
-                                                        <i class="ti ti-users f-24"></i> Total Students
-                                                    </p>
-                                                    <h6 class="mb-0">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp {{ $student }}</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-sm-6 col-xl-2">
-                                            <div class="rounded d-flex align-items-center justify-content-between p-4"
-                                                style="height: 88px;background-color:#5be8e1;color:#fff">
-
-                                                <div class="ms-3">
-                                                    <i class="ti ti-notebook f-24"></i> Total Course <h6 class="mb-0">
-                                                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp {{ $courses }}</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-6 col-xl-2">
-                                            <div class="rounded d-flex align-items-center justify-content-between p-4"
-                                                style="height: 88px;background-color:#f469a5;color:#fff">
-
-                                                <div class="ms-3">
-                                                    <i class="ti ti-notebook f-24"></i> Total <h6 class="mb-0">
-                                                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 1234</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-6 col-xl-2">
-                                            <div class="rounded d-flex align-items-center justify-content-between p-4"
-                                                style="height: 88px;background-color:#F6A4EC;color:#fff">
-
-                                                <div class="ms-3">
-                                                    <i class="ti ti-coin f-24"></i> Money
-                                                    <h6 class="mb-0">&nbsp&nbsp&nbsp&nbsp&nbsp $1234</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6 col-xl-2">
-                                            <div class="rounded d-flex align-items-center justify-content-between p-4"
-                                                style="height: 88px;background-color:#1CC6FF;color:#fff ">
-
-                                                <div class="ms-3">
-                                                    <i class="ti ti-eye f-24"></i> New Visitor
-                                                    <h6 class="mb-0">&nbsp&nbsp&nbsp&nbsp&nbsp $1234</h6>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Sale & Revenue End -->
-                                <div class="container-fluid pt-4 px-4">
-                                    <div class="row g-4">
-                                        <!-- Revenue & Sales Chart -->
-                                        <div class="col-sm-12 col-xl-8">
-                                            <div class="card card-custom">
-                                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                                    <div>
-                                                        <h5 class="mb-0">Statistics</h5>
-                                                        <small>Revenue and Sales</small>
-                                                    </div>
-                                                    <div class="dropdown-custom">
-                                                        Today <span class="caret"></span>
-                                                    </div>
-                                                </div>
-                                                <div class="chart-container">
-                                                    <canvas id="revenueSalesChart"></canvas>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-                                        <div class="col-lg-4">
-                                            {{-- <div class="card p-3"> --}}
-
-                                                <div class="container mt-5">
-                                                    <div class="card p-4">
-                                                        <div class="row g-3">
-                                                            <div class="col-md-6">
-                                                                <div class="stats-card">
-                                                                    <div class="icon-box">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="30" height="30" viewBox="0 0 24 24"
-                                                                            fill="none" stroke="purple" stroke-width="2"
-                                                                            stroke-linecap="round"
-                                                                            stroke-linejoin="round">
-                                                                            <path
-                                                                                d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0">
-                                                                            </path>
-                                                                            <path
-                                                                                d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0">
-                                                                            </path>
-                                                                            <path
-                                                                                d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0">
-                                                                            </path>
-                                                                            <path d="M8.7 10.7l6.6 -3.4"></path>
-                                                                            <path d="M8.7 13.3l6.6 3.4"></path>
-                                                                        </svg>
-                                                                    </div>
-                                                                    <div class="stat-value">1000</div>
-                                                                    <div class="stat-label">Shares</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="stats-card">
-                                                                    <div class="icon-box">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="30" height="30" viewBox="0 0 24 24"
-                                                                            fill="none" stroke="purple" stroke-width="2"
-                                                                            stroke-linecap="round"
-                                                                            stroke-linejoin="round">
-                                                                            <path d="M12 12l0 .01"></path>
-                                                                            <path d="M14.828 9.172a4 4 0 0 1 0 5.656">
-                                                                            </path>
-                                                                            <path d="M17.657 6.343a8 8 0 0 1 0 11.314">
-                                                                            </path>
-                                                                            <path d="M9.168 14.828a4 4 0 0 1 0 -5.656">
-                                                                            </path>
-                                                                            <path d="M6.337 17.657a8 8 0 0 1 0 -11.314">
-                                                                            </path>
-                                                                        </svg>
-                                                                    </div>
-                                                                    <div class="stat-value">600</div>
-                                                                    <div class="stat-label">Network</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="stats-card">
-                                                                    <div class="icon-box">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="30" height="30" viewBox="0 0 24 24"
-                                                                            fill="none" stroke="purple" stroke-width="2"
-                                                                            stroke-linecap="round"
-                                                                            stroke-linejoin="round">
-                                                                            <path
-                                                                                d="M12 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0">
-                                                                            </path>
-                                                                            <path
-                                                                                d="M6.5 17m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0">
-                                                                            </path>
-                                                                            <path
-                                                                                d="M17.5 17m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0">
-                                                                            </path>
-                                                                        </svg>
-                                                                    </div>
-                                                                    <div class="stat-value">3550</div>
-                                                                    <div class="stat-label">Returns</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="stats-card">
-                                                                    <div class="icon-box">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="30" height="30" viewBox="0 0 24 24"
-                                                                            fill="none" stroke="purple" stroke-width="2"
-                                                                            stroke-linecap="round"
-                                                                            stroke-linejoin="round">
-                                                                            <path
-                                                                                d="M3 5m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z">
-                                                                            </path>
-                                                                            <path d="M3 10l18 0"></path>
-                                                                            <path d="M7 15l.01 0"></path>
-                                                                            <path d="M11 15l2 0"></path>
-                                                                        </svg>
-                                                                    </div>
-                                                                    <div class="stat-value">100%</div>
-                                                                    <div class="stat-label">Order</div>
-                                                                </div>
-                                                            </div>
+                                <div class="container-fluid" style="width: 1335px;">
+                                    <div class="row">
+                                        <!-- Ensure both cards are in one row -->
+                                        <!-- First Card -->
+                                        <div class="col-sm-6 col-xl-4" style="margin-top:20px">
+                                            <div class="card">
+                                                <div class="card-content"
+                                                    style="border-radius: 5px; background-color: rgb(103, 58, 183);">
+                                                    <div class="icon">
+                                                        <div class="text-content">
+                                                            <h5 class="title" style="color:#dee2e6">Courses Last 7 day`s </h5>
+                                                            <h3 class="value" style="color:#dee2e6">5</h3>
+                                                            <h6 class="comparison" style="color:#dee2e6">50 Courses Last Month</h6>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                {{--
-                                            </div> --}}
-                                        </div>
-
-
-
-                                        {{-- <div class="col-lg-4">
-                                            <div class="card p-3">
-                                                <div
-                                                    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-xas8z8">
-                                                    <div class="MuiGrid-root MuiGrid-container css-v3z1wi">
-                                                        <div
-                                                            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-cz50lb">
-                                                            <div
-                                                                class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-1 css-1lguhm4">
-                                                                <div class="MuiGrid-root MuiGrid-item css-1wxaqej"><svg
-                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                        height="24" viewBox="0 0 24 24" fill="none"
-                                                                        stroke="currentColor" stroke-width="1.5"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        class="tabler-icon tabler-icon-share">
-                                                                        <path
-                                                                            d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0">
-                                                                        </path>
-                                                                        <path
-                                                                            d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0">
-                                                                        </path>
-                                                                        <path
-                                                                            d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0">
-                                                                        </path>
-                                                                        <path d="M8.7 10.7l6.6 -3.4"></path>
-                                                                        <path d="M8.7 13.3l6.6 3.4"></path>
-                                                                    </svg></div>
-                                                                <div
-                                                                    class="MuiGrid-root MuiGrid-item MuiGrid-zeroMinWidth MuiGrid-grid-sm-true css-1p1r6xg">
-                                                                    <h5
-                                                                        class="MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter css-zbq3wc">
-                                                                        1000</h5>
-                                                                    <h6
-                                                                        class="MuiTypography-root MuiTypography-subtitle2 MuiTypography-alignCenter css-2br1w7">
-                                                                        SHARES</h6>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div
-                                                            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-cz50lb">
-                                                            <div
-                                                                class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-1 css-1lguhm4">
-                                                                <div class="MuiGrid-root MuiGrid-item css-1wxaqej"><svg
-                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                        height="24" viewBox="0 0 24 24" fill="none"
-                                                                        stroke="currentColor" stroke-width="1.5"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        class="tabler-icon tabler-icon-access-point">
-                                                                        <path d="M12 12l0 .01"></path>
-                                                                        <path d="M14.828 9.172a4 4 0 0 1 0 5.656">
-                                                                        </path>
-                                                                        <path d="M17.657 6.343a8 8 0 0 1 0 11.314">
-                                                                        </path>
-                                                                        <path d="M9.168 14.828a4 4 0 0 1 0 -5.656">
-                                                                        </path>
-                                                                        <path d="M6.337 17.657a8 8 0 0 1 0 -11.314">
-                                                                        </path>
-                                                                    </svg></div>
-                                                                <div
-                                                                    class="MuiGrid-root MuiGrid-item MuiGrid-zeroMinWidth MuiGrid-grid-sm-true css-1p1r6xg">
-                                                                    <h5
-                                                                        class="MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter css-zbq3wc">
-                                                                        600</h5>
-                                                                    <h6
-                                                                        class="MuiTypography-root MuiTypography-subtitle2 MuiTypography-alignCenter css-2br1w7">
-                                                                        NETWORK</h6>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="MuiGrid-root MuiGrid-container css-v3z1wi">
-                                                        <div
-                                                            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-cz50lb">
-                                                            <div
-                                                                class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-1 css-1lguhm4">
-                                                                <div class="MuiGrid-root MuiGrid-item css-1wxaqej"><svg
-                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                        height="24" viewBox="0 0 24 24" fill="none"
-                                                                        stroke="currentColor" stroke-width="1.5"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        class="tabler-icon tabler-icon-circles">
-                                                                        <path
-                                                                            d="M12 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0">
-                                                                        </path>
-                                                                        <path
-                                                                            d="M6.5 17m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0">
-                                                                        </path>
-                                                                        <path
-                                                                            d="M17.5 17m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0">
-                                                                        </path>
-                                                                    </svg></div>
-                                                                <div
-                                                                    class="MuiGrid-root MuiGrid-item MuiGrid-zeroMinWidth MuiGrid-grid-sm-true css-1p1r6xg">
-                                                                    <h5
-                                                                        class="MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter css-zbq3wc">
-                                                                        3550</h5>
-                                                                    <h6
-                                                                        class="MuiTypography-root MuiTypography-subtitle2 MuiTypography-alignCenter css-2br1w7">
-                                                                        RETURNS</h6>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div
-                                                            class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-cz50lb">
-                                                            <div
-                                                                class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-1 css-1lguhm4">
-                                                                <div class="MuiGrid-root MuiGrid-item css-1wxaqej"><svg
-                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                        height="24" viewBox="0 0 24 24" fill="none"
-                                                                        stroke="currentColor" stroke-width="1.5"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        class="tabler-icon tabler-icon-credit-card">
-                                                                        <path
-                                                                            d="M3 5m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z">
-                                                                        </path>
-                                                                        <path d="M3 10l18 0"></path>
-                                                                        <path d="M7 15l.01 0"></path>
-                                                                        <path d="M11 15l2 0"></path>
-                                                                    </svg></div>
-                                                                <div
-                                                                    class="MuiGrid-root MuiGrid-item MuiGrid-zeroMinWidth MuiGrid-grid-sm-true css-1p1r6xg">
-                                                                    <h5
-                                                                        class="MuiTypography-root MuiTypography-h5 MuiTypography-alignCenter css-zbq3wc">
-                                                                        100%</h5>
-                                                                    <h6
-                                                                        class="MuiTypography-root MuiTypography-subtitle2 MuiTypography-alignCenter css-2br1w7">
-                                                                        ORDER</h6>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        <svg width="100" height="100" viewBox="0 0 24 24">
+                                                            <path
+                                                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42">
+                                                            </path>
+                                                        </svg>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
 
-                                        </div> --}}
-
-
-
-                                        <!-- Calendar Section -->
-                                        {{-- <div class="col-lg-4">
-                                            <div class="card p-3">
-                                                <div id="calendar"></div>
+                                        <!-- Second Card -->
+                                        <div class="col-sm-6 col-xl-4" style="margin-top:20px">
+                                            <div class="card">
+                                                <div class="card-content"
+                                                    style="border-radius: 5px; background-color: rgb(33, 150, 243);">
+                                                    <div class="icon2 icon">
+                                                        <div class="text-content">
+                                                            <h5 class="title" style="color:#dee2e6">Students Last 7 day`s</h5>
+                                                            <h3 class="value" style="color:#dee2e6">4</h3>
+                                                            <h6 class="comparison" style="color:#dee2e6">3 Students Last Month
+                                                            </h6>
+                                                        </div>
+                                                        <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeLarge css-6flbmm"
+                                                            focusable="false" aria-hidden="true" viewBox="0 0 24 24"
+                                                            data-testid="AccountCircleTwoToneIcon">
+                                                            <path
+                                                                d="M12 4c-4.42 0-8 3.58-8 8 0 1.95.7 3.73 1.86 5.12C7.55 15.8 9.68 15 12 15s4.45.8 6.14 2.12C19.3 15.73 20 13.95 20 12c0-4.42-3.58-8-8-8m0 9c-1.93 0-3.5-1.57-3.5-3.5S10.07 6 12 6s3.5 1.57 3.5 3.5S13.93 13 12 13"
+                                                                opacity=".3"></path>
+                                                            <path
+                                                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-1.74 0-3.34-.56-4.65-1.5C8.66 17.56 10.26 17 12 17s3.34.56 4.65 1.5c-1.31.94-2.91 1.5-4.65 1.5m6.14-2.88C16.45 15.8 14.32 15 12 15s-4.45.8-6.14 2.12C4.7 15.73 4 13.95 4 12c0-4.42 3.58-8 8-8s8 3.58 8 8c0 1.95-.7 3.73-1.86 5.12">
+                                                            </path>
+                                                            <path
+                                                                d="M12 5.93c-1.93 0-3.5 1.57-3.5 3.5s1.57 3.5 3.5 3.5 3.5-1.57 3.5-3.5-1.57-3.5-3.5-3.5m0 5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5">
+                                                            </path>
+                                                        </svg>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div> --}}
-
-                                    </div>
-
+                                        </div>
+                                    </div> <!-- End of Row -->
                                 </div>
 
 
 
-                                <!-- Widgets Start -->
-                                <div class="container-fluid pt-4 px-4">
-                                    <div class="row g-4">
+                            </div>
+                        </div>
 
-                                        <!-- Sales & Revenue Chart -->
-                                        <div class="col-sm-12 col-xl-8" style="margin-top: -70px;">
-                                            <div class="bg-light text-center rounded p-4">
-                                                <div class="d-flex align-items-center justify-content-between mb-4">
-                                                    <h6 class="mb-0">Sales & Revenue</h6>
-                                                    <a href="#">Show All</a>
-                                                </div>
-                                                <canvas id="earningsChart"></canvas>
-                                                <i class="icon-settings">&#9881;</i>
+                        <!-- Sale & Revenue End -->
+                        <div class="container-fluid pt-4 px-4">
+                            <div class="row g-4">
+                                <!-- Revenue & Sales Chart -->
+                                <div class="col-sm-12 col-xl-8">
+                                    <div class="card card-custom"
+                                        style="width: 904px;    margin-left: -36px;margin-top: -22px;">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div>
+                                                <h5 class="mb-0">Statistics</h5>
+                                                <small>Revenue and Sales</small>
+                                            </div>
+                                            <div class="dropdown-custom">
+                                                Today <span class="caret"></span>
                                             </div>
                                         </div>
-
-
-
-
-                                        <div class="col-sm-12 col-md-6 col-xl-4">
-                                            <div class="h-100 bg-light rounded p-4">
-                                                <div class="d-flex align-items-center justify-content-between mb-2">
-                                                    <h6 class="mb-0">Notifications</h6>
-                                                    <a href="">Show All</a>
-                                                </div>
-                                                <div class="d-flex align-items-center border-bottom py-3">
-                                                    <img class="rounded-circle flex-shrink-0" src="asset/images/stu.jpg"
-                                                        alt="" style="width: 40px; height: 40px;">
-                                                    <div class="w-100 ms-3">
-                                                        <div class="d-flex w-100 justify-content-between">
-                                                            <h6 class="mb-0">Jhon Doe</h6>
-                                                            <small>15 minutes ago</small>
-                                                        </div>
-                                                        <span>Short message goes here...</span>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex align-items-center border-bottom py-3">
-                                                    <img class="rounded-circle flex-shrink-0" src="asset/images/stu.jpg"
-                                                        alt="" style="width: 40px; height: 40px;">
-                                                    <div class="w-100 ms-3">
-                                                        <div class="d-flex w-100 justify-content-between">
-                                                            <h6 class="mb-0">Jhon Doe</h6>
-                                                            <small>15 minutes ago</small>
-                                                        </div>
-                                                        <span>Short message goes here...</span>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex align-items-center border-bottom py-3">
-                                                    <img class="rounded-circle flex-shrink-0" src="asset/images/stu.jpg"
-                                                        alt="" style="width: 40px; height: 40px;">
-                                                    <div class="w-100 ms-3">
-                                                        <div class="d-flex w-100 justify-content-between">
-                                                            <h6 class="mb-0">Jhon Doe</h6>
-                                                            <small>15 minutes ago</small>
-                                                        </div>
-                                                        <span>Short message goes here...</span>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex align-items-center pt-3">
-                                                    <img class="rounded-circle flex-shrink-0" src="asset/images/stu.jpg"
-                                                        alt="" style="width: 40px; height: 40px;">
-                                                    <div class="w-100 ms-3">
-                                                        <div class="d-flex w-100 justify-content-between">
-                                                            <h6 class="mb-0">Jhon Doe</h6>
-                                                            <small>15 minutes ago</small>
-                                                        </div>
-                                                        <span>Short message goes here...</span>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <div class="chart-container">
+                                            <canvas id="revenueSalesChart"></canvas>
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="row">
-                                            <!-- Chart Section -->
-                                            <div class="col-lg-8 mb-3">
-                                                <div class="card p-3">
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <h5>Activitys</h5>
-                                                        <select class="form-select form-select-sm w-auto">
-                                                            <option selected>Monthly</option>
-                                                            <option>Weekly</option>
-                                                            <option>Daily</option>
-                                                        </select>
+
+
+
+
+                                <div class="col-sm-12 col-md-6 col-xl-4">
+
+
+                                    <div class="container">
+                                        <div class="card p-3" style="    margin-top: -236px;width: 433px;">
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <div class="stats-card">
+                                                        {{-- <svg class="stat-icon test11"
+                                                            xmlns="http://www.w3.org/2000/svg" width="40" height="40"
+                                                            viewBox="0 0 24 24" fill="none" stroke="purple"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0">
+                                                            </path>
+                                                            <path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0">
+                                                            </path>
+                                                            <path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0">
+                                                            </path>
+                                                            <path d="M8.7 10.7l6.6 -3.4"></path>
+                                                            <path d="M8.7 13.3l6.6 3.4"></path>
+                                                        </svg> --}}
+                                                        <svg class="stat-icon test11" xmlns="http://www.w3.org/2000/svg"
+                                                            width="40" height="40" viewBox="0 0 24 24" fill="none"
+                                                            stroke="purple" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <circle cx="12" cy="7" r="4"></circle>
+                                                            <path d="M5 21v-2a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v2"></path>
+                                                        </svg>
+
+
+
+                                                        <div>{{ $student }}</div>
+                                                        <div>Students</div>
                                                     </div>
-                                                    <canvas id="activityChart" height="200"></canvas>
                                                 </div>
-                                            </div>
+                                                <div class="col-md-6">
+                                                    <div class="stats-card">
+                                                        {{-- <svg class="stat-icon test11"
+                                                            xmlns="http://www.w3.org/2000/svg" width="40" height="40"
+                                                            viewBox="0 0 24 24" fill="none" stroke="purple"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path d="M12 12l0 .01"></path>
+                                                            <path d="M14.828 9.172a4 4 0 0 1 0 5.656">
+                                                            </path>
+                                                            <path d="M17.657 6.343a8 8 0 0 1 0 11.314">
+                                                            </path>
+                                                            <path d="M9.168 14.828a4 4 0 0 1 0 -5.656">
+                                                            </path>
+                                                            <path d="M6.337 17.657a8 8 0 0 1 0 -11.314">
+                                                            </path>
+                                                        </svg> --}}
+                                                        <svg class="stat-icon test11" xmlns="http://www.w3.org/2000/svg"
+                                                            width="40" height="40" viewBox="0 0 24 24" fill="none"
+                                                            stroke="purple" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <circle cx="12" cy="7" r="4"></circle>
+                                                            <path d="M5 21v-2a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v2"></path>
+                                                        </svg>
 
-                                            <div class="col-sm-12 col-md-6 col-xl-4">
-                                                <div class="h-100 bg-light rounded p-4">
-                                                    <div class="d-flex align-items-center justify-content-between">
-                                                        <h6 class="mb-0">Calender</h6>
-                                                        <a href="">Show All</a>
+
+
+                                                        <div>{{ $teacher }}</div>
+                                                        <div>Teachers</div>
                                                     </div>
-                                                    <div class="chart-container text-center">
-                                                        <h6 class="mb-3">Student States</h6>
-                                                        <canvas id="studentChart"></canvas>
-                                                        <div class="chart-legend mt-3">
-                                                            <span><span class="dot"
-                                                                    style="background-color: #36a2eb;"></span>Total
-                                                                Signups</span>
-                                                            <span><span class="dot"
-                                                                    style="background-color: #ff6384;"></span>Active
-                                                                Student</span>
-                                                        </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="stats-card">
+                                                        <svg class="stat-icon test11" xmlns="http://www.w3.org/2000/svg"
+                                                        width="40" height="40" viewBox="0 0 24 24" fill="none"
+                                                        stroke="purple" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round">
+                                                        <path
+                                                            d="M3 5m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z">
+                                                        </path>
+                                                        <path d="M3 10l18 0"></path>
+                                                        <path d="M7 15l.01 0"></path>
+                                                        <path d="M11 15l2 0"></path>
+                                                    </svg>
+                                                    <div>{{ $courses }}</div>
+                                                    <div>Courses</div>
                                                     </div>
                                                 </div>
-                                            </div>
-
-
-
-                                        </div>
-
-
-
-
-                                        <!-- Recent Sales Start -->
-                                        <div class="container-fluid col-sm-8">
-                                            <div class="bg-light text-center rounded p-4">
-                                                <div class="d-flex align-items-center justify-content-between mb-2">
-                                                    <h6 class="mb-0">Course States</h6>
-                                                    <a href="">Show All</a>
-                                                </div>
-                                                <div class="table-responsive">
-                                                    <table
-                                                        class="table text-start align-middle table-bordered table-hover mb-0">
-                                                        <thead>
-                                                            <tr class="text-dark">
-                                                                <th scope="col"><input class="form-check-input"
-                                                                        type="checkbox">
-                                                                </th>
-                                                                <th scope="col">Name</th>
-                                                                <th scope="col">Teacher</th>
-                                                                <th scope="col">Rating</th>
-                                                                <th scope="col">Earring</th>
-                                                                <th scope="col">Sale</th>
-                                                                <th scope="col">Action</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td><input class="form-check-input" type="checkbox">
-                                                                </td>
-                                                                <td>01 Jan 2045</td>
-                                                                <td>INV-0123</td>
-                                                                <td>* 4.8</td>
-                                                                <td>$123</td>
-                                                                <td>Paid</td>
-                                                                <td><a class="btn btn-sm btn-primary" href="">Detail</a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><input class="form-check-input" type="checkbox">
-                                                                </td>
-                                                                <td>01 Jan 2045</td>
-                                                                <td>INV-0123</td>
-                                                                <td>* 4.8</td>
-                                                                <td>$123</td>
-                                                                <td>Paid</td>
-                                                                <td><a class="btn btn-sm btn-primary" href="">Detail</a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><input class="form-check-input" type="checkbox">
-                                                                </td>
-                                                                <td>01 Jan 2045</td>
-                                                                <td>INV-0123</td>
-                                                                <td>* 4.8</td>
-                                                                <td>$123</td>
-                                                                <td>Paid</td>
-                                                                <td><a class="btn btn-sm btn-primary" href="">Detail</a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><input class="form-check-input" type="checkbox">
-                                                                </td>
-                                                                <td>01 Jan 2045</td>
-                                                                <td>INV-0123</td>
-                                                                <td>* 4.8</td>
-                                                                <td>$123</td>
-                                                                <td>Paid</td>
-                                                                <td><a class="btn btn-sm btn-primary" href="">Detail</a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><input class="form-check-input" type="checkbox">
-                                                                </td>
-                                                                <td>01 Jan 2045</td>
-                                                                <td>INV-0123</td>
-                                                                <td>* 4.8</td>
-                                                                <td>$123</td>
-                                                                <td>Paid</td>
-                                                                <td><a class="btn btn-sm btn-primary" href="">Detail</a>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
+                                                <div class="col-md-6">
+                                                    <div class="stats-card">
+                                                        <svg class="stat-icon test11" xmlns="http://www.w3.org/2000/svg"
+                                                            width="40" height="40" viewBox="0 0 24 24" fill="none"
+                                                            stroke="purple" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path
+                                                                d="M3 5m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z">
+                                                            </path>
+                                                            <path d="M3 10l18 0"></path>
+                                                            <path d="M7 15l.01 0"></path>
+                                                            <path d="M11 15l2 0"></path>
+                                                        </svg>
+                                                        <div>100%</div>
+                                                        <div>Order</div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <!-- Calendar Section -->
+                                    <div class="col-lg-12">
+                                        <div class="card p-2" style="width: 431px;">
+                                            <div id="calendar"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
 
-                                        <div class="col-sm-12 col-md-6 col-xl-4">
-                                            <div class="h-100 bg-light rounded p-4">
-                                                <div class="d-flex align-items-center justify-content-between mb-4">
-                                                    <h6 class="mb-0">To Do List</h6>
-                                                    <a href="">Show All</a>
-                                                </div>
-                                                <div class="d-flex mb-2">
-                                                    <input class="form-control bg-transparent" type="text"
-                                                        placeholder="Enter task">
-                                                    <button type="button" class="btn btn-primary ms-2">Add</button>
-                                                </div>
-                                                <div class="d-flex align-items-center border-bottom py-2">
-                                                    <input class="form-check-input m-0" type="checkbox">
-                                                    <div class="w-100 ms-3">
-                                                        <div
-                                                            class="d-flex w-100 align-items-center justify-content-between">
-                                                            <span>Short task goes here...</span>
-                                                            <button class="btn btn-sm"><i
-                                                                    class="fa fa-times"></i></button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex align-items-center border-bottom py-2">
-                                                    <input class="form-check-input m-0" type="checkbox">
-                                                    <div class="w-100 ms-3">
-                                                        <div
-                                                            class="d-flex w-100 align-items-center justify-content-between">
-                                                            <span>Short task goes here...</span>
-                                                            <button class="btn btn-sm"><i
-                                                                    class="fa fa-times"></i></button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex align-items-center border-bottom py-2">
-                                                    <input class="form-check-input m-0" type="checkbox" checked>
-                                                    <div class="w-100 ms-3">
-                                                        <div
-                                                            class="d-flex w-100 align-items-center justify-content-between">
-                                                            <span><del>Short task goes here...</del></span>
-                                                            <button class="btn btn-sm text-primary"><i
-                                                                    class="fa fa-times"></i></button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex align-items-center border-bottom py-2">
-                                                    <input class="form-check-input m-0" type="checkbox">
-                                                    <div class="w-100 ms-3">
-                                                        <div
-                                                            class="d-flex w-100 align-items-center justify-content-between">
-                                                            <span>Short task goes here...</span>
-                                                            <button class="btn btn-sm"><i
-                                                                    class="fa fa-times"></i></button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex align-items-center pt-2">
-                                                    <input class="form-check-input m-0" type="checkbox">
-                                                    <div class="w-100 ms-3">
-                                                        <div
-                                                            class="d-flex w-100 align-items-center justify-content-between">
-                                                            <span>Short task goes here...</span>
-                                                            <button class="btn btn-sm"><i
-                                                                    class="fa fa-times"></i></button>
-                                                        </div>
-                                                    </div>
-                                                </div>
+
+
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Widgets Start -->
+                    <div class="container-fluid pt-4 px-4">
+                        <div class="row g-4">
+
+
+                            <div class="container-fluid col-sm-8">
+                                <div class="bg-light text-center rounded p-4"
+                                    style="margin-top: -222px; width: 903px; margin-left: -20px;margin-top:-238px;">
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <h6 class="mb-0">Latest Students</h6>
+                                        {{-- <a href="">Show All</a> --}}
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table text-start align-middle table-bordered table-hover mb-0">
+                                            <thead>
+                                                <tr class="text-dark">
+
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Profile</th>
+                                                    <th scope="col">Username</th>
+                                                    <th scope="col">Phone</th>
+                                                    <th scope="col">Gender</th>
+                                                    <th scope="col">Status</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+
+                                                    <td>01 Jan 2045</td>
+                                                    <td>INV-0123</td>
+                                                    <td>* 4.8</td>
+                                                    <td>$123</td>
+                                                    <td>Paid</td>
+
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            {{-- --}}
+
+                            <div class="col-sm-12 col-md-6 col-xl-4" style="    margin-bottom: 22px;margin-top:0px">
+                                <div class="h-100 bg-light rounded p-4" style="margin-left: 11px; width: 429px;">
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <h6 class="mb-0">Notifications</h6>
+                                        <a href="">Show All</a>
+                                    </div>
+                                    <div class="d-flex align-items-center border-bottom py-3">
+                                        <img class="rounded-circle flex-shrink-0" src="asset/images/stu.jpg" alt=""
+                                            style="width: 40px; height: 40px;">
+                                        <div class="w-100 ms-3">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h6 class="mb-0">Jhon Doe</h6>
+                                                <small>15 minutes ago</small>
+                                            </div>
+                                            <span>Short message goes here...</span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center border-bottom py-3">
+                                        <img class="rounded-circle flex-shrink-0" src="asset/images/stu.jpg" alt=""
+                                            style="width: 40px; height: 40px;">
+                                        <div class="w-100 ms-3">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h6 class="mb-0">Jhon Doe</h6>
+                                                <small>15 minutes ago</small>
+                                            </div>
+                                            <span>Short message goes here...</span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center border-bottom py-3">
+                                        <img class="rounded-circle flex-shrink-0" src="asset/images/stu.jpg" alt=""
+                                            style="width: 40px; height: 40px;">
+                                        <div class="w-100 ms-3">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h6 class="mb-0">Jhon Doe</h6>
+                                                <small>15 minutes ago</small>
+                                            </div>
+                                            <span>Short message goes here...</span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center pt-3">
+                                        <img class="rounded-circle flex-shrink-0" src="asset/images/stu.jpg" alt=""
+                                            style="width: 40px; height: 40px;">
+                                        <div class="w-100 ms-3">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h6 class="mb-0">Jhon Doe</h6>
+                                                <small>15 minutes ago</small>
+                                            </div>
+                                            <span>Short message goes here...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-6 col-xl-8"
+                                style="margin-top: -410px;    margin-bottom: 22px;">
+                                <div class="h-100 bg-light rounded p-4" style="width: 901px; margin-left: -18px;">
+                                    <div class="d-flex align-items-center justify-content-between mb-4">
+                                        <h6 class="mb-0">To Do List</h6>
+                                        <a href="">Show All</a>
+                                    </div>
+                                    <div class="d-flex mb-2">
+                                        <input class="form-control bg-transparent" type="text" placeholder="Enter task">
+                                        <button type="button" class="btn btn-primary ms-2">Add</button>
+                                    </div>
+                                    <div class="d-flex align-items-center border-bottom py-2">
+                                        <input class="form-check-input m-0" type="checkbox">
+                                        <div class="w-100 ms-3">
+                                            <div class="d-flex w-100 align-items-center justify-content-between">
+                                                <span>Short task goes here...</span>
+                                                <button class="btn btn-sm"><i class="fa fa-times"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center border-bottom py-2">
+                                        <input class="form-check-input m-0" type="checkbox">
+                                        <div class="w-100 ms-3">
+                                            <div class="d-flex w-100 align-items-center justify-content-between">
+                                                <span>Short task goes here...</span>
+                                                <button class="btn btn-sm"><i class="fa fa-times"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center border-bottom py-2">
+                                        <input class="form-check-input m-0" type="checkbox" checked>
+                                        <div class="w-100 ms-3">
+                                            <div class="d-flex w-100 align-items-center justify-content-between">
+                                                <span><del>Short task goes here...</del></span>
+                                                <button class="btn btn-sm text-primary"><i
+                                                        class="fa fa-times"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center border-bottom py-2">
+                                        <input class="form-check-input m-0" type="checkbox">
+                                        <div class="w-100 ms-3">
+                                            <div class="d-flex w-100 align-items-center justify-content-between">
+                                                <span>Short task goes here...</span>
+                                                <button class="btn btn-sm"><i class="fa fa-times"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center pt-2">
+                                        <input class="form-check-input m-0" type="checkbox">
+                                        <div class="w-100 ms-3">
+                                            <div class="d-flex w-100 align-items-center justify-content-between">
+                                                <span>Short task goes here...</span>
+                                                <button class="btn btn-sm"><i class="fa fa-times"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -837,6 +659,9 @@
             </div>
         </div>
     </div>
+</div>
+</div>
+</div>
 </div>
 
 <!-- Bootstrap JS -->
