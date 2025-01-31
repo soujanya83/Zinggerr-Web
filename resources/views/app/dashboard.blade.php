@@ -543,10 +543,13 @@
                                                         <div class="d-flex align-items-center">
                                                             <div class="flex-shrink-0 wid-40">
                                                                 @if ($user->profile_picture)
-                                                                <img class="img-radius" src="{{ asset('storage/' . $user->profile_picture) }}" alt="User image"
-                                                                    style="height:52px;width: 52px;">
+                                                                <img class="img-radius"
+                                                                    src="{{ asset('storage/' . $user->profile_picture) }}"
+                                                                    alt="User image" style="height:52px;width: 52px;">
                                                                 @else
-                                                                <img class="img-radius" src="{{ asset('asset/images/download.jpg') }}" alt="Default image"
+                                                                <img class="img-radius"
+                                                                    src="{{ asset('asset/images/download.jpg') }}"
+                                                                    alt="Default image"
                                                                     style="height:52px;width: 52px;">
                                                                 @endif
                                                             </div>
@@ -562,9 +565,11 @@
                                                     <td>{{ $user->gender }}</td>
                                                     <td>
                                                         @if($user->status == 1)
-                                                        <span class="badge rounded-pill f-14 bg-light-success">Active</span>
+                                                        <span
+                                                            class="badge rounded-pill f-14 bg-light-success">Active</span>
                                                         @else
-                                                        <span class="badge bg-light-danger rounded-pill f-14">Inactive </span>
+                                                        <span class="badge bg-light-danger rounded-pill f-14">Inactive
+                                                        </span>
                                                         @endif
                                                     </td>
 
@@ -578,12 +583,14 @@
                                 </div>
                             </div> --}}
                             <div class="container-fluid col-sm-8">
-                                <div class="card" style="margin-top: -222px; width: 903px; margin-left: -20px;margin-top:-245px;">
+                                <div class="card"
+                                    style="margin-top: -222px; width: 903px; margin-left: -20px;margin-top:-245px;">
                                     <div class="card-header d-flex justify-content-between align-items-center">
                                         <h6 class="mb-0">Latest Students</h6>
                                         <a href="{{ route('studentlist') }}">Show All</a>
                                     </div>
-                                    <div class="card-body p-0" style="max-height: 300px; overflow-y: auto;    margin-top: 1px;">
+                                    <div class="card-body p-0"
+                                        style="max-height: 300px; overflow-y: auto;    margin-top: 1px;">
                                         <table class="table text-start align-middle table-bordered table-hover mb-0">
                                             <thead class="table-light">
                                                 <tr>
@@ -603,11 +610,14 @@
                                                         <div class="d-flex align-items-center">
                                                             <div class="flex-shrink-0 wid-40">
                                                                 @if ($user->profile_picture)
-                                                                <img class="img-radius" src="{{ asset('storage/' . $user->profile_picture) }}"
+                                                                <img class="img-radius"
+                                                                    src="{{ asset('storage/' . $user->profile_picture) }}"
                                                                     alt="User image" style="height:52px;width: 52px;">
                                                                 @else
-                                                                <img class="img-radius" src="{{ asset('asset/images/download.jpg') }}"
-                                                                    alt="Default image" style="height:52px;width: 52px;">
+                                                                <img class="img-radius"
+                                                                    src="{{ asset('asset/images/download.jpg') }}"
+                                                                    alt="Default image"
+                                                                    style="height:52px;width: 52px;">
                                                                 @endif
                                                             </div>
                                                             <div class="flex-grow-1 ms-3">
@@ -621,9 +631,11 @@
                                                     <td>{{ $user->gender }}</td>
                                                     <td>
                                                         @if($user->status == 1)
-                                                        <span class="badge rounded-pill f-14 bg-light-success">Active</span>
+                                                        <span
+                                                            class="badge rounded-pill f-14 bg-light-success">Active</span>
                                                         @else
-                                                        <span class="badge bg-light-danger rounded-pill f-14">Inactive</span>
+                                                        <span
+                                                            class="badge bg-light-danger rounded-pill f-14">Inactive</span>
                                                         @endif
                                                     </td>
                                                 </tr>
@@ -691,12 +703,11 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-12 col-md-6 col-xl-8"
-                                style="margin-top: -251px;    margin-bottom: 22px" >
+                            <div class="col-sm-12 col-md-6 col-xl-8" style="margin-top: -251px;    margin-bottom: 22px">
                                 <div class="h-100 bg-light rounded p-4" style="width: 901px; margin-left: -18px;">
-                                    <div class="d-flex align-items-center justify-content-between mb-4">
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
                                         <h6 class="mb-0">To Do List</h6>
-                                        <a href="">Show All</a>
+                                        {{-- <a href="">Show All</a> --}}
                                     </div>
                                     <div class="d-flex mb-2">
                                         <input class="form-control bg-transparent" type="text" placeholder="Enter task">

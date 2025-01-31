@@ -150,7 +150,7 @@
                                         <div style="margin-top: 10px;">
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="gender"
-                                                    id="genderMale" value="Male">
+                                                    id="genderMale" value="Male" checked>
                                                 <label class="form-check-label" for="genderMale">Male</label>
                                             </div>
                                             <div class="form-check form-check-inline">
