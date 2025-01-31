@@ -294,15 +294,25 @@
                                                     style="border-radius: 5px; background-color: rgb(103, 58, 183);">
                                                     <div class="icon">
                                                         <div class="text-content">
-                                                            <h5 class="title" style="color:#dee2e6">Courses Last 7 day`s </h5>
-                                                            <h3 class="value" style="color:#dee2e6">5</h3>
-                                                            <h6 class="comparison" style="color:#dee2e6">50 Courses Last Month</h6>
+                                                            <h5 class="title" style="color:#dee2e6">Courses Last 7 day`s
+                                                            </h5>
+                                                            <h3 class="value" style="color:#dee2e6">{{ $courseslast7day
+                                                                }}</h3>
+                                                            <h6 class="comparison" style="color:#dee2e6">{{
+                                                                $coursesLastMonth }} Courses Last
+                                                                Month</h6>
                                                         </div>
-                                                        <svg width="100" height="100" viewBox="0 0 24 24">
+                                                        <svg width="100" height="100" viewBox="0 0 24 24" fill="none"
+                                                            stroke="purple" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
                                                             <path
-                                                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42">
+                                                                d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z">
                                                             </path>
+                                                            <path d="M9 7h6"></path>
+                                                            <path d="M9 11h6"></path>
+                                                            <path d="M9 15h3"></path>
                                                         </svg>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -315,9 +325,13 @@
                                                     style="border-radius: 5px; background-color: rgb(33, 150, 243);">
                                                     <div class="icon2 icon">
                                                         <div class="text-content">
-                                                            <h5 class="title" style="color:#dee2e6">Students Last 7 day`s</h5>
-                                                            <h3 class="value" style="color:#dee2e6">4</h3>
-                                                            <h6 class="comparison" style="color:#dee2e6">3 Students Last Month
+                                                            <h5 class="title" style="color:#dee2e6">Students Last 7
+                                                                day`s</h5>
+                                                            <h3 class="value" style="color:#dee2e6">{{ $studentlast7day
+                                                                }}</h3>
+                                                            <h6 class="comparison" style="color:#dee2e6">{{
+                                                                $studentlastmonth }} Students Last
+                                                                Month
                                                             </h6>
                                                         </div>
                                                         <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeLarge css-6flbmm"
@@ -351,7 +365,7 @@
                                 <!-- Revenue & Sales Chart -->
                                 <div class="col-sm-12 col-xl-8">
                                     <div class="card card-custom"
-                                        style="width: 904px;    margin-left: -36px;margin-top: -22px;">
+                                        style="width: 904px;    margin-left: -36px;margin-top: -25px;">
                                         <div class="d-flex justify-content-between align-items-center mb-3">
                                             <div>
                                                 <h5 class="mb-0">Statistics</h5>
@@ -441,18 +455,18 @@
                                                 <div class="col-md-6">
                                                     <div class="stats-card">
                                                         <svg class="stat-icon test11" xmlns="http://www.w3.org/2000/svg"
-                                                        width="40" height="40" viewBox="0 0 24 24" fill="none"
-                                                        stroke="purple" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path
-                                                            d="M3 5m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z">
-                                                        </path>
-                                                        <path d="M3 10l18 0"></path>
-                                                        <path d="M7 15l.01 0"></path>
-                                                        <path d="M11 15l2 0"></path>
-                                                    </svg>
-                                                    <div>{{ $courses }}</div>
-                                                    <div>Courses</div>
+                                                            width="40" height="40" viewBox="0 0 24 24" fill="none"
+                                                            stroke="purple" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path
+                                                                d="M3 5m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z">
+                                                            </path>
+                                                            <path d="M3 10l18 0"></path>
+                                                            <path d="M7 15l.01 0"></path>
+                                                            <path d="M11 15l2 0"></path>
+                                                        </svg>
+                                                        <div>{{ $courses }}</div>
+                                                        <div>Courses</div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -500,12 +514,12 @@
                         <div class="row g-4">
 
 
-                            <div class="container-fluid col-sm-8">
+                            {{-- <div class="container-fluid col-sm-8">
                                 <div class="bg-light text-center rounded p-4"
                                     style="margin-top: -222px; width: 903px; margin-left: -20px;margin-top:-238px;">
                                     <div class="d-flex align-items-center justify-content-between mb-2">
                                         <h6 class="mb-0">Latest Students</h6>
-                                        {{-- <a href="">Show All</a> --}}
+                                        <a href="{{ route('studentlist') }}">Show All</a>
                                     </div>
                                     <div class="table-responsive">
                                         <table class="table text-start align-middle table-bordered table-hover mb-0">
@@ -522,21 +536,104 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @foreach($latestStudents as $keys=> $user)
                                                 <tr>
+                                                    <td>{{ $keys + 1 }}</td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="flex-shrink-0 wid-40">
+                                                                @if ($user->profile_picture)
+                                                                <img class="img-radius" src="{{ asset('storage/' . $user->profile_picture) }}" alt="User image"
+                                                                    style="height:52px;width: 52px;">
+                                                                @else
+                                                                <img class="img-radius" src="{{ asset('asset/images/download.jpg') }}" alt="Default image"
+                                                                    style="height:52px;width: 52px;">
+                                                                @endif
+                                                            </div>
+                                                            <div class="flex-grow-1 ms-3">
+                                                                <h5 class="mb-1">{{ $user->name }}</h5>
+                                                                <p class="text-muted f-12 mb-0">{{ $user->email }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>{{ $user->username }}</td>
+                                                    <td>{{ $user->phone }}</td>
 
-                                                    <td>01 Jan 2045</td>
-                                                    <td>INV-0123</td>
-                                                    <td>* 4.8</td>
-                                                    <td>$123</td>
-                                                    <td>Paid</td>
+                                                    <td>{{ $user->gender }}</td>
+                                                    <td>
+                                                        @if($user->status == 1)
+                                                        <span class="badge rounded-pill f-14 bg-light-success">Active</span>
+                                                        @else
+                                                        <span class="badge bg-light-danger rounded-pill f-14">Inactive </span>
+                                                        @endif
+                                                    </td>
+
+
 
                                                 </tr>
-
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div> --}}
+                            <div class="container-fluid col-sm-8">
+                                <div class="card" style="margin-top: -222px; width: 903px; margin-left: -20px;margin-top:-245px;">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0">Latest Students</h6>
+                                        <a href="{{ route('studentlist') }}">Show All</a>
+                                    </div>
+                                    <div class="card-body p-0" style="max-height: 300px; overflow-y: auto;    margin-top: 1px;">
+                                        <table class="table text-start align-middle table-bordered table-hover mb-0">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Profile</th>
+                                                    <th scope="col">Username</th>
+                                                    <th scope="col">Phone</th>
+                                                    <th scope="col">Gender</th>
+                                                    <th scope="col">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($latestStudents as $keys => $user)
+                                                <tr>
+                                                    <td>{{ $keys + 1 }}</td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="flex-shrink-0 wid-40">
+                                                                @if ($user->profile_picture)
+                                                                <img class="img-radius" src="{{ asset('storage/' . $user->profile_picture) }}"
+                                                                    alt="User image" style="height:52px;width: 52px;">
+                                                                @else
+                                                                <img class="img-radius" src="{{ asset('asset/images/download.jpg') }}"
+                                                                    alt="Default image" style="height:52px;width: 52px;">
+                                                                @endif
+                                                            </div>
+                                                            <div class="flex-grow-1 ms-3">
+                                                                <h6>{{ $user->name }}</h6>
+                                                                <p class="text-muted f-12 mb-0">{{ $user->email }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>{{ $user->username }}</td>
+                                                    <td>{{ $user->phone }}</td>
+                                                    <td>{{ $user->gender }}</td>
+                                                    <td>
+                                                        @if($user->status == 1)
+                                                        <span class="badge rounded-pill f-14 bg-light-success">Active</span>
+                                                        @else
+                                                        <span class="badge bg-light-danger rounded-pill f-14">Inactive</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
+
 
 
                             {{-- --}}
@@ -595,7 +692,7 @@
                             </div>
 
                             <div class="col-sm-12 col-md-6 col-xl-8"
-                                style="margin-top: -410px;    margin-bottom: 22px;">
+                                style="margin-top: -251px;    margin-bottom: 22px" >
                                 <div class="h-100 bg-light rounded p-4" style="width: 901px; margin-left: -18px;">
                                     <div class="d-flex align-items-center justify-content-between mb-4">
                                         <h6 class="mb-0">To Do List</h6>
@@ -633,24 +730,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="d-flex align-items-center border-bottom py-2">
-                                        <input class="form-check-input m-0" type="checkbox">
-                                        <div class="w-100 ms-3">
-                                            <div class="d-flex w-100 align-items-center justify-content-between">
-                                                <span>Short task goes here...</span>
-                                                <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center pt-2">
-                                        <input class="form-check-input m-0" type="checkbox">
-                                        <div class="w-100 ms-3">
-                                            <div class="d-flex w-100 align-items-center justify-content-between">
-                                                <span>Short task goes here...</span>
-                                                <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>

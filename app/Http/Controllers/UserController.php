@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Laravel\Fortify\Http\Responses\RedirectAsIntended;
 use Ramsey\Uuid\Guid\Guid;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -45,13 +46,29 @@ class UserController extends Controller
         }
     }
 
-    public function dashboardmain(){
+    public function dashboardmain()
+    {
 
-        $student=User::where('type','Student')->where('status',1)->count();
-        $teacher=User::where('type','Teacher')->where('status',1)->count();
-        $staff=User::where('type','Staff')->where('status',1)->count();
-        $courses=Course::where('course_status',1)->count();
-        return view('app.dashboard',compact('student','courses','teacher','staff'));
+        $student = User::where('type', 'Student')->count();
+        $studentlast7day = User::where('type', 'Student')->where('created_at', '>=', Carbon::now()->subDays(7))->count();
+        $latestStudents = User::where('type', 'Student')->latest()  ->take(10)   ->get();
+        $studentlastmonth = User::where('type', 'Student')->whereBetween('created_at', [
+            Carbon::now()->subMonth()->startOfMonth(),
+            Carbon::now()->subMonth()->endOfMonth()
+        ])->count();;
+
+        $teacher = User::where('type', 'Teacher')->count();
+        $staff = User::where('type', 'Staff')->count();
+
+        $courseslast7day = Course::where('course_status')->count();
+        $coursesLastMonth = Course::whereBetween('created_at', [
+            Carbon::now()->subMonth()->startOfMonth(),
+            Carbon::now()->subMonth()->endOfMonth()
+        ])->count();
+        $courseslast7day = Course::where('created_at', '>=', Carbon::now()->subDays(7))->count();
+
+        $courses = Course::where('course_status', 1)->count();
+        return view('app.dashboard', compact('student', 'courses', 'teacher', 'staff', 'courseslast7day', 'coursesLastMonth', 'studentlast7day', 'studentlastmonth','latestStudents'));
     }
 
 
@@ -101,12 +118,12 @@ class UserController extends Controller
 
             $user->save();
 
-            if($request->input('role')=='Teacher'){
-                $route_name='teacherlist';
-            }elseif($request->input('role')=='Student'){
-                $route_name='studentlist';
-            }else{
-                $route_name='userlist';
+            if ($request->input('role') == 'Teacher') {
+                $route_name = 'teacherlist';
+            } elseif ($request->input('role') == 'Student') {
+                $route_name = 'studentlist';
+            } else {
+                $route_name = 'userlist';
             }
 
             // $verificationUrl = URL::temporarySignedRoute(
@@ -117,7 +134,6 @@ class UserController extends Controller
             // Mail::to($user->email)->send(new VerifyEmail($user, $verificationUrl));
 
             return redirect()->route($route_name)->with('success', $request->input('role') . ' created successfully!');
-
         } catch (\Exception $e) {
             // Redirect back with an error message
             return redirect()->back()->with('error', 'Something went wrong. Please try again.');
@@ -216,7 +232,7 @@ class UserController extends Controller
 
     public function useredit($slug)
     {
-        $user = user::where('slug',$slug)->first();
+        $user = user::where('slug', $slug)->first();
         $role = role::all();
         return view('users.useredit', compact('user', 'role'));
     }

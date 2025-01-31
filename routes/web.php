@@ -169,7 +169,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     // Route::post('add-teacher', [TeacherController::class, 'createteacher'])->name('createteacher');
     // Route::post('student-add', [StudentController::class, 'store'])->name('store');
     Route::get('students-create', [StudentController::class, 'studentadd'])->name('studentadd');
-    Route::get('student-list', [StudentController::class, 'studentlist'])->name('studentlist');
+    Route::get('students', [StudentController::class, 'studentlist'])->name('studentlist');
 
     // Route::put('/teacher/{id}/change-status', [TeacherController::class, 'changeStatus'])->name('change_teacher_status');
     Route::get('courses/{slug}/view', [StudentController::class, 'courses_views'])->name('courses.viwes');
