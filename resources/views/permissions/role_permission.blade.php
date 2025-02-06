@@ -47,7 +47,7 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Permissions Assign View</h5>
+                            <h5 class="m-b-10">Permissions Assign</h5>
                         </div>
                     </div>
 
@@ -176,13 +176,15 @@
                                                 <td>{{ $permission['display_name'] }}</td>
                                                 <td>{{ $permission['description'] }}</td>
                                                 <td>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="permissions[]" value="{{ $permission['id'] }}"
-                                                            id="permission{{ $permission['id'] }}">
-                                                        <label class="form-check-label"
-                                                            for="permission{{ $permission['id'] }}"></label>
+
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input input-success" type="checkbox"
+                                                            id="permission{{ $permission['id'] }}" name="permissions[]"
+                                                            value="{{ $permission['id'] }}" style="border-color: black;">
+
                                                     </div>
+
+
                                                 </td>
                                             </tr>
                                             @endforeach

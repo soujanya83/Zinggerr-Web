@@ -92,7 +92,7 @@
                                                             style="height:45px;width: 45px;margin-top:5px">
                                                         @else
                                                         <img class="img-radius"
-                                                            src="{{ asset('asset/images/download.jpg') }}"
+                                                            src="{{ asset('asset/images/user/download.jpg') }}"
                                                             alt="Default image"
                                                             style="height:45px;width: 45px;margin-top:5px">
                                                         @endif
@@ -140,7 +140,7 @@
                                     <button type="button" class="btn btn-primary ms-2">Add</button>
                                 </div>
                                 <div class="d-flex align-items-center border-bottom py-2">
-                                    <input class="form-check-input m-0" type="checkbox">
+                                    {{-- <input class="form-check-input m-0" type="checkbox"> --}}
                                     <div class="w-100 ms-3">
                                         <div class="d-flex w-100 align-items-center justify-content-between">
                                             <span>Short task goes here...</span>
@@ -149,7 +149,7 @@
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-center border-bottom py-2">
-                                    <input class="form-check-input m-0" type="checkbox">
+                                    {{-- <input class="form-check-input m-0" type="checkbox"> --}}
                                     <div class="w-100 ms-3">
                                         <div class="d-flex w-100 align-items-center justify-content-between">
                                             <span>Short task goes here...</span>
@@ -158,7 +158,7 @@
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-center border-bottom py-2">
-                                    <input class="form-check-input m-0" type="checkbox" checked>
+                                    {{-- <input class="form-check-input m-0" type="checkbox" checked> --}}
                                     <div class="w-100 ms-3">
                                         <div class="d-flex w-100 align-items-center justify-content-between">
                                             <span><del>Short task goes here...</del></span>
@@ -406,17 +406,7 @@
                                 <span>Short message goes here...</span>
                             </div>
                         </div>
-                        <div class="d-flex align-items-center pt-3">
-                            <img class="rounded-circle flex-shrink-0" src="asset/images/stu.jpg" alt=""
-                                style="width: 40px; height: 40px;">
-                            <div class="w-100 ms-3">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h6 class="mb-0">Jhon Doe</h6>
-                                    <small>15 minutes ago</small>
-                                </div>
-                                <span>Short message goes here...</span>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
 

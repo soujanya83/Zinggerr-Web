@@ -171,7 +171,7 @@
                                 <div class="list-group-item list-group-item-action">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
-                                            <img src="asset/images/user/avatar-3.jpg" alt="user-image"
+                                            <img src="asset/images/user/download.jpg" alt="user-image"
                                                 class="user-avtar">
                                         </div>
                                         <div class="flex-grow-1 ms-1">
@@ -202,7 +202,7 @@
                             class="user-avatar"
                             style="margin-top: 11px; margin-bottom: 11px; border-radius: 50%; margin-right: 29px;">
                         @else
-                        <img src="{{ asset('asset/images/download.jpg') }}" alt="image" class="user-avatar"
+                        <img src="{{ asset('asset/images/user/download.jpg') }}" alt="image" class="user-avatar"
                             style="margin-top: 11px; margin-bottom: 11px; border-radius: 50%; margin-right: 29px;">
                         @endif
 
