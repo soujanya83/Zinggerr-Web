@@ -140,7 +140,7 @@
                                                 <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}"
                                                     class="rounded-circle" width="100" height="100">
                                                 @else
-                                                <img src="{{ asset('asset/images/user/avatar-1.jpg') }}"
+                                                <img src="{{ asset('asset/images/user/download.jpg') }}"
                                                     class="rounded-circle" width="100" height="100">
                                                 @endif
 
@@ -272,7 +272,7 @@
                                                         <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}"
                                                             class="rounded-circle" width="100" height="100">
                                                         @else
-                                                        <img src="{{ asset('asset/images/user/avatar-1.jpg') }}"
+                                                        <img src="{{ asset('asset/images/user/download.jpg') }}"
                                                             class="rounded-circle" width="100" height="100">
                                                         @endif
 
@@ -299,7 +299,7 @@
                                                             class="text-muted">(Read Only)</small></td> --}}
                                                     <td><input type="text" class="form-control" name="username"
                                                             value="{{ old('username', Auth::user()->username) }}"
-                                                            required></td>
+                                                            required oninput="this.value = this.value.replace(/\s/g, '')"></td>
                                                 </tr>
                                                 <tr>
                                                     <th><span class="thspace">Phone</span></th>
