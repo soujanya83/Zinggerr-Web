@@ -66,7 +66,7 @@
                     </form>
 
                     <hr>
-                    <a href="{{ route('register') }}" class="d-flex justify-content-center">Don't have an account?</a>
+                    <a href="/register-page" class="d-flex justify-content-center">Don't have an account?</a>
                 </div>
             </div>
         </div>

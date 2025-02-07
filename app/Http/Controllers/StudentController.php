@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Course;
+use App\Models\VideoQuiz;
 use App\Models\CoursesChepters;
 use App\Models\CoursesAssets;
 use Illuminate\Support\Facades\Session;
@@ -35,19 +36,27 @@ class StudentController extends Controller
                 ->first();
             $chapters = null; // Set to null for clarity
             $pageName = 'Assets';
+
+            if ($assetsData != null) {
+
+                $quizzes = VideoQuiz::where(['video_name' => $assetsData->assets_video, 'course_id' => $course->id])->orderBy('quiz_time')->get();
+            } else {
+                $quizzes = null;
+            }
         }
-        return view('students.courses_views', compact('course', 'chapters', 'assetsData', 'pageName'));
+        return view('students.courses_views', compact('course', 'chapters', 'assetsData', 'pageName', 'quizzes'));
     }
 
 
-    public function studentdashboard(){
+    public function studentdashboard()
+    {
 
-        $student=User::where('type','Student')->count();
-        $courses=Course::where('course_status',1)->count();
-        $teacher=User::where('type','Teacher')->count();
+        $student = User::where('type', 'Student')->count();
+        $courses = Course::where('course_status', 1)->count();
+        $teacher = User::where('type', 'Teacher')->count();
 
 
-        return view('app.studentdashboard',compact('student','courses','teacher'));
+        return view('app.studentdashboard', compact('student', 'courses', 'teacher'));
     }
 
     public function studentadd(Request $request)
@@ -81,7 +90,7 @@ class StudentController extends Controller
 
     public function studentlist(Request $request)
     {
-        $query = User::whereIn('type',['Student']);
+        $query = User::whereIn('type', ['Student']);
 
         if ($request->has('search') && $request->search) {
             $search = $request->search;
@@ -121,7 +130,7 @@ class StudentController extends Controller
 
     public function studentedit($slug)
     {
-        $user = User::where('slug',$slug)->first();
+        $user = User::where('slug', $slug)->first();
 
         return view('students.studentedit', compact('user'));
     }
@@ -129,7 +138,7 @@ class StudentController extends Controller
 
     public function updatestudent(Request $request)
     {
-        $id=$request->userid;
+        $id = $request->userid;
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:5|max:255',
             'username' => 'required|min:5|max:255|unique:users,username,' . $id,
@@ -176,8 +185,4 @@ class StudentController extends Controller
             return redirect()->back()->with('error', 'Something went wrong. Please try again.');
         }
     }
-
-
-
-
 }

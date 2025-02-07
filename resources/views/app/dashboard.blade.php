@@ -35,10 +35,10 @@
                     <div class="col-md-6">
                         <div class="card  order-card" style="background-color: #aa33d4">
                             <div class="card-body">
-                                <h5 class="text-white">Courses Last 7 day`s</h5>
-                                <h3 class="text-white">{{ $courseslast7day
+                                <h5 class="text-white" style="font-size: 17px;">Courses Last 7 day`s</h5>
+                                <h3 class="text-white" style="font-size: 17px;">{{ $courseslast7day
                                     }}</h3>
-                                <p class="m-b-0">{{ $coursesLastMonth }} Courses Last
+                                <p class="m-b-0"style="font-size: 13px;">{{ $coursesLastMonth }} Courses Last
                                     Month</p>
                                 <i class="material-icons-two-tone d-block f-46 card-icon text-white">note</i>
                             </div>
@@ -50,11 +50,11 @@
                     <div class="col-md-6">
                         <div class="card bg-primary order-card">
                             <div class="card-body">
-                                <h5 class="text-white">Students Last 7
+                                <h5 class="text-white" style="font-size: 17px;">Students Last 7
                                     day`s</h5>
-                                <h3 class="text-white">{{ $studentlast7day
+                                <h3 class="text-white" style="font-size: 17px;">{{ $studentlast7day
                                     }}</h3>
-                                <p class="m-b-0">{{ $studentlastmonth }} Students Last
+                                <p class="m-b-0" style="font-size: 13px;">{{ $studentlastmonth }} Students Last
                                     Month</p><i
                                     class="material-icons-two-tone d-block f-46 card-icon text-white">account_circle</i>
                             </div>
@@ -188,7 +188,7 @@
                                     </div>
                                 </div>
                                 <div class="col-8 text-md-center">
-                                    <h5>{{ $student }}</h5><span class="text-muted">Students</span>
+                                    <h6>{{ $student }}</h6><span class="text-muted">Students</span>
                                 </div>
                             </div>
                         </div>
@@ -200,7 +200,7 @@
                                     </div>
                                 </div>
                                 <div class="col-8 text-md-center">
-                                    <h5>{{ $teacher }}</h5><span class="text-muted">Teachers</span>
+                                    <h6>{{ $teacher }}</h6><span class="text-muted">Teachers</span>
                                 </div>
                             </div>
                         </div>
@@ -214,7 +214,7 @@
                                     </div>
                                 </div>
                                 <div class="col-8 text-md-center">
-                                    <h5>{{ $courses }}</h5><span class="text-muted">Courses</span>
+                                    <h6>{{ $courses }}</h6><span class="text-muted">Courses</span>
                                 </div>
                             </div>
                         </div>
@@ -226,7 +226,7 @@
                                     </div>
                                 </div>
                                 <div class="col-8 text-md-center">
-                                    <h5>100%</h5><span class="text-muted">Order</span>
+                                    <h6>100%</h6><span class="text-muted">Order</span>
                                 </div>
                             </div>
                         </div>

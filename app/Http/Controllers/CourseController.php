@@ -350,12 +350,12 @@ class CourseController extends Controller
 
     public function manage_activity($slug)
     {
-        $chapterId ='11';
-        $coursesdata=Course::where('slug',$slug)->first();
+        $chapterId = '11';
+        $coursesdata = Course::where('slug', $slug)->first();
         $courseId = $coursesdata->id;
-        $assetsdata = CoursesAssets::where(['course_id'=> $courseId,'chapter_id'=>11])->get();
+        $assetsdata = CoursesAssets::where(['course_id' => $courseId, 'chapter_id' => 11])->get();
 
-        return view('courses.create_blogs_assets', compact('chapterId', 'courseId','assetsdata'));
+        return view('courses.create_blogs_assets', compact('chapterId', 'courseId', 'assetsdata'));
     }
 
 
@@ -519,6 +519,8 @@ class CourseController extends Controller
             $course = new Course();
             $course->id = $uuid;
             $course->slug = $slug;
+
+            $course->user_id = Auth::user()->id;
             $course->course_full_name = $request->course_full_name;
             $course->course_short_name = $request->course_short_name;
             $course->course_category = $request->course_category;
@@ -845,31 +847,31 @@ class CourseController extends Controller
     public function submitAssets(Request $request)
     {
 
-            // Validation
-            $validator = Validator::make($request->all(), [
-                'course_id' => 'required|exists:courses,id',
-                'chapter_id' => 'required',
-                'topicName' => 'required|string|max:255',
-                'assetstype' => 'required|in:blog,url,videos,youtube',
-                'status' => 'required|boolean',
-                'fileName' => 'required_if:assetstype,videos|string',
-                'chunkNumber' => 'required_if:assetstype,videos|integer',
-                'totalChunks' => 'required_if:assetstype,videos|integer',
-                'file' => 'required_if:assetstype,videos|file',
-                'assets_discription' => 'nullable|string',
-                'videourl' => 'nullable',
-                'youtubelink' => 'nullable',
-            ]);
+        // Validation
+        $validator = Validator::make($request->all(), [
+            'course_id' => 'required|exists:courses,id',
+            'chapter_id' => 'required',
+            'topicName' => 'required|string|max:255',
+            'assetstype' => 'required|in:blog,url,videos,youtube',
+            'status' => 'required|boolean',
+            'fileName' => 'required_if:assetstype,videos|string',
+            'chunkNumber' => 'required_if:assetstype,videos|integer',
+            'totalChunks' => 'required_if:assetstype,videos|integer',
+            'file' => 'required_if:assetstype,videos|file',
+            'assets_discription' => 'nullable|string',
+            'videourl' => 'nullable',
+            'youtubelink' => 'nullable',
+        ]);
 
-            if ($validator->fails()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => $validator->errors()->first(),
-                ], 400);
-            }
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first(),
+            ], 400);
+        }
 
 
-            try {
+        try {
             $videoPath = null;
 
             // Handle chunk-based video uploads
@@ -1004,9 +1006,10 @@ class CourseController extends Controller
     public function courselist(Request $request)
     {
         $userId = Auth::user()->id;
+
         $userType = Auth::user()->type;
         if ($userType == 'Superadmin' || $userType == 'Admin' || $userType == 'Staff') {
-            $query = Course::query();
+            $query = Course::where('user_id', $userId);
         } else {
             $query = CoursesAssign::where('users_id', $userId)->where('courses.course_status', 1)->where('courses_assign.status', 1)->join('courses', 'courses.id', '=', 'courses_assign.courses_id');
         }
@@ -1094,6 +1097,7 @@ class CourseController extends Controller
         try {
             $course->course_full_name = $request->course_full_name;
             $course->slug = $slug;
+            $course->user_id = Auth::user()->id;
             $course->course_short_name = $request->course_short_name;
             $course->course_category = $request->course_category;
             $course->course_start_date = $request->course_start_date;

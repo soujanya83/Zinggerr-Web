@@ -13,6 +13,7 @@ return new class extends Migration
             $table->char('id', 36)->primary();
             $table->string('course_full_name', 255);
             $table->string('slug', 255);
+            $table->string('user_id', 255);
             $table->string('course_short_name', 255);
             $table->string('course_category', 100);
             $table->date('course_start_date')->nullable();
