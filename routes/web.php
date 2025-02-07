@@ -9,7 +9,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
-
+use App\Http\Controllers\VideoQuizController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\ClearCacheAfterLogout;
@@ -21,7 +21,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+Route::get('/register-page', function () {
+    return view('auth.register');
+});
 
 Route::get('/logout', function () {
     Auth::logout();
@@ -31,6 +33,9 @@ Route::get('/logout', function () {
 })->name('logout');
 
 Route::get('/login-page', function () {
+    Auth::logout();
+    session()->invalidate();
+    session()->regenerateToken();
     return  view('auth.login');
 })->name('loginpage');
 
@@ -210,6 +215,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
         ->middleware('can:role');
     Route::get('/permissions/assigned-delete/{user}', [PermissionsController::class, 'permissions_assigned_delete'])->name('permission_assigned_delete');
 
+    Route::get('/video/{id}', [VideoQuizController::class, 'showVideo'])->name('video.show');
 
 
     Route::post('/logout', function () {

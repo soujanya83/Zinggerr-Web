@@ -9,6 +9,7 @@ class Course extends Model
     protected $fillable = [
         'course_full_name',
         'course_short_name',
+        'user_id',
         'course_category',
         'course_start_date',
         'course_end_date',

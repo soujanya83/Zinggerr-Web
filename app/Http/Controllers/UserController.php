@@ -67,7 +67,7 @@ class UserController extends Controller
         ])->count();
         $courseslast7day = Course::where('created_at', '>=', Carbon::now()->subDays(7))->count();
 
-        $courses = Course::where('course_status', 1)->count();
+        $courses = Course::count();
         return view('app.dashboard', compact('student', 'courses', 'teacher', 'staff', 'courseslast7day', 'coursesLastMonth', 'studentlast7day', 'studentlastmonth','latestStudents'));
     }
 

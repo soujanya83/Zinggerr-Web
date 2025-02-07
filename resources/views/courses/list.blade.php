@@ -265,9 +265,9 @@
                                                                 <small class="text-muted">&nbsp; ({{
                                                                     number_format($course->total_users) }})</small>
                                                     </div>
-                                                    <a href="{{ route('course_details', $course->id) }}"
+                                                    {{-- <a href="{{ route('course_details', $course->id) }}"
                                                         class="btn btn-sm btn-outline-primary mb-2 position-absolute end-0">Read
-                                                        More</a>
+                                                        More</a> --}}
                                                 </div>
                                             </li>
                                         </ul>

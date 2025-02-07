@@ -120,7 +120,7 @@
                             <div class="col-md-6">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="usernameInput"
-                                           placeholder="Enter Username" name="user_name" required value="{{ old('user_name') }}">
+                                           placeholder="Enter Username" name="user_name" required value="{{ old('user_name') }}" oninput="this.value = this.value.replace(/\s/g, '')">
                                     <label for="usernameInput">Username</label>
                                     <small id="usernameError" class="text-danger"></small>
                                     @error('user_name')

@@ -3,7 +3,9 @@
 @section('content')
 @include('partials.sidebar')
 @include('partials.headerdashboard')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
     .course-container {
         border: 1px solid #ccc;
@@ -328,11 +330,314 @@
 
                             @elseif($assetsData->assets_type == 'videos')
 
-                            <video controls width="100%" height="600">
+                            <video id="videoPlayer" controls width="100%" height="600">
                                 <source src="{{ asset('storage/' . $assetsData->assets_video) }}" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                             <h3>{{ $assetsData->topic_name }}</h3>
+
+
+
+                            @if($quizzes !=null)
+                            <!-- Store quiz data as JSON -->
+                            <input type="hidden" id="quizData" value='@json($quizzes)'>
+
+                            <!-- Quiz Modal -->
+                            <div class="modal fade" id="quizModal" tabindex="-1" aria-labelledby="quizModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="quizModalLabel">Quiz</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h4 id="quizQuestion"></h4>
+                                            <form id="quizForm">
+                                                <div>
+                                                    <input type="radio" name="answer" id="option1" value="1">
+                                                    <label for="option1"></label>
+                                                </div>
+                                                <div>
+                                                    <input type="radio" name="answer" id="option2" value="2">
+                                                    <label for="option2"></label>
+                                                </div>
+                                                <div>
+                                                    <input type="radio" name="answer" id="option3" value="3">
+                                                    <label for="option3"></label>
+                                                </div>
+                                                <div>
+                                                    <input type="radio" name="answer" id="option4" value="4">
+                                                    <label for="option4"></label>
+                                                </div>
+                                                <br>
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            </form>
+                                            <p id="quizResult" class="text-success" style="display:none;"></p>
+                                            <p id="quizIncorrect" class="text-danger" style="display:none;"></p>
+                                            <button id="continueBtn" class="btn btn-success"
+                                                style="display:none;">Continue Video</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @else
+                            @endif
+                            {{-- <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                            const video = document.getElementById("videoPlayer");
+                            const quizModal = new bootstrap.Modal(document.getElementById("quizModal"));
+                            const quizData = JSON.parse(document.getElementById("quizData").value);
+                            let currentQuizIndex = 0;
+                            let quizzesShown = [];
+
+                            function resetQuizOptions() {
+                                document.querySelectorAll('input[name="answer"]').forEach((input) => {
+                                    input.checked = false;
+                                });
+
+                                document.getElementById("quizResult").style.display = "none";
+                                document.getElementById("quizIncorrect").style.display = "none";
+                                document.getElementById("quizForm").style.display = "block";
+                            }
+
+                            function showQuiz(quiz) {
+                                            resetQuizOptions();
+
+                                            document.getElementById("quizQuestion").textContent = quiz.quiz_question;
+                                            document.getElementById("option1").nextElementSibling.textContent = quiz.option_1;
+                                            document.getElementById("option2").nextElementSibling.textContent = quiz.option_2;
+                                            document.getElementById("option3").nextElementSibling.textContent = quiz.option_3;
+                                            document.getElementById("option4").nextElementSibling.textContent = quiz.option_4;
+                                            document.getElementById("quizForm").dataset.correct = quiz.correct_option;
+
+                                            // ✅ Hide "Continue Video" button for all quizzes except the first one
+                                            if (currentQuizIndex === 0) {
+                                                document.getElementById("continueBtn").style.display = "none";
+                                            } else {
+                                                document.getElementById("continueBtn").style.display = "none";
+                                            }
+
+                                            video.pause();
+                                            quizModal.show();
+                                        }
+
+                                    video.addEventListener("timeupdate", function () {
+                                        if (currentQuizIndex < quizData.length) {
+                                            const quiz = quizData[currentQuizIndex];
+                                            if (!quizzesShown.includes(quiz.quiz_time) && video.currentTime >= quiz.quiz_time) {
+                                                quizzesShown.push(quiz.quiz_time);
+                                                showQuiz(quiz);
+                                            }
+                                        }
+                                    });
+
+                                    // Hide incorrect message when a new option is selected
+                                    document.querySelectorAll('input[name="answer"]').forEach((input) => {
+                                        input.addEventListener("change", function () {
+                                            document.getElementById("quizIncorrect").style.display = "none";
+                                        });
+                                    });
+
+                                    document.getElementById("quizForm").addEventListener("submit", function (e) {
+                                        e.preventDefault();
+                                        const selectedOption = document.querySelector('input[name="answer"]:checked');
+
+                                        if (!selectedOption) {
+                                            document.getElementById("quizIncorrect").textContent = "⚠️ Please select an answer.";
+                                            document.getElementById("quizIncorrect").style.display = "block";
+                                            return;
+                                        }
+
+                                        const correctAnswer = this.dataset.correct;
+                                        if (selectedOption.value === correctAnswer) {
+                                            document.getElementById("quizResult").textContent = "✅ Correct! Well done!";
+                                            document.getElementById("quizResult").style.display = "block";
+                                            document.getElementById("continueBtn").style.display = "block";
+                                        } else {
+                                            document.getElementById("quizIncorrect").textContent = "❌ Incorrect! Try again.";
+                                            document.getElementById("quizIncorrect").style.display = "block";
+                                        }
+                                    });
+
+                                    document.getElementById("continueBtn").addEventListener("click", function () {
+                                        quizModal.hide();
+                                        video.play();
+                                        currentQuizIndex++;
+                                    });
+                                });
+                            </script> --}}
+
+                            {{-- <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+    const video = document.getElementById("videoPlayer");
+    const quizModal = new bootstrap.Modal(document.getElementById("quizModal"));
+    const quizData = JSON.parse(document.getElementById("quizData").value);
+    let quizzesShown = new Set(); // Keep track of quizzes shown
+
+    function resetQuizOptions() {
+        document.querySelectorAll('input[name="answer"]').forEach((input) => {
+            input.checked = false;
+        });
+
+        document.getElementById("quizResult").style.display = "none";
+        document.getElementById("quizIncorrect").style.display = "none";
+        document.getElementById("quizForm").style.display = "block";
+    }
+
+    function showQuiz(quiz) {
+        resetQuizOptions();
+
+        document.getElementById("quizQuestion").textContent = quiz.quiz_question;
+        document.getElementById("option1").nextElementSibling.textContent = quiz.option_1;
+        document.getElementById("option2").nextElementSibling.textContent = quiz.option_2;
+        document.getElementById("option3").nextElementSibling.textContent = quiz.option_3;
+        document.getElementById("option4").nextElementSibling.textContent = quiz.option_4;
+        document.getElementById("quizForm").dataset.correct = quiz.correct_option;
+
+        // Hide the "Continue Video" button for all quizzes
+        document.getElementById("continueBtn").style.display = "none";
+
+        video.pause();
+        quizModal.show();
+    }
+
+    video.addEventListener("timeupdate", function () {
+        quizData.forEach((quiz) => {
+            if (video.currentTime >= quiz.quiz_time && !quizzesShown.has(quiz.quiz_time)) {
+                quizzesShown.add(quiz.quiz_time);
+                showQuiz(quiz);
+            }
+        });
+    });
+
+    // Hide incorrect message when a new option is selected
+    document.querySelectorAll('input[name="answer"]').forEach((input) => {
+        input.addEventListener("change", function () {
+            document.getElementById("quizIncorrect").style.display = "none";
+        });
+    });
+
+    document.getElementById("quizForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const selectedOption = document.querySelector('input[name="answer"]:checked');
+
+        if (!selectedOption) {
+            document.getElementById("quizIncorrect").textContent = "⚠️ Please select an answer.";
+            document.getElementById("quizIncorrect").style.display = "block";
+            return;
+        }
+
+        const correctAnswer = this.dataset.correct;
+        if (selectedOption.value === correctAnswer) {
+            document.getElementById("quizResult").textContent = "✅ Correct! Well done!";
+            document.getElementById("quizResult").style.display = "block";
+            document.getElementById("continueBtn").style.display = "block";
+        } else {
+            document.getElementById("quizIncorrect").textContent = "❌ Incorrect! Try again.";
+            document.getElementById("quizIncorrect").style.display = "block";
+        }
+    });
+
+    document.getElementById("continueBtn").addEventListener("click", function () {
+        quizModal.hide();
+        video.play();
+    });
+});
+
+                            </script> --}}
+
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+    const video = document.getElementById("videoPlayer");
+    const quizModal = new bootstrap.Modal(document.getElementById("quizModal"));
+    const quizData = JSON.parse(document.getElementById("quizData").value);
+    let quizzesShown = new Set();
+    let lastTime = 0; // Track last video time to detect seeking
+
+    function resetQuizOptions() {
+        document.querySelectorAll('input[name="answer"]').forEach((input) => {
+            input.checked = false;
+        });
+
+        document.getElementById("quizResult").style.display = "none";
+        document.getElementById("quizIncorrect").style.display = "none";
+        document.getElementById("quizForm").style.display = "block";
+    }
+
+    function showQuiz(quiz) {
+        resetQuizOptions();
+
+        document.getElementById("quizQuestion").textContent = quiz.quiz_question;
+        document.getElementById("option1").nextElementSibling.textContent = quiz.option_1;
+        document.getElementById("option2").nextElementSibling.textContent = quiz.option_2;
+        document.getElementById("option3").nextElementSibling.textContent = quiz.option_3;
+        document.getElementById("option4").nextElementSibling.textContent = quiz.option_4;
+        document.getElementById("quizForm").dataset.correct = quiz.correct_option;
+
+        document.getElementById("continueBtn").style.display = "none";
+
+        video.pause();
+        quizModal.show();
+    }
+
+    video.addEventListener("timeupdate", function () {
+        let currentTime = video.currentTime;
+
+        // If user seeks backwards, reset quizzesShown to allow showing them again
+        if (currentTime < lastTime) {
+            quizzesShown.clear();
+        }
+        lastTime = currentTime;
+
+        quizData.forEach((quiz) => {
+            if (video.currentTime >= quiz.quiz_time && !quizzesShown.has(quiz.quiz_time)) {
+                quizzesShown.add(quiz.quiz_time);
+                showQuiz(quiz);
+            }
+        });
+    });
+
+    document.querySelectorAll('input[name="answer"]').forEach((input) => {
+        input.addEventListener("change", function () {
+            document.getElementById("quizIncorrect").style.display = "none";
+        });
+    });
+
+    document.getElementById("quizForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const selectedOption = document.querySelector('input[name="answer"]:checked');
+
+        if (!selectedOption) {
+            document.getElementById("quizIncorrect").textContent = "⚠️ Please select an answer.";
+            document.getElementById("quizIncorrect").style.display = "block";
+            return;
+        }
+
+        const correctAnswer = this.dataset.correct;
+        if (selectedOption.value === correctAnswer) {
+            document.getElementById("quizResult").textContent = "✅ Correct! Well done!";
+            document.getElementById("quizResult").style.display = "block";
+            document.getElementById("continueBtn").style.display = "block";
+        } else {
+            document.getElementById("quizIncorrect").textContent = "❌ Incorrect! Try again.";
+            document.getElementById("quizIncorrect").style.display = "block";
+        }
+    });
+
+    document.getElementById("continueBtn").addEventListener("click", function () {
+        quizModal.hide();
+        video.play();
+    });
+});
+
+                            </script>
+
+
+
+
+
 
 
                             @else
@@ -414,7 +719,6 @@
 
 
 
-
 <script>
     function playVideo(videoPath, topicName) {
         // Set the video source
@@ -460,3 +764,4 @@
 
 @include('partials.footer')
 @endsection
+  
