@@ -384,255 +384,9 @@
                             </div>
                             @else
                             @endif
-                            {{-- <script>
-                                document.addEventListener("DOMContentLoaded", function () {
-                            const video = document.getElementById("videoPlayer");
-                            const quizModal = new bootstrap.Modal(document.getElementById("quizModal"));
-                            const quizData = JSON.parse(document.getElementById("quizData").value);
-                            let currentQuizIndex = 0;
-                            let quizzesShown = [];
 
-                            function resetQuizOptions() {
-                                document.querySelectorAll('input[name="answer"]').forEach((input) => {
-                                    input.checked = false;
-                                });
 
-                                document.getElementById("quizResult").style.display = "none";
-                                document.getElementById("quizIncorrect").style.display = "none";
-                                document.getElementById("quizForm").style.display = "block";
-                            }
 
-                            function showQuiz(quiz) {
-                                            resetQuizOptions();
-
-                                            document.getElementById("quizQuestion").textContent = quiz.quiz_question;
-                                            document.getElementById("option1").nextElementSibling.textContent = quiz.option_1;
-                                            document.getElementById("option2").nextElementSibling.textContent = quiz.option_2;
-                                            document.getElementById("option3").nextElementSibling.textContent = quiz.option_3;
-                                            document.getElementById("option4").nextElementSibling.textContent = quiz.option_4;
-                                            document.getElementById("quizForm").dataset.correct = quiz.correct_option;
-
-                                            // ✅ Hide "Continue Video" button for all quizzes except the first one
-                                            if (currentQuizIndex === 0) {
-                                                document.getElementById("continueBtn").style.display = "none";
-                                            } else {
-                                                document.getElementById("continueBtn").style.display = "none";
-                                            }
-
-                                            video.pause();
-                                            quizModal.show();
-                                        }
-
-                                    video.addEventListener("timeupdate", function () {
-                                        if (currentQuizIndex < quizData.length) {
-                                            const quiz = quizData[currentQuizIndex];
-                                            if (!quizzesShown.includes(quiz.quiz_time) && video.currentTime >= quiz.quiz_time) {
-                                                quizzesShown.push(quiz.quiz_time);
-                                                showQuiz(quiz);
-                                            }
-                                        }
-                                    });
-
-                                    // Hide incorrect message when a new option is selected
-                                    document.querySelectorAll('input[name="answer"]').forEach((input) => {
-                                        input.addEventListener("change", function () {
-                                            document.getElementById("quizIncorrect").style.display = "none";
-                                        });
-                                    });
-
-                                    document.getElementById("quizForm").addEventListener("submit", function (e) {
-                                        e.preventDefault();
-                                        const selectedOption = document.querySelector('input[name="answer"]:checked');
-
-                                        if (!selectedOption) {
-                                            document.getElementById("quizIncorrect").textContent = "⚠️ Please select an answer.";
-                                            document.getElementById("quizIncorrect").style.display = "block";
-                                            return;
-                                        }
-
-                                        const correctAnswer = this.dataset.correct;
-                                        if (selectedOption.value === correctAnswer) {
-                                            document.getElementById("quizResult").textContent = "✅ Correct! Well done!";
-                                            document.getElementById("quizResult").style.display = "block";
-                                            document.getElementById("continueBtn").style.display = "block";
-                                        } else {
-                                            document.getElementById("quizIncorrect").textContent = "❌ Incorrect! Try again.";
-                                            document.getElementById("quizIncorrect").style.display = "block";
-                                        }
-                                    });
-
-                                    document.getElementById("continueBtn").addEventListener("click", function () {
-                                        quizModal.hide();
-                                        video.play();
-                                        currentQuizIndex++;
-                                    });
-                                });
-                            </script> --}}
-
-                            {{-- <script>
-                                document.addEventListener("DOMContentLoaded", function () {
-    const video = document.getElementById("videoPlayer");
-    const quizModal = new bootstrap.Modal(document.getElementById("quizModal"));
-    const quizData = JSON.parse(document.getElementById("quizData").value);
-    let quizzesShown = new Set(); // Keep track of quizzes shown
-
-    function resetQuizOptions() {
-        document.querySelectorAll('input[name="answer"]').forEach((input) => {
-            input.checked = false;
-        });
-
-        document.getElementById("quizResult").style.display = "none";
-        document.getElementById("quizIncorrect").style.display = "none";
-        document.getElementById("quizForm").style.display = "block";
-    }
-
-    function showQuiz(quiz) {
-        resetQuizOptions();
-
-        document.getElementById("quizQuestion").textContent = quiz.quiz_question;
-        document.getElementById("option1").nextElementSibling.textContent = quiz.option_1;
-        document.getElementById("option2").nextElementSibling.textContent = quiz.option_2;
-        document.getElementById("option3").nextElementSibling.textContent = quiz.option_3;
-        document.getElementById("option4").nextElementSibling.textContent = quiz.option_4;
-        document.getElementById("quizForm").dataset.correct = quiz.correct_option;
-
-        // Hide the "Continue Video" button for all quizzes
-        document.getElementById("continueBtn").style.display = "none";
-
-        video.pause();
-        quizModal.show();
-    }
-
-    video.addEventListener("timeupdate", function () {
-        quizData.forEach((quiz) => {
-            if (video.currentTime >= quiz.quiz_time && !quizzesShown.has(quiz.quiz_time)) {
-                quizzesShown.add(quiz.quiz_time);
-                showQuiz(quiz);
-            }
-        });
-    });
-
-    // Hide incorrect message when a new option is selected
-    document.querySelectorAll('input[name="answer"]').forEach((input) => {
-        input.addEventListener("change", function () {
-            document.getElementById("quizIncorrect").style.display = "none";
-        });
-    });
-
-    document.getElementById("quizForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-        const selectedOption = document.querySelector('input[name="answer"]:checked');
-
-        if (!selectedOption) {
-            document.getElementById("quizIncorrect").textContent = "⚠️ Please select an answer.";
-            document.getElementById("quizIncorrect").style.display = "block";
-            return;
-        }
-
-        const correctAnswer = this.dataset.correct;
-        if (selectedOption.value === correctAnswer) {
-            document.getElementById("quizResult").textContent = "✅ Correct! Well done!";
-            document.getElementById("quizResult").style.display = "block";
-            document.getElementById("continueBtn").style.display = "block";
-        } else {
-            document.getElementById("quizIncorrect").textContent = "❌ Incorrect! Try again.";
-            document.getElementById("quizIncorrect").style.display = "block";
-        }
-    });
-
-    document.getElementById("continueBtn").addEventListener("click", function () {
-        quizModal.hide();
-        video.play();
-    });
-});
-
-                            </script> --}}
-
-                            <script>
-                                document.addEventListener("DOMContentLoaded", function () {
-    const video = document.getElementById("videoPlayer");
-    const quizModal = new bootstrap.Modal(document.getElementById("quizModal"));
-    const quizData = JSON.parse(document.getElementById("quizData").value);
-    let quizzesShown = new Set();
-    let lastTime = 0; // Track last video time to detect seeking
-
-    function resetQuizOptions() {
-        document.querySelectorAll('input[name="answer"]').forEach((input) => {
-            input.checked = false;
-        });
-
-        document.getElementById("quizResult").style.display = "none";
-        document.getElementById("quizIncorrect").style.display = "none";
-        document.getElementById("quizForm").style.display = "block";
-    }
-
-    function showQuiz(quiz) {
-        resetQuizOptions();
-
-        document.getElementById("quizQuestion").textContent = quiz.quiz_question;
-        document.getElementById("option1").nextElementSibling.textContent = quiz.option_1;
-        document.getElementById("option2").nextElementSibling.textContent = quiz.option_2;
-        document.getElementById("option3").nextElementSibling.textContent = quiz.option_3;
-        document.getElementById("option4").nextElementSibling.textContent = quiz.option_4;
-        document.getElementById("quizForm").dataset.correct = quiz.correct_option;
-
-        document.getElementById("continueBtn").style.display = "none";
-
-        video.pause();
-        quizModal.show();
-    }
-
-    video.addEventListener("timeupdate", function () {
-        let currentTime = video.currentTime;
-
-        // If user seeks backwards, reset quizzesShown to allow showing them again
-        if (currentTime < lastTime) {
-            quizzesShown.clear();
-        }
-        lastTime = currentTime;
-
-        quizData.forEach((quiz) => {
-            if (video.currentTime >= quiz.quiz_time && !quizzesShown.has(quiz.quiz_time)) {
-                quizzesShown.add(quiz.quiz_time);
-                showQuiz(quiz);
-            }
-        });
-    });
-
-    document.querySelectorAll('input[name="answer"]').forEach((input) => {
-        input.addEventListener("change", function () {
-            document.getElementById("quizIncorrect").style.display = "none";
-        });
-    });
-
-    document.getElementById("quizForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-        const selectedOption = document.querySelector('input[name="answer"]:checked');
-
-        if (!selectedOption) {
-            document.getElementById("quizIncorrect").textContent = "⚠️ Please select an answer.";
-            document.getElementById("quizIncorrect").style.display = "block";
-            return;
-        }
-
-        const correctAnswer = this.dataset.correct;
-        if (selectedOption.value === correctAnswer) {
-            document.getElementById("quizResult").textContent = "✅ Correct! Well done!";
-            document.getElementById("quizResult").style.display = "block";
-            document.getElementById("continueBtn").style.display = "block";
-        } else {
-            document.getElementById("quizIncorrect").textContent = "❌ Incorrect! Try again.";
-            document.getElementById("quizIncorrect").style.display = "block";
-        }
-    });
-
-    document.getElementById("continueBtn").addEventListener("click", function () {
-        quizModal.hide();
-        video.play();
-    });
-});
-
-                            </script>
 
 
 
@@ -930,6 +684,93 @@ function showQuiz(quiz) {
 
 </script>
 
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+const video = document.getElementById("videoPlayer");
+const quizModal = new bootstrap.Modal(document.getElementById("quizModal"));
+const quizData = JSON.parse(document.getElementById("quizData").value);
+let quizzesShown = new Set();
+let lastTime = 0; // Track last video time to detect seeking
+
+function resetQuizOptions() {
+document.querySelectorAll('input[name="answer"]').forEach((input) => {
+input.checked = false;
+});
+
+document.getElementById("quizResult").style.display = "none";
+document.getElementById("quizIncorrect").style.display = "none";
+document.getElementById("quizForm").style.display = "block";
+}
+
+function showQuiz(quiz) {
+resetQuizOptions();
+
+document.getElementById("quizQuestion").textContent = quiz.quiz_question;
+document.getElementById("option1").nextElementSibling.textContent = quiz.option_1;
+document.getElementById("option2").nextElementSibling.textContent = quiz.option_2;
+document.getElementById("option3").nextElementSibling.textContent = quiz.option_3;
+document.getElementById("option4").nextElementSibling.textContent = quiz.option_4;
+document.getElementById("quizForm").dataset.correct = quiz.correct_option;
+
+document.getElementById("continueBtn").style.display = "none";
+
+video.pause();
+quizModal.show();
+}
+
+video.addEventListener("timeupdate", function () {
+let currentTime = video.currentTime;
+
+// If user seeks backwards, reset quizzesShown to allow showing them again
+if (currentTime < lastTime) {
+quizzesShown.clear();
+}
+lastTime = currentTime;
+
+quizData.forEach((quiz) => {
+if (video.currentTime >= quiz.quiz_time && !quizzesShown.has(quiz.quiz_time)) {
+quizzesShown.add(quiz.quiz_time);
+showQuiz(quiz);
+}
+});
+});
+
+document.querySelectorAll('input[name="answer"]').forEach((input) => {
+input.addEventListener("change", function () {
+document.getElementById("quizIncorrect").style.display = "none";
+});
+});
+
+document.getElementById("quizForm").addEventListener("submit", function (e) {
+e.preventDefault();
+const selectedOption = document.querySelector('input[name="answer"]:checked');
+
+if (!selectedOption) {
+document.getElementById("quizIncorrect").textContent = "⚠️ Please select an answer.";
+document.getElementById("quizIncorrect").style.display = "block";
+return;
+}
+
+const correctAnswer = this.dataset.correct;
+if (selectedOption.value === correctAnswer) {
+document.getElementById("quizResult").textContent = "✅ Correct! Well done!";
+document.getElementById("quizResult").style.display = "block";
+document.getElementById("continueBtn").style.display = "block";
+} else {
+document.getElementById("quizIncorrect").textContent = "❌ Incorrect! Try again.";
+document.getElementById("quizIncorrect").style.display = "block";
+}
+});
+
+document.getElementById("continueBtn").addEventListener("click", function () {
+quizModal.hide();
+video.play();
+});
+});
+
+</script>
 
 
 @include('partials.footer')

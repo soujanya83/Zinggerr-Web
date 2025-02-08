@@ -24,7 +24,7 @@ Route::get('/', function () {
 Route::get('/register-page', function () {
     return view('auth.register');
 });
-
+ 
 Route::get('/logout', function () {
     Auth::logout();
     session()->invalidate();

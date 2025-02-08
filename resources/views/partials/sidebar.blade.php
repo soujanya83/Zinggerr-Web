@@ -1,4 +1,3 @@
-
 <nav class="pc-sidebar">
     <div class="navbar-wrapper">
         <div class="m-header">
@@ -22,6 +21,40 @@
                 </li>
 
 
+                <li class="pc-item pc-hasmenu">
+                    <a href="#!" class="pc-link">
+                        <span class="pc-micon"><i class="ti ti-book"></i> </span>
+                        <span class="pc-mtext" data-i18n="Courses">Courses</span>
+                        <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+                    </a>
+                    <ul class="pc-submenu">
+                        <li class="pc-item">
+                            <a class="pc-link" href="{{ route('courses') }}" data-i18n="Active List">List</a>
+                        </li>
+                        @if(Auth::user()->can('role') || Auth::user()->can('admin-role') ||
+                        Auth::user()->can('staff-role'))
+
+                        <li class="pc-item">
+                            <a class="pc-link" href="{{ route('addCourse') }}" data-i18n="Add New">Create</a>
+                        </li>
+
+                        <li class="pc-item">
+                            <a class="pc-link" href="{{ route('course.category') }}"
+                                data-i18n="Expired List">Category</a>
+                        </li>
+                        @endif
+                        {{-- <li class="pc-item">
+                            <a class="pc-link" href="#" data-i18n="Expired List">Expired List</a>
+                        </li>
+                        <li class="pc-item">
+                            <a class="pc-link" href="#" data-i18n="View All">View All</a>
+                        </li> --}}
+                    </ul>
+                </li>
+
+
+
+                @if(Auth::user()->can('role') || Auth::user()->can('admin-role') || Auth::user()->can('staff-role'))
 
                 <li class="pc-item pc-hasmenu">
                     <a href="#" class="pc-link">
@@ -55,34 +88,6 @@
                     </ul>
                 </li>
 
-                <li class="pc-item pc-hasmenu">
-                    <a href="#!" class="pc-link">
-                        <span class="pc-micon"><i class="ti ti-book"></i> </span>
-                        <span class="pc-mtext" data-i18n="Courses">Courses</span>
-                        <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
-                    </a>
-                    <ul class="pc-submenu">
-                        <li class="pc-item">
-                            <a class="pc-link" href="{{ route('addCourse') }}" data-i18n="Add New">Create</a>
-                        </li>
-                        <li class="pc-item">
-                            <a class="pc-link" href="{{ route('courses') }}" data-i18n="Active List">List</a>
-                        </li>
-                        <li class="pc-item">
-                            <a class="pc-link" href="{{ route('course.category') }}"
-                                data-i18n="Expired List">Category</a>
-                        </li>
-                        {{-- <li class="pc-item">
-                            <a class="pc-link" href="#" data-i18n="Expired List">Expired List</a>
-                        </li>
-                        <li class="pc-item">
-                            <a class="pc-link" href="#" data-i18n="View All">View All</a>
-                        </li> --}}
-                    </ul>
-                </li>
-
-
-                @if(Auth::user()->can('role') || Auth::user()->can('admin-role') || Auth::user()->can('staff-role'))
 
                 <li class="pc-item pc-hasmenu">
                     <a href="#" class="pc-link">

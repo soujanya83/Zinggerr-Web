@@ -23,24 +23,29 @@
     }
 
     .nav-tabs .nav-link.active {
-    border-bottom: 3px solid blue; /* Blue underline for the active tab */
-    color: #007bff; /* Optional: Change the active tab text color */
-    font-weight: bold; /* Optional: Make the active tab text bold */
-}
+        border-bottom: 3px solid #007bff;
+        color: #007bff;
+        font-weight: bold;
+        background-color: white
+    }
 
-.nav-tabs .nav-link {
-    border: none; /* Remove default tab borders for a cleaner look */
-    color: #6c757d; /* Default inactive tab text color */
-    transition: color 0.2s ease-in-out; /* Smooth transition for hover effects */
-}
+    .nav-tabs .nav-link {
+        border: none;
+        /* Remove default tab borders for a cleaner look */
+        color: #000000;
+        /* Default inactive tab text color */
+        transition: color 0.2s ease-in-out;
+        /* Smooth transition for hover effects */
+    }
 
-.nav-tabs .nav-link:hover {
-    color: #0056b3; /* Hover effect for inactive tabs */
-}
+    .nav-tabs .nav-link:hover {
+        color: #007bff;
+        /* Hover effect for inactive tabs */
+    }
 
-
-
-
+    .nav-link.active i {
+        background-color: #007bff
+    }
 </style>
 
 
@@ -86,33 +91,35 @@
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <ul class="mb-0">
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                <li>{{ $error }}</li>
                 @endforeach
             </ul>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    @endif
+        @endif
 
         <div class="row">
             <div class="">
                 <div class="card">
-
                     <div class="card-header pb-0">
                         <ul class="nav nav-tabs profile-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link active" id="profile-tab-1" data-bs-toggle="tab" href="#profile-1" role="tab" aria-selected="true">
+                                <a class="nav-link active" id="profile-tab-1" data-bs-toggle="tab" href="#profile-1"
+                                    role="tab" aria-selected="true">
                                     <i class="material-icons-two-tone me-2">account_circle</i>
                                     Profile
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="profile-tab-2" data-bs-toggle="tab" href="#profile-2" role="tab" aria-selected="false" tabindex="-1">
-                                    <i class="material-icons-two-tone me-2">edit</i>
+                                <a class="nav-link" id="profile-tab-2" data-bs-toggle="tab" href="#profile-2" role="tab"
+                                    aria-selected="false" tabindex="-1">
+                                    <i class="material-icons-two-tone me-2 icons">edit</i>
                                     Edit Profile
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="profile-tab-3" data-bs-toggle="tab" href="#profile-3" role="tab" aria-selected="false" tabindex="-1">
+                                <a class="nav-link" id="profile-tab-3" data-bs-toggle="tab" href="#profile-3" role="tab"
+                                    aria-selected="false" tabindex="-1">
                                     <i class="material-icons-two-tone me-2">lock</i>
                                     Change Password
                                 </a>
@@ -299,7 +306,8 @@
                                                             class="text-muted">(Read Only)</small></td> --}}
                                                     <td><input type="text" class="form-control" name="username"
                                                             value="{{ old('username', Auth::user()->username) }}"
-                                                            required oninput="this.value = this.value.replace(/\s/g, '')"></td>
+                                                            required
+                                                            oninput="this.value = this.value.replace(/\s/g, '')"></td>
                                                 </tr>
                                                 <tr>
                                                     <th><span class="thspace">Phone</span></th>
@@ -423,7 +431,8 @@
                                                                     <label class="form-label">Confirm Password <span
                                                                             class="text-danger">*</span></label>
                                                                     <input type="password" id="confirmPassword"
-                                                                        name="new_password_confirmation" class="form-control"
+                                                                        name="new_password_confirmation"
+                                                                        class="form-control"
                                                                         placeholder="Confirm your new password">
                                                                     <button type="button"
                                                                         class="btn btn-outline-secondary toggle-password eyebutton"

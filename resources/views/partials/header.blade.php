@@ -224,13 +224,13 @@
                             <hr>
                             <div class="profile-notification-scroll position-relative"
                                 style="max-height: calc(100vh - 280px)">
-                                <div class="upgradeplan-block bg-light-warning rounded">
+                                {{-- <div class="upgradeplan-block bg-light-warning rounded">
                                     <h4>Explore full code</h4>
                                     <p class="text-muted">Buy now to get full access to code files</p>
                                     <a href="https://codedthemes.com/item/berry-bootstrap-5-admin-template/"
                                         target="_blank" class="btn btn-warning">Buy Now</a>
                                 </div>
-                                <hr>
+                                <hr> --}}
                                 {{-- ........................only set for Spueradmin................................
                                 --}}
                                 {{-- @can('role',Auth::user()) --}}
@@ -240,14 +240,11 @@
                                 </a>
                                 {{-- @endcan --}}
 
-                                {{-- .........................set for
-                                auther............................................................. --}}
 
-                                {{-- ......................................................................... --}}
-                                <a href="{{ route('user.socialprofile') }}" class="dropdown-item">
+                                {{-- <a href="{{ route('user.socialprofile') }}" class="dropdown-item">
                                     <i class="ti ti-user"></i>
                                     <span>Social Profile</span>
-                                </a>
+                                </a> --}}
                                 <a class="dropdown-item" href="#"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <i class="ti ti-logout"></i>

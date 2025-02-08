@@ -237,7 +237,7 @@
 
                                                     <!-- Star Icons -->
                                                     <div class="flex-grow-1"
-                                                        style="margin-left: 25px;margin-top: -21px;">
+                                                      >
                                                         @php
                                                         $rating = round($course->rating * 2) / 2;
 

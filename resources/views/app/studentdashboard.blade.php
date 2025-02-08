@@ -67,24 +67,7 @@
 
 <div class="pc-container">
     <div class="pc-content">
-        <div class="page-header">
-            <div class="page-block">
-                <div class="row align-items-center">
-                    <div class="col">
-                        <div class="page-header-title">
-                            <h5 class="m-b-10">Students Dashboard View</h5>
-                        </div>
-                    </div>
-                    {{-- <div class="col-auto">
-                        <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">Students</a></li>
-                            <li class="breadcrumb-item" aria-current="page">Add New</li>
-                        </ul>
-                    </div> --}}
-                </div>
-            </div>
-        </div>
+      
         <div class="row" style="width: 100%;margin-left: 0px;">
             {{-- <div class="col-12"> --}}
                 <div class="card">

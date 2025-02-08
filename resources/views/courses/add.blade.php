@@ -23,15 +23,16 @@
         font-weight: bold;
         border: none;
         position: relative;
+        background-color: white
     }
 
     .nav-tabs .nav-link.active::after {
         content: '';
         position: absolute;
-        bottom: -5px;
+        bottom: -2px;
         left: 0;
         right: 0;
-        height: 2px;
+        height: 3px;
         background-color: #007bff;
         border-radius: 2px;
 
@@ -89,6 +90,9 @@
         position: relative;
         background: rgb(248, 250, 252);
         border-radius: 8px;
+    }
+    .nav-link.active i {
+        background-color: #007bff
     }
 </style>
 
