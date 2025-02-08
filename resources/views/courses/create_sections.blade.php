@@ -72,7 +72,7 @@
                 <div class="card-body">
                     <div class="tab-content" id="myTabContent">
                         <h5>Create Sections</h5>
-                        <button class="btn btn-sm btn-outline-success align-items-start" style="margin-left: 92%;"
+                        <button class="btn btn-shadow btn-sm btn-outline-success align-items-start" style="margin-left: 92%;"
                             onclick="window.location.href='{{ route('section.list', ['slug' => $slug]) }}';">
                             Sections List
                         </button>
@@ -118,7 +118,7 @@
                                         <input id="uploadButton_form" type="Submit" class="btn btn-primary"
                                             value="Submit">
                                         <button type="button" id="restoreButton"
-                                            class="btn btn-outline-secondary">Restore
+                                            class="btn btn-shadow btn-outline-secondary">Restore
                                             Removed Dates</button>
 
                                     </div>
@@ -294,7 +294,7 @@
                 <!-- Blog description will be dynamically updated -->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-shadow btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -353,7 +353,7 @@
                 </div>
                 <div class="modal-footer">
                     {{-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button> --}}
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="submit" class="btn btn-shadow btn-primary">Save Changes</button>
                 </div>
             </form>
         </div>

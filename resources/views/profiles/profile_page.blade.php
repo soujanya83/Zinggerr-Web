@@ -46,6 +46,10 @@
     .nav-link.active i {
         background-color: #007bff
     }
+
+    .nav-link:hover i {
+        background-color: #007bff;
+    }
 </style>
 
 
@@ -106,21 +110,21 @@
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link active" id="profile-tab-1" data-bs-toggle="tab" href="#profile-1"
                                     role="tab" aria-selected="true">
-                                    <i class="material-icons-two-tone me-2">account_circle</i>
+                                    <i class="material-icons-two-tone me-1">account_circle</i>
                                     Profile
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link" id="profile-tab-2" data-bs-toggle="tab" href="#profile-2" role="tab"
                                     aria-selected="false" tabindex="-1">
-                                    <i class="material-icons-two-tone me-2 icons">edit</i>
+                                    <i class="material-icons-two-tone me-1 icons">edit</i>
                                     Edit Profile
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link" id="profile-tab-3" data-bs-toggle="tab" href="#profile-3" role="tab"
                                     aria-selected="false" tabindex="-1">
-                                    <i class="material-icons-two-tone me-2">lock</i>
+                                    <i class="material-icons-two-tone me-1">lock</i>
                                     Change Password
                                 </a>
                             </li>
@@ -354,7 +358,7 @@
                                                 </tr>
 
                                             </table>
-                                            <button type="submit" class="btn btn-primary"
+                                            <button type="submit" class="btn  btn-shadow btn-success"
                                                 style="margin-left: 1003px;">Update
                                                 Profile</button>
                                         </form>
@@ -401,13 +405,13 @@
                                                                     <input type="password" id="currentPassword"
                                                                         name="current_password" class="form-control"
                                                                         placeholder="Enter your current password">
-                                                                    <button type="button" style="top: 34%;"
+                                                                    <button type="button" style="top: 40%;"
                                                                         class="btn btn-outline-secondary toggle-password eyebutton"
                                                                         data-target="currentPassword">
                                                                         <i class="fa fa-eye"></i>
                                                                     </button>
-                                                                    <small class="form-text text-muted">Forgot password?
-                                                                        <a href="#!">Click here</a></small>
+                                                                    {{-- <small class="form-text text-muted">Forgot password?
+                                                                        <a href="#!">Click here</a></small> --}}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -444,10 +448,10 @@
                                                         </div>
                                                     </div>
                                                     <div class="card-footer text-end">
-                                                        <button type="submit" class="btn btn-primary">Change
+                                                        <button type="submit" class="btn btn-shadow btn-danger">Change
                                                             Password</button>
                                                         <button type="reset"
-                                                            class="btn btn-outline-danger ms-2">Clear</button>
+                                                            class="btn btn-shadow btn-outline-dark ms-2">Clear</button>
                                                     </div>
                                                 </div>
                                             </form>

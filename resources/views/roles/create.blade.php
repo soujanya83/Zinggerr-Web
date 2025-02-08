@@ -94,8 +94,8 @@
                                         </div>
                                     </div>
                                     <div class="text-end">
-                                        <input type="submit" class="btn btn-primary" value="Submit">
-                                        <a href="{{ route('roles.create') }}" class="btn btn-success"> Reset</a>
+                                        <input type="submit" class="btn btn-shadow btn-primary" value="Submit">
+                                        <a href="{{ route('roles.create') }}" class="btn  btn-shadow btn-success"> Reset</a>
 
                                     </div>
                                 </form>
@@ -147,7 +147,7 @@
 
                                             <a class="avtar avtar-xs btn-link-secondary read-more-btn"
                                                 onclick="editPermission({{ json_encode($role) }})">
-                                                <i class="ti ti-edit f-20"></i>
+                                                <i class="ti ti-edit f-20" style="color: rgb(114, 93, 246);"></i>
                                             </a>
                                             @endif
                                             @if(Auth::user()->can('role') ||

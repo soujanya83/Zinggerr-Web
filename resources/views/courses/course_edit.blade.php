@@ -33,10 +33,10 @@
     .nav-tabs .nav-link.active::after {
         content: '';
         position: absolute;
-        bottom: -5px;
+        bottom: -2px;
         left: 0;
         right: 0;
-        height: 2px;
+        height: 3px;
         background-color: #007bff;
         border-radius: 2px;
 
@@ -48,7 +48,31 @@
         /* Matches the line color */
     }
 
-    /* ............................ */
+    .nav-tabs .nav-link:hover {
+        color: #007bff;
+        /* Hover effect for inactive tabs */
+    }
+
+    .nav-link.active i {
+        background-color: #007bff
+    }
+
+    .nav-link:hover i {
+        background-color: #007bff;
+    }
+
+    .nav-tabs .nav-link.active {
+        border-bottom: 3px solid #007bff;
+        color: #007bff;
+        font-weight: bold;
+        background-color: white
+    }
+
+    .nav-link.active {
+        color: #007bff !important;
+
+
+    }
 </style>
 <style>
     .file-upload-label {
@@ -136,10 +160,6 @@
 
         <div class="row">
             <div class="col-12">
-
-
-
-
                 <div class="card">
                     <div class="card-header  pb-0">
                         <ul class="nav nav-tabs profile-tabs" id="myTab" role="tablist">
@@ -147,12 +167,13 @@
                             <!-- Do not render this tab if the URL matches -->
                             @else
                             <li class="nav-item " role="presentation">
-                                <a class="nav-link active " id="profile-tab-1" data-bs-toggle="tab" href="#profile-1"
-                                    role="tab" aria-selected="true">
+                                <a class="nav-link active" id="profile-tab-1" data-bs-toggle="tab" href="#profile-1"
+                                    role="tab" aria-selected="true" style="background-color: white;">
                                     <i class="material-icons-two-tone me-2">account_circle</i>
                                     General
                                 </a>
                             </li>
+
                             @endif
 
                             {{-- <li class="nav-item" role="presentation">
@@ -168,7 +189,7 @@
                                 <a class="nav-link {{ Request::is('course/*/format') ? 'active' : '' }}"
                                     id="profile-tab-3" data-bs-toggle="tab" href="#profile-3" role="tab"
                                     aria-selected="{{ Request::is('course/*/format') ? 'true' : 'false' }}"
-                                    tabindex="-1">
+                                    tabindex="-1" style="background-color: white;">
                                     <i class="material-icons-two-tone me-2">book</i>
                                     Course format
                                 </a>
@@ -176,14 +197,14 @@
 
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link" id="profile-tab-8" data-bs-toggle="tab" href="#profile-8" role="tab"
-                                    aria-selected="false" tabindex="-1">
+                                    aria-selected="false" tabindex="-1" style="    background-color: white;">
                                     <i class="material-icons-two-tone me-2">group</i>
                                     Teachers Assign
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link" id="profile-tab-9" data-bs-toggle="tab" href="#profile-9" role="tab"
-                                    aria-selected="false" tabindex="-1">
+                                    aria-selected="false" tabindex="-1" style="    background-color: white;">
                                     <i class="material-icons-two-tone me-2">group</i>
                                     Students Assign
                                 </a>
@@ -365,7 +386,7 @@
                                                     <label style="align-content: center;" for="emailInput"
                                                         class="form-label">Format:
                                                         &nbsp&nbsp&nbsp</label>
-                                                    <button class="btn btn-primary dropdown-toggle" type="button"
+                                                    <button class="btn btn-shadow btn-primary dropdown-toggle" type="button"
                                                         id="dropdownMenuButton" data-bs-toggle="dropdown"
                                                         aria-expanded="false">
                                                         Weekly sections
@@ -438,18 +459,18 @@
 
                                                     </ul>
                                                     <a href="{{ route('add_assets', $course->slug) }}"
-                                                        id="createChapterButton" class="btn btn-success mt-3"
+                                                        id="createChapterButton" class="btn btn-shadow btn-success mt-3"
                                                         style="display: none;width: 158px; margin-left: 63px;">
                                                         Manage Assets
                                                     </a>
 
                                                     <a href="{{ route('create_section', $course->slug) }}"
-                                                        id="createsectionButton" class="btn btn-success mt-3"
+                                                        id="createsectionButton" class="btn btn-shadow btn-success mt-3"
                                                         style="display: none;width: 158px; margin-left: 63px;">
                                                         Create Sections
                                                     </a>
                                                     <a href="{{ route('manage_activity', $course->slug) }}"
-                                                        id="createactivityButton" class="btn btn-success mt-3"
+                                                        id="createactivityButton" class="btn btn-shadow btn-success mt-3"
                                                         style="display: none;width: 158px; margin-left: 63px;">
                                                         Manage Activity
                                                     </a>
@@ -514,78 +535,6 @@
                                         <!-- Create Chapter Button -->
 
 
-<script>
-                            document.addEventListener('DOMContentLoaded', function () {
-        const radioButtons = document.querySelectorAll('input[name="course_format"]');
-        const createChapterButton = document.getElementById('createChapterButton');
-
-        radioButtons.forEach(radio => {
-            radio.addEventListener('change', function () {
-                if (this.value === 'Custom sections') {
-                    createChapterButton.style.display = 'block'; // Show the button
-                } else {
-                    createChapterButton.style.display = 'none'; // Hide the button
-                }
-            });
-        });
-
-        // Initialize the button state based on the current selection
-        const selectedRadio = document.querySelector('input[name="course_format"]:checked');
-        if (selectedRadio && selectedRadio.value === 'Custom sections') {
-            createChapterButton.style.display = 'block';
-        }
-    });
-
-</script>
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-const radioButtons = document.querySelectorAll('input[name="course_format"]');
-const createsectionButton = document.getElementById('createsectionButton');
-
-radioButtons.forEach(radio => {
-radio.addEventListener('change', function () {
-if (this.value === 'Weekly sections') {
-    createsectionButton.style.display = 'block'; // Show the button
-} else {
-    createsectionButton.style.display = 'none'; // Hide the button
-}
-});
-});
-
-// Initialize the button state based on the current selection
-const selectedRadio = document.querySelector('input[name="course_format"]:checked');
-if (selectedRadio && selectedRadio.value === 'Weekly sections') {
-    createsectionButton.style.display = 'block';
-}
-});
-
-</script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-const radioButtons = document.querySelectorAll('input[name="course_format"]');
-const createactivityButton = document.getElementById('createactivityButton');
-
-radioButtons.forEach(radio => {
-radio.addEventListener('change', function () {
-if (this.value === 'Single activity') {
-    createactivityButton.style.display = 'block'; // Show the button
-} else {
-    createactivityButton.style.display = 'none'; // Hide the button
-}
-});
-});
-
-// Initialize the button state based on the current selection
-const selectedRadio = document.querySelector('input[name="course_format"]:checked');
-if (selectedRadio && selectedRadio.value === 'Single activity') {
-    createactivityButton.style.display = 'block';
-}
-});
-
-</script>
 
 
 
@@ -627,7 +576,7 @@ if (selectedRadio && selectedRadio.value === 'Single activity') {
 
                                         </div>
                                         <div class="col-md-12 mt-5" style="margin-left: 85%;">
-                                            <button type="submit" class="btn btn-primary">Update Course</button>
+                                            <button type="submit" class="btn btn-shadow btn-primary">Update Course</button>
                                         </div>
                                         </form>
 
@@ -651,15 +600,17 @@ if (selectedRadio && selectedRadio.value === 'Single activity') {
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link active" id="assigned-tab" data-bs-toggle="tab"
                                                 data-bs-target="#assigned" type="button" role="tab"
-                                                aria-controls="assigned" aria-selected="true">
-                                                <i class="ti ti-user-plus f-20"></i> Assigned Teachers
+                                                aria-controls="assigned" aria-selected="true"
+                                                style="    background-color: white;">
+                                                <i class="material-icons-two-tone me-1">account_circle</i> Assigned Teachers
                                             </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link" id="available-tab" data-bs-toggle="tab"
                                                 data-bs-target="#available" type="button" role="tab"
-                                                aria-controls="available" aria-selected="false">
-                                                <i class="ti ti-user-plus f-20"></i> Available Teachers
+                                                aria-controls="available" aria-selected="false"
+                                                style="    background-color: white;">
+                                                <i class="material-icons-two-tone me-1">group</i> Available Teachers
                                             </button>
                                         </li>
                                     </ul>
@@ -799,7 +750,7 @@ if (selectedRadio && selectedRadio.value === 'Single activity') {
                                                                                     $permissions)))
                                                                                     <!-- Manage Button -->
                                                                                     <a href="javascript:void(0);"
-                                                                                        class="btn btn-sm btn-secondary mx-1 manage-permissions-btn"
+                                                                                        class="btn btn-shadow btn-sm btn-secondary mx-1 manage-permissions-btn"
                                                                                         data-bs-toggle="modal"
                                                                                         data-bs-target="#assignPermissionsModal"
                                                                                         data-user-id="{{ $user->id }}">
@@ -812,7 +763,7 @@ if (selectedRadio && selectedRadio.value === 'Single activity') {
                                                                                     in_array('assign_remove',
                                                                                     $permissions)))
                                                                                     <a href="{{ route('assigned_delete', $user->assignId) }}"
-                                                                                        class="btn btn-sm btn-danger"
+                                                                                        class="btn btn-shadow btn-sm btn-danger"
                                                                                         data-id="{{ $user->id }}"
                                                                                         onclick="return confirmDelete(this)">
                                                                                         Remove
@@ -1022,7 +973,7 @@ if (selectedRadio && selectedRadio.value === 'Single activity') {
                                                                                     $permissions)))
                                                                                     <!-- Manage Button -->
                                                                                     <a href="javascript:void(0);"
-                                                                                        class="btn btn-sm btn-secondary mx-1 manage-permissions-btn"
+                                                                                        class="btn btn-shadow btn-sm btn-secondary mx-1 manage-permissions-btn"
                                                                                         data-bs-toggle="modal"
                                                                                         data-bs-target="#assignPermissionsModal"
                                                                                         data-user-id="{{ $user->id }}">
@@ -1049,7 +1000,7 @@ if (selectedRadio && selectedRadio.value === 'Single activity') {
                                                                                             name="user_id"
                                                                                             value="{{ $user->id }}">
                                                                                         <button type="submit"
-                                                                                            class="btn btn-sm btn-primary mx-1">
+                                                                                            class="btn btn-shadow btn-sm btn-primary mx-1">
                                                                                             <i
                                                                                                 class="ti ti-user-plus"></i>
                                                                                             Assign
@@ -1155,15 +1106,15 @@ if (selectedRadio && selectedRadio.value === 'Single activity') {
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link active" id="usersassigned-tab" data-bs-toggle="tab"
                                                 data-bs-target="#assignedusers" type="button" role="tab"
-                                                aria-controls="assigned" aria-selected="true">
-                                                <i class="ti ti-user-plus f-20"></i> Assigned Students
+                                                aria-controls="assigned" aria-selected="true" style="background-color: #ffffff">
+                                                <i class="material-icons-two-tone me-1">account_circle</i> Assigned Students
                                             </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link" id="useravailable-tab" data-bs-toggle="tab"
                                                 data-bs-target="#usersavailable" type="button" role="tab"
-                                                aria-controls="available" aria-selected="false">
-                                                <i class="ti ti-user-plus f-20"></i> Available Students
+                                                aria-controls="available" aria-selected="false" style="background-color: #ffffff">
+                                                <i class="material-icons-two-tone me-2">group</i> Available Students
                                             </button>
                                         </li>
                                     </ul>
@@ -1296,7 +1247,7 @@ if (selectedRadio && selectedRadio.value === 'Single activity') {
                                                                                             value="{{ $user->assignId }}">
 
                                                                                         <button type="submit"
-                                                                                            class="btn btn-sm btn-secondary mx-1">
+                                                                                            class="btn  btn-shadow btn-sm btn-secondary mx-1">
                                                                                             <i
                                                                                                 class="ti ti-user-plus"></i>
                                                                                             Pausa
@@ -1314,7 +1265,7 @@ if (selectedRadio && selectedRadio.value === 'Single activity') {
                                                                                             value="{{ $user->assignId }}">
 
                                                                                         <button type="submit"
-                                                                                            class="btn btn-sm btn-success mx-1">
+                                                                                            class="btn  btn-shadow btn-sm btn-success mx-1">
                                                                                             <i
                                                                                                 class="ti ti-user-plus"></i>
                                                                                             Active
@@ -1339,7 +1290,7 @@ if (selectedRadio && selectedRadio.value === 'Single activity') {
                                                                                     in_array('assign_remove',
                                                                                     $permissions)))
                                                                                     <button type="button"
-                                                                                        class="btn btn-sm btn-danger open-remark-modal"
+                                                                                        class="btn  btn-shadow btn-sm btn-danger open-remark-modal"
                                                                                         data-id="{{ $user->assignId }}"
                                                                                         data-bs-toggle="modal"
                                                                                         data-bs-target="#remarkModal">
@@ -1574,7 +1525,7 @@ if (selectedRadio && selectedRadio.value === 'Single activity') {
                                                                                             name="user_id"
                                                                                             value="{{ $user->id }}">
                                                                                         <button type="submit"
-                                                                                            class="btn btn-sm btn-primary mx-1">
+                                                                                            class="btn btn-shadow btn-sm btn-primary mx-1">
                                                                                             <i
                                                                                                 class="ti ti-user-plus"></i>
                                                                                             Assign
@@ -1700,7 +1651,7 @@ if (selectedRadio && selectedRadio.value === 'Single activity') {
                 </div>
                 <div class="modal-footer">
                     {{-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button> --}}
-                    <button type="submit" class="btn btn-danger">Submit and Remove</button>
+                    <button type="submit" class="btn  btn-shadow btn-danger">Submit and Remove</button>
                 </div>
             </div>
         </form>
@@ -1778,7 +1729,7 @@ if (selectedRadio && selectedRadio.value === 'Single activity') {
 
                     <!-- Submit Button -->
                     <div class="text-end mt-3">
-                        <button type="submit" class="btn btn-primary">Assign Permissions</button>
+                        <button type="submit" class="btn btn-shadow btn-primary">Assign Permissions</button>
                     </div>
                 </form>
             </div>
@@ -1874,6 +1825,78 @@ if (selectedRadio && selectedRadio.value === 'Single activity') {
 
 
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+const radioButtons = document.querySelectorAll('input[name="course_format"]');
+const createChapterButton = document.getElementById('createChapterButton');
+
+radioButtons.forEach(radio => {
+radio.addEventListener('change', function () {
+if (this.value === 'Custom sections') {
+createChapterButton.style.display = 'block'; // Show the button
+} else {
+createChapterButton.style.display = 'none'; // Hide the button
+}
+});
+});
+
+// Initialize the button state based on the current selection
+const selectedRadio = document.querySelector('input[name="course_format"]:checked');
+if (selectedRadio && selectedRadio.value === 'Custom sections') {
+createChapterButton.style.display = 'block';
+}
+});
+
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+const radioButtons = document.querySelectorAll('input[name="course_format"]');
+const createsectionButton = document.getElementById('createsectionButton');
+
+radioButtons.forEach(radio => {
+radio.addEventListener('change', function () {
+if (this.value === 'Weekly sections') {
+createsectionButton.style.display = 'block'; // Show the button
+} else {
+createsectionButton.style.display = 'none'; // Hide the button
+}
+});
+});
+
+// Initialize the button state based on the current selection
+const selectedRadio = document.querySelector('input[name="course_format"]:checked');
+if (selectedRadio && selectedRadio.value === 'Weekly sections') {
+createsectionButton.style.display = 'block';
+}
+});
+
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+const radioButtons = document.querySelectorAll('input[name="course_format"]');
+const createactivityButton = document.getElementById('createactivityButton');
+
+radioButtons.forEach(radio => {
+radio.addEventListener('change', function () {
+if (this.value === 'Single activity') {
+createactivityButton.style.display = 'block'; // Show the button
+} else {
+createactivityButton.style.display = 'none'; // Hide the button
+}
+});
+});
+
+// Initialize the button state based on the current selection
+const selectedRadio = document.querySelector('input[name="course_format"]:checked');
+if (selectedRadio && selectedRadio.value === 'Single activity') {
+createactivityButton.style.display = 'block';
+}
+});
+
+</script>
 
 
 

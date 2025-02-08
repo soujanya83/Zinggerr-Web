@@ -237,13 +237,13 @@
                                         </div>
 
                                     </div>
-                                    <button type="submit" id="uploadButton" class="btn btn-primary"
+                                    <button type="submit" id="uploadButton" class="btn btn-shadow btn-primary"
                                         style="margin-left: 87%;">Submit</button>
                                 </form>
                             </div>
 
 
-                           
+
 
                             <hr>
                             <h4>Assets List</h4>

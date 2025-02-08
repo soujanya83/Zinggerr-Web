@@ -94,8 +94,8 @@
                                         </div>
                                     </div>
                                     <div class="text-end">
-                                        <input type="submit" class="btn btn-primary" value="Submit">
-                                        <a href="{{ route('course.category') }}" class="btn btn-success"> Reset</a>
+                                        <input type="submit" class="btn btn-shadow btn-primary" value="Submit">
+                                        <a href="{{ route('course.category') }}" class="btn btn-shadow btn-success"> Reset</a>
 
                                     </div>
                                 </form>

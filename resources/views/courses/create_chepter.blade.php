@@ -123,7 +123,7 @@
                                             </div>
                                         </div>
                                         <div class="upload-area text-end p-2">
-                                            <input id="uploadButton_form" type="Submit" class="btn btn-primary"
+                                            <input id="uploadButton_form" type="Submit" class="btn btn-shadow btn-primary"
                                                 value="Submit">
                                         </div>
                                     </div>
@@ -186,7 +186,7 @@
                                                                         <input type="hidden" name="course_id"
                                                                             value="{{ $user->courses_id }}">
                                                                         <button type="submit"
-                                                                            class="btn btn-sm btn-primary">
+                                                                            class="btn btn-shadow btn-sm btn-primary">
                                                                             Manage Assets
                                                                         </button>
                                                                     </form>
@@ -334,7 +334,7 @@
                 <!-- Blog description will be dynamically updated -->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-shadow btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -356,7 +356,7 @@
                 <h4 id="videoTopic" class="mt-0"></h4> <!-- Display topic name dynamically here -->
             </div>
             <div class="modal-footer">
-    <button class="btn btn-warning" 
+    <button class="btn  btn-shadow btn-warning"
             onclick="openEditModal('{{ asset('storage/' . $asset->assets_video) }}', '{{ $asset->topic_name }}')">
         Add interactives
     </button>
@@ -375,7 +375,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="max-height:600px;overflow-y:auto;">
-            <button class="btn btn-primary mt-3" onclick="addQuiz()">Add Quiz &nbsp;<i class="fa-solid fa-bars fa-fade" style="vertical-align: bottom;"></i> </button> 
+            <button class="btn btn-shadow btn-primary mt-3" onclick="addQuiz()">Add Quiz &nbsp;<i class="fa-solid fa-bars fa-fade" style="vertical-align: bottom;"></i> </button>
             <div id="quizContainer" style="position: relative; width: 100%; height: auto;"></div>
                 <video id="editVideoPlayer" width="100%" controls>
                     <source src="" type="video/mp4">
@@ -384,10 +384,10 @@
                 <h4 id="editVideoTopic" class="mt-3"></h4>
 
                 <!-- Button to add quiz -->
-               
+
 
                 <!-- Quiz Container (Where quizzes appear) -->
-                
+
             </div>
         </div>
     </div>
@@ -426,7 +426,7 @@
                 </div>
                 <div class="modal-footer">
                     {{-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button> --}}
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="submit" class="btn btn-shadow btn-primary">Save Changes</button>
                 </div>
             </form>
         </div>
@@ -761,7 +761,7 @@ function openEditModal(videoPath, topicName) {
     videoPlayer = document.getElementById('editVideoPlayer');
     videoPlayer.src = videoPath;
     document.getElementById('editVideoTopic').textContent = topicName;
-    
+
     // Show modal
     const videoModal = new bootstrap.Modal(document.getElementById('videoEditModal'));
     videoModal.show();
@@ -794,8 +794,8 @@ function addQuiz() {
     quizDiv.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <strong>Quiz at ${timePosition.toFixed(2)}s</strong>
-            <button class="btn btn-sm delete-quiz" 
-                    style="padding: 2px 6px; font-size: 12px; border-radius: 50%;" 
+            <button class="btn btn-sm delete-quiz"
+                    style="padding: 2px 6px; font-size: 12px; border-radius: 50%;"
                     onclick="deleteQuiz('${quizId}')">
                     <i class="fa-solid fa-trash fa-fade" style="color:#f70808;"></i>
             </button>
@@ -847,8 +847,8 @@ function makeDraggable(element) {
 
     element.addEventListener('mousedown', function(dragEvent) {
         // Prevent dragging if clicked on interactive elements
-        if (dragEvent.target.tagName === 'INPUT' || 
-            dragEvent.target.tagName === 'BUTTON' || 
+        if (dragEvent.target.tagName === 'INPUT' ||
+            dragEvent.target.tagName === 'BUTTON' ||
             dragEvent.target.closest('.delete-quiz')) {
             return;
         }
@@ -908,11 +908,11 @@ function saveQuiz(button, timePosition) {
     const question = quizDiv.querySelector(".quiz-question").value;
     const options = Array.from(quizDiv.querySelectorAll(".option-group input[type='text']")).map(opt => opt.value);
     const correctOptionIndex = quizDiv.querySelector('input[type="radio"]:checked')?.value;
-    const correctOption = parseInt(correctOptionIndex) + 1; 
-    
+    const correctOption = parseInt(correctOptionIndex) + 1;
+
     const position = quizDiv.getBoundingClientRect();
     const videoContainer = document.getElementById("quizContainer").getBoundingClientRect();
-    
+
     const posX = position.left - videoContainer.left;
     const posY = position.top - videoContainer.top;
 

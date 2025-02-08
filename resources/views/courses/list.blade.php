@@ -62,7 +62,7 @@
                                     </select>
                                 </div>
                                 <div style="margin-left: 276px; margin-top: -42px;">
-                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                    <button type="submit" class="btn  btn-shadow btn-primary">Filter</button>
                                     <span style="margin-left: 35px;">
                                         <a href="{{ route('courses') }}">Refresh</a>
                                     </span>
@@ -113,7 +113,7 @@
                                                         value="{{ $course->course_status == 1 ? 0 : 1 }}">
                                                     <div class="d-flex justify-content-end">
                                                         <button type="submit" style="padding: 2px"
-                                                            class="btn {{ $course->course_status == 1 ? 'btn-success' : 'btn-danger' }}">
+                                                            class="btn btn-shadow {{ $course->course_status == 1 ? 'btn-success' : 'btn-danger' }}">
                                                             {{ $course->course_status == 1 ? 'Active' : 'Inactive' }}
                                                         </button>
                                                     </div>
@@ -312,7 +312,7 @@
                                                                 data-bs-dismiss="modal">Close</button> --}}
 
 
-                                                            <button type="submit" class="btn btn-primary">Couser Assign
+                                                            <button type="submit" class="btn btn-shadow btn-primary">Couser Assign
                                                             </button>
                                                         </div>
                                                     </form>

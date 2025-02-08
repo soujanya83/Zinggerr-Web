@@ -202,7 +202,7 @@
                                 </div>
 
                                 <div class="text-end">
-                                    <input type="submit" class="btn btn-primary" id="submitButton" value="Submit">
+                                    <input type="submit" class="btn btn-shadow btn-primary" id="submitButton" value="Submit">
                                 </div>
                         </form>
                     </div>

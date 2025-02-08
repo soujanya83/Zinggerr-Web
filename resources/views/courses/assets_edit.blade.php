@@ -268,7 +268,7 @@
                                         </div>
                                     </div>
 
-                                    <button type="submit" id="uploadButton" class="btn btn-primary"
+                                    <button type="submit" id="uploadButton" class="btn  btn-shadow btn-primary"
                                         style="margin-left: 87%;">Update</button>
                                 </form>
                             </div>

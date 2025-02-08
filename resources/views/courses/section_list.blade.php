@@ -102,9 +102,9 @@
                                                         data-id="{{ $section->id }}">{{ $section->sections_remark }}</textarea>
 
                                                     <div class="text-end mt-2">
-                                                        <button class="btn btn-sm btn-primary edit-section"
+                                                        <button class="btn btn-shadow btn-sm btn-primary edit-section"
                                                             data-id="{{ $section->id }}" title="Edit">Edit</button>
-                                                        <button class="btn btn-sm btn-success update-section"
+                                                        <button class="btn btn-shadow btn-sm btn-success update-section"
                                                             data-id="{{ $section->id }}" title="Update"
                                                             style="display:none;">Update</button>
                                                     </div>

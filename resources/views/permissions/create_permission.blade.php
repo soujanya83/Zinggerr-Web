@@ -126,9 +126,9 @@
                                         </div>
                                     </div>
                                     <div class="text-end">
-                                        <input type="submit" class="btn btn-primary" value="Submit">
+                                        <input type="submit" class="btn  btn-shadow btn-primary" value="Submit">
 
-                                        <a href="{{ route('permissions.create') }}" class="btn btn-success">Reset</a>
+                                        <a href="{{ route('permissions.create') }}" class="btn  btn-shadow btn-success">Reset</a>
 
                                     </div>
                                 </form>
@@ -232,17 +232,18 @@
                                             <div class="btn-group">
                                                 @if(Auth::user()->can('role') ||
                                                 (isset($permissions) && in_array('permissions_edit', $permissions)))
-                                                <button class="btn btn-sm btn-primary"
+                                                <a class="avtar avtar-xs btn-link-secondary read-more-btn"
                                                     onclick="editPermission({{ json_encode($permission) }})">
-                                                    Edit
-                                                </button>
+                                                    <i class="ti ti-edit f-20" style="color: rgb(114, 93, 246);"></i>
+                                                </a>
                                                 @endif
                                                 @if(Auth::user()->can('role') ||
                                                 (isset($permissions) && in_array('permissions_delete', $permissions)))
                                                 &nbsp &nbsp
                                                 <a href="{{ route('permission.delete', $permission['id']) }}"
-                                                    class="btn btn-sm btn-danger" onclick="return confirmDelete(this)">
-                                                    Delete
+                                                    class="avtar avtar-xs btn-link-secondary read-more-btn"
+                                                    onclick="return confirmDelete(this)">
+                                                    <i class="ti ti-trash f-20" style="color: red;"></i>
                                                 </a>
                                                 @endif
                                             </div>

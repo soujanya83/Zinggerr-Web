@@ -44,6 +44,13 @@
         /* Matches the line color */
     }
 
+    .nav-link:hover i {
+        background-color: #007bff;
+    }
+    .nav-tabs .nav-link:hover {
+        color: #007bff;
+        /* Hover effect for inactive tabs */
+    }
     /* ............................ */
 </style>
 <style>
@@ -111,13 +118,6 @@
                             <h5 class="m-b-10">Create Course</h5>
                         </div>
                     </div>
-
-
-
-
-
-
-
                     <div class="col-auto">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -163,7 +163,7 @@
                         <li class="nav-item " role="presentation">
                             <a class="nav-link active " id="profile-tab-1" data-bs-toggle="tab" href="#profile-1"
                                 role="tab" aria-selected="true">
-                                <i class="material-icons-two-tone me-2">account_circle</i>
+                                <i class="material-icons-two-tone me-1">account_circle</i>
                                 General
                             </a>
                         </li>
@@ -171,7 +171,7 @@
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" id="profile-tab-3" data-bs-toggle="tab" href="#profile-3" role="tab"
                                 aria-selected="false" tabindex="-1">
-                                <i class="material-icons-two-tone me-2">book</i>
+                                <i class="material-icons-two-tone me-1">book</i>
                                 Course format
                             </a>
                         </li>

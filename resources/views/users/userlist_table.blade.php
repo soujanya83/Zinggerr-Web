@@ -42,7 +42,7 @@
         <form action="{{ route('changeStatus') }}" method="GET" style="display: inline;">
             <input type="hidden" name="id" value="{{ $user->id }}">
             <input type="hidden" name="status" value="{{ $user->status == 1 ? 0 : 1 }}">
-            <button type="submit" class="btn {{ $user->status == 1 ? 'btn-success' : 'btn-danger' }}">
+            <button type="submit" class="btn  btn-shadow {{ $user->status == 1 ? 'btn-success' : 'btn-danger' }}">
                 {{ $user->status == 1 ? 'Active' : 'Inactive' }}
             </button>
         </form>

@@ -93,7 +93,7 @@
 
                     <div class="row align-items-center g-2 mt-3">
                         <div class="col">
-                            <h5> &nbsp&nbspCreate Permissions</h5>
+                            <h5> &nbsp&nbsp Permissions Assign</h5>
                         </div>
 
                         <div class="card-body">
@@ -192,7 +192,7 @@
                                     </table>
                                 </div>
                                 <div class="text-end mt-3">
-                                    <input type="submit" class="btn btn-primary" value="Assign">
+                                    <input type="submit" class="btn  btn-shadow btn-primary" value="Assign">
                                 </div>
                             </form>
                         </div>
