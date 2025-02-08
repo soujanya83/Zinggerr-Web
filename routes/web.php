@@ -142,6 +142,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('assigned/user-delete/{user}', [CourseController::class, 'assigned_delete'])
     ->name('assigned_delete');
 
+    Route::post('upload/quizess', [CourseController::class, 'uploadQuizes'])->name('upload.quizess');
 
 
 

@@ -1,7 +1,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/resumable.js/1.0.2/resumable.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/resumablejs/resumable.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 
 
 @extends('layouts.app')
@@ -352,10 +355,43 @@
                 </video>
                 <h4 id="videoTopic" class="mt-0"></h4> <!-- Display topic name dynamically here -->
             </div>
+            <div class="modal-footer">
+    <button class="btn btn-warning" 
+            onclick="openEditModal('{{ asset('storage/' . $asset->assets_video) }}', '{{ $asset->topic_name }}')">
+        Add interactives
+    </button>
+</div>
         </div>
     </div>
 </div>
 
+
+
+<div id="videoEditModal" class="modal fade" tabindex="-1">
+<div class="modal-dialog modal-xl" style="height: 600px;width:900px;"> <!-- Set your desired height here -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Interactive Video Editor</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-height:600px;overflow-y:auto;">
+            <button class="btn btn-primary mt-3" onclick="addQuiz()">Add Quiz &nbsp;<i class="fa-solid fa-bars fa-fade" style="vertical-align: bottom;"></i> </button> 
+            <div id="quizContainer" style="position: relative; width: 100%; height: auto;"></div>
+                <video id="editVideoPlayer" width="100%" controls>
+                    <source src="" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <h4 id="editVideoTopic" class="mt-3"></h4>
+
+                <!-- Button to add quiz -->
+               
+
+                <!-- Quiz Container (Where quizzes appear) -->
+                
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -712,6 +748,231 @@
     });
 </script> --}}
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+
+<script>
+    let quizzes = []; // Store quizzes locally before saving
+let videoPlayer;
+
+function openEditModal(videoPath, topicName) {
+    videoPlayer = document.getElementById('editVideoPlayer');
+    videoPlayer.src = videoPath;
+    document.getElementById('editVideoTopic').textContent = topicName;
+    
+    // Show modal
+    const videoModal = new bootstrap.Modal(document.getElementById('videoEditModal'));
+    videoModal.show();
+}
+
+// Function to add quiz when button is clicked
+function addQuiz() {
+    if (!videoPlayer.paused) {
+        alert("Pause the video first to add a quiz.");
+        return;
+    }
+
+    const timePosition = videoPlayer.currentTime;
+
+    // Create quiz div
+    const quizDiv = document.createElement("div");
+    quizDiv.classList.add("quiz-box");
+    quizDiv.style.position = "absolute";
+    quizDiv.style.zIndex = "10000";
+    quizDiv.style.background = "rgba(255,255,255,0.9)";
+    quizDiv.style.padding = "10px";
+    quizDiv.style.border = "2px solid #007bff";
+    quizDiv.style.borderRadius = "5px";
+    quizDiv.style.cursor = "move";
+
+    let quizId = `quiz-${Date.now()}`;
+    quizDiv.id = quizId;
+
+    // Quiz Form
+    quizDiv.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <strong>Quiz at ${timePosition.toFixed(2)}s</strong>
+            <button class="btn btn-sm delete-quiz" 
+                    style="padding: 2px 6px; font-size: 12px; border-radius: 50%;" 
+                    onclick="deleteQuiz('${quizId}')">
+                    <i class="fa-solid fa-trash fa-fade" style="color:#f70808;"></i>
+            </button>
+        </div>
+        <input type="text" placeholder="Enter question" class="form-control mt-2 quiz-question" onmousedown="event.stopPropagation()"><br>
+        <div class="option-group mt-1">
+            <div class="d-flex align-items-center">
+                <input type="radio" name="correct-${quizId}" value="0" class="me-2" onmousedown="event.stopPropagation()">
+                <input type="text" placeholder="Option 1" class="form-control" onmousedown="event.stopPropagation()">
+            </div>
+        </div>
+        <div class="option-group mt-1">
+            <div class="d-flex align-items-center">
+                <input type="radio" name="correct-${quizId}" value="1" class="me-2" onmousedown="event.stopPropagation()">
+                <input type="text" placeholder="Option 2" class="form-control" onmousedown="event.stopPropagation()">
+            </div>
+        </div>
+        <div class="option-group mt-1">
+            <div class="d-flex align-items-center">
+                <input type="radio" name="correct-${quizId}" value="2" class="me-2" onmousedown="event.stopPropagation()">
+                <input type="text" placeholder="Option 3" class="form-control" onmousedown="event.stopPropagation()">
+            </div>
+        </div>
+        <div class="option-group mt-1">
+            <div class="d-flex align-items-center">
+                <input type="radio" name="correct-${quizId}" value="3" class="me-2" onmousedown="event.stopPropagation()">
+                <input type="text" placeholder="Option 4" class="form-control" onmousedown="event.stopPropagation()">
+            </div>
+        </div>
+        <center><button class="btn btn-success btn-sm mt-2" onclick="saveQuiz(this, ${timePosition})" onmousedown="event.stopPropagation()">Save</button></center>
+    `;
+    // Append to quiz container
+    document.getElementById("quizContainer").appendChild(quizDiv);
+
+    // Make it draggable
+    makeDraggable(quizDiv);
+}
+
+function deleteQuiz(quizId) {
+    let quizElement = document.getElementById(quizId);
+    if (quizElement) {
+        quizElement.remove();
+    }
+}
+
+function makeDraggable(element) {
+    // Remove any existing event listeners to prevent multiple bindings
+    element.onmousedown = null;
+
+    element.addEventListener('mousedown', function(dragEvent) {
+        // Prevent dragging if clicked on interactive elements
+        if (dragEvent.target.tagName === 'INPUT' || 
+            dragEvent.target.tagName === 'BUTTON' || 
+            dragEvent.target.closest('.delete-quiz')) {
+            return;
+        }
+
+        // Calculate the exact offset from the mouse click to the element's top-left corner
+        let startX = dragEvent.clientX;
+        let startY = dragEvent.clientY;
+        let initialLeft = element.offsetLeft;
+        let initialTop = element.offsetTop;
+
+        // Function to move the element
+        function moveAt(pageX, pageY) {
+            // Calculate the new position based on the difference from the initial click
+            element.style.left = (initialLeft + pageX - startX) + 'px';
+            element.style.top = (initialTop + pageY - startY) + 'px';
+        }
+
+        // Move the element on mousemove
+        function onMouseMove(moveEvent) {
+            moveAt(moveEvent.pageX, moveEvent.pageY);
+        }
+
+        // Add listeners for moving
+        document.addEventListener('mousemove', onMouseMove);
+
+        // Remove listeners when mouse up
+        function onMouseUp() {
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+        }
+
+        // Add mouseup listener to stop dragging
+        document.addEventListener('mouseup', onMouseUp);
+
+        // Prevent default drag behavior
+        dragEvent.preventDefault();
+    });
+
+    // Prevent default drag start
+    element.ondragstart = function() {
+        return false;
+    };
+
+    // Ensure inputs and buttons are interactive
+    const inputs = element.querySelectorAll('input, button');
+    inputs.forEach(input => {
+        input.addEventListener('mousedown', function(event) {
+            event.stopPropagation();
+        });
+    });
+}
+
+
+// Save quiz
+function saveQuiz(button, timePosition) {
+    const quizDiv = button.closest('.quiz-box');
+    const question = quizDiv.querySelector(".quiz-question").value;
+    const options = Array.from(quizDiv.querySelectorAll(".option-group input[type='text']")).map(opt => opt.value);
+    const correctOptionIndex = quizDiv.querySelector('input[type="radio"]:checked')?.value;
+    const correctOption = parseInt(correctOptionIndex) + 1; 
+    
+    const position = quizDiv.getBoundingClientRect();
+    const videoContainer = document.getElementById("quizContainer").getBoundingClientRect();
+    
+    const posX = position.left - videoContainer.left;
+    const posY = position.top - videoContainer.top;
+
+    if (!question || options.some(opt => !opt) || correctOption === undefined) {
+        alert("Please fill all fields and select correct answer");
+        return;
+    }
+
+    $.ajax({
+        url: '{{ route('upload.quizess') }}',
+        method: 'POST',
+        data: {
+            question: question,
+            options: options,
+            correct_option: correctOption,
+            time_position: timePosition,
+            position_x: posX,
+            position_y: posY,
+            _token: $('meta[name="csrf-token"]').attr('content') // Add CSRF token
+        },
+        success: function(response) {
+            quizDiv.innerHTML = `<strong>Quiz:</strong> ${question}`;
+            quizDiv.style.border = "2px solid green";
+        },
+        error: function(xhr, status, error) {
+            alert("Error saving quiz: " + error);
+        }
+    });
+}
+
+// Fetch quizzes when video reaches time
+videoPlayer.addEventListener("timeupdate", function() {
+    quizzes.forEach(quiz => {
+        if (Math.abs(videoPlayer.currentTime - quiz.time) < 0.5) {
+            showQuiz(quiz);
+        }
+    });
+});
+
+// Show quiz popup
+function showQuiz(quiz) {
+    const quizDiv = document.createElement("div");
+    quizDiv.classList.add("quiz-popup");
+    quizDiv.style.position = "absolute";
+    quizDiv.style.left = quiz.x + "px";
+    quizDiv.style.top = quiz.y + "px";
+    quizDiv.style.background = "white";
+    quizDiv.style.padding = "10px";
+    quizDiv.style.border = "2px solid #ff0000";
+    quizDiv.style.borderRadius = "5px";
+
+    quizDiv.innerHTML = `
+        <strong>${quiz.question}</strong><br>
+        ${quiz.options.map(opt => `<input type="radio" name="quiz-${quiz.time}"> ${opt}<br>`).join("")}
+    `;
+
+    document.getElementById("quizContainer").appendChild(quizDiv);
+}
+
+    </script>
 
 
 @include('partials.footer')

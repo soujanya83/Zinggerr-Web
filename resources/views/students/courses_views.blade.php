@@ -464,43 +464,12 @@
                 </video>
                 <h4 id="videoTopic" class="mt-0"></h4> <!-- Display topic name dynamically here -->
             </div>
-            <div class="modal-footer">
-
-                {{-- <button class="btn btn-warning"
-                    onclick="openEditModal('{{ asset('storage/' . $asset->assets_video) }}', '{{ $asset->topic_name }}')">
-                    Add interactives
-                </button> --}}
-
-            </div>
+           
         </div>
     </div>
 </div>
 
 
-<div id="videoEditModal" class="modal fade" tabindex="-1">
-    <div class="modal-dialog modal-xl" style="height: 600px;width:900px;">
-        <!-- Set your desired height here -->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Interactive Video Editor</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="max-height:600px;overflow-y:auto;">
-                <button class="btn btn-primary mt-3" onclick="addQuiz()">Add Quiz &nbsp;<i
-                        class="fa-solid fa-bars fa-fade" style="vertical-align: bottom;"></i> </button>
-                <div id="quizContainer" style="position: relative; width: 100%; height: auto;"></div>
-                <video id="editVideoPlayer" width="100%" controls>
-                    <source src="" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                <h4 id="editVideoTopic" class="mt-3"></h4>
-
-
-
-            </div>
-        </div>
-    </div>
-</div>
 
 
 
@@ -544,145 +513,6 @@
     });
 </script>
 
-<script>
-    let quizzes = []; // Store quizzes locally before saving
-let videoPlayer;
-
-function openEditModal(videoPath, topicName) {
-    videoPlayer = document.getElementById('editVideoPlayer');
-    videoPlayer.src = videoPath;
-    document.getElementById('editVideoTopic').textContent = topicName;
-
-    // Show modal
-    const videoModal = new bootstrap.Modal(document.getElementById('videoEditModal'));
-    videoModal.show();
-}
-
-// Function to add quiz when button is clicked
-function addQuiz() {
-    if (!videoPlayer.paused) {
-        alert("Pause the video first to add a quiz.");
-        return;
-    }
-
-    const timePosition = videoPlayer.currentTime;
-
-    // Create quiz div
-    const quizDiv = document.createElement("div");
-    quizDiv.classList.add("quiz-box");
-    quizDiv.style.position = "absolute";
-    quizDiv.style.zIndex = "10000";
-    quizDiv.style.background = "rgba(255,255,255,0.9)";
-    quizDiv.style.padding = "10px";
-    quizDiv.style.border = "2px solid #007bff";
-    quizDiv.style.borderRadius = "5px";
-    quizDiv.style.cursor = "move";
-
-    // Quiz Form
-    quizDiv.innerHTML = `
-        <strong>Quiz at ${timePosition.toFixed(2)}s</strong><br>
-        <input type="text" placeholder="Enter question" class="form-control mt-2" id="quiz-question"><br>
-        <input type="text" placeholder="Option 1" class="form-control mt-1">
-        <input type="text" placeholder="Option 2" class="form-control mt-1">
-        <input type="text" placeholder="Option 3" class="form-control mt-1">
-        <input type="text" placeholder="Option 4" class="form-control mt-1">
-        <button class="btn btn-success btn-sm mt-2" onclick="saveQuiz(this, ${timePosition})">Save</button>
-    `;
-
-    // Append to quiz container
-    document.getElementById("quizContainer").appendChild(quizDiv);
-
-    // Make it draggable
-    makeDraggable(quizDiv);
-}
-
-// Make quiz div draggable
-function makeDraggable(element) {
-    element.onmousedown = function(event) {
-        let shiftX = event.clientX - element.getBoundingClientRect().left;
-        let shiftY = event.clientY - element.getBoundingClientRect().top;
-
-        document.body.append(element);
-
-        function moveAt(pageX, pageY) {
-            element.style.left = pageX - shiftX + "px";
-            element.style.top = pageY - shiftY + "px";
-        }
-
-        function onMouseMove(event) {
-            moveAt(event.pageX, event.pageY);
-        }
-
-        document.addEventListener("mousemove", onMouseMove);
-
-        element.onmouseup = function() {
-            document.removeEventListener("mousemove", onMouseMove);
-            element.onmouseup = null;
-        };
-    };
-
-    element.ondragstart = function() {
-        return false;
-    };
-}
-
-// Save quiz
-function saveQuiz(button, timePosition) {
-    const quizDiv = button.parentElement;
-    const question = quizDiv.querySelector("#quiz-question").value;
-    const options = Array.from(quizDiv.querySelectorAll("input[type='text']")).slice(1).map(opt => opt.value);
-
-    // Get position
-    const position = quizDiv.getBoundingClientRect();
-    const videoContainer = document.getElementById("quizContainer").getBoundingClientRect();
-
-    const posX = position.left - videoContainer.left;
-    const posY = position.top - videoContainer.top;
-
-    // Store in array
-    quizzes.push({
-        time: timePosition,
-        question,
-        options,
-        x: posX,
-        y: posY
-    });
-
-    // Hide form after saving
-    quizDiv.innerHTML = `<strong>Quiz:</strong> ${question}`;
-    quizDiv.style.border = "2px solid green";
-}
-
-// Fetch quizzes when video reaches time
-videoPlayer.addEventListener("timeupdate", function() {
-    quizzes.forEach(quiz => {
-        if (Math.abs(videoPlayer.currentTime - quiz.time) < 0.5) {
-            showQuiz(quiz);
-        }
-    });
-});
-
-// Show quiz popup
-function showQuiz(quiz) {
-    const quizDiv = document.createElement("div");
-    quizDiv.classList.add("quiz-popup");
-    quizDiv.style.position = "absolute";
-    quizDiv.style.left = quiz.x + "px";
-    quizDiv.style.top = quiz.y + "px";
-    quizDiv.style.background = "white";
-    quizDiv.style.padding = "10px";
-    quizDiv.style.border = "2px solid #ff0000";
-    quizDiv.style.borderRadius = "5px";
-
-    quizDiv.innerHTML = `
-        <strong>${quiz.question}</strong><br>
-        ${quiz.options.map(opt => `<input type="radio" name="quiz-${quiz.time}"> ${opt}<br>`).join("")}
-    `;
-
-    document.getElementById("quizContainer").appendChild(quizDiv);
-}
-
-</script>
 
 
 
@@ -775,3 +605,4 @@ video.play();
 
 @include('partials.footer')
 @endsection
+  

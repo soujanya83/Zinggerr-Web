@@ -427,6 +427,10 @@ class CourseController extends Controller
     }
 
 
+    public function uploadQuizes(Request $request){
+        dd($request->all());
+    }
+
 
 
     public function chepter_submit(Request $request)
