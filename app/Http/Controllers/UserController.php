@@ -48,27 +48,28 @@ class UserController extends Controller
 
     public function dashboardmain()
     {
-
-        $student = User::where('type', 'Student')->count();
-        $studentlast7day = User::where('type', 'Student')->where('created_at', '>=', Carbon::now()->subDays(7))->count();
-        $latestStudents = User::where('type', 'Student')->latest()  ->take(10)   ->get();
-        $studentlastmonth = User::where('type', 'Student')->whereBetween('created_at', [
+        $userId = Auth::user()->id;
+        $student = User::where('type', 'Student')->where('user_id', $userId)->count();
+        $studentlast7day = User::where('user_id', $userId)->where('type', 'Student')->where('created_at', '>=', Carbon::now()->subDays(7))->count();
+        $latestStudents = User::where('user_id', $userId)->where('type', 'Student')->latest()->take(10)->get();
+        $studentlastmonth = User::where('user_id', $userId)->where('type', 'Student')->whereBetween('created_at', [
             Carbon::now()->subMonth()->startOfMonth(),
             Carbon::now()->subMonth()->endOfMonth()
         ])->count();;
 
-        $teacher = User::where('type', 'Teacher')->count();
-        $staff = User::where('type', 'Staff')->count();
+        $teacher = User::where('user_id',$userId)->where('type', 'Teacher')->count();
+        $staff = User::where('user_id',$userId)->where('type', 'Staff')->count();
 
-        $courseslast7day = Course::where('course_status')->count();
-        $coursesLastMonth = Course::whereBetween('created_at', [
+        // $courseslast7day = Course::where('user_id', $userId)->count();
+        $coursesLastMonth = Course::where('user_id', $userId)->whereBetween('created_at', [
             Carbon::now()->subMonth()->startOfMonth(),
             Carbon::now()->subMonth()->endOfMonth()
         ])->count();
-        $courseslast7day = Course::where('created_at', '>=', Carbon::now()->subDays(7))->count();
+        $courseslast7day = Course::where('user_id', $userId)->where('created_at', '>=', Carbon::now()->subDays(7))->count();
 
-        $courses = Course::count();
-        return view('app.dashboard', compact('student', 'courses', 'teacher', 'staff', 'courseslast7day', 'coursesLastMonth', 'studentlast7day', 'studentlastmonth','latestStudents'));
+        $courses = Course::where('user_id', $userId)->count();
+
+        return view('app.dashboard', compact('student', 'courses', 'teacher', 'staff', 'courseslast7day', 'coursesLastMonth', 'studentlast7day', 'studentlastmonth', 'latestStudents'));
     }
 
 
