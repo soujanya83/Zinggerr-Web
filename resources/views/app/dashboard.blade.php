@@ -32,13 +32,34 @@
             <div class="col-xxl-8">
 
                 <div class="row">
+                    <div class="col-md-12">
+                        <div class="page-header">
+                            <div class="page-block">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <div class="page-header-title">
+                                            <h5 class="m-b-10" style="font-size: 18px;">Welcome: {{ Auth::user()->name }}</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item">{{ Auth::user()->type }}</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:25px">
                     <div class="col-md-6">
                         <div class="card  order-card" style="background-color: #aa33d4">
                             <div class="card-body">
                                 <h5 class="text-white" style="font-size: 17px;">Courses Last 7 day`s</h5>
                                 <h3 class="text-white" style="font-size: 17px;">{{ $courseslast7day
                                     }}</h3>
-                                <p class="m-b-0"style="font-size: 13px;">{{ $coursesLastMonth }} Courses Last
+                                <p class="m-b-0" style="font-size: 13px;">{{ $coursesLastMonth }} Courses Last
                                     Month</p>
                                 <i class="material-icons-two-tone d-block f-46 card-icon text-white">note</i>
                             </div>

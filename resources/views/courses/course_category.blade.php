@@ -15,7 +15,7 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Category Create/List</h5>
+                            <h5 class="m-b-10">Category Create</h5>
                         </div>
                     </div>
 
@@ -59,7 +59,7 @@
                     <div class="card-header" style="margin-bottom: -28px;">
                         <div class="row align-items-center g-2">
                             <div class="col">
-                                <h5>Create Courses category</h5>
+                                <h5>Create Course category</h5>
                             </div>
 
                             <div class="card-body">

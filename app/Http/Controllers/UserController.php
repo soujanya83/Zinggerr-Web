@@ -51,14 +51,12 @@ class UserController extends Controller
         $userId = Auth::user()->id;
         $student = User::where('type', 'Student')->where('user_id', $userId)->count();
         $studentlast7day = User::where('user_id', $userId)->where('type', 'Student')->where('created_at', '>=', Carbon::now()->subDays(7))->count();
-        $latestStudents = User::where('user_id', $userId)->where('type', 'Student')->latest()->take(10)->get();
+        $latestStudents = User::where('type', 'Student')->latest()->take(10)->get();
         $studentlastmonth = User::where('user_id', $userId)->where('type', 'Student')->whereBetween('created_at', [
-            Carbon::now()->subMonth()->startOfMonth(),
-            Carbon::now()->subMonth()->endOfMonth()
-        ])->count();;
+            Carbon::now()->subMonth()->startOfMonth(),Carbon::now()->subMonth()->endOfMonth()])->count();
 
-        $teacher = User::where('user_id',$userId)->where('type', 'Teacher')->count();
-        $staff = User::where('user_id',$userId)->where('type', 'Staff')->count();
+        $teacher = User::where('user_id', $userId)->where('type', 'Teacher')->count();
+        $staff = User::where('user_id', $userId)->where('type', 'Staff')->count();
 
         // $courseslast7day = Course::where('user_id', $userId)->count();
         $coursesLastMonth = Course::where('user_id', $userId)->whereBetween('created_at', [
@@ -94,7 +92,7 @@ class UserController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-
+        $userId = Auth::user()->id;
         try {
             $slug = $this->generateUniqueSlug($request->name);
             $uuid = (string) Guid::uuid4();
@@ -102,6 +100,7 @@ class UserController extends Controller
                 'id' => $uuid,
                 'name' => $request->input('name'),
                 'slug' => $slug,
+                'user_id' => $userId,
                 'username' => $request->input('username'),
                 'email' => $request->input('email'),
                 'phone' => $request->input('phone'),

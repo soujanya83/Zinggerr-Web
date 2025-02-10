@@ -12,18 +12,22 @@ use App\Models\User;
 use App\Models\Course;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use App\Models\CoursesAssign;
+use Illuminate\Support\Facades\Auth;
 
 class TeacherController extends Controller
 {
 
     public function teacherdashboard(){
+        $userId = Auth::user()->id;
 
         $student=User::where('type','Student')->count();
         $teacher=User::where('type','Teacher')->count();
-        $courses=Course::where('course_status',1)->count();
+        $courses =  CoursesAssign::where('users_id', $userId)->where('courses.course_status', 1)->where('courses_assign.status', 1)->join('courses', 'courses.id', '=', 'courses_assign.courses_id')->count();
 
+        $student_courses = CoursesAssign::where('users_id', $userId)->where('courses.course_status', 1)->where('courses_assign.status', 1)->join('courses', 'courses.id', '=', 'courses_assign.courses_id')->latest('courses_assign.created_at')->take(10)->get();
 
-        return view('app.teacherdashboard',compact('student','courses','teacher'));
+        return view('app.teacherdashboard',compact('student','courses','teacher','student_courses'));
     }
 
 

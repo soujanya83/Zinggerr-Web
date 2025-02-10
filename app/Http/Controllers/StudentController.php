@@ -15,6 +15,8 @@ use App\Models\CoursesChepters;
 use App\Models\CoursesAssets;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use App\Models\CoursesAssign;
+use Illuminate\Support\Facades\Auth;
 
 
 class StudentController extends Controller
@@ -50,13 +52,16 @@ class StudentController extends Controller
 
     public function studentdashboard()
     {
+        $userId = Auth::user()->id;
+        $student_courses = CoursesAssign::where('users_id', $userId)->where('courses.course_status', 1)->where('courses_assign.status', 1)->join('courses', 'courses.id', '=', 'courses_assign.courses_id')->latest('courses_assign.created_at')->take(10)->get();
+
 
         $student = User::where('type', 'Student')->count();
-        $courses = Course::where('course_status', 1)->count();
+        $courses =  CoursesAssign::where('users_id', $userId)->where('courses.course_status', 1)->where('courses_assign.status', 1)->join('courses', 'courses.id', '=', 'courses_assign.courses_id')->count();
         $teacher = User::where('type', 'Teacher')->count();
 
 
-        return view('app.studentdashboard', compact('student', 'courses', 'teacher'));
+        return view('app.studentdashboard', compact('student', 'courses', 'teacher', 'student_courses'));
     }
 
     public function studentadd(Request $request)

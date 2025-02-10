@@ -17,14 +17,14 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Users View</h5>
+                            <h5 class="m-b-10">Users Create</h5>
                         </div>
                     </div>
                     <div class="col-auto">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item"><a href="#">Users</a></li>
-                            <li class="breadcrumb-item" aria-current="page">Add New</li>
+                            <li class="breadcrumb-item" aria-current="page">Create</li>
                         </ul>
                     </div>
                 </div>
