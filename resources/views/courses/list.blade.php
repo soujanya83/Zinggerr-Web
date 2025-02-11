@@ -120,9 +120,9 @@
                                                 </form>
                                                 @endif
                                             </div>
-                                            @if(Auth::user()->type === 'Superadmin' ||
+                                            {{-- @if(Auth::user()->type === 'Superadmin' ||
                                             (isset($permissions) && in_array('cousers_assign',
-                                            $permissions)))
+                                            $permissions))) --}}
                                             <div class="position-absolute end-0 top-0 p-2"
                                                 style="background-color: rgb(255, 255, 255); border-radius: 50px;margin: 6px;">
 
@@ -192,7 +192,7 @@
 
                                             </div>
 
-                                            @endif
+                                            {{-- @endif --}}
 
                                             <a href="{{ route('courses.viwes', $course->slug) }}"
                                                 class="text-decoration-none">
@@ -236,8 +236,7 @@
                                                     </div>
 
                                                     <!-- Star Icons -->
-                                                    <div class="flex-grow-1"
-                                                      >
+                                                    <div class="flex-grow-1">
                                                         @php
                                                         $rating = round($course->rating * 2) / 2;
 
@@ -312,7 +311,8 @@
                                                                 data-bs-dismiss="modal">Close</button> --}}
 
 
-                                                            <button type="submit" class="btn btn-shadow btn-primary">Couser Assign
+                                                            <button type="submit"
+                                                                class="btn btn-shadow btn-primary">Couser Assign
                                                             </button>
                                                         </div>
                                                     </form>

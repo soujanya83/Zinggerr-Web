@@ -77,7 +77,7 @@ class FortifyServiceProvider extends ServiceProvider
                 'password' => ['required'],
             ]);
 
-            $user = User::where('status', 1)
+            $user = User::where('status', 1)->where('email_verified_at', '!=' ,null)
                 ->where(function ($query) use ($request) {
                     $query->where('email', $request->login)
                         // ->orWhere('phone', $request->login)
@@ -85,8 +85,8 @@ class FortifyServiceProvider extends ServiceProvider
                 })
                 ->first();
 
-            Log::info('Login attempt', $request->only('email', 'password'));
-            Log::info('Found user:', $user ? $user->toArray() : ['user' => 'not found']);
+            // Log::info('Login attempt', $request->only('email', 'password'));
+            // Log::info('Found user:', $user ? $user->toArray() : ['user' => 'not found']);
 
             // Log::info(session()->all());
 

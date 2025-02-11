@@ -16,6 +16,8 @@ use App\Http\Middleware\ClearCacheAfterLogout;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 use Symfony\Component\HttpKernel\Profiler\Profile;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,7 +26,7 @@ Route::get('/', function () {
 Route::get('/register-page', function () {
     return view('auth.register');
 });
- 
+
 Route::get('/logout', function () {
     Auth::logout();
     session()->invalidate();
@@ -49,21 +51,46 @@ Route::get('/thank-you', function () {
     return view('auth.thankyou_register');
 })->name('thankyou_register');
 
-Route::get('/email/verify/{id}/{hash}', [RegisterController::class, 'verify'])
+// Route::get('/email/verify/{id}/{hash}', [RegisterController::class, 'verify'])
+//     ->name('verification.verify');
+
+// Route::get('/email/verify/{id}/{hash}', [RegisterController::class, 'verify'])
+//     ->name('verification.verify');
+
+    Route::get('/email/verify', function () {
+        return view('auth.thankyou_register');
+    })->middleware('auth')->name('verification.notice');
+
+    // Verify the email
+    Route::get('/email/verify/{id}/{hash}', [RegisterController::class, 'verify'])
     ->name('verification.verify');
+
+
+
+
+
+
+    // Resend email verification
+    Route::post('/email/verification-notification', function (Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+        return back()->with('message', 'Verification link sent!');
+    })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+
+
 
 Route::post('/check-username', [RegisterController::class, 'checkUsername'])->name('check.username')->defaults('field', 'username');
 Route::post('/check-phone', [RegisterController::class, 'checkPhone'])->name('check.phone');
 Route::post('/check-email', [RegisterController::class, 'checkEmail'])->name('check.email');
 
 /////////////////////////////////////use for mail testing only/////////////////////////////////////////
-// Route::get('/test-email', function () {
-//     Mail::raw('This is a test email sent using Gmail SMTP.', function ($message) {
-//         $message->to('chandantafi1996@gmail.com')
-//                 ->subject('Test Email from Laravel');
-//     });
-//     return 'Test email sent successfully!';
-// });
+Route::get('/test-email', function () {
+    Mail::raw('This is a test email sent using Gmail SMTP.', function ($message) {
+        $message->to('chandantafi1998@gmail.com')
+                ->subject('Test Email from Laravel');
+    });
+    return 'Test email sent successfully!';
+});
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 

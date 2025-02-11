@@ -5,7 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Models\Course;
-
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Laravel\Fortify\Fortify;
 class AuthServiceProvider extends ServiceProvider
 {
 
@@ -24,6 +25,8 @@ class AuthServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        // Fortify::verifyEmail();
+
         $this->registerPolicies();
 
         Gate::define('role', function ($user) {
