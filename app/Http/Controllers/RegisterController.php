@@ -20,7 +20,7 @@ class RegisterController extends Controller
     public function verify(Request $request, $id, $hash)
     {
         $user = User::findOrFail($id);
-        if (Carbon::parse($user->created_at)->addMinutes(10)->isPast()) {
+        if (Carbon::parse($user->created_at)->addMinutes(3)->isPast()) {
             return view('emails.link_expired', compact('id')); // Show expired link page
         }
         if (!hash_equals((string) $hash, sha1($user->email))) {
