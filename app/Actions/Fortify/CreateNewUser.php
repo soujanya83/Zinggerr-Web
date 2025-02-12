@@ -28,22 +28,33 @@ class CreateNewUser implements CreatesNewUsers
                 'required',
                 'string',
                 'min:5',
-                Rule::unique('users', 'username'),
+                Rule::unique('users', 'username')->where(function ($query) {
+                    $query->whereNotNull('email_verified_at');
+                }),
             ],
             'email' => [
                 'required',
                 'string',
                 'email',
                 'max:255',
-                Rule::unique('users', 'email'),
+                Rule::unique('users', 'email')->where(function ($query) {
+                    $query->whereNotNull('email_verified_at');
+                }),
             ],
             'phone' => [
                 'required',
                 'digits:10',
-                Rule::unique('users', 'phone'),
+                Rule::unique('users', 'phone')->where(function ($query) {
+                    $query->whereNotNull('email_verified_at');
+                }),
             ],
             'password' => ['required', 'string', 'min:6'],
         ])->validate();
+
+        User::where('email', $input['email'])->whereNull('email_verified_at')->delete();
+        User::where('phone', $input['phone'])->whereNull('email_verified_at')->delete();
+        User::where('username', $input['user_name'])->whereNull('email_verified_at')->delete();
+
 
         $uuid = (string) Guid::uuid4();
         $user = User::create([
@@ -56,77 +67,72 @@ class CreateNewUser implements CreatesNewUsers
             'status' => 1,
             'password' => Hash::make($input['password']),
         ]);
-
-        // Generate Email Verification URL
         $verificationUrl = URL::temporarySignedRoute(
             'verification.verify',
-            now()->addMinutes(60),
+            now()->addMinutes(10),
             ['id' => $user->id, 'hash' => sha1($user->email)]
         );
-
-        // Send Email Verification with Blade Template
         $this->sendZeptoMail($user, $verificationUrl);
         session()->put('registered_email', $user->email);
         event(new Registered($user));
         return $user;
     }
 
-private function sendZeptoMail($user, $verificationUrl)
-{
-    // Render the Blade template into HTML
-    $verificationUrl = route('verification.verify', [
-        'id' => $user->id,
-        'hash' => sha1($user->getEmailForVerification())
-    ]);
-
-    $postData = [
-        "from" => ["address" => "noreply@zinggerr.com"],
-        "to" => [
-            [
-                "email_address" => [
-                    "address" => $user->email,
-                    "name" => $user->name
-                ]
-            ]
-        ],
-        "subject" => "Verify Your Email",
-        "htmlbody" => view('emails.email_verify', [
-            'userName' => $user->name,
-            'verificationUrl' => $verificationUrl
-        ])->render() // Convert Blade view to HTML string
-    ];
-
-    $curl = curl_init();
-
-    curl_setopt_array($curl, [
-        CURLOPT_URL => "https://api.zeptomail.com.au/v1.1/email",
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_CUSTOMREQUEST => "POST",
-        CURLOPT_POSTFIELDS => json_encode($postData),
-        CURLOPT_HTTPHEADER => [
-            "accept: application/json",
-            "authorization: Zoho-enczapikey GkDdjPiC+lYbwFqX8426YIQGbJRi7cDiHJq2MZ9SoBN+vtwJ4UxNeZVLwnAkyzBNuiHIBVfBd7tz8THZsO6OfXMrJSqrcETuOpwzGB+edd0FvHvXUPi/9/tgVkjNnvCoNQtu7RIy9Ctv4A==",
-            "content-type: application/json",
-        ],
-    ]);
-
-    $response = curl_exec($curl);
-    $err = curl_error($curl);
-    curl_close($curl);
-
-    if ($err) {
-
-        // Log::error("ZeptoMail Error: " . $err);
-        return false;
-    } else {
-
+    private function sendZeptoMail($user, $verificationUrl)
+    {
+        // Render the Blade template into HTML
         $verificationUrl = route('verification.verify', [
             'id' => $user->id,
             'hash' => sha1($user->getEmailForVerification())
         ]);
-        // Log::info("ZeptoMail Response: " . $response);
-        return true;
-    }
-}
 
+        $postData = [
+            "from" => ["address" => "noreply@zinggerr.com"],
+            "to" => [
+                [
+                    "email_address" => [
+                        "address" => $user->email,
+                        "name" => $user->name
+                    ]
+                ]
+            ],
+            "subject" => "Verify Your Email",
+            "htmlbody" => view('emails.email_verify', [
+                'userName' => $user->name,
+                'verificationUrl' => $verificationUrl
+            ])->render() // Convert Blade view to HTML string
+        ];
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+            CURLOPT_URL => "https://api.zeptomail.com.au/v1.1/email",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => json_encode($postData),
+            CURLOPT_HTTPHEADER => [
+                "accept: application/json",
+                "authorization: Zoho-enczapikey GkDdjPiC+lYbwFqX8426YIQGbJRi7cDiHJq2MZ9SoBN+vtwJ4UxNeZVLwnAkyzBNuiHIBVfBd7tz8THZsO6OfXMrJSqrcETuOpwzGB+edd0FvHvXUPi/9/tgVkjNnvCoNQtu7RIy9Ctv4A==",
+                "content-type: application/json",
+            ],
+        ]);
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+
+        if ($err) {
+
+            // Log::error("ZeptoMail Error: " . $err);
+            return false;
+        } else {
+
+            $verificationUrl = route('verification.verify', [
+                'id' => $user->id,
+                'hash' => sha1($user->getEmailForVerification())
+            ]);
+            // Log::info("ZeptoMail Response: " . $response);
+            return true;
+        }
+    }
 }

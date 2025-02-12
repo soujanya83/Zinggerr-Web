@@ -44,7 +44,7 @@ class RegisterController extends Controller
         // Generate new Email Verification URL
         $verificationUrl = URL::temporarySignedRoute(
             'verification.verify',
-            now()->addMinutes(60), // Link expires in 60 minutes
+            now()->addMinutes(10), // Link expires in 60 minutes
             ['id' => $user->id, 'hash' => sha1($user->email)]
         );
 

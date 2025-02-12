@@ -51,30 +51,26 @@ Route::get('/thank-you', function () {
     return view('auth.thankyou_register');
 })->name('thankyou_register');
 
-// Route::get('/email/verify/{id}/{hash}', [RegisterController::class, 'verify'])
-//     ->name('verification.verify');
 
-// Route::get('/email/verify/{id}/{hash}', [RegisterController::class, 'verify'])
-//     ->name('verification.verify');
 
-    Route::get('/email/verify', function () {
-        return view('auth.thankyou_register');
-    })->middleware('auth')->name('verification.notice');
+Route::get('/email/verify', function () {
+    return view('auth.thankyou_register');
+})->middleware('auth')->name('verification.notice');
 
-    // Verify the email
-    Route::get('/email/verify/{id}/{hash}', [RegisterController::class, 'verify'])
+// Verify the email
+Route::get('/email/verify/{id}/{hash}', [RegisterController::class, 'verify'])
     ->name('verification.verify');
 
 
 
 
-    // Resend email verification
-    Route::post('/email/verification-notification', function (Request $request) {
-        $request->user()->sendEmailVerificationNotification();
-        return back()->with('message', 'Verification link sent!');
-    })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+// Resend email verification
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-Route::post('verification-resend/{id}',[RegisterController::class,'resend_email_verification'])->name('verification.resend');
+Route::post('verification-resend/{id}', [RegisterController::class, 'resend_email_verification'])->name('verification.resend');
 
 
 Route::post('/check-username', [RegisterController::class, 'checkUsername'])->name('check.username')->defaults('field', 'username');
@@ -85,7 +81,7 @@ Route::post('/check-email', [RegisterController::class, 'checkEmail'])->name('ch
 Route::get('/test-email', function () {
     Mail::raw('This is a test email sent using Gmail SMTP.', function ($message) {
         $message->to('chandantafi1998@gmail.com')
-                ->subject('Test Email from Laravel');
+            ->subject('Test Email from Laravel');
     });
     return 'Test email sent successfully!';
 });
@@ -123,23 +119,23 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('/courses-delete/{id}', [CourseController::class, 'coursedelete'])
         ->name('course_delete')
         ->middleware('can:role');
-        Route::post('courses/chapter-status', [CourseController::class, 'chapterStatus'])->name('chapterStatus');
-        Route::post('courses/assets-status', [CourseController::class, 'assetsStatus'])->name('assetsStatus');
-        Route::post('courses/chapter-update', [CourseController::class, 'chapterupdate'])->name('chapter.update');
+    Route::post('courses/chapter-status', [CourseController::class, 'chapterStatus'])->name('chapterStatus');
+    Route::post('courses/assets-status', [CourseController::class, 'assetsStatus'])->name('assetsStatus');
+    Route::post('courses/chapter-update', [CourseController::class, 'chapterupdate'])->name('chapter.update');
 
 
 
-        Route::get('/chapter-delete/{id}', [CourseController::class, 'chapterdelete'])->name('chapter_delete');
-        Route::get('/assets-delete/{id}', [CourseController::class, 'assetsdelete'])->name('assets_delete');
-        Route::post('/assets-edit', [CourseController::class, 'assetsedit'])->name('edit_assets');
+    Route::get('/chapter-delete/{id}', [CourseController::class, 'chapterdelete'])->name('chapter_delete');
+    Route::get('/assets-delete/{id}', [CourseController::class, 'assetsdelete'])->name('assets_delete');
+    Route::post('/assets-edit', [CourseController::class, 'assetsedit'])->name('edit_assets');
 
-        Route::post('course/pause-users', [CourseController::class, 'courses_pause_users'])->name('course.pause_users');
-        Route::post('course/permissions/update', [CourseController::class, 'updatePermissions'])->name('course.update_permissions');
-        Route::get('/user/{userId}/permissions', [CourseController::class, 'getUserPermissions']);
-        Route::post('/courses/assigned-remove-with-remark', [CourseController::class, 'assigned_delete_with_remark'])->name('assigned_delete_with_remark');
+    Route::post('course/pause-users', [CourseController::class, 'courses_pause_users'])->name('course.pause_users');
+    Route::post('course/permissions/update', [CourseController::class, 'updatePermissions'])->name('course.update_permissions');
+    Route::get('/user/{userId}/permissions', [CourseController::class, 'getUserPermissions']);
+    Route::post('/courses/assigned-remove-with-remark', [CourseController::class, 'assigned_delete_with_remark'])->name('assigned_delete_with_remark');
 
 
-        Route::post('/category/update', [CourseController::class, 'update_category'])->name('update.category');
+    Route::post('/category/update', [CourseController::class, 'update_category'])->name('update.category');
 
     Route::post('category/submit', [CourseController::class, 'submit_category'])->name('category.store');
     Route::get('/category-delete/{user}', [CourseController::class, 'category_delete'])->name('category_delete');
@@ -165,7 +161,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('courses/category/create', [CourseController::class, 'courses_category'])->name('course.category');
     // Route::post('/upload-chunk', [CourseController::class, 'uploadChunk']);
     Route::get('assigned/user-delete/{user}', [CourseController::class, 'assigned_delete'])
-    ->name('assigned_delete');
+        ->name('assigned_delete');
 
     Route::post('upload/quizess', [CourseController::class, 'uploadQuizes'])->name('upload.quizess');
 

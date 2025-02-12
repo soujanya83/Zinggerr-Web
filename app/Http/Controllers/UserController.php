@@ -107,7 +107,8 @@ class UserController extends Controller
                 'status' => $request->input('status'),
                 'gender' => $request->input('gender'),
                 'type' => $request->input('role'),
-                'password' => bcrypt($request->input('password'))
+                'password' => bcrypt($request->input('password')),
+                'email_verified_at'=>now()
             ]);
 
             // Handle file upload
