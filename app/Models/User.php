@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Notifications\VerifyEmailNotification;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -29,7 +29,8 @@ class User extends Authenticatable
         'token',
         'email_verified_at',
         'remember_token',
-        'profile_picture'
+        'profile_picture',
+        'created_at'
     ];
 
     protected $keyType = 'string'; // This tells Laravel that the primary key is a string (UUID).
@@ -47,8 +48,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    public function sendEmailVerificationNotification()
-    {
-        $this->notify(new VerifyEmailNotification());
-    }
+    // public function sendEmailVerificationNotification()
+    // {
+    //     $this->notify(new VerifyEmailNotification());
+    // }
 }

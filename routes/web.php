@@ -68,15 +68,13 @@ Route::get('/thank-you', function () {
 
 
 
-
-
     // Resend email verification
     Route::post('/email/verification-notification', function (Request $request) {
         $request->user()->sendEmailVerificationNotification();
         return back()->with('message', 'Verification link sent!');
     })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-
+Route::post('verification-resend/{id}',[RegisterController::class,'resend_email_verification'])->name('verification.resend');
 
 
 Route::post('/check-username', [RegisterController::class, 'checkUsername'])->name('check.username')->defaults('field', 'username');
