@@ -178,8 +178,6 @@ class UserController extends Controller
         try {
             $slug = $this->generateUniqueSlug($request->name);
             $user = User::findOrFail($request->userid);
-
-
             $user->name = $request->input('name');
             $user->slug = $slug;
             $user->username = $request->input('username');
@@ -247,7 +245,7 @@ class UserController extends Controller
     public function userlist(Request $request)
     {
         $query = User::query();
-        $query->whereIn('type', ['Staff', 'Admin']);
+        $query->whereIn('type', ['Staff', 'Admin'])->whereNotNull('email_verified_at');
         // Search logic
         if ($request->has('search') && $request->search) {
             $search = $request->search;

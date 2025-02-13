@@ -130,20 +130,20 @@ class RegisterController extends Controller
     public function checkUsername(Request $request)
     {
 
-        $exists = User::where('username', $request->input('username'))->exists();
+        $exists = User::where('username', $request->input('username'))->whereNotNull('email_verified_at')->exists();
         return response()->json(['exists' => $exists]);
     }
 
     public function checkPhone(Request $request)
     {
-        $exists = User::where('phone', $request->input('phone'))->exists();
+        $exists = User::where('phone', $request->input('phone'))->whereNotNull('email_verified_at')->exists();
         return response()->json(['exists' => $exists]);
     }
 
     public function checkEmail(Request $request)
     {
 
-        $exists = User::where('email', $request->input('email'))->exists();
+        $exists = User::where('email', $request->input('email'))->whereNotNull('email_verified_at')->exists();
         return response()->json(['exists' => $exists]);
     }
     public function checkField(Request $request, $field)

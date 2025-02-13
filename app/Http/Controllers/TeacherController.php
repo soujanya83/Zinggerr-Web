@@ -38,7 +38,7 @@ class TeacherController extends Controller
 
     public function teacherlist(Request $request)
     {
-        $query = User::where('type', 'Teacher');
+        $query = User::where('type', 'Teacher')->whereNotNull('email_verified_at');
 
         if ($request->has('search') && $request->search) {
             $search = $request->search;

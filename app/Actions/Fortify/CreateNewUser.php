@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Gate;
 use Ramsey\Uuid\Guid\Guid;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -55,10 +56,12 @@ class CreateNewUser implements CreatesNewUsers
         User::where('phone', $input['phone'])->whereNull('email_verified_at')->delete();
         User::where('username', $input['user_name'])->whereNull('email_verified_at')->delete();
 
+        $slug = $this->generateUniqueSlug($input['full_name']);
 
         $uuid = (string) Guid::uuid4();
         $user = User::create([
             'id' => $uuid,
+            'slug' => $slug,
             'remember_token' => $input['_token'],
             'name' => $input['full_name'],
             'username' => $input['user_name'],
@@ -77,7 +80,17 @@ class CreateNewUser implements CreatesNewUsers
         event(new Registered($user));
         return $user;
     }
-
+    private function generateUniqueSlug($Name)
+    {
+        $slug = Str::slug($Name);
+        $originalSlug = $slug;
+        $counter = 1;
+        while (User::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+        return $slug;
+    }
     private function sendZeptoMail($user, $verificationUrl)
     {
         // Render the Blade template into HTML
