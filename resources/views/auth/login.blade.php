@@ -58,6 +58,7 @@
                                 <label class="form-check-label text-muted" for="rememberCheck">Remember me</label>
                             </div>
                             <a href="{{ route('password.request') }}" class="text-secondary">Forgot Password?</a>
+
                         </div>
                         <div class="d-grid mt-4">
                             <input type="submit" class="btn btn-secondary" value="Login">

@@ -323,4 +323,7 @@ class UserController extends Controller
 
         return redirect()->back()->with('success', 'User status updated successfully!');
     }
+
+
+
 }

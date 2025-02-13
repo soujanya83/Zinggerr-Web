@@ -77,18 +77,17 @@ Route::post('/check-username', [RegisterController::class, 'checkUsername'])->na
 Route::post('/check-phone', [RegisterController::class, 'checkPhone'])->name('check.phone');
 Route::post('/check-email', [RegisterController::class, 'checkEmail'])->name('check.email');
 
-/////////////////////////////////////use for mail testing only/////////////////////////////////////////
-Route::get('/test-email', function () {
-    Mail::raw('This is a test email sent using Gmail SMTP.', function ($message) {
-        $message->to('chandantafi1998@gmail.com')
-            ->subject('Test Email from Laravel');
-    });
-    return 'Test email sent successfully!';
-});
-////////////////////////////////////////////////////////////////////////////////////////////////////
+Route::post('/reset/password', [ProfileController::class, 'sendOtp'])->name('reset.password');
+Route::post('/otp-submit', [ProfileController::class, 'submitOtp'])->name('opt.submit');
+Route::post('/set-new-password', [ProfileController::class, 'set_new_password'])->name('set.new.password');
 
+Route::get('/otp-verify', function () {
+    return view('auth.passwords.otp_verify');
+})->name('otp.verify');
 
-
+Route::get('/reset-password', function () {
+    return view('auth.passwords.reset_password');
+})->name('password.reset.form');
 
 
 
@@ -217,6 +216,10 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('user/social-profile', [ProfileController::class, 'socialprofilepage'])->name('user.socialprofile');
     Route::post('users/profile-update', [ProfileController::class, 'updateProfile'])->name('user.profile.update');
     Route::post('users/change-password', [ProfileController::class, 'changePassword'])->name('user.changepassword');
+
+
+
+
 
     Route::get('permissions/create', [PermissionsController::class, 'create_permission'])->name('permissions.create');
     Route::post('permission/submit', [PermissionsController::class, 'submit_permission'])->name('submit.permission');
