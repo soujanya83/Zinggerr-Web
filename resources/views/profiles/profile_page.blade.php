@@ -405,13 +405,14 @@
                                                                     <input type="password" id="currentPassword"
                                                                         name="current_password" class="form-control"
                                                                         placeholder="Enter your current password">
-                                                                    <button type="button" style="top: 40%;"
+                                                                    <button type="button" style="top: 34%;"
                                                                         class="btn btn-outline-secondary toggle-password eyebutton"
                                                                         data-target="currentPassword">
                                                                         <i class="fa fa-eye"></i>
                                                                     </button>
-                                                                    {{-- <small class="form-text text-muted">Forgot password?
-                                                                        <a href="#!">Click here</a></small> --}}
+                                                                    <small class="form-text text-muted">
+                                                                        Forgot password? <a href="{{ route('forgot.password.sendOtp') }}">Click here</a>
+                                                                    </small>
                                                                 </div>
                                                             </div>
                                                         </div>

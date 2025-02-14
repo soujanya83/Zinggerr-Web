@@ -14,6 +14,79 @@ use Carbon\Carbon;
 
 class ProfileController extends Controller
 {
+    public function sendForgotPasswordOtp(Request $request)          ///////////  this use for after login
+    {
+        // Ensure user is logged in
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please log in first.');
+        }
+
+        $user = Auth::user(); // Get the authenticated user
+
+        // Generate OTP
+        $otp = rand(100000, 999999);
+
+        // Store OTP in ResetPassword Table
+        ResetPassword::updateOrInsert(
+            ['email' => $user->email],
+            ['token' => $otp, 'created_at' => Carbon::now()]
+        );
+
+        // Send OTP email
+        $this->sendOtpMail($user, $otp);
+
+        // Redirect to OTP verification page
+        return redirect()->route('profile.otp.verify')->with('success', 'OTP sent to your email.');
+    }
+
+    public function profileOtpsubmit(Request $request)
+    {
+        $request->validate([
+            'otp' => 'required|digits:6',
+        ]);
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please log in first.');
+        }
+        $user = Auth::user();
+        $otpRecord = ResetPassword::where('email', $user->email)->first();
+        if (!$otpRecord || $otpRecord->token != $request->otp) {
+            return back()->with('error', 'Invalid OTP. Please try again.');
+        }
+        return redirect()->route('profiles.reset_password_form')->with('success', 'OTP verified successfully! Set your new password.');
+    }
+
+    public function profile_resendOtp(Request $request)
+    {
+        $user = Auth::user();
+        $email = $user->email;
+
+        if (!$email) {
+            return redirect()->route('forget.password')->with('error', 'Session expired. Please try again.');
+        }
+
+        $user = User::where('email', $email)->first();
+        if (!$user) {
+            return redirect()->route('forget.password')->with('error', 'User not found!');
+        }
+
+        // Generate a new 6-digit OTP
+        $otp = mt_rand(100000, 999999);
+
+        // Store OTP in ResetPassword table with a new timestamp
+        ResetPassword::updateOrInsert(
+            ['email' => $user->email],
+            ['token' => $otp, 'created_at' => now()]
+        );
+
+        // Send OTP email
+        try {
+            $this->sendOtpMail($user, $otp);
+            return back()->with('success', 'A new OTP has been sent to your email.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to send OTP. Please try again.');
+        }
+    }
+
 
     public function resendOtp(Request $request)
     {
@@ -82,6 +155,33 @@ class ProfileController extends Controller
 
 
 
+    public function update_set_new_password(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'otp_email' => 'required|email',
+            'password' => 'required|string|min:6|confirmed'
+        ]);
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+        if ($request->email !== $request->otp_email) {
+            return back()->with('error', 'Email does not match OTP email!')->withInput();
+        }
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return back()->with('error', 'User not found!')->withInput();
+        }
+        $user->password = bcrypt($request->input('password'));
+        $user->save();
+        ResetPassword::where('email', $request->email)->delete();
+
+        return redirect()->route('userprofile')->with('success', 'Password updated successfully!');
+    }
 
     public function set_new_password(Request $request)
     {
@@ -106,7 +206,9 @@ class ProfileController extends Controller
         }
         $user->password = bcrypt($request->input('password'));
         $user->save();
+
         session()->forget('otp_identifier_email');
+        ResetPassword::where('email', $request->email)->delete();
 
         return redirect('login')->with('success', 'Password updated successfully! You can now log in.');
     }

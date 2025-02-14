@@ -82,6 +82,8 @@ Route::post('/otp-submit', [ProfileController::class, 'submitOtp'])->name('opt.s
 Route::post('/set-new-password', [ProfileController::class, 'set_new_password'])->name('set.new.password');
 
 Route::get('/resend-otp', [ProfileController::class, 'resendOtp'])->name('resend.otp');
+Route::get('/forgot-password/send-otp', [ProfileController::class, 'sendForgotPasswordOtp'])->name('forgot.password.sendOtp');  /// this use for after login
+
 
 Route::get('/otp-verify', function () {
     return view('auth.passwords.otp_verify');
@@ -97,6 +99,18 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('/app', function () {
         return view('app.dashboard');
     })->name('app');
+
+    Route::get('/otp-verify-page', function () {
+        return view('profiles.otp_verify_page');
+    })->name('profile.otp.verify');
+
+Route::post('user/reset/password', [ProfileController::class, 'profileOtpsubmit'])->name('profile.otp.submit');
+Route::post('user/update/password', [ProfileController::class, 'update_set_new_password'])->name('user.password.update');
+Route::get('user/resend-otp', [ProfileController::class, 'profile_resendOtp'])->name('user.resend.otp');
+
+Route::get('user/reset-password', function () {
+    return view('profiles.reset_password_form');
+})->name('profiles.reset_password_form');
 
     // Route::get('/dashboard', function () {
     //     return view('app.dashboard');
