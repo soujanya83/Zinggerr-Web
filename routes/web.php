@@ -81,6 +81,8 @@ Route::post('/reset/password', [ProfileController::class, 'sendOtp'])->name('res
 Route::post('/otp-submit', [ProfileController::class, 'submitOtp'])->name('opt.submit');
 Route::post('/set-new-password', [ProfileController::class, 'set_new_password'])->name('set.new.password');
 
+Route::get('/resend-otp', [ProfileController::class, 'resendOtp'])->name('resend.otp');
+
 Route::get('/otp-verify', function () {
     return view('auth.passwords.otp_verify');
 })->name('otp.verify');

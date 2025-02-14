@@ -15,6 +15,74 @@ use Carbon\Carbon;
 class ProfileController extends Controller
 {
 
+    public function resendOtp(Request $request)
+    {
+        $email = session()->get('otp_identifier_email');
+        if (!$email) {
+            return redirect()->route('forget.password')->with('error', 'Session expired. Please try again.');
+        }
+        $user = User::where('email', $email)->first();
+        if (!$user) {
+            return redirect()->route('forget.password')->with('error', 'User not found!');
+        }
+        $otp = rand(100000, 999999);
+        ResetPassword::updateOrInsert(
+            ['email' => $user->email],
+            ['token' => $otp, 'created_at' => Carbon::now()]
+        );
+        $this->sendOtpMail($user, $otp);
+        return back()->with('success', 'A new OTP has been sent to your email.');
+    }
+
+
+    private function sendOtpMail($user, $otp)
+    {
+
+        $postData = [
+            "from" => ["address" => "noreply@zinggerr.com"],
+            "to" => [
+                [
+                    "email_address" => [
+                        "address" => $user->email,
+                        "name" => $user->name
+                    ]
+                ]
+            ],
+            "subject" => "Verify Your Email",
+            "htmlbody" => view('auth.passwords.otp_email', [
+                'userName' => $user->name,
+                'otp' => $otp,
+
+            ])->render()
+        ];
+
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => "https://api.zeptomail.com.au/v1.1/email",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => json_encode($postData),
+            CURLOPT_HTTPHEADER => [
+                "accept: application/json",
+                "authorization: Zoho-enczapikey GkDdjPiC+lYbwFqX8426YIQGbJRi7cDiHJq2MZ9SoBN+vtwJ4UxNeZVLwnAkyzBNuiHIBVfBd7tz8THZsO6OfXMrJSqrcETuOpwzGB+edd0FvHvXUPi/9/tgVkjNnvCoNQtu7RIy9Ctv4A==",
+                "content-type: application/json",
+            ],
+        ]);
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+
+        if ($err) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+
+
     public function set_new_password(Request $request)
     {
 
@@ -116,49 +184,11 @@ class ProfileController extends Controller
         return redirect()->route('otp.verify')->with('success', 'OTP sent to your email.');
     }
 
-    private function sendOtpMail($user, $otp)
-    {
-        $postData = [
-            "from" => ["address" => "noreply@zinggerr.com"],
-            "to" => [
-                [
-                    "email_address" => [
-                        "address" => $user->email,
-                        "name" => $user->name
-                    ]
-                ]
-            ],
-            "subject" => "Verify Your Email",
-            "htmlbody" => view('auth.passwords.otp_email', [
-                'userName' => $user->name,
-                'otp' => $otp,
 
-            ])->render()
-        ];
 
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_URL => "https://api.zeptomail.com.au/v1.1/email",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => json_encode($postData),
-            CURLOPT_HTTPHEADER => [
-                "accept: application/json",
-                "authorization: Zoho-enczapikey GkDdjPiC+lYbwFqX8426YIQGbJRi7cDiHJq2MZ9SoBN+vtwJ4UxNeZVLwnAkyzBNuiHIBVfBd7tz8THZsO6OfXMrJSqrcETuOpwzGB+edd0FvHvXUPi/9/tgVkjNnvCoNQtu7RIy9Ctv4A==",
-                "content-type: application/json",
-            ],
-        ]);
 
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-        curl_close($curl);
 
-        if ($err) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+
 
     // private function sendOtpMail($user)
     // {

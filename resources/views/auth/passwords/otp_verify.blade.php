@@ -79,7 +79,15 @@
                     </form>
 
                     <hr>
-                    <a href="{{ route('login') }}" class="d-flex justify-content-center">Already have an account?</a>
+                    <!-- Resend OTP Button -->
+                    <p class="text-center mt-3">
+                        Didn't receive OTP?
+                        <a href="{{ route('resend.otp') }}" onclick="disableResendButton(event)">Resend OTP</a>
+                        <span id="resendTimer" class="text-danger"></span>
+                    </p>
+
+
+
                 </div>
             </div>
         </div>
@@ -111,4 +119,18 @@
         }
     }
 </script>
+
+<script>
+    function disableResendButton(event) {
+            event.preventDefault();
+            let link = event.target;
+            link.style.pointerEvents = "none"; // Disable click
+            link.innerText = "Resending OTP...";
+
+            setTimeout(() => {
+                window.location.href = link.href; // Redirect after timeout
+            }, 1000);
+        }
+</script>
+
 @endsection
