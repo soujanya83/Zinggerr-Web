@@ -125,11 +125,11 @@
             <p>Please Do not share this OTP with anyone for security reasons.</p>
             <br>
             <p>Thank you,<br><strong>Team Zinggerr</strong></p>
-            <div class="header">
-                © 2024 Zinggerr. All rights reserved. <br>
-            </div>
         </div>
 
+        <div class="header" style="margin-top: -20px;">
+            © 2024 Zinggerr. All rights reserved. <br>
+        </div>
     </div>
 </body>
 
