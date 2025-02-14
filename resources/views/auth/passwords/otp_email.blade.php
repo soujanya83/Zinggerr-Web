@@ -127,7 +127,7 @@
             <p>Thank you,<br><strong>Team Zinggerr</strong></p>
         </div>
 
-        <div class="header" style="margin-top: -20px;">
+        <div class="header" style="margin-top: -15px;">
             © 2024 Zinggerr. All rights reserved. <br>
         </div>
     </div>
