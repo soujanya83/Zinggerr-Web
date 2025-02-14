@@ -15,8 +15,32 @@ use Carbon\Carbon;
 class ProfileController extends Controller
 {
 
-    public function set_new_password(Request $request){
-        dd($request);
+    public function set_new_password(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'otp_email' => 'required|email',
+            'password' => 'required|string|min:6|confirmed'
+        ]);
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+        if ($request->email !== $request->otp_email) {
+            return back()->with('error', 'Email does not match OTP email!')->withInput();
+        }
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return back()->with('error', 'User not found!')->withInput();
+        }
+        $user->password = bcrypt($request->input('password'));
+        $user->save();
+        session()->forget('otp_identifier_email');
+
+        return redirect('login')->with('success', 'Password updated successfully! You can now log in.');
     }
 
     public function submitOtp(Request $request)
