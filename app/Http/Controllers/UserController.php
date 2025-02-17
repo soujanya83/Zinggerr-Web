@@ -28,30 +28,29 @@ class UserController extends Controller
     {
 
 
-            $user = Auth::user(); // Get the authenticated user
+        $user = Auth::user(); // Get the authenticated user
 
-            // Check user role and redirect accordingly
-            switch ($user->type) {
-                case 'Superadmin':
-                    return redirect()->route('dashboard'); ////////////// this defalut user superadmin
-                case 'Admin':
-                    return redirect()->route('dashboard');
-                case 'Teacher':
-                    return redirect()->route('teacher.dashboard');
-                case 'Staff':
-                    return redirect()->route('dashboard');
-                case 'Student':
-                    return redirect()->route('student.dashboard');
-                default:
-                    return redirect()->route('default.dashboard'); // Fallback route
-            }
-
+        // Check user role and redirect accordingly
+        switch ($user->type) {
+            case 'Superadmin':
+                return redirect()->route('dashboard'); ////////////// this defalut user superadmin
+            case 'Admin':
+                return redirect()->route('dashboard');
+            case 'Teacher':
+                return redirect()->route('teacher.dashboard');
+            case 'Staff':
+                return redirect()->route('dashboard');
+            case 'Student':
+                return redirect()->route('student.dashboard');
+            default:
+                return redirect()->route('default.dashboard'); // Fallback route
+        }
     }
 
     public function dashboardmain()
     {
-        $user=Auth::user();
-        $userAuth=$user->email_verified_at;
+        $user = Auth::user();
+        $userAuth = $user->email_verified_at;
         if (Auth::check() && ($userAuth != null)) {
             $userId = Auth::user()->id;
             $student = User::where('type', 'Student')->where('user_id', $userId)->count();
@@ -77,7 +76,6 @@ class UserController extends Controller
             return view('app.dashboard', compact('student', 'courses', 'teacher', 'staff', 'courseslast7day', 'coursesLastMonth', 'studentlast7day', 'studentlastmonth', 'latestStudents'));
         } else {
             return redirect()->route('loginpage');
-
         }
     }
 
@@ -241,14 +239,28 @@ class UserController extends Controller
 
     public function useredit($slug)
     {
+        $defaultRoles = ['Admin'];
+        $userId = Auth::user()->id;
         $user = user::where('slug', $slug)->first();
-        $role = role::all();
+        $role = Role::where(function ($query) use ($userId, $defaultRoles) {
+            $query->where('user_id', $userId)
+                ->orWhereIn('name', $defaultRoles);
+        })
+            ->whereNotIn('name', ['Superadmin'])->latest()
+            ->get();
         return view('users.useredit', compact('user', 'role'));
     }
 
     public function useradd(Request $request)
     {
-        $role = Role::all();
+        $userId = Auth::user()->id;
+        $defaultRoles = ['Admin'];
+        $role = Role::where(function ($query) use ($userId, $defaultRoles) {
+            $query->where('user_id', $userId)
+                ->orWhereIn('name', $defaultRoles);
+        })
+            ->whereNotIn('name', ['Superadmin'])->latest()
+            ->get();
         return view('users.useradd', compact('role'));
     }
 

@@ -74,7 +74,7 @@
                                             <div class="mb-3">
                                                 <label for="nameInput">Role Name</label>
                                                 <input type="text" class="form-control" id="nameInput" name="name"
-                                                    required placeholder="Enter Name">
+                                                    required placeholder="Enter Name" value="{{ old('name') }}" oninput="this.value = this.value.replace(/\s/g, '')">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -82,14 +82,14 @@
                                                 <label for="displayNameInput">Role Display
                                                     Name</label>
                                                 <input type="text" class="form-control" id="displayNameInput"
-                                                    name="displayname" required placeholder="Enter Display Name">
+                                                    name="displayname" required placeholder="Enter Display Name" value="{{ old('displayname') }}">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="descriptionInput">Description</label>
                                                 <textarea class="form-control" id="descriptionInput" name="description"
-                                                    required rows="1" placeholder="Enter Text..."></textarea>
+                                                    required rows="1" placeholder="Enter Text...">{{ old('description') }}</textarea>
                                             </div>
                                         </div>
                                     </div>

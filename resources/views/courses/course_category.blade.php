@@ -46,7 +46,7 @@
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <ul>
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                <li>{{ $error }}</li>
                 @endforeach
             </ul>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -74,7 +74,7 @@
                                             <div class="mb-3">
                                                 <label for="nameInput">Category Name</label>
                                                 <input type="text" class="form-control" id="nameInput" name="name"
-                                                    required placeholder="Enter Name">
+                                                    required placeholder="Enter Name" value="{{ old('name') }}">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -82,20 +82,21 @@
                                                 <label for="displayNameInput">Category Display
                                                     Name</label>
                                                 <input type="text" class="form-control" id="displayNameInput"
-                                                    name="displayname" required placeholder="Enter Display Name">
+                                                    name="displayname" required placeholder="Enter Display Name" value="{{ old('displayname') }}">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="descriptionInput">Description</label>
                                                 <textarea class="form-control" id="descriptionInput" name="description"
-                                                     rows="1" placeholder="Enter Text..."></textarea>
+                                                    rows="1" placeholder="Enter Text...">{{ old('description') }}</textarea>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="text-end">
                                         <input type="submit" class="btn btn-shadow btn-primary" value="Submit">
-                                        <a href="{{ route('course.category') }}" class="btn btn-shadow btn-success"> Reset</a>
+                                        <a href="{{ route('course.category') }}" class="btn btn-shadow btn-success">
+                                            Reset</a>
 
                                     </div>
                                 </form>
@@ -104,16 +105,15 @@
 
                         </div>
                     </div>
+                    @if($roles->count() >0)
+
                     <hr>
                     <div class="card-header" style="margin-top: -19px; margin-bottom: -17px;">
                         <div class="row align-items-center g-2">
                             <div class="col">
                                 <h5>All Category</h5>
                             </div>
-                            {{-- <div class="form-search col-auto">
-                                <input type="text" class="form-control" id="searchPermissions"
-                                    placeholder="Search Permissions...">
-                            </div> --}}
+
                         </div>
                     </div>
                     <div class="card-body">
@@ -165,6 +165,7 @@
                             </table>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>

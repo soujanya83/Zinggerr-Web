@@ -15,11 +15,12 @@ return new class extends Migration
             $table->char('id', 36)->primary();
             $table->char('permission_id', 36);
             $table->char('role_id', 36);
+            $table->string('user_id', 50);
             $table->timestamps();
 
             $table->foreign('permission_id')->references('id')->on('permissions')->onDelete('cascade');
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
-        
+
         });
     }
 

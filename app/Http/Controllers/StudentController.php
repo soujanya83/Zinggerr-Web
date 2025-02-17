@@ -95,7 +95,8 @@ class StudentController extends Controller
 
     public function studentlist(Request $request)
     {
-        $query = User::whereIn('type', ['Student'])->whereNotNull('email_verified_at');
+        $userid = Auth::user()->id;
+        $query = User::whereIn('type', ['Student'])->whereNotNull('email_verified_at')->where('user_id',$userid);
 
         if ($request->has('search') && $request->search) {
             $search = $request->search;

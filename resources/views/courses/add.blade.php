@@ -236,6 +236,7 @@
                                                 <div class="form-floating mb-3">
                                                     <select name="course_category" class="form-select"
                                                         id="floatingShortname">
+                                                        <option>Select Category</option>
                                                         @foreach($categories as $category)
                                                         <option value="{{ $category->name }}">{{ $category->display_name
                                                             }}</option>

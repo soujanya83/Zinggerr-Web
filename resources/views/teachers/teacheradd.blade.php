@@ -121,7 +121,7 @@
                                         <label for="passwordInput">Password</label>
                                         <div class="input-group">
                                             <input type="password" class="form-control" id="passwordInput"
-                                                name="password" placeholder="Enter your password" required>
+                                                name="password"  required>
                                             <button type="button" class="btn btn-outline-secondary" id="togglePassword">
                                                 <i class="fas fa-eye"></i>
                                             </button>

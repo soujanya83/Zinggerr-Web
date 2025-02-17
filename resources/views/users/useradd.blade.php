@@ -122,7 +122,7 @@
                                         <label for="passwordInput">Password</label>
                                         <div class="input-group">
                                             <input type="password" id="passwordInput" class="form-control"
-                                                name="password" placeholder="Enter new password" required>
+                                                name="password" required>
                                             <button type="button" class="btn btn-outline-secondary" id="togglePassword">
                                                 <i class="fas fa-eye"></i>
                                             </button>
@@ -139,12 +139,10 @@
                                         <label for="emailInput">Select Role</label>
                                         <select name="role" class="form-select" required>
                                             <option value="">Select Role</option>
-                                            {{-- @foreach($role as $roledata)
+                                            @foreach($role as $roledata)
                                             <option value="{{ $roledata->name }}">{{ $roledata->display_name }}</option>
-                                            @endforeach --}}
+                                            @endforeach
 
-                                            <option value="Admin">Admin</option>
-                                            <option value="Staff">Staff</option>
 
 
                                         </select>

@@ -38,12 +38,18 @@
                                 <div class="row align-items-center">
                                     <div class="col">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10" style="font-size: 18px;">Welcome: {{ Auth::user()->name }}</h5>
+                                            <h5 class="m-b-10" style="font-size: 18px;">Welcome: {{ Auth::user()->name
+                                                }}</h5>
                                         </div>
                                     </div>
                                     <div class="col-auto">
                                         <ul class="breadcrumb">
-                                            <li class="breadcrumb-item">{{ Auth::user()->type }}</li>
+                                            <li class="breadcrumb-item" style="color:rgb(5, 18, 109)">
+                                                <b>
+                                                    <h6> @if ( Auth::user()->type =='Superadmin') SuperAdmin @else {{
+                                                        Auth::user()->type }} @endif</h6>
+                                                </b>
+                                            </li>
 
                                         </ul>
                                     </div>
@@ -86,9 +92,11 @@
                     <div class="card-header">
                         <h5>Latest Students</h5>
                     </div>
+
                     <div class="card-body">
                         <div class="table-responsive">
                             <div class="customers-scroll" style="height: 310px; position: relative">
+                                @if($latestStudents->count()>0)
                                 <table class="table table-hover table-borderless mb-0">
                                     <thead>
                                         <tr>
@@ -100,6 +108,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+
                                         @foreach($latestStudents as $keys => $user)
                                         <tr>
                                             <td style="padding: 4px;text-align:center">{{ $keys + 1 }}</td>
@@ -136,8 +145,15 @@
                                             </td>
                                         </tr>
                                         @endforeach
+
                                     </tbody>
                                 </table>
+
+                                @else
+                                <div class="d-flex align-items-center mt-2" style="margin-left:12px">
+                                    <tr>Data Not found!</tr>
+                                </div>
+                                @endif
                             </div>
                         </div>
                     </div>

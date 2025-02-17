@@ -11,6 +11,7 @@ use App\Models\Role;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+
 class PermissionsController extends Controller
 {
     public function create_permission()
@@ -24,17 +25,25 @@ class PermissionsController extends Controller
 
     public function role_permission()
     {
+        $userId = Auth::user()->id;
         $permissions = Permission::all()->map(function ($permission) {
             return $permission->getOriginal(); // Get the original attributes
         })->toArray();
 
-        $role = Role::whereIn('name', ['Admin', 'Staff'])->get();
+        $defaultRoles = ['Admin', 'Teacher'];
+
+        $role = Role::where(function ($query) use ($userId, $defaultRoles) {
+            $query->where('user_id', $userId)
+                ->orWhereIn('name', $defaultRoles);
+        })
+            ->whereNotIn('name', ['Superadmin'])->latest()
+            ->get();
         return view('permissions.role_permission', compact('permissions', 'role'));
     }
 
     public function assignpermissions(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'role_id' => 'required|exists:roles,id',
             'permissions' => 'required|array',
             'permissions.*' => 'exists:permissions,id'
@@ -46,7 +55,7 @@ class PermissionsController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-
+        $userId = Auth::user()->id;
         $role_id = $request->role_id;
         $permissions = $request->permissions;
         foreach ($permissions as $permission_id) {
@@ -55,6 +64,7 @@ class PermissionsController extends Controller
                 [
                     'role_id' => $role_id,
                     'permission_id' => $permission_id,
+                    'user_id' => $userId,
                 ],
                 [
                     'id' => $uuid // This will update `id` if the record exists; adjust as needed
@@ -153,15 +163,20 @@ class PermissionsController extends Controller
                 Rule::unique('roles', 'name')->where(function ($query) use ($userId) {
                     return $query->where('user_id', $userId);
                 }),
+                'regex:/^(?!.*superadmin).*$/i',
             ],
             'displayname' => 'required|string|max:255',
             'description' => 'nullable|string|max:500',
+            [
+                'name.regex' => 'The role name cannot contain "Superadmin".'
+            ]
         ]);
         if ($validator->fails()) {
             return back()
                 ->withErrors($validator)
                 ->withInput();
         }
+
 
         try {
             $uuid = (string) Guid::uuid4(); // Use Laravel's built-in Str helper for UUID
@@ -187,7 +202,15 @@ class PermissionsController extends Controller
     {
         $userId = Auth::user()->id;
 
-        $roles = Role::whereNotIn('name', ['Superadmin'])->where('user_id',$userId)->get();
+        $defaultRoles = ['Teacher', 'Admin', 'Student'];
+
+        $roles = Role::where(function ($query) use ($userId, $defaultRoles) {
+            $query->where('user_id', $userId)
+                ->orWhereIn('name', $defaultRoles);
+        })
+            ->whereNotIn('name', ['Superadmin'])->latest()
+            ->get();
+
         return view('roles.create', compact('roles'));
     }
 
@@ -207,7 +230,8 @@ class PermissionsController extends Controller
 
     public function permissions_assigned_list()
     {
-        $permissions = PermissionRole::select('permission_role.id', 'permissions.name', 'permissions.display_name', 'roles.display_name as role_name')->join('permissions', 'permissions.id', '=', 'permission_role.permission_id')->join('roles', 'roles.id', '=', 'permission_role.role_id')->get();
+        $userId=Auth::user()->id;
+        $permissions = PermissionRole::select('permission_role.id', 'permissions.name', 'permissions.display_name', 'roles.display_name as role_name')->where('permission_role.user_id',$userId)->join('permissions', 'permissions.id', '=', 'permission_role.permission_id')->join('roles', 'roles.id', '=', 'permission_role.role_id')->get();
 
         return view('permissions.permissions_assigned_list', compact('permissions'));
     }

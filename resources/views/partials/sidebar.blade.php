@@ -62,7 +62,7 @@
                         <span class="pc-micon">
                             <i class="ti ti-user"></i>
                         </span>
-                        <span class="pc-mtext" data-i18n="Teachers">Teachers</span>
+                        <span class="pc-mtext" data-i18n="Teachers">Faculty</span>
                         <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
                     </a>
                     <ul class="pc-submenu">

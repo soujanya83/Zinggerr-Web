@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\session;
-
+use Illuminate\Validation\Rule;
 class CourseController extends Controller
 {
 
@@ -786,15 +786,24 @@ class CourseController extends Controller
 
     public function courses_category()
     {
-
-        $roles = CoursesCategory::all();
+        $userId=Auth::user()->id;
+        $roles = CoursesCategory::where('user_id',$userId)->get();
         return view('courses.course_category', compact('roles'));
     }
 
     public function submit_category(Request $request)
     {
+        $userId=Auth::user()->id;
+
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:courses_category,name',
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('courses_category', 'name')->where(function ($query) use ($userId) {
+                    return $query->where('user_id', $userId);
+                }),
+            ],
             'displayname' => 'required|string|max:255',
             'description' => 'nullable|string|max:500',
         ]);
@@ -805,10 +814,9 @@ class CourseController extends Controller
         }
 
         try {
-
             CoursesCategory::create([
-
                 'name' => $request->name,
+                'user_id' => $userId,
                 'display_name' => $request->displayname,
                 'description' => $request->description,
             ]);
@@ -978,7 +986,8 @@ class CourseController extends Controller
 
     public function courseadd(Request $request)
     {
-        $categories = CoursesCategory::all();
+        $userid = Auth::user()->id;
+        $categories = CoursesCategory::where('user_id',$userid)->get();
         return view('courses.add', compact('categories'));
     }
 
@@ -1012,8 +1021,8 @@ class CourseController extends Controller
         $userId = Auth::user()->id;
 
         $userType = Auth::user()->type;
-        if ($userType == 'Superadmin' || $userType == 'Admin' || $userType == 'Staff') {
-            $query = Course::where('user_id', $userId);
+        if ($userType == 'Superadmin' || $userType == 'Admin') {
+            $query = Course::where('user_id', $userId)->where('user_id',$userId);
         } else {
             $query = CoursesAssign::where('users_id', $userId)->where('courses.course_status', 1)->where('courses_assign.status', 1)->join('courses', 'courses.id', '=', 'courses_assign.courses_id');
         }
@@ -1027,7 +1036,7 @@ class CourseController extends Controller
         $courses = $query->latest('courses.created_at')->paginate(12);
 
         $users = User::where('status', 1)->get();
-        $categories = CoursesCategory::all();
+        $categories = CoursesCategory::where('user_id',$userId)->get();
 
         return view('courses.list', compact('courses', 'users', 'categories'));
     }

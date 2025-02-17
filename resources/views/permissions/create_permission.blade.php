@@ -107,7 +107,7 @@
                                             <div class="mb-3">
                                                 <label for="nameInput">Permission Name</label>
                                                 <input type="text" class="form-control" id="nameInput" name="name"
-                                                    required placeholder="Enter Name">
+                                                    required placeholder="Enter Name" oninput="this.value = this.value.replace(/\s/g, '')">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
