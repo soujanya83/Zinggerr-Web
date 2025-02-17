@@ -29,24 +29,24 @@
             </div>
         </div>
         @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
             {{ session('error') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         @endif
 
         @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         @endif
 
         @if ($errors->any())
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
             <ul>
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                <li>{{ $error }}</li>
                 @endforeach
             </ul>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -95,7 +95,8 @@
                                     </div>
                                     <div class="text-end">
                                         <input type="submit" class="btn btn-shadow btn-primary" value="Submit">
-                                        <a href="{{ route('roles.create') }}" class="btn  btn-shadow btn-success"> Reset</a>
+                                        <a href="{{ route('roles.create') }}" class="btn  btn-shadow btn-success">
+                                            Reset</a>
 
                                     </div>
                                 </form>
@@ -104,16 +105,16 @@
 
                         </div>
                     </div>
+
+
+                    @if($roles->count() > 0)
                     <hr>
                     <div class="card-header" style="margin-top: -19px; margin-bottom: -17px;">
                         <div class="row align-items-center g-2">
                             <div class="col">
                                 <h5>All Roles</h5>
                             </div>
-                            {{-- <div class="form-search col-auto">
-                                <input type="text" class="form-control" id="searchPermissions"
-                                    placeholder="Search Permissions...">
-                            </div> --}}
+
                         </div>
                     </div>
                     <div class="card-body">
@@ -134,7 +135,10 @@
                                         @endif
                                     </tr>
                                 </thead>
+
                                 <tbody>
+
+
                                     @foreach ($roles as $index => $role)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
@@ -163,10 +167,15 @@
 
                                     </tr>
                                     @endforeach
+
+
                                 </tbody>
                             </table>
                         </div>
                     </div>
+
+                    @endif
+
                 </div>
             </div>
         </div>

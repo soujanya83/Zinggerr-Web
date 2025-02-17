@@ -14,6 +14,7 @@ class Role extends Model
         'id',
         'name',
         'display_name',
+        'user_id',
         'description',
     ];
 }

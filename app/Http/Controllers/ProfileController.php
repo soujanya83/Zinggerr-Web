@@ -372,7 +372,7 @@ class ProfileController extends Controller
         $uid = Auth::user()->id;
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:10',
+            'phone' => 'nullable|string|max:14',
             'username' => 'nullable|string|min:6',
             'gender' => 'required|in:Male,Female,Other',
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',

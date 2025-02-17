@@ -9,7 +9,8 @@ use App\Models\PermissionRole;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Role;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 class PermissionsController extends Controller
 {
     public function create_permission()
@@ -143,8 +144,16 @@ class PermissionsController extends Controller
 
     public function submit_roles(Request $request)
     {
+        $userId = Auth::user()->id;
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:permissions,name',
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('roles', 'name')->where(function ($query) use ($userId) {
+                    return $query->where('user_id', $userId);
+                }),
+            ],
             'displayname' => 'required|string|max:255',
             'description' => 'nullable|string|max:500',
         ]);
@@ -159,6 +168,7 @@ class PermissionsController extends Controller
             Role::create([
                 'id' => $uuid,
                 'name' => $request->name,
+                'user_id' => $userId,
                 'display_name' => $request->displayname,
                 'description' => $request->description,
             ]);
@@ -167,6 +177,7 @@ class PermissionsController extends Controller
             return redirect()->back()
                 ->with('success', 'Roles created successfully!');
         } catch (\Exception $e) {
+
             return redirect()->back()
                 ->with('error', 'Something went wrong. Please try again.');
         }
@@ -174,7 +185,9 @@ class PermissionsController extends Controller
 
     public function createroles()
     {
-        $roles = Role::whereNotIn('name', ['Superadmin'])->get();
+        $userId = Auth::user()->id;
+
+        $roles = Role::whereNotIn('name', ['Superadmin'])->where('user_id',$userId)->get();
         return view('roles.create', compact('roles'));
     }
 
