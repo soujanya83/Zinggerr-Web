@@ -24,8 +24,11 @@ Route::get('/', function () {
 });
 
 Route::get('/register-page', function () {
+
     return view('auth.register');
 });
+
+
 
 Route::get('/logout', function () {
     Auth::logout();
@@ -104,13 +107,13 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
         return view('profiles.otp_verify_page');
     })->name('profile.otp.verify');
 
-Route::post('user/reset/password', [ProfileController::class, 'profileOtpsubmit'])->name('profile.otp.submit');
-Route::post('user/update/password', [ProfileController::class, 'update_set_new_password'])->name('user.password.update');
-Route::get('user/resend-otp', [ProfileController::class, 'profile_resendOtp'])->name('user.resend.otp');
+    Route::post('user/reset/password', [ProfileController::class, 'profileOtpsubmit'])->name('profile.otp.submit');
+    Route::post('user/update/password', [ProfileController::class, 'update_set_new_password'])->name('user.password.update');
+    Route::get('user/resend-otp', [ProfileController::class, 'profile_resendOtp'])->name('user.resend.otp');
 
-Route::get('user/reset-password', function () {
-    return view('profiles.reset_password_form');
-})->name('profiles.reset_password_form');
+    Route::get('user/reset-password', function () {
+        return view('profiles.reset_password_form');
+    })->name('profiles.reset_password_form');
 
     // Route::get('/dashboard', function () {
     //     return view('app.dashboard');

@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use App\Http\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class Authenticate
@@ -18,8 +19,8 @@ class Authenticate
      */
     public function handle(Request $request, Closure $next)
     {
-        // Redirect authenticated users to the dashboard if they try to access the login page
         if (Auth::check()) {
+
             return redirect('/dashboard');
         }
 

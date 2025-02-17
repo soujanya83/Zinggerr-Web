@@ -23,6 +23,7 @@ class CreateNewUser implements CreatesNewUsers
 
     public function create(array $input): User
     {
+
         Validator::make($input, [
             'full_name' => ['required', 'string', 'min:5'],
             'user_name' => [
@@ -44,13 +45,27 @@ class CreateNewUser implements CreatesNewUsers
             ],
             'phone' => [
                 'required',
-                'digits:10',
+                'max:10',
+                'min:8',
                 Rule::unique('users', 'phone')->where(function ($query) {
                     $query->whereNotNull('email_verified_at');
                 }),
             ],
             'password' => ['required', 'string', 'min:6'],
+            'country_code' => [
+                'required',
+                'string',
+                function ($attribute, $value, $fail) {
+                    if ($value === '+undefined' || empty($value)) {
+                        $fail('Please select a valid country code.');
+                    }
+                },
+            ],
+            'country_name' => ['required', 'string'],
         ])->validate();
+
+
+
 
         User::where('email', $input['email'])->whereNull('email_verified_at')->delete();
         User::where('phone', $input['phone'])->whereNull('email_verified_at')->delete();
@@ -66,7 +81,9 @@ class CreateNewUser implements CreatesNewUsers
             'name' => $input['full_name'],
             'username' => $input['user_name'],
             'email' => $input['email'],
-            'phone' => $input['phone'],
+            'country_code' => $input['country_code'],
+            'country_name' => $input['country_name'],
+            'phone' => $input['country_code'].$input['phone'],
             'status' => 1,
             'password' => Hash::make($input['password']),
         ]);
@@ -76,7 +93,12 @@ class CreateNewUser implements CreatesNewUsers
             ['id' => $user->id, 'hash' => sha1($user->email)]
         );
         $this->sendZeptoMail($user, $verificationUrl);
+        session()->flash('registered_email', $user->email);
+
+
         session()->put('registered_email', $user->email);
+
+
         event(new Registered($user));
         return $user;
     }

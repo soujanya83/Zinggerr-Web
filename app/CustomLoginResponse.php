@@ -17,22 +17,25 @@ class CustomLoginResponse implements LoginResponseContract
     // }
     public function toResponse($request)
     {
-        $user = Auth::user(); // Get the authenticated user
 
-        // Check user role and redirect accordingly
-        switch ($user->type) {
-            case 'Superadmin':
-                return redirect()->route('dashboard'); ////////////// this defalut user superadmin
-            case 'Admin':
-                return redirect()->route('dashboard');
-            case 'Teacher':
-                return redirect()->route('teacher.dashboard');
-            case 'Staff':
-                return redirect()->route('dashboard');
-            case 'Student':
-                return redirect()->route('student.dashboard');
-            default:
-                return redirect()->route('default.dashboard'); // Fallback route
+        $user = Auth::user();
+
+
+        if (Auth::check()) {
+            switch ($user->type) {
+                case 'Superadmin':
+                    return redirect()->route('dashboard'); ////////////// this defalut user superadmin
+                case 'Admin':
+                    return redirect()->route('dashboard');
+                case 'Teacher':
+                    return redirect()->route('teacher.dashboard');
+                case 'Staff':
+                    return redirect()->route('dashboard');
+                case 'Student':
+                    return redirect()->route('student.dashboard');
+                default:
+                    return redirect()->route('default.dashboard'); // Fallback route
+            }
         }
     }
 }

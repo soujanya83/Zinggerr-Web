@@ -27,49 +27,59 @@ class UserController extends Controller
     public function dashboard()
     {
 
-        $user = Auth::user(); // Get the authenticated user
 
-        // Check user role and redirect accordingly
-        switch ($user->type) {
-            case 'Superadmin':
-                return redirect()->route('dashboard'); ////////////// this defalut user superadmin
-            case 'Admin':
-                return redirect()->route('dashboard');
-            case 'Teacher':
-                return redirect()->route('teacher.dashboard');
-            case 'Staff':
-                return redirect()->route('dashboard');
-            case 'Student':
-                return redirect()->route('student.dashboard');
-            default:
-                return redirect()->route('default.dashboard'); // Fallback route
-        }
+            $user = Auth::user(); // Get the authenticated user
+
+            // Check user role and redirect accordingly
+            switch ($user->type) {
+                case 'Superadmin':
+                    return redirect()->route('dashboard'); ////////////// this defalut user superadmin
+                case 'Admin':
+                    return redirect()->route('dashboard');
+                case 'Teacher':
+                    return redirect()->route('teacher.dashboard');
+                case 'Staff':
+                    return redirect()->route('dashboard');
+                case 'Student':
+                    return redirect()->route('student.dashboard');
+                default:
+                    return redirect()->route('default.dashboard'); // Fallback route
+            }
+
     }
 
     public function dashboardmain()
     {
-        $userId = Auth::user()->id;
-        $student = User::where('type', 'Student')->where('user_id', $userId)->count();
-        $studentlast7day = User::where('user_id', $userId)->where('type', 'Student')->where('created_at', '>=', Carbon::now()->subDays(7))->count();
-        $latestStudents = User::where('type', 'Student')->latest()->take(10)->get();
-        $studentlastmonth = User::where('user_id', $userId)->where('type', 'Student')->whereBetween('created_at', [
-            Carbon::now()->subMonth()->startOfMonth(),Carbon::now()->subMonth()->endOfMonth()])->count();
+        $user=Auth::user();
+        $userAuth=$user->email_verified_at;
+        if (Auth::check() && ($userAuth != null)) {
+            $userId = Auth::user()->id;
+            $student = User::where('type', 'Student')->where('user_id', $userId)->count();
+            $studentlast7day = User::where('user_id', $userId)->where('type', 'Student')->where('created_at', '>=', Carbon::now()->subDays(7))->count();
+            $latestStudents = User::where('type', 'Student')->latest()->take(10)->get();
+            $studentlastmonth = User::where('user_id', $userId)->where('type', 'Student')->whereBetween('created_at', [
+                Carbon::now()->subMonth()->startOfMonth(),
+                Carbon::now()->subMonth()->endOfMonth()
+            ])->count();
 
-        $teacher = User::where('user_id', $userId)->where('type', 'Teacher')->count();
-        $staff = User::where('user_id', $userId)->where('type', 'Staff')->count();
+            $teacher = User::where('user_id', $userId)->where('type', 'Teacher')->count();
+            $staff = User::where('user_id', $userId)->where('type', 'Staff')->count();
 
-        // $courseslast7day = Course::where('user_id', $userId)->count();
-        $coursesLastMonth = Course::where('user_id', $userId)->whereBetween('created_at', [
-            Carbon::now()->subMonth()->startOfMonth(),
-            Carbon::now()->subMonth()->endOfMonth()
-        ])->count();
-        $courseslast7day = Course::where('user_id', $userId)->where('created_at', '>=', Carbon::now()->subDays(7))->count();
+            // $courseslast7day = Course::where('user_id', $userId)->count();
+            $coursesLastMonth = Course::where('user_id', $userId)->whereBetween('created_at', [
+                Carbon::now()->subMonth()->startOfMonth(),
+                Carbon::now()->subMonth()->endOfMonth()
+            ])->count();
+            $courseslast7day = Course::where('user_id', $userId)->where('created_at', '>=', Carbon::now()->subDays(7))->count();
 
-        $courses = Course::where('user_id', $userId)->count();
+            $courses = Course::where('user_id', $userId)->count();
 
-        return view('app.dashboard', compact('student', 'courses', 'teacher', 'staff', 'courseslast7day', 'coursesLastMonth', 'studentlast7day', 'studentlastmonth', 'latestStudents'));
+            return view('app.dashboard', compact('student', 'courses', 'teacher', 'staff', 'courseslast7day', 'coursesLastMonth', 'studentlast7day', 'studentlastmonth', 'latestStudents'));
+        } else {
+            return redirect()->route('loginpage');
+
+        }
     }
-
 
 
     public function createuser(Request $request)
@@ -108,7 +118,7 @@ class UserController extends Controller
                 'gender' => $request->input('gender'),
                 'type' => $request->input('role'),
                 'password' => bcrypt($request->input('password')),
-                'email_verified_at'=>now()
+                'email_verified_at' => now()
             ]);
 
             // Handle file upload
@@ -323,7 +333,4 @@ class UserController extends Controller
 
         return redirect()->back()->with('success', 'User status updated successfully!');
     }
-
-
-
 }
