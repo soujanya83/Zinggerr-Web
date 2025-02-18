@@ -204,7 +204,7 @@
                                 <a class="nav-link" id="profile-tab-8" data-bs-toggle="tab" href="#profile-8" role="tab"
                                     aria-selected="false" tabindex="-1" style="    background-color: white;">
                                     <i class="material-icons-two-tone me-2">group</i>
-                                    Teachers Assign
+                                    Faculties Assign
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
@@ -607,7 +607,7 @@
                                                 data-bs-target="#assigned" type="button" role="tab"
                                                 aria-controls="assigned" aria-selected="true"
                                                 style="    background-color: white;">
-                                                <i class="material-icons-two-tone me-1">account_circle</i> Assigned Teachers
+                                                <i class="material-icons-two-tone me-1">account_circle</i> Assigned Faculties
                                             </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
@@ -615,7 +615,7 @@
                                                 data-bs-target="#available" type="button" role="tab"
                                                 aria-controls="available" aria-selected="false"
                                                 style="    background-color: white;">
-                                                <i class="material-icons-two-tone me-1">group</i> Available Teachers
+                                                <i class="material-icons-two-tone me-1">group</i> Available Faculties
                                             </button>
                                         </li>
                                     </ul>
@@ -630,7 +630,7 @@
                                                     <div class="card table-card">
                                                         <div class="card-header">
                                                             <div class="row align-items-center">
-                                                                <h5>Teachers List Assigned For This Courses</h5>
+                                                                <h5>Faculties List Assigned For This Courses</h5>
 
 
                                                                 <div class="col-auto"
@@ -677,7 +677,7 @@
                                                                         <thead>
                                                                             <tr id="showtr">
                                                                                 <th>#</th>
-                                                                                <th>Teachers Profile</th>
+                                                                                <th>Faculties Profile</th>
                                                                                 <th>Username</th>
                                                                                 <th>Phone</th>
                                                                                 <th>Type</th>
@@ -869,7 +869,7 @@
                                                     <div class="card table-card">
                                                         <div class="card-header">
                                                             <div class="row align-items-center g-2">
-                                                                <h5>Teachers List Available For This Courses </h5>
+                                                                <h5>Faculties List Available For This Courses </h5>
 
                                                                 <div class="col-auto"
                                                                     style=" margin-top: -21px; margin-left: 78%">
@@ -899,7 +899,7 @@
                                                                         <thead>
                                                                             <tr id="showtr">
                                                                                 <th>#</th>
-                                                                                <th>Teachers Profile</th>
+                                                                                <th>Faculties Profile</th>
                                                                                 <th>Username</th>
                                                                                 <th>Phone</th>
                                                                                 <th>Type</th>
