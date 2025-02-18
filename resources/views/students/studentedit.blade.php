@@ -16,7 +16,7 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Students Update</h5>
+                            <h5 class="m-b-10">Update Students</h5>
                         </div>
                     </div>
                     <div class="col-auto">
@@ -45,7 +45,7 @@
         @endif
 
         @if ($errors->any())
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>

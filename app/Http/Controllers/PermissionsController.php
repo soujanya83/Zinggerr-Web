@@ -17,9 +17,10 @@ class PermissionsController extends Controller
 {
     public function create_permission()
     {
-        $permissions = Permission::all()->map(function ($permission) {
+        $permissions = Permission::orderBy('created_at', 'desc')->get()->map(function ($permission) {
             return $permission->getOriginal(); // Get the original attributes
         })->toArray();
+
 
         return view('permissions.create_permission', compact('permissions'));
     }
@@ -27,7 +28,7 @@ class PermissionsController extends Controller
     public function role_permission()
     {
         $userId = Auth::user()->id;
-        $permissions = Permission::all()->map(function ($permission) {
+        $permissions = Permission::orderBy('created_at', 'desc')->get()->map(function ($permission) {
             return $permission->getOriginal(); // Get the original attributes
         })->toArray();
 
@@ -242,7 +243,7 @@ class PermissionsController extends Controller
     public function permissions_assigned_list()
     {
         $userId = Auth::user()->id;
-        $permissions = PermissionRole::select('permission_role.id', 'permissions.name', 'permissions.display_name','users.name','users.type as userstype','users.email')->where('permission_role.user_id', $userId)->join('permissions', 'permissions.id', '=', 'permission_role.permission_id')->join('users','users.id','=','permission_role.assigned_user_id')->get();
+        $permissions = PermissionRole::select('permission_role.id', 'permissions.name', 'permissions.display_name','users.name','users.type as userstype','users.email')->where('permission_role.user_id', $userId)->join('permissions', 'permissions.id', '=', 'permission_role.permission_id')->join('users','users.id','=','permission_role.assigned_user_id')->latest('permission_role.created_at')->get();
 
         return view('permissions.permissions_assigned_list', compact('permissions'));
     }
