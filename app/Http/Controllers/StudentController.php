@@ -185,7 +185,7 @@ class StudentController extends Controller
             }
             $user->save();
 
-            return redirect('student-list')->with('success', 'Student updated successfully!');
+            return redirect()->route('studentlist')->with('success', 'Student updated successfully!');
         } catch (\Exception $e) {
 
             return redirect()->back()->with('error', 'Something went wrong. Please try again.');
