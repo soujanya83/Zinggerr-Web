@@ -742,32 +742,34 @@ class CourseController extends Controller
     public function courseedit(Request $request, $slug)
     {
 
+        $userId=Auth::user()->id;
+
         $course = Course::where('slug', $slug)->first();
 
         if ($course) {
             $id = $course->id;
             $data = CoursesAssign::select('users.*', 'courses_assign.id as assignId', 'courses_assign.status as assignStatus')
-                ->where('courses_id', $id)->where('users.type', 'Teacher')
+                ->where('courses_id', $id)->where('users.type', 'Teacher')->where('users.user_id',$userId)
                 ->join('users', 'users.id', 'courses_assign.users_id')
                 ->paginate(10);
 
             $assignedTeachersIds = CoursesAssign::where('courses_id', $id)
-                ->pluck('users_id'); // Get all assigned teacher IDs for the course
+                ->pluck('users_id');
 
-            $availableTeachers = User::where('type', 'Teacher') // Get only teachers
+            $availableTeachers = User::where('type', 'Teacher')->where('user_id',$userId)
                 ->whereNotIn('id', $assignedTeachersIds) // Exclude assigned teachers
                 ->paginate(10);
 
 
             $userdata = CoursesAssign::select('users.*', 'courses_assign.id as assignId', 'courses_assign.status as assignStatus')
-                ->where('courses_id', $id)->where('users.type', 'Student')
+                ->where('courses_id', $id)->where('users.type', 'Student')->where('users.user_id',$userId)
                 ->join('users', 'users.id', 'courses_assign.users_id')
                 ->paginate(10);
 
             $assignedUsersIds = CoursesAssign::where('courses_id', $id)
                 ->pluck('users_id'); // Get all assigned teacher IDs for the course
 
-            $availableUsers = User::where('type', 'Student') // Get only teachers
+            $availableUsers = User::where('type', 'Student') ->where('user_id',$userId)
                 ->whereNotIn('id', $assignedUsersIds) // Exclude assigned teachers
                 ->paginate(10);
 
