@@ -101,7 +101,7 @@
                                     <thead>
                                         <tr>
                                             <th scope="col" style="text-align:center">#</th>
-                                            <th scope=" col">Profile</th>
+                                            <th scope="col"><span style="margin-left: 47px">Profile</span> </th>
                                             <th scope="col">Phone</th>
                                             <th scope="col">Gender</th>
                                             <th scope="col">Status</th>
@@ -111,7 +111,7 @@
 
                                         @foreach($latestStudents as $keys => $user)
                                         <tr>
-                                            <td style="padding: 4px;text-align:center">{{ $keys + 1 }}</td>
+                                            <td style="text-align:center">{{ $keys + 1 }}</td>
                                             <td style="padding: 4px;">
                                                 <div class="d-flex align-items-center" style="margin-top: -3px;">
                                                     <div class="flex-shrink-0 wid-40">
@@ -134,9 +134,9 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td style="padding: 4px;">{{ $user->phone }}</td>
-                                            <td style="padding: 4px;">{{ $user->gender }}</td>
-                                            <td style="padding: 4px;">
+                                            <td >{{ $user->phone }}</td>
+                                            <td >{{ $user->gender }}</td>
+                                            <td>
                                                 @if($user->status == 1)
                                                 <span class="badge rounded-pill f-14 bg-light-success">Active</span>
                                                 @else
@@ -237,7 +237,7 @@
                                     </div>
                                 </div>
                                 <div class="col-8 text-md-center">
-                                    <h6>{{ $teacher }}</h6><span class="text-muted">Teachers</span>
+                                    <h6>{{ $teacher }}</h6><span class="text-muted">Faculty</span>
                                 </div>
                             </div>
                         </div>

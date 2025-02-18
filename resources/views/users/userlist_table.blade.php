@@ -31,8 +31,8 @@
         <span class="badge bg-light-primary rounded-pill f-14"> {{ $user->type }}</span>
         @elseif($user->type == 'Staff')
         <span class="badge bg-light-warning  rounded-pill f-14"> {{ $user->type }}</span>
-        @elseif($user->type == 'Teacher')
-        <span class="badge bg-light-info  rounded-pill f-14"> {{ $user->type }}</span>
+        @else
+        <span class="badge bg-light-primary  rounded-pill f-14"> {{ $user->type }}</span>
         @endif
     </td>
     <td>{{ $user->gender }}</td>

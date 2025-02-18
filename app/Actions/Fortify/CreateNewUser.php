@@ -84,7 +84,7 @@ class CreateNewUser implements CreatesNewUsers
             'country_code' => $input['country_code'],
             'country_name' => $input['country_name'],
             'phone' => $input['country_code'].$input['phone'],
-            'status' => 1,
+            'status' => 0,
             'password' => Hash::make($input['password']),
         ]);
         $verificationUrl = URL::temporarySignedRoute(
@@ -92,7 +92,7 @@ class CreateNewUser implements CreatesNewUsers
             now()->addMinutes(10),
             ['id' => $user->id, 'hash' => sha1($user->email)]
         );
-        $this->sendZeptoMail($user, $verificationUrl);
+        // $this->sendZeptoMail($user, $verificationUrl);
         session()->flash('registered_email', $user->email);
 
 

@@ -23,7 +23,7 @@
     <td>{{ $user->username }}</td>
     <td>{{ $user->phone }}</td>
     <td>
-        <span class="badge bg-light-info  rounded-pill f-14"> {{ $user->type }}</span>
+        <span class="badge bg-light-info  rounded-pill f-14">@if($user->type=='Teacher') Faculty @endif</span>
     </td>
     <td>{{ $user->gender }}</td>
     <td>

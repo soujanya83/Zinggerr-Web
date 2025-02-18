@@ -220,7 +220,7 @@
                     <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                         <div class="dropdown-header">
                             <h4><span class=" text-muted">{{ Auth::user()->name }}</span></h4>
-                            <p class="text-muted small">{{ Auth::user()->type }}</p>
+                            <p class="text-muted small">@if( Auth::user()->type =='Superadmin') <b>SuperAdmin</b> @else <b>{{ Auth::user()->type}}</b>@endif </p>
                             <hr>
                             <div class="profile-notification-scroll position-relative"
                                 style="max-height: calc(100vh - 280px)">

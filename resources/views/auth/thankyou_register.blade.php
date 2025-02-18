@@ -64,14 +64,15 @@
                         <h2 class="text-secondary mt-3"><b>Thank you for registering!</b></h2>
                         {{-- <h3 class="f-16 mt-3 text-success"></h3> --}}
                         <p class="mt-3 text-muted">
-                            We've sent you an email to verify your
+                            Your account is under review by our User. Verification may take up to 24 hours. Once approved, you will receive a confirmation email on your registered email ID
                             <a href="mailto:{{ session('registered_email') ?? '' }}">
                                 @if(session('registered_email') == null)
-                                Email
+
                                 @else
                                 {{ session('registered_email') }}
                                 @endif
-                            </a>. Please check your inbox and click the link to activate your account.
+                            </a>
+
                         </p>
 
 
@@ -79,21 +80,12 @@
                             Go to Login
                         </a>
                     </div>
-
-                    <?php $userdata=DB::table('users')->where('email',session('registered_email'))->first();
-                    $id=$userdata->id;
-                    ?>
-
                     <div class="mt-4 text-muted">
-                        <p>If you did not receive the email,
-                            <a href="#" class="text-decoration-none" onclick="document.getElementById('resend-form').submit();">click here</a>
-                            to resend it.
+                        <p> <strong>Note:</strong> You can log in only after your account has been verified.
                         </p>
 
-                        <form id="resend-form" method="POST" action="{{ route('verification.resend', ['id'=> $id]) }}" style="display: none;">
-                            @csrf
-                        </form>
-                    </div>
+
+
                 </div>
             </div>
         </div>

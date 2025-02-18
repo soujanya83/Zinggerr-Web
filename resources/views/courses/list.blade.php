@@ -120,14 +120,16 @@
                                                 </form>
                                                 @endif
                                             </div>
-                                            {{-- @if(Auth::user()->type === 'Superadmin' ||
-                                            (isset($permissions) && in_array('cousers_assign',
-                                            $permissions))) --}}
+                                          
+
+                                            @if(Auth::user()->type === 'Superadmin' ||
+                                            (isset($permissions) && in_array('courses_delete',
+                                            $permissions)) || (isset($permissions) && in_array('courses_edit',
+                                            $permissions)))
+
                                             <div class="position-absolute end-0 top-0 p-2"
                                                 style="background-color: rgb(255, 255, 255); border-radius: 50px;margin: 6px;">
-
                                                 <div class="flex-shrink-0">
-
                                                     <div class="dropdown">
                                                         <!-- Dropdown toggle button -->
                                                         <a class="dropdown-toggle text-primary opacity-50 arrow-none"
@@ -136,8 +138,6 @@
                                                             style="color: rgb(0, 0, 0) !important">
                                                             <i class="ti ti-dots f-20"></i>
                                                         </a>
-
-                                                        <!-- Dropdown menu -->
                                                         <div class="dropdown-menu dropdown-menu-end">
                                                             {{-- @if(Auth::user()->type === 'Superadmin' ||
                                                             (isset($permissions) && in_array('cousers_assign',
@@ -159,10 +159,6 @@
                                                                 <i class="ti ti-user-check f-20"></i> Assign Teachers
                                                             </a>
                                                             @endif --}}
-
-
-
-
                                                             @if(Auth::user()->type === 'Superadmin' ||
                                                             (isset($permissions) && in_array('courses_edit',
                                                             $permissions)))
@@ -172,9 +168,8 @@
                                                             </a>
                                                             @endif
 
-                                                            <!-- Delete option -->
                                                             @if(Auth::user()->type === 'Superadmin' ||
-                                                            (isset($permissions) && in_array('cousers_delete',
+                                                            (isset($permissions) && in_array('courses_delete',
                                                             $permissions)))
                                                             <a href="{{ route('course_delete', $course->id) }}"
                                                                 class="dropdown-item"
@@ -184,15 +179,10 @@
                                                             @endif
                                                         </div>
                                                     </div>
-
                                                 </div>
-
-
-
-
                                             </div>
 
-                                            {{-- @endif --}}
+                                            @endif
 
                                             <a href="{{ route('courses.viwes', $course->slug) }}"
                                                 class="text-decoration-none">

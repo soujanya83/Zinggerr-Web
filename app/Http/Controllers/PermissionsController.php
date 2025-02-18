@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Ramsey\Uuid\Guid\Guid;
 use App\Models\Permission;
 use App\Models\PermissionRole;
+use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Role;
 use Illuminate\Support\Facades\Validator;
@@ -32,45 +33,55 @@ class PermissionsController extends Controller
 
         $defaultRoles = ['Admin', 'Teacher'];
 
-        $role = Role::where(function ($query) use ($userId, $defaultRoles) {
-            $query->where('user_id', $userId)
-                ->orWhereIn('name', $defaultRoles);
-        })
-            ->whereNotIn('name', ['Superadmin'])->latest()
-            ->get();
-        return view('permissions.role_permission', compact('permissions', 'role'));
+        // $role = Role::where(function ($query) use ($userId, $defaultRoles) {
+        //     $query->where('user_id', $userId)
+        //         ->orWhereIn('name', $defaultRoles);
+        // })
+        //     ->whereNotIn('name', ['Superadmin'])->latest()
+        //     ->get();
+
+        $permissions_user_list = User::where('user_id', $userId)->whereNotIn('type', ['Student', 'Superadmin'])->get();
+
+        return view('permissions.role_permission', compact('permissions', 'permissions_user_list'));
     }
+
 
     public function assignpermissions(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'role_id' => 'required|exists:roles,id',
+            'role_id' => 'required|array',
+            'role_id.*' => 'exists:users,id',
             'permissions' => 'required|array',
             'permissions.*' => 'exists:permissions,id'
         ]);
-
 
         if ($validator->fails()) {
             return back()
                 ->withErrors($validator)
                 ->withInput();
         }
+
         $userId = Auth::user()->id;
-        $role_id = $request->role_id;
+        $users = $request->role_id;
         $permissions = $request->permissions;
-        foreach ($permissions as $permission_id) {
-            $uuid = (string) Guid::uuid4();
-            PermissionRole::updateOrCreate(
-                [
-                    'role_id' => $role_id,
-                    'permission_id' => $permission_id,
-                    'user_id' => $userId,
-                ],
-                [
-                    'id' => $uuid // This will update `id` if the record exists; adjust as needed
-                ]
-            );
+
+        foreach ($users as $assignedUserId) {
+            foreach ($permissions as $permission_id) {
+                $uuid = (string) Guid::uuid4();
+
+                PermissionRole::updateOrCreate(
+                    [
+                        'assigned_user_id' => $assignedUserId,
+                        'permission_id' => $permission_id,
+                        'user_id' => $userId,
+                    ],
+                    [
+                        'id' => $uuid
+                    ]
+                );
+            }
         }
+
         return redirect()->route('permissions.role')->with('success', 'Permissions assigned successfully!');
     }
 
@@ -230,8 +241,8 @@ class PermissionsController extends Controller
 
     public function permissions_assigned_list()
     {
-        $userId=Auth::user()->id;
-        $permissions = PermissionRole::select('permission_role.id', 'permissions.name', 'permissions.display_name', 'roles.display_name as role_name')->where('permission_role.user_id',$userId)->join('permissions', 'permissions.id', '=', 'permission_role.permission_id')->join('roles', 'roles.id', '=', 'permission_role.role_id')->get();
+        $userId = Auth::user()->id;
+        $permissions = PermissionRole::select('permission_role.id', 'permissions.name', 'permissions.display_name','users.name','users.type as userstype','users.email')->where('permission_role.user_id', $userId)->join('permissions', 'permissions.id', '=', 'permission_role.permission_id')->join('users','users.id','=','permission_role.assigned_user_id')->get();
 
         return view('permissions.permissions_assigned_list', compact('permissions'));
     }

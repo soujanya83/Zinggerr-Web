@@ -4,7 +4,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Two+Tone" rel="stylesheet">
 
-@section('pageTitle', 'Teachers List')
+@section('pageTitle', 'Faculty List')
 
 @section('content')
 @include('partials.sidebar')
@@ -51,14 +51,14 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Teachers List</h5>
+                            <h5 class="m-b-10">Faculty List</h5>
                         </div>
                     </div>
 
                     <div class="col-auto">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item" aria-current="page">Teachers List</li>
+                            <li class="breadcrumb-item" aria-current="page">Faculty List</li>
                         </ul>
                     </div>
                 </div>
@@ -87,7 +87,7 @@
                 <div class="card table-card">
                     <div class="card-header">
                         <div class="row align-items-center g-2">
-                            <h5>Teachers List</h5>
+                            <h5>Faculty List</h5>
 
                             <div class="col">
                                 <select id="entriesPerPage">
@@ -117,7 +117,7 @@
                                     <thead>
                                         <tr id="showtr">
                                             <th>#</th>
-                                            <th>Teachers Profile</th>
+                                            <th><span style="margin-left:47px">Faculty Profile</span></th>
                                             <th>Username</th>
                                             <th>Phone</th>
                                             <th>Type</th>

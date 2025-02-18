@@ -35,7 +35,7 @@
     </td>
 
 
-    <td class="text-center">
+    <td>
         @can('role', Auth::user())
         <a href="{{ route('student_edit', $user->slug) }}" class="avtar avtar-xs btn-link-secondary read-more-btn"
             data-id="{{ $user->id }}">

@@ -120,7 +120,7 @@
                                     <thead>
                                         <tr id="showtr">
                                             <th>#</th>
-                                            <th>User Profile</th>
+                                            <th><span style="margin-left:47px">User Profile</span> </th>
                                             <th>Username</th>
                                             <th>Phone</th>
                                             <th>Role</th>

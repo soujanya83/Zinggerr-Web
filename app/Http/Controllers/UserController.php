@@ -144,7 +144,7 @@ class UserController extends Controller
 
             return redirect()->route($route_name)->with('success', $request->input('role') . ' created successfully!');
         } catch (\Exception $e) {
-            // Redirect back with an error message
+
             return redirect()->back()->with('error', 'Something went wrong. Please try again.');
         }
     }
@@ -266,8 +266,9 @@ class UserController extends Controller
 
     public function userlist(Request $request)
     {
+        $userId=Auth::user()->id;
         $query = User::query();
-        $query->whereIn('type', ['Staff', 'Admin'])->whereNotNull('email_verified_at');
+        $query->whereNotIn('type', ['Superadmin','Teacher','Student'])->where('user_id',$userId)->whereNotNull('email_verified_at');
         // Search logic
         if ($request->has('search') && $request->search) {
             $search = $request->search;

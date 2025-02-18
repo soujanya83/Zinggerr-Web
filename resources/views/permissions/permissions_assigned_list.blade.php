@@ -95,7 +95,7 @@
                         <div class="card-body">
                             <div class="row align-items-center g-2">
                                 <div class="col">
-                                    <h5>All Permissions Assigned List</h5>
+                                    <h5>All Permissions Assigned Users List</h5>
                                 </div>
                                 <div class="form-search col-auto">
                                     <input type="text" class="form-control" id="searchPermissions"
@@ -108,10 +108,9 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Permissions Name</th>
-                                            <th>Permissions Display Name</th>
-
+                                            <th>Users Name</th>
                                             <th>Role Name</th>
+                                            <th>Permissions Name</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -120,9 +119,10 @@
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $permission['name'] }}</td>
+                                            <td>{{ $permission['userstype'] }}</td>
                                             <td>{{ $permission['display_name'] }}</td>
 
-                                            <td>{{ $permission['role_name'] }}</td>
+
                                             <td> <a href="{{ route('permission_assigned_delete', $permission->id) }}"
                                                     class="avtar avtar-xs btn-link-secondary read-more-btn"
                                                     data-id="{{ $permission->id }}"

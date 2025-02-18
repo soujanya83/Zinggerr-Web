@@ -78,7 +78,7 @@
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <ul>
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                <li>{{ $error }}</li>
                 @endforeach
             </ul>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -105,15 +105,84 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label for="nameInput">Select Role</label>
-                                            <select type="text" class="form-control" id="nameInput" name="role_id"
-                                                required>
-                                                <option></option>
-                                                @foreach ($role as $roledata)
-                                                <option value="{{ $roledata['id'] }}">{{ $roledata['display_name'] }}
-                                                </option>
-                                                @endforeach
-                                            </select>
+
+                                            {{-- <div class="form-group">
+                                                <label for="roleDropdown">Select User(Role):</label>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-outline-primary dropdown-toggle w-100"
+                                                        type="button" id="roleDropdownButton" data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                        Select Users
+                                                    </button>
+                                                    <ul class="dropdown-menu w-100 keep-open"
+                                                        aria-labelledby="roleDropdownButton">
+                                                        @foreach ($permissions_user_list as $roledata)
+                                                        <li>
+                                                            <label class="dropdown-item">
+                                                                <div class="form-check">
+                                                                    <input type="checkbox"
+                                                                        class="form-check-input input-success role-checkbox  "
+                                                                        value="{{ $roledata->id }}"
+                                                                        style="border-color: black;">
+                                                                </div>
+                                                                &nbsp;&nbsp;
+                                                                {{ $roledata->name }}
+                                                                &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                                                                <span>
+
+                                                                    @if($roledata->type == 'Admin')
+                                                                    <span
+                                                                        class="badge bg-light-danger rounded-pill f-14">
+                                                                        {{ $roledata->type }}</span>
+                                                                    @elseif($roledata->type == 'Teacher')
+                                                                    <span
+                                                                        class="badge bg-light-primary rounded-pill f-14">
+                                                                        {{ $roledata->type }}</span>
+                                                                    @else
+                                                                    <span
+                                                                        class="badge bg-light-info  rounded-pill f-14">
+                                                                        {{ $roledata->type }}</span>
+                                                                    @endif
+                                                                </span>
+                                                            </label>
+                                                        </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                                <input type="hidden" name="role_id[]" id="selectedRoles">
+                                            </div> --}}
+
+                                            <div class="form-group">
+                                                <label for="roleDropdown">Select User(Role):</label>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-outline-primary dropdown-toggle w-100"
+                                                        type="button" id="roleDropdownButton" data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                        Select Users
+                                                    </button>
+                                                    <ul class="dropdown-menu w-100 keep-open"
+                                                        aria-labelledby="roleDropdownButton">
+                                                        @foreach ($permissions_user_list as $roledata)
+                                                        <li> <label class="dropdown-item d-flex align-items-center">
+                                                                <div class="form-check">
+                                                                    <input type="checkbox"
+                                                                        class="form-check-input input-success role-checkbox me-2"
+                                                                        name="role_id[]" value="{{ $roledata->id }}">
+                                                                </div>
+
+                                                                {{ $roledata->name }}
+                                                                <span
+                                                                    class="ms-auto badge rounded-pill f-14
+                                                                    {{ $roledata->type == 'Admin' ? 'bg-light-danger' : ($roledata->type == 'Teacher' ? 'bg-light-primary' : 'bg-light-info') }}">
+                                                                    {{ $roledata->type }}
+                                                                </span>
+                                                            </label>
+                                                        </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -128,34 +197,6 @@
                                             placeholder="Search Permissions...">
                                     </div>
                                 </div>
-                                {{-- <div class="row mt-4">
-                                    @foreach ($permissions as $permission)
-                                    <div class="col-lg-3 col-md-4 col-sm-6">
-                                        <div class="card follower-card">
-                                            <div class="card-body p-3">
-                                                {{-- <div class="d-flex align-items-center mb-3">
-                                                    <div class="flex-grow-1 mx-2">
-                                                        <h5 class="mb-1 text-truncate">{{ $permission['display_name'] }}
-                                                        </h5>
-                                                    </div>
-                                                </div> --}}
-                                                {{-- <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="permissions[]"
-                                                        value="{{ $permission['id'] }}"
-                                                        id="permission{{ $permission['id'] }}">
-                                                    <label class="form-check-label"
-                                                        for="permission{{ $permission['id'] }}">
-                                                        {{ $permission['display_name'] }}
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @endforeach --}}
-                                    {{--
-                                </div> --}}
-
-
                                 <div class="table-responsive mt-4">
 
                                     <table class="table table-bordered table-striped">
@@ -180,7 +221,8 @@
                                                     <div class="form-check mb-2">
                                                         <input class="form-check-input input-success" type="checkbox"
                                                             id="permission{{ $permission['id'] }}" name="permissions[]"
-                                                            value="{{ $permission['id'] }}" style="border-color: black;">
+                                                            value="{{ $permission['id'] }}"
+                                                            style="border-color: black;">
 
                                                     </div>
 
@@ -268,6 +310,27 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const checkboxes = document.querySelectorAll('.role-checkbox');
+        const dropdownMenu = document.querySelector('.keep-open');
+
+        // Keep dropdown open when clicking inside
+        dropdownMenu.addEventListener('click', function (event) {
+            event.stopPropagation();
+        });
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                let selectedValues = [];
+                document.querySelectorAll('.role-checkbox:checked').forEach(selected => {
+                    selectedValues.push(selected.value);
+                });
+                hiddenInput.value = selectedValues.join(',');
+            });
+        });
+    });
+</script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
     function editPermission(permission) {

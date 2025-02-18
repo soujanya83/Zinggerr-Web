@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('password');
             $table->text('profile_picture')->nullable();
             $table->enum('gender', ['Male', 'Female', 'Other'])->nullable();
-            $table->enum('type', ['Superadmin', 'Admin', 'Teacher', 'Student', 'Staff'])->default('Superadmin');
+            $table->String('type',50)->nullable()->default('Superadmin');
             $table->rememberToken();
             $table->integer('status');
             $table->timestamps();

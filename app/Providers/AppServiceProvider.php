@@ -49,20 +49,19 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot()
     {
+
         view()->composer('*', function ($view) {
             if (Auth::check()) {
-                $roletype = Auth::user()->type;
-                $roledata = Role::where('name', $roletype)->first();
-                if ($roledata) {
-                    $roleId = $roledata->id;
-                    $permissions = DB::table('permission_role')
-                        ->join('permissions', 'permissions.id', '=', 'permission_role.permission_id')
-                        ->where('permission_role.role_id', $roleId)
-                        ->pluck('permissions.name')
-                        ->toArray();
+                $userId = Auth::user()->id;
 
-                    view()->share('permissions', $permissions);
-                }
+                // Fetch permissions assigned directly to the user
+                $permissions = DB::table('permission_role')
+                    ->join('permissions', 'permissions.id', '=', 'permission_role.permission_id')
+                    ->where('permission_role.assigned_user_id', $userId) // Checking by user_id, not role_id
+                    ->pluck('permissions.name')
+                    ->toArray();
+
+                view()->share('permissions', $permissions);
             }
         });
     }

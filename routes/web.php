@@ -222,12 +222,12 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
 
     // Route::delete('/teacher-delete/{id}', [TeacherController::class, 'teacher_delete'])->name('teacher_delete')->middleware('can:role');
     Route::post('/teacher-update', [TeacherController::class, 'updateteacher'])->name('updateteacher');
-    Route::get('/teacher-edit/{slug}', [TeacherController::class, 'teacheredit'])->name('teacher_edit');
-    Route::get('/teachers/dashboard', [TeacherController::class, 'teacherdashboard'])->name('teacher.dashboard')->middleware('can:teacher-role');
+    Route::get('/faculty-edit/{slug}', [TeacherController::class, 'teacheredit'])->name('teacher_edit');
+    Route::get('/faculty/dashboard', [TeacherController::class, 'teacherdashboard'])->name('teacher.dashboard')->middleware('can:teacher-role');
 
     // Route::post('add-teacher', [TeacherController::class, 'createteacher'])->name('createteacher');
-    Route::get('teachers-create', [TeacherController::class, 'teacheradd'])->name('teacheradd');
-    Route::get('teachers-list', [TeacherController::class, 'teacherlist'])->name('teacherlist');
+    Route::get('faculty-create', [TeacherController::class, 'teacheradd'])->name('teacheradd');
+    Route::get('faculty-list', [TeacherController::class, 'teacherlist'])->name('teacherlist');
     // Route::put('/teacher/{id}/change-status', [TeacherController::class, 'changeStatus'])->name('change_teacher_status');
 
 
