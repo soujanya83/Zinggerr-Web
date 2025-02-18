@@ -3,7 +3,7 @@
 
 @extends('layouts.app')
 
-@section('pageTitle', 'Update Teacher')
+@section('pageTitle', 'Update Faculty')
 
 @section('content')
 @include('partials.sidebar')
@@ -16,13 +16,13 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Teachers View</h5>
+                            <h5 class="m-b-10">Faculty View</h5>
                         </div>
                     </div>
                     <div class="col-auto">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">Teacher</a></li>
+                            <li class="breadcrumb-item"><a href="#">Faculty</a></li>
                             <li class="breadcrumb-item" aria-current="page">Update</li>
                         </ul>
                     </div>
@@ -50,7 +50,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="mb-0">Update Teacher</h5>
+                        <h5 class="mb-0">Update Faculty</h5>
                     </div>
                     <div class="card-body">
                         <form id="registerForm" id="createuser" action="{{ route('updateteacher') }}" method="post"

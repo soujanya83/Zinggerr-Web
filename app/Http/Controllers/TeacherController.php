@@ -126,7 +126,7 @@ class TeacherController extends Controller
             }
             $user->save();
 
-            return redirect('teachers-list')->with('success', 'Teacher updated successfully!');
+            return redirect()->route('teacherlist')->with('success', 'Faculty updated successfully!');
         } catch (\Exception $e) {
 
             return redirect()->back()->with('error', 'Something went wrong. Please try again.');
