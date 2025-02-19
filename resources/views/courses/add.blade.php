@@ -168,7 +168,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item" role="presentation">
+                        <li class="nav-item" role="presentation" style="display: none">
                             <a class="nav-link" id="profile-tab-3" data-bs-toggle="tab" href="#profile-3" role="tab"
                                 aria-selected="false" tabindex="-1">
                                 <i class="material-icons-two-tone me-1">book</i>
