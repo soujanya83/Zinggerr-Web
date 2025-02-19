@@ -43,7 +43,7 @@ class UserController extends Controller
             case 'Student':
                 return redirect()->route('student.dashboard');
             default:
-                return redirect()->route('default.dashboard'); // Fallback route
+                return redirect()->route('teacher.dashboard'); // Fallback route
         }
     }
 
