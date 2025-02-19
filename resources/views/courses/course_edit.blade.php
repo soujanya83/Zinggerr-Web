@@ -1714,7 +1714,7 @@
                                 </tr>
                             </thead>
                             <tbody id="permissionsTable">
-                                @foreach ($permissions as $index => $permission)
+                                @foreach ($permissionsdata as $index => $permission)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $permission['display_name'] }}</td>

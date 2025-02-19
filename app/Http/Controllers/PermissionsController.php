@@ -17,18 +17,18 @@ class PermissionsController extends Controller
 {
     public function create_permission()
     {
-        $permissions = Permission::orderBy('created_at', 'desc')->get()->map(function ($permission) {
+        $permissionsdata = Permission::orderBy('created_at', 'desc')->get()->map(function ($permission) {
             return $permission->getOriginal(); // Get the original attributes
         })->toArray();
 
 
-        return view('permissions.create_permission', compact('permissions'));
+        return view('permissions.create_permission', compact('permissionsdata'));
     }
 
     public function role_permission()
     {
         $userId = Auth::user()->id;
-        $permissions = Permission::orderBy('created_at', 'desc')->get()->map(function ($permission) {
+        $permissionsdata = Permission::orderBy('created_at', 'desc')->get()->map(function ($permission) {
             return $permission->getOriginal(); // Get the original attributes
         })->toArray();
 
@@ -43,7 +43,7 @@ class PermissionsController extends Controller
 
         $permissions_user_list = User::where('user_id', $userId)->whereNotIn('type', ['Student', 'Superadmin'])->get();
 
-        return view('permissions.role_permission', compact('permissions', 'permissions_user_list'));
+        return view('permissions.role_permission', compact('permissionsdata', 'permissions_user_list'));
     }
 
 
@@ -243,9 +243,9 @@ class PermissionsController extends Controller
     public function permissions_assigned_list()
     {
         $userId = Auth::user()->id;
-        $permissions = PermissionRole::select('permission_role.id', 'permissions.name', 'permissions.display_name','users.name','users.type as userstype','users.email')->where('permission_role.user_id', $userId)->join('permissions', 'permissions.id', '=', 'permission_role.permission_id')->join('users','users.id','=','permission_role.assigned_user_id')->latest('permission_role.created_at')->get();
+        $permissionsdata = PermissionRole::select('permission_role.id', 'permissions.name', 'permissions.display_name','users.name','users.type as userstype','users.email')->where('permission_role.user_id', $userId)->join('permissions', 'permissions.id', '=', 'permission_role.permission_id')->join('users','users.id','=','permission_role.assigned_user_id')->latest('permission_role.created_at')->get();
 
-        return view('permissions.permissions_assigned_list', compact('permissions'));
+        return view('permissions.permissions_assigned_list', compact('permissionsdata'));
     }
 
 

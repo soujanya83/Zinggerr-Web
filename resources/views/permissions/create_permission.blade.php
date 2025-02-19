@@ -222,7 +222,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($permissions as $index => $permission)
+                                    @foreach ($permissionsdata as $index => $permission)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $permission['name'] }}</td>

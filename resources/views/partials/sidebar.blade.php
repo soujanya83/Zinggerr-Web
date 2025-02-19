@@ -32,7 +32,7 @@
                             <a class="pc-link" href="{{ route('courses') }}" data-i18n="Active List">List</a>
                         </li>
                         @if(Auth::user()->can('role') || Auth::user()->can('admin-role') ||
-                        Auth::user()->can('staff-role'))
+                        Auth::user()->can('teacher-role'))
 
                         <li class="pc-item">
                             <a class="pc-link" href="{{ route('addCourse') }}" data-i18n="Add New">Create</a>
@@ -54,8 +54,9 @@
 
 
 
-                @if(Auth::user()->can('role') || (isset($permissions) && in_array('teacher_sidebar',
-                $permissions)))
+
+                @if (Auth::user()->can('role') || (isset($permissions) && in_array('teacher_sidebar',$permissions)))
+
 
                 <li class="pc-item pc-hasmenu">
                     <a href="#" class="pc-link">
@@ -73,8 +74,10 @@
                     </ul>
                 </li>
                 @endif
-                @if(Auth::user()->can('role') || (isset($permissions) && in_array('student_sidebar',
-                $permissions)))
+
+
+                @if(Auth::user()->can('role') || (isset($permissions) && in_array('student_sidebar',$permissions)))
+
 
                 <li class="pc-item pc-hasmenu">
                     <a href="#" class="pc-link">

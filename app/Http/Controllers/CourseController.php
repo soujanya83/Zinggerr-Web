@@ -776,9 +776,9 @@ class CourseController extends Controller
             $categories = CoursesCategory::all();
 
             $courseName = 'course';
-            $permissions = Permission::where('name', 'LIKE', '%' . 'course' . '%')->get();
+            $permissionsdata = Permission::where('name', 'LIKE', '%' . 'course' . '%')->get();
 
-            return view('courses.course_edit', compact('course', 'categories', 'data', 'availableTeachers', 'userdata', 'availableUsers', 'id', 'permissions'));
+            return view('courses.course_edit', compact('course', 'categories', 'data', 'availableTeachers', 'userdata', 'availableUsers', 'id', 'permissionsdata'));
         } else {
             return redirect()->route('courses')->with('error', 'Course not found.');
         }

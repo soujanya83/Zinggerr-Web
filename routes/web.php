@@ -193,6 +193,8 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('/change-status', [UserController::class, 'changeStatus'])->name('changeStatus');
     // Route::get('/changes-status', [UserController::class, 'changeStatus'])->name('changeStatus');
 
+    Route::get('/admin/dashboard', [UserController::class, 'admindashboard'])->name('admin.dashboard');
+
 
     Route::post('add-user', [UserController::class, 'createuser'])->name('createuser');
     Route::get('users-create', [UserController::class, 'useradd'])->name('useradd');
@@ -223,7 +225,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     // Route::delete('/teacher-delete/{id}', [TeacherController::class, 'teacher_delete'])->name('teacher_delete')->middleware('can:role');
     Route::post('/teacher-update', [TeacherController::class, 'updateteacher'])->name('updateteacher');
     Route::get('/faculty-edit/{slug}', [TeacherController::class, 'teacheredit'])->name('teacher_edit');
-    Route::get('/faculty/dashboard', [TeacherController::class, 'teacherdashboard'])->name('teacher.dashboard')->middleware('can:teacher-role');
+    Route::get('/faculty/dashboard', [TeacherController::class, 'teacherdashboard'])->name('teacher.dashboard');
 
     // Route::post('add-teacher', [TeacherController::class, 'createteacher'])->name('createteacher');
     Route::get('faculty-create', [TeacherController::class, 'teacheradd'])->name('teacheradd');
