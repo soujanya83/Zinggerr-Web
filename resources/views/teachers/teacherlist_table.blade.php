@@ -37,14 +37,14 @@
 
     <td class="text-center">
         @if(Auth::user()->can('role') ||
-        (isset($permissions) && in_array('teachers_edit', $permissions)))
+        (isset($permissions) && in_array('faculty_edit', $permissions)))
         <a href="{{ route('teacher_edit', $user->slug) }}" class="avtar avtar-xs btn-link-secondary read-more-btn"
             data-id="{{ $user->id }}">
             <i class="ti ti-edit f-20"></i>
         </a>
         @endif
         @if(Auth::user()->can('role') ||
-        (isset($permissions) && in_array('teachers_delete', $permissions)))
+        (isset($permissions) && in_array('faculty_delete', $permissions)))
         <a href="{{ route('user_delete', $user->id) }}" class="avtar avtar-xs btn-link-secondary read-more-btn"
             data-id="{{ $user->id }}" onclick="return confirmDelete(this)">
             <i class="ti ti-trash f-20" style="color: red;"></i>

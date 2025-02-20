@@ -55,7 +55,7 @@
 
 
 
-                @if (Auth::user()->can('role') || (isset($permissions) && in_array('teacher_sidebar',$permissions)))
+                @if (Auth::user()->can('role') || (isset($permissions) && in_array('faculty_sidebar',$permissions)))
 
 
                 <li class="pc-item pc-hasmenu">

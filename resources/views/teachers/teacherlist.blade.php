@@ -124,8 +124,8 @@
                                             <th>Gender</th>
                                             <th>Status</th>
                                             @if(Auth::user()->can('role') ||
-                                            (isset($permissions) && in_array('teachers_edit', $permissions)) ||
-                                            (isset($permissions) && in_array('teachers_delete', $permissions)))
+                                            (isset($permissions) && in_array('faculty_edit', $permissions)) ||
+                                            (isset($permissions) && in_array('faculty_delete', $permissions)))
                                             <th class="text-center">Action</th>
                                             @endif
 
