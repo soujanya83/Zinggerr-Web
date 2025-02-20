@@ -82,6 +82,13 @@
                         <div class="row">
                             @if ($courses->count() > 0)
                             @foreach($courses as $course)
+
+                            @php
+                            $permissionsallow = $CourseUserPermission[$course->id] ?? collect([]);
+                            @endphp
+
+
+
                             <div class="col-sm-6 col-lg-4 col-xxl-3">
                                 <div class="card border">
                                     <div class="card-body p-2" style="    height: 342px;">
@@ -103,8 +110,12 @@
                                                         </button>
                                                     </div>
                                                 </form>
+
                                                 @elseif(isset($permissions) && in_array('courses_status',
-                                                $permissions))
+                                                $permissions) || ($permissionsallow->contains('name',
+                                                'courses_status'))|| $permissionsallow->contains('name', 'courses_status'))
+
+
                                                 <form action="{{ route('coursechangeStatus') }}" method="get"
                                                     style="display: inline;">
                                                     @csrf
@@ -125,7 +136,8 @@
                                             @if(Auth::user()->type === 'Superadmin' ||
                                             (isset($permissions) && in_array('courses_delete',
                                             $permissions)) || (isset($permissions) && in_array('courses_edit',
-                                            $permissions)))
+                                            $permissions)) || $permissionsallow->contains('name', 'courses_edit')
+                                            || $permissionsallow->contains('name', 'courses_delete'))
 
                                             <div class="position-absolute end-0 top-0 p-2"
                                                 style="background-color: rgb(255, 255, 255); border-radius: 50px;margin: 6px;">
@@ -161,7 +173,7 @@
                                                             @endif --}}
                                                             @if(Auth::user()->type === 'Superadmin' ||
                                                             (isset($permissions) && in_array('courses_edit',
-                                                            $permissions)))
+                                                            $permissions)) || $permissionsallow->contains('name', 'courses_edit'))
                                                             <a href="{{ route('course_edit', $course->slug) }}"
                                                                 class="dropdown-item">
                                                                 <i class="ti ti-edit f-20"></i> Edit
@@ -170,7 +182,7 @@
 
                                                             @if(Auth::user()->type === 'Superadmin' ||
                                                             (isset($permissions) && in_array('courses_delete',
-                                                            $permissions)))
+                                                            $permissions))||$permissionsallow->contains('name', 'courses_delete'))
                                                             <a href="{{ route('course_delete', $course->id) }}"
                                                                 class="dropdown-item"
                                                                 onclick="return confirmDelete(this)">
@@ -375,6 +387,9 @@
                                     </div>
                                 </div>
                             </div>
+
+
+
                             @endforeach
                             @else
 

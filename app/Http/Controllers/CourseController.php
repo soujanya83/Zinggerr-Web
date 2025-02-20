@@ -12,6 +12,7 @@ use App\Models\UsersPermission;
 use App\Models\Permission;
 use App\Models\CoursesRemark;
 use App\Models\CoursesCategory;
+use App\Models\CourseUserPermission;
 use App\Models\CourseSection;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Pagination\Paginator;
@@ -23,8 +24,149 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\session;
 use Illuminate\Validation\Rule;
+
 class CourseController extends Controller
 {
+
+    public function courselist(Request $request)
+    {
+        $userId = Auth::user()->id;
+
+        $userType = Auth::user()->type;
+        if ($userType == 'Superadmin' || $userType == 'Admin') {
+            $query = Course::where('user_id', $userId);
+            $CourseUserPermission = [];
+        } else {
+            // $query = CoursesAssign::where('users_id', $userId)->where('courses_assign.status', 1)->join('courses', 'courses.id', '=', 'courses_assign.courses_id');
+
+            $query = CoursesAssign::where('courses_assign.users_id', $userId)
+                ->where('courses_assign.status', 1)
+                ->join('courses', 'courses.id', '=', 'courses_assign.courses_id')
+                ->select('courses.*'); // Select only needed fields
+
+                $CourseUserPermission = CourseUserPermission::join('permissions', 'permissions.id', '=', 'courses_user_permissions.permission_id')
+                ->where('courses_user_permissions.assign_user_id', $userId)
+                ->select('courses_user_permissions.course_id', 'permissions.name')
+                ->get()
+                ->groupBy('course_id'); ;
+        }
+
+        if ($request->has('name')) {
+            $query->where('courses.course_full_name', 'like', '%' . $request->name . '%');
+        }
+        if ($request->has('category')) {
+            $query->where('courses.course_category', 'like', '%' . $request->category . '%');
+        }
+        $courses = $query->latest('courses.created_at')->paginate(12);
+
+        $users = User::where('status', 1)->get();
+        $categories = CoursesCategory::where('user_id', $userId)->get();
+
+
+
+
+        return view('courses.list', compact('courses', 'users', 'categories', 'CourseUserPermission'));
+    }
+
+
+    public function courseedit(Request $request, $slug)
+    {
+
+        $userId = Auth::user()->id;
+
+        $course = Course::where('slug', $slug)->first();
+
+        if ($course) {
+            $id = $course->id;
+            $data = CoursesAssign::select('users.*', 'courses_assign.id as assignId', 'courses_assign.status as assignStatus')
+                ->where('courses_id', $id)->where('users.type', 'Teacher')->where('users.user_id', $userId)
+                ->join('users', 'users.id', 'courses_assign.users_id')
+                ->paginate(10);
+
+            $assignedTeachersIds = CoursesAssign::where('courses_id', $id)
+                ->pluck('users_id');
+
+            $availableTeachers = User::where('type', 'Teacher')->where('user_id', $userId)
+                ->whereNotIn('id', $assignedTeachersIds) // Exclude assigned teachers
+                ->paginate(10);
+
+
+            $userdata = CoursesAssign::select('users.*', 'courses_assign.id as assignId', 'courses_assign.status as assignStatus')
+                ->where('courses_id', $id)->where('users.type', 'Student')->where('users.user_id', $userId)
+                ->join('users', 'users.id', 'courses_assign.users_id')
+                ->paginate(10);
+
+            $assignedUsersIds = CoursesAssign::where('courses_id', $id)
+                ->pluck('users_id'); // Get all assigned teacher IDs for the course
+
+            $availableUsers = User::where('type', 'Student')->where('user_id', $userId)
+                ->whereNotIn('id', $assignedUsersIds) // Exclude assigned teachers
+                ->paginate(10);
+
+            $categories = CoursesCategory::all();
+
+            $courseName = 'course';
+            $permissionsdata = Permission::where('name', 'LIKE', '%' . 'course' . '%')->get();
+
+            session()->put('course_id_f_edit', $id);
+
+            return view('courses.course_edit', compact('course', 'categories', 'data', 'availableTeachers', 'userdata', 'availableUsers', 'id', 'permissionsdata'));
+        } else {
+            return redirect()->route('courses')->with('error', 'Course not found.');
+        }
+    }
+
+
+    public function getUserPermissions(Request $request, $userId)
+    {
+        $courseId = session()->get('course_id_f_edit');
+        $assignedPermissions = CourseUserPermission::where('assign_user_id', $userId)->where('course_id',$courseId)
+            ->pluck('permission_id') // Get only the permission IDs
+            ->toArray();
+
+        return response()->json($assignedPermissions);
+    }
+
+    public function updatePermissions(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',
+            'permissions' => 'nullable|array', // Allow permissions to be null or an array
+            'permissions.*' => 'exists:permissions,id',
+        ]);
+
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $permission_assign_userId = $request->user_id;
+        $permissions = $request->permissions;
+        $course_id = $request->course_id;
+
+        if (is_null($permissions)) {
+            // If permissions is null, delete all permissions for the user
+            CourseUserPermission::where('assign_user_id', $permission_assign_userId)->where('course_id',$course_id)->delete();
+
+            return redirect()->back()->with('success', 'All permissions removed for the user!');
+        }
+        CourseUserPermission::where('assign_user_id', $permission_assign_userId)->where('course_id',$course_id)->delete();
+        foreach ($permissions as $permissionId) {
+            $uuid = (string) Guid::uuid4();
+            CourseUserPermission::create([
+                'id' => $uuid,
+                'user_id' => Auth::user()->id,
+                'assign_user_id' => $permission_assign_userId,
+                'permission_id' => $permissionId,
+                'course_id' => $course_id,
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Permissions updated successfully!');
+    }
+
 
     public function delete_section($id)
     {
@@ -101,120 +243,6 @@ class CourseController extends Controller
         return redirect()->back()->with('success', 'Sections create successfully.');
     }
 
-
-
-    // public function updateAssets(Request $request)
-    // {
-
-
-    //     try {
-    //         // Validation
-    //         $validator = Validator::make($request->all(), [
-    //             'assets_id' => 'required|exists:courses_assets,id',
-    //             'course_id' => 'required|exists:courses,id',
-    //             'chapter_id' => 'required|exists:courses_chapters,id',
-    //             'topicName' => 'required|string|max:255',
-    //             'assetstype' => 'required|in:blog,url,videos,youtube',
-    //             'status' => 'required|boolean',
-    //             'fileName' => 'required_if:assetstype,videos|string',
-    //             'chunkNumber' => 'required_if:assetstype,videos|integer',
-    //             'totalChunks' => 'required_if:assetstype,videos|integer',
-    //             'file' => 'required_if:assetstype,videos|file',
-    //             'assets_discription' => 'nullable|string',
-    //             'videourl' => 'nullable|url',
-    //             'youtubelink' => 'nullable|url',
-    //         ]);
-
-    //         if ($validator->fails()) {
-    //             return response()->json([
-    //                 'success' => false,
-    //                 'message' => $validator->errors()->first(),
-    //             ], 400);
-    //         }
-
-    //         // Fetch the existing asset
-    //         $asset = CoursesAssets::findOrFail($request->assets_id);
-
-    //         // Handle video uploads for 'videos' type
-    //         $videoPath = $asset->assets_video; // Preserve the current video path
-    //         if ($request->input('assetstype') === 'videos') {
-    //             $fileName = $request->input('fileName');
-    //             $chunkNumber = $request->input('chunkNumber');
-    //             $totalChunks = $request->input('totalChunks');
-    //             $file = $request->file('file');
-
-    //             $tempDir = storage_path('app/chunks/' . md5($fileName));
-    //             if (!is_dir($tempDir)) {
-    //                 mkdir($tempDir, 0777, true);
-    //             }
-
-    //             $chunkPath = $tempDir . '/' . $chunkNumber;
-    //             $file->move($tempDir, $chunkNumber);
-
-    //             if ($chunkNumber == $totalChunks) {
-    //                 $finalPath = storage_path('app/public/assets_videos/' . $fileName);
-    //                 if (!is_dir(dirname($finalPath))) {
-    //                     mkdir(dirname($finalPath), 0777, true);
-    //                 }
-
-    //                 try {
-    //                     $out = fopen($finalPath, 'wb');
-    //                     for ($i = 1; $i <= $totalChunks; $i++) {
-    //                         $chunkFile = $tempDir . '/' . $i;
-
-    //                         if (!file_exists($chunkFile)) {
-    //                             throw new \Exception("Chunk {$i} is missing.");
-    //                         }
-
-    //                         $in = fopen($chunkFile, 'rb');
-    //                         while ($buffer = fread($in, 4096)) {
-    //                             fwrite($out, $buffer);
-    //                         }
-    //                         fclose($in);
-    //                         unlink($chunkFile);
-    //                     }
-    //                     fclose($out);
-    //                     rmdir($tempDir);
-
-    //                     $videoPath = 'assets_videos/' . $fileName; // Update video path
-    //                 } catch (\Exception $e) {
-    //                     return response()->json([
-    //                         'success' => false,
-    //                         'message' => 'Error merging video chunks.',
-    //                     ], 500);
-    //                 }
-    //             }
-
-    //             return response()->json([
-    //                 'success' => true,
-    //                 'message' => 'Video chunks uploaded. Waiting for merge.',
-    //             ]);
-    //         }
-
-    //         // Update the asset record
-    //         $asset->update([
-    //             'course_id' => $request->input('course_id'),
-    //             'chapter_id' => $request->input('chapter_id'),
-    //             'topic_name' => $request->input('topicName'),
-    //             'assets_type' => $request->input('assetstype'),
-    //             'blog_description' => $request->input('assets_discription', ''),
-    //             'video_url' => $request->input('videourl', ''),
-    //             'youtube_links' => $request->input('youtubelink', ''),
-    //             'assets_video' => $videoPath, // Updated or original video path
-    //             'status' => $request->input('status'),
-    //         ]);
-
-    //         return response()->json([
-    //             'success' => true,
-    //             'message' => 'Assets updated successfully!',
-    //         ]);
-    //     } catch (\Exception $e) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Something went wrong. Please try again.',
-    //         ], 500);
-    //     }
-    // }
 
     public function updateAssets(Request $request)
     {
@@ -427,7 +455,8 @@ class CourseController extends Controller
     }
 
 
-    public function uploadQuizes(Request $request){
+    public function uploadQuizes(Request $request)
+    {
         dd($request->all());
     }
 
@@ -470,22 +499,6 @@ class CourseController extends Controller
             return redirect()->back()->with('error', 'Something want wrong');
         }
     }
-
-
-
-
-    public function blog_assets_submit(Request $request)
-    {
-        dd($request);
-    }
-
-
-
-
-
-
-
-
 
     public function createCourse(Request $request)
     {
@@ -651,151 +664,22 @@ class CourseController extends Controller
     }
 
 
-    public function getUserPermissions(Request $request, $userId)
-    {
-        $assignedPermissions = UsersPermission::where('user_id', $userId)
-            ->pluck('permission_id') // Get only the permission IDs
-            ->toArray();
-
-        return response()->json($assignedPermissions);
-    }
-
-    // public function updatePermissions(Request $request)
-    // {
-
-    //     $validator = Validator::make($request->all(), [
-    //         'user_id' => 'required|exists:users,id',
-    //         'permissions' => 'required|array',
-    //         'permissions.*' => 'exists:permissions,id',
-    //     ]);
-
-    //     if ($validator->fails()) {
-    //         return back()
-    //             ->withErrors($validator)
-    //             ->withInput();
-    //     }
-
-    //     $userId = $request->user_id;
-    //     $permissions = $request->permissions;
-
-    //     foreach ($permissions as $permissionId) {
-    //         $uuid = (string) Guid::uuid4();
-    //         UsersPermission::updateOrCreate(
-    //             [
-    //                 'user_id' => $userId,
-    //                 'permission_id' => $permissionId,
-    //             ],
-    //             [
-    //                 'id' => $uuid,
-    //             ]
-    //         );
-    //     }
-
-    //     return redirect()->back()->with('success', 'Permissions assigned successfully!');
-    // }
-
-    public function updatePermissions(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
-            'permissions' => 'nullable|array', // Allow permissions to be null or an array
-            'permissions.*' => 'exists:permissions,id',
-        ]);
-
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        $userId = $request->user_id;
-        $permissions = $request->permissions;
-
-        if (is_null($permissions)) {
-            // If permissions is null, delete all permissions for the user
-            UsersPermission::where('user_id', $userId)->delete();
-
-            return redirect()->back()->with('success', 'All permissions removed for the user!');
-        }
-
-        // Delete old permissions for the user
-        UsersPermission::where('user_id', $userId)->delete();
-
-        // Insert new permissions
-        foreach ($permissions as $permissionId) {
-            $uuid = (string) Guid::uuid4();
-            UsersPermission::create([
-                'id' => $uuid,
-                'user_id' => $userId,
-                'permission_id' => $permissionId,
-            ]);
-        }
-
-        return redirect()->back()->with('success', 'Permissions updated successfully!');
-    }
 
 
 
-
-
-
-    public function courseedit(Request $request, $slug)
-    {
-
-        $userId=Auth::user()->id;
-
-        $course = Course::where('slug', $slug)->first();
-
-        if ($course) {
-            $id = $course->id;
-            $data = CoursesAssign::select('users.*', 'courses_assign.id as assignId', 'courses_assign.status as assignStatus')
-                ->where('courses_id', $id)->where('users.type', 'Teacher')->where('users.user_id',$userId)
-                ->join('users', 'users.id', 'courses_assign.users_id')
-                ->paginate(10);
-
-            $assignedTeachersIds = CoursesAssign::where('courses_id', $id)
-                ->pluck('users_id');
-
-            $availableTeachers = User::where('type', 'Teacher')->where('user_id',$userId)
-                ->whereNotIn('id', $assignedTeachersIds) // Exclude assigned teachers
-                ->paginate(10);
-
-
-            $userdata = CoursesAssign::select('users.*', 'courses_assign.id as assignId', 'courses_assign.status as assignStatus')
-                ->where('courses_id', $id)->where('users.type', 'Student')->where('users.user_id',$userId)
-                ->join('users', 'users.id', 'courses_assign.users_id')
-                ->paginate(10);
-
-            $assignedUsersIds = CoursesAssign::where('courses_id', $id)
-                ->pluck('users_id'); // Get all assigned teacher IDs for the course
-
-            $availableUsers = User::where('type', 'Student') ->where('user_id',$userId)
-                ->whereNotIn('id', $assignedUsersIds) // Exclude assigned teachers
-                ->paginate(10);
-
-            $categories = CoursesCategory::all();
-
-            $courseName = 'course';
-            $permissionsdata = Permission::where('name', 'LIKE', '%' . 'course' . '%')->get();
-
-            return view('courses.course_edit', compact('course', 'categories', 'data', 'availableTeachers', 'userdata', 'availableUsers', 'id', 'permissionsdata'));
-        } else {
-            return redirect()->route('courses')->with('error', 'Course not found.');
-        }
-    }
 
 
 
     public function courses_category()
     {
-        $userId=Auth::user()->id;
-        $roles = CoursesCategory::where('user_id',$userId)->get();
+        $userId = Auth::user()->id;
+        $roles = CoursesCategory::where('user_id', $userId)->get();
         return view('courses.course_category', compact('roles'));
     }
 
     public function submit_category(Request $request)
     {
-        $userId=Auth::user()->id;
+        $userId = Auth::user()->id;
 
         $validator = Validator::make($request->all(), [
             'name' => [
@@ -989,7 +873,7 @@ class CourseController extends Controller
     public function courseadd(Request $request)
     {
         $userid = Auth::user()->id;
-        $categories = CoursesCategory::where('user_id',$userid)->get();
+        $categories = CoursesCategory::where('user_id', $userid)->get();
         return view('courses.add', compact('categories'));
     }
 
@@ -1018,30 +902,7 @@ class CourseController extends Controller
 
 
 
-    public function courselist(Request $request)
-    {
-        $userId = Auth::user()->id;
 
-        $userType = Auth::user()->type;
-        if ($userType == 'Superadmin' || $userType == 'Admin') {
-            $query = Course::where('user_id', $userId)->where('user_id',$userId);
-        } else {
-            $query = CoursesAssign::where('users_id', $userId)->where('courses_assign.status', 1)->join('courses', 'courses.id', '=', 'courses_assign.courses_id');
-        }
-
-        if ($request->has('name')) {
-            $query->where('courses.course_full_name', 'like', '%' . $request->name . '%');
-        }
-        if ($request->has('category')) {
-            $query->where('courses.course_category', 'like', '%' . $request->category . '%');
-        }
-        $courses = $query->latest('courses.created_at')->paginate(12);
-
-        $users = User::where('status', 1)->get();
-        $categories = CoursesCategory::where('user_id',$userId)->get();
-
-        return view('courses.list', compact('courses', 'users', 'categories'));
-    }
 
     public function coursedetails(Request $request, $id)
     {

@@ -72,7 +72,7 @@
                 <div class="card-body">
                     <div class="tab-content" id="myTabContent">
                         <h5>Create Sections</h5>
-                        <button class="btn btn-shadow btn-sm btn-outline-success align-items-start" style="margin-left: 92%;"
+                        <button class="btn btn-shadow btn-sm btn-outline-success align-items-start" style="margin-left: 88%;"
                             onclick="window.location.href='{{ route('section.list', ['slug' => $slug]) }}';">
                             Sections List
                         </button>
