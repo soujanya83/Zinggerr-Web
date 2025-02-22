@@ -102,7 +102,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    @if($chapters !== null)
+
                     <div class="card-header">
 
 
@@ -173,6 +173,9 @@
                             </div>
                         </div>
 
+                    </div>
+
+                        @if($chapters !== null)
                         <div class="mt-5">
 
                             <div class="card-body pt-0">
@@ -308,8 +311,13 @@
 
 
 
-                    </div>
+
+                    {{-- ..........this use for single activity.......... --}}
+
                     @elseif($assetsData != null)
+
+                    {{-- @include('students.singleactivity') --}}
+
                     <div class="card-header">
 
                         <h3>Course: {{ $course->course_full_name }}</h3>
@@ -384,16 +392,6 @@
                             </div>
                             @else
                             @endif
-
-
-
-
-
-
-
-
-
-
                             @else
 
                             @php
@@ -417,7 +415,291 @@
                             @endif
                             @endif
                         </div>
+
+
+
+
+
+
+
                     </div>
+                    @elseif($weeklysectiondata != null)
+
+                    {{-- <div class="card-header">
+                        <div class="mt-5">
+                            <div class="card-body pt-0">
+                                <div class="table-responsive">
+                                    <h3>Weekly Sections List</h3>
+                                    <table class="table table-hover">
+                                        <tbody id="userTableBody">
+                                            @if ($weeklysectiondata->count() > 0)
+                                            @foreach ($weeklysectiondata as $keys => $section)
+                                            <tr>
+                                                <td>
+                                                    <div class="accordion" id="accordionChapter{{ $section->id }}">
+                                                        <div class="accordion-item">
+                                                            <h2 class="accordion-header"
+                                                                id="headingChapter{{ $section->id }}">
+                                                                <button class="accordion-button collapsed" type="button"
+                                                                    data-bs-toggle="collapse"
+                                                                    data-bs-target="#collapseChapter{{ $section->id }}"
+                                                                    aria-expanded="false"
+                                                                    aria-controls="collapseChapter{{ $section->id }}">
+                                                                    <span><strong>{{
+                                                                            \Carbon\Carbon::parse($section->date)->format('d
+                                                                            M Y') }}</strong></span>
+                                                                </button>
+                                                            </h2>
+                                                            <div id="collapseChapter{{ $section->id }}"
+                                                                class="accordion-collapse collapse"
+                                                                aria-labelledby="headingChapter{{ $section->id }}"
+                                                                data-bs-parent="#accordionChapter{{ $section->id }}">
+                                                                <div class="accordion-body">
+                                                                    @if ($section->count() > 0)
+                                                                    <table class="table table-bordered">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th style="width: 85%;">
+                                                                                    <p>
+                                                                                        <span
+                                                                                            class="badge bg-primary f-16">{{
+                                                                                            ucfirst($section->assetstype)
+                                                                                            }}</span>
+
+                                                                                        @if
+                                                                                        ($section->assetstype=='video')
+                                                                                        <i class="ti ti-video"
+                                                                                            style="color:aliceblue;background-color: #1862a9;padding: 4px;border-radius: 50px; margin-left:38%"></i>
+                                                                                        &nbsp;
+                                                                                        <a href="#"
+                                                                                            onclick="playVideo('{{ asset('storage/' . $asset->assets_video) }}', '{{ $asset->topic_name }}')"
+                                                                                            class="text-primary">
+                                                                                            <u>Play Video</u>
+                                                                                        </a>
+                                                                                        @elseif
+                                                                                        ($section->assetstype=='url')
+                                                                                        <i class="ti ti-link"
+                                                                                            style="color:aliceblue;background-color: #1862a9;padding: 4px;border-radius: 50px; margin-left: 38%;"></i>
+                                                                                        &nbsp;
+                                                                                        <a href="{{ $section->url}}"
+                                                                                            target="_blank">
+                                                                                            <u>View Link</u>
+                                                                                        </a>
+                                                                                        @elseif($section->assetstype=='blog')
+                                                                                        <i class="ti ti-notes"
+                                                                                            style="color:aliceblue;background-color: #1862a9;padding: 4px;border-radius: 50px; margin-left: 38%;"></i>
+                                                                                        &nbsp;
+                                                                                        <a href="#blogModal"
+                                                                                            data-bs-toggle="modal"
+                                                                                            data-bs-target="#blogModal"
+                                                                                            data-description="{{ strip_tags($section->blog) }}"
+                                                                                            data-topic="">
+                                                                                            <u>Read Blog</u>
+                                                                                        </a>
+                                                                                        @else
+                                                                                        <i class="ti ti-link"
+                                                                                            style="color:aliceblue;background-color: #1862a9;padding: 4px;border-radius: 50px; margin-left: 38%;"></i>
+                                                                                        &nbsp;
+                                                                                        <a href="{{ $section->youtube}}"
+                                                                                            target="_blank">
+                                                                                            <u>View Link</u>
+                                                                                        </a>
+                                                                                        @endif
+
+
+                                                                                    </p>
+                                                                                </th>
+
+                                                                            </tr>
+                                                                        </thead>
+
+                                                                    </table>
+                                                                    @else
+                                                                    <p class="text-muted">No assets found for this
+                                                                        section.</p>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                            @else
+                                            <tr>
+                                                <td colspan="8" class="text-center">No Data Found!</td>
+                                            </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div> --}}
+                    @if ($weeklysectiondata->count() > 0)
+                    <div class="card-header">
+                        <div class="mt-5">
+                            <div class="card-body pt-0">
+                                <div class="table-responsive">
+                                    <h3>Weekly Sections List</h3>
+                                    <table class="table table-hover">
+                                        <tbody id="userTableBody">
+
+                                            @foreach ($weeklysectiondata as $keys => $section)
+                                            <tr>
+                                                <td>
+                                                    <div class="accordion" id="accordionChapter{{ $section->id }}">
+                                                        <div class="accordion-item">
+                                                            <h2 class="accordion-header"
+                                                                id="headingChapter{{ $section->id }}">
+                                                                <button class="accordion-button collapsed" type="button"
+                                                                    data-bs-toggle="collapse"
+                                                                    data-bs-target="#collapseChapter{{ $section->id }}"
+                                                                    aria-expanded="false"
+                                                                    aria-controls="collapseChapter{{ $section->id }}">
+                                                                    <span>
+                                                                        <strong>{{
+                                                                            \Carbon\Carbon::parse($section->date)->format('d
+                                                                            M Y') }}</strong>
+                                                                    </span>
+                                                                </button>
+                                                            </h2>
+                                                            <div id="collapseChapter{{ $section->id }}"
+                                                                class="accordion-collapse collapse"
+                                                                aria-labelledby="headingChapter{{ $section->id }}"
+                                                                data-bs-parent="#accordionChapter{{ $section->id }}">
+                                                                <div class="accordion-body">
+                                                                    @if ($section->count() > 0)
+                                                                    <table class="table table-bordered">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th style="width: 85%;">
+                                                                                    <p>
+                                                                                        <span
+                                                                                            class="badge bg-primary f-16">
+                                                                                            {{
+                                                                                            ucfirst($section->assetstype)
+                                                                                            }}
+                                                                                        </span>
+
+                                                                                        @if ($section->assetstype ==
+                                                                                        'videos')
+                                                                                        <i class="ti ti-video"
+                                                                                            style="color: aliceblue; background-color: #1862a9; padding: 4px; border-radius: 50px; margin-left:80%">
+                                                                                        </i>
+                                                                                        &nbsp;
+                                                                                        <a href="#"
+                                                                                            onclick="playVideo('{{ asset('storage/weeklysectionsvideos/' . $section->video) }}')"
+                                                                                            class="text-primary">
+                                                                                            <u>Play Video</u>
+                                                                                        </a>
+                                                                                        @elseif ($section->assetstype ==
+                                                                                        'url')
+                                                                                        <i class="ti ti-link"
+                                                                                            style="color: aliceblue; background-color: #1862a9; padding: 4px; border-radius: 50px; margin-left: 83%;">
+                                                                                        </i>
+                                                                                        &nbsp;
+                                                                                        <a href="{{ $section->url }}"
+                                                                                            target="_blank">
+                                                                                            <u>View Link</u>
+                                                                                        </a>
+                                                                                        @elseif($section->assetstype ==
+                                                                                        'blog')
+                                                                                        <i class="ti ti-notes"
+                                                                                            style="color: aliceblue; background-color: #1862a9; padding: 4px; border-radius: 50px; margin-left: 81%;">
+                                                                                        </i>
+                                                                                        &nbsp;
+                                                                                        <a href="#blogModal"
+                                                                                            data-bs-toggle="modal"
+                                                                                            data-bs-target="#blogModal"
+                                                                                            data-description="{{ strip_tags($section->blog) }}">
+                                                                                            <u>Read Blog</u>
+                                                                                        </a>
+                                                                                        @else
+                                                                                        <i class="ti ti-link"
+                                                                                            style="color: aliceblue; background-color: #1862a9; padding: 4px; border-radius: 50px; margin-left: 78%;">
+                                                                                        </i>
+                                                                                        &nbsp;
+                                                                                        <a href="{{ $section->youtube }}"
+                                                                                            target="_blank">
+                                                                                            <u>View Link</u>
+                                                                                        </a>
+                                                                                        @endif
+                                                                                    </p>
+                                                                                </th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                    </table>
+                                                                    @else
+                                                                    <p class="text-muted">No assets found for this
+                                                                        section.</p>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @else
+                    <div class="card-header">
+                        No data found!
+                    </div>
+                    @endif
+                    <!-- Video Modal -->
+                    <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="videoModalLabel">Video Preview</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                        onclick="stopVideo()"></button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <video id="videoPlayer" class="plyr" width="100%" controls>
+                                        <source src="" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Include Plyr.js (Lightweight Video Player) -->
+                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3/dist/plyr.css" />
+                    <script src="https://cdn.jsdelivr.net/npm/plyr@3"></script>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                        window.plyr = new Plyr('#videoPlayer', {
+                            controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
+                            autoplay: false
+                        });
+                    });
+
+                    function playVideo(videoSrc) {
+                        let videoPlayer = document.getElementById('videoPlayer');
+                        videoPlayer.src = videoSrc;
+                        videoPlayer.load();
+                        $('#videoModal').modal('show');
+                    }
+
+                    function stopVideo() {
+                        let videoPlayer = document.getElementById('videoPlayer');
+                        videoPlayer.pause();
+                        videoPlayer.src = "";
+                    }
+                    </script>
+
+
                     @else
                     <div class="card-header">
                         No data found!
@@ -464,7 +746,7 @@
                 </video>
                 <h4 id="videoTopic" class="mt-0"></h4> <!-- Display topic name dynamically here -->
             </div>
-           
+
         </div>
     </div>
 </div>
@@ -605,4 +887,3 @@ video.play();
 
 @include('partials.footer')
 @endsection
-  

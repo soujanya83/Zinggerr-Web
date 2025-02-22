@@ -162,10 +162,20 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('cousers/{slug}/create-section', [CourseController::class, 'create_section'])->name('create_section');
     Route::post('cousers/section-submit', [CourseController::class, 'section_submit'])->name('section.submit');
     Route::get('cousers/section/{slug}/list', [CourseController::class, 'section_list'])->name('section.list');
-    Route::post('cousers/section/update', [CourseController::class, 'update_section'])->name('section.update');
+    // Route::post('cousers/section/update', [CourseController::class, 'update_section'])->name('section.update');
 
     Route::get('cousers/section/delete/{id}', [CourseController::class, 'delete_section'])->name('section.delete');
     Route::get('cousers/{slug}/manage-activity', [CourseController::class, 'manage_activity'])->name('manage_activity');
+
+
+    Route::post('/upload-video-chunk', [CourseController::class, 'uploadVideoChunk'])->name('upload.video.chunk');
+
+    Route::post('/sections/update/{id}', [CourseController::class, 'sections_update'])->name('section.update');
+    Route::post('/sections/video/update', [CourseController::class, 'updatesectionvideo']);
+
+
+
+
 
 
 

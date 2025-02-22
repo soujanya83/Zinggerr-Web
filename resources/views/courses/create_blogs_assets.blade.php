@@ -242,9 +242,6 @@
                                 </form>
                             </div>
 
-
-
-
                             <hr>
                             <h4>Assets List</h4>
                             <div class="accordion-body">

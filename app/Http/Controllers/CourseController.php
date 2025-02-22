@@ -28,6 +28,155 @@ use Illuminate\Validation\Rule;
 class CourseController extends Controller
 {
 
+
+    public function updatesectionvideo(Request $request)
+    {
+        $request->validate([
+            'section_id' => 'required|exists:courses_weekly_sections,id',
+            'file_name' => 'required|string',
+            'chunk_index' => 'required|integer',
+            'total_chunks' => 'required|integer',
+            'video' => 'required|file',
+        ]);
+
+        $sectionId = $request->section_id;
+        $fileName = $request->file_name;
+        $chunkIndex = $request->chunk_index;
+        $totalChunks = $request->total_chunks;
+
+        $tempPath = storage_path("app/public/temp/$fileName");
+
+        // Ensure temp directory exists
+        if (!file_exists(storage_path('app/public/temp'))) {
+            mkdir(storage_path('app/public/temp'), 0777, true);
+        }
+
+        // Append the chunk to the temporary file
+        file_put_contents($tempPath, file_get_contents($request->file('video')->getRealPath()), FILE_APPEND);
+
+        // If it's the last chunk, move it to the final storage location
+        if ($chunkIndex + 1 == $totalChunks) {
+            $finalPath = "weeklysectionsvideos/$fileName";
+
+            if (Storage::disk('public')->exists("temp/$fileName")) {
+                Storage::disk('public')->move("temp/$fileName", $finalPath);
+            } else {
+                return response()->json(['message' => 'File move failed: temp file not found'], 500);
+            }
+
+            // Update the CourseSection video field
+            CourseSection::where('id', $sectionId)->update(['video' => $fileName]);
+        }
+
+        return response()->json(['message' => 'Chunk uploaded']);
+    }
+
+    public function sections_update(Request $request, $id)
+    {
+        $section = CourseSection::findOrFail($id);
+        $updated = false; // Flag to track updates
+
+        if ($request->has('blog')) {
+            $section->blog = $request->blog;
+            $updated = true;
+        }
+        if ($request->has('url')) {
+            $section->url = $request->url;
+            $updated = true;
+        }
+        if ($request->has('youtube')) {
+            $section->youtube = $request->youtube;
+            $updated = true;
+        }
+
+        if (!$updated) {
+            return response()->json(['message' => 'No data to update!'], 400);
+        }
+
+        $section->save();
+
+        return response()->json(['message' => 'Updated Successfully!']);
+    }
+
+
+    public function uploadVideoChunk(Request $request)
+    {
+        $request->validate([
+            'video' => 'required|file',
+            'course_id' => 'required|exists:courses,id',
+            'date' => 'required|date',
+            'chunkIndex' => 'required|integer',
+            'totalChunks' => 'required|integer',
+            'fileName' => 'required|string',
+        ]);
+
+        $chunkFile = $request->file('video');
+        $fileName = $request->fileName;
+        $tempPath = storage_path("app/public/temp/$fileName");
+
+        // Create a temporary directory if it doesn't exist
+        if (!file_exists(storage_path('app/public/temp'))) {
+            mkdir(storage_path('app/public/temp'), 0777, true);
+        }
+
+        // Append the chunk to the temporary file
+        file_put_contents($tempPath, file_get_contents($chunkFile), FILE_APPEND);
+
+        // If it's the last chunk, move it to the final storage location
+        if ($request->chunkIndex + 1 == $request->totalChunks) {
+            $finalPath = "weeklysectionsvideos/$fileName";
+            Storage::disk('public')->move("temp/$fileName", $finalPath);
+
+            // Save file name in CourseSection table
+            CourseSection::create([
+                'id' => (string) Str::uuid(),
+                'course_id' => $request->course_id,
+                'date' => $request->date,
+                'assetstype' => 'videos',
+                'video' => $fileName, // Save the video file name
+                'status' => 1,
+            ]);
+
+            return response()->json(['message' => 'Upload complete', 'fileName' => $fileName]);
+        }
+
+        return response()->json(['message' => 'Chunk received']);
+    }
+
+
+
+
+    public function section_submit(Request $request)
+    {
+        $request->validate([
+            'course_id' => 'required|exists:courses,id',
+            'date' => 'required|date',
+        ]);
+
+        $date = $request->date;
+        $videoFileName = $request->input("sections.$date.video"); // Retrieve uploaded file name
+
+        $validatedData = [
+            'id' => (string) Guid::uuid4(),
+            'course_id' => $request->course_id,
+            'date' => $date,
+            'assetstype' => $request->assetstype ?? null,
+            'blog' => $request->blog ?? null,
+            'url' => $request->url ?? null,
+            'youtube' => $request->youtube ?? null,
+            'video' => $videoFileName, // Save file name
+            'status' => $request->status,
+        ];
+
+        CourseSection::create($validatedData);
+
+        return response()->json([
+            'message' => 'Section submitted successfully!',
+        ]);
+    }
+
+
+
     public function courselist(Request $request)
     {
         $userId = Auth::user()->id;
@@ -44,11 +193,11 @@ class CourseController extends Controller
                 ->join('courses', 'courses.id', '=', 'courses_assign.courses_id')
                 ->select('courses.*'); // Select only needed fields
 
-                $CourseUserPermission = CourseUserPermission::join('permissions', 'permissions.id', '=', 'courses_user_permissions.permission_id')
+            $CourseUserPermission = CourseUserPermission::join('permissions', 'permissions.id', '=', 'courses_user_permissions.permission_id')
                 ->where('courses_user_permissions.assign_user_id', $userId)
                 ->select('courses_user_permissions.course_id', 'permissions.name')
                 ->get()
-                ->groupBy('course_id'); ;
+                ->groupBy('course_id');;
         }
 
         if ($request->has('name')) {
@@ -120,7 +269,7 @@ class CourseController extends Controller
     public function getUserPermissions(Request $request, $userId)
     {
         $courseId = session()->get('course_id_f_edit');
-        $assignedPermissions = CourseUserPermission::where('assign_user_id', $userId)->where('course_id',$courseId)
+        $assignedPermissions = CourseUserPermission::where('assign_user_id', $userId)->where('course_id', $courseId)
             ->pluck('permission_id') // Get only the permission IDs
             ->toArray();
 
@@ -148,11 +297,11 @@ class CourseController extends Controller
 
         if (is_null($permissions)) {
             // If permissions is null, delete all permissions for the user
-            CourseUserPermission::where('assign_user_id', $permission_assign_userId)->where('course_id',$course_id)->delete();
+            CourseUserPermission::where('assign_user_id', $permission_assign_userId)->where('course_id', $course_id)->delete();
 
             return redirect()->back()->with('success', 'All permissions removed for the user!');
         }
-        CourseUserPermission::where('assign_user_id', $permission_assign_userId)->where('course_id',$course_id)->delete();
+        CourseUserPermission::where('assign_user_id', $permission_assign_userId)->where('course_id', $course_id)->delete();
         foreach ($permissions as $permissionId) {
             $uuid = (string) Guid::uuid4();
             CourseUserPermission::create([
@@ -188,60 +337,50 @@ class CourseController extends Controller
     public function section_list($slug)
     {
 
-        $sections = Course::select('courses_sections.*')->where('slug', $slug)->join('courses_sections', 'courses_sections.courses_id', '=', 'courses.id')->get();
+        $sections = Course::select('courses_weekly_sections.*')->where('slug', $slug)->join('courses_weekly_sections', 'courses_weekly_sections.course_id', '=', 'courses.id')->orderBy('courses_weekly_sections.date','asc')->get();
 
         return view('courses.section_list', compact('sections'));
     }
 
-    public function update_section(Request $request)
-    {
-        $section = CourseSection::find($request->id);
-        if (!$section) {
-            return response()->json(['error' => 'Section not found'], 404);
-        }
-
-        $section->update([
-            'sections_remark' => $request->sections_remark
-        ]);
-
-        return response()->json(['success' => 'Section updated successfully']);
-    }
 
 
 
 
 
-    public function section_submit(Request $request)
-    {
-        // Validate the request
-        $validator = Validator::make($request->all(), [
-            'course_id' => 'required|uuid',
-            'course_start_date' => 'required|date',
-            'sections' => 'required|array',
-            'sections.*' => 'string|max:500', // Increased max length
-            'status' => 'required|boolean',
-        ]);
 
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput();
-        }
 
-        // Loop through sections and save each date as a new record
-        foreach ($request->sections as $date => $content) {
-            CourseSection::create([
-                'id' => (string) Guid::uuid4(),
-                'courses_id' => $request->course_id,
-                'course_start_date' => $request->course_start_date,
-                'sections_remark_date' => $date, // Store the section date
-                'sections_remark' => $content, // Store the section content
-                'status' => $request->status,
-            ]);
-        }
 
-        return redirect()->back()->with('success', 'Sections create successfully.');
-    }
+    // public function section_submit(Request $request)
+    // {
+    //     // Validate the request
+    //     $validator = Validator::make($request->all(), [
+    //         'course_id' => 'required|uuid',
+    //         'course_start_date' => 'required|date',
+    //         'sections' => 'required|array',
+    //         'sections.*' => 'string|max:500', // Increased max length
+    //         'status' => 'required|boolean',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return back()
+    //             ->withErrors($validator)
+    //             ->withInput();
+    //     }
+
+    //     // Loop through sections and save each date as a new record
+    //     foreach ($request->sections as $date => $content) {
+    //         CourseSection::create([
+    //             'id' => (string) Guid::uuid4(),
+    //             'courses_id' => $request->course_id,
+    //             'course_start_date' => $request->course_start_date,
+    //             'sections_remark_date' => $date, // Store the section date
+    //             'sections_remark' => $content, // Store the section content
+    //             'status' => $request->status,
+    //         ]);
+    //     }
+
+    //     return redirect()->back()->with('success', 'Sections create successfully.');
+    // }
 
 
     public function updateAssets(Request $request)

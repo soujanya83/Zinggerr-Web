@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CoursesAssign;
 use Illuminate\Support\Facades\Auth;
+use App\Models\CourseSection;
 
 
 class StudentController extends Controller
@@ -30,13 +31,19 @@ class StudentController extends Controller
 
         if ($existsData) {
             $chapters = CoursesChepters::where('courses_id', $course->id)->get();
-            $assetsData = null; // Set to null for clarity
+            $assetsData = null;
+            $quizzes=null;
+            $weeklysectiondata=null;
             $pageName = 'Chapters';
         } else {
             $assetsData = CoursesAssets::where('course_id', $course->id)
                 ->where('chapter_id', '=', 11)
                 ->first();
-            $chapters = null; // Set to null for clarity
+
+                if($assetsData){
+                    $weeklysectiondata=null;
+
+            $chapters = null;
             $pageName = 'Assets';
 
             if ($assetsData != null) {
@@ -45,8 +52,21 @@ class StudentController extends Controller
             } else {
                 $quizzes = null;
             }
+        }else{
+            $assetsData = null;
+            $chapters = null;
+            $quizzes = null;
+            $pageName = 'Weekly Sections';
+            $weeklysectiondata= CourseSection::where('course_id', $course->id)->where('status',1)->orderBy('date')->get();
+
         }
-        return view('students.courses_views', compact('course', 'chapters', 'assetsData', 'pageName', 'quizzes'));
+
+
+        }
+
+
+
+        return view('students.courses_views', compact('course', 'chapters', 'assetsData', 'pageName', 'quizzes','weeklysectiondata'));
     }
 
 
