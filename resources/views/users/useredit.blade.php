@@ -1,6 +1,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 @extends('layouts.app')
 
 @section('pageTitle', 'Users Update')
@@ -8,7 +9,12 @@
 @section('content')
 @include('partials.sidebar')
 @include('partials.headerdashboard')
+<style>
+    .iti {
+        width: 100%;
+    }
 
+</style>
 <div class="pc-container">
     <div class="pc-content">
         <div class="page-header">
@@ -16,7 +22,7 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Users View</h5>
+                            <h5 class="m-b-10">Update User</h5>
                         </div>
                     </div>
                     <div class="col-auto">
@@ -58,7 +64,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="mb-0">Add User</h5>
+                        <h5 class="mb-0">Update User</h5>
                     </div>
                     <div class="card-body">
                         <form id="registerForm"  action="{{ route('updateuser')}}" method="post"
@@ -89,7 +95,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    {{-- <div class="col-md-4">
                                         <div class=" mb-3">
                                             <label for="phoneInput">Phone</label>
                                             <input type="tel" class="form-control" id="phoneInput" placeholder=""
@@ -100,7 +106,22 @@
                                             <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </div>
+                                    </div> --}}
+
+                                    <div class="col-md-4" style="margin-top: -8px;">
+                                        <div class="mb-3">
+                                            <label for="phoneInput" class="form-label">Phone</label>
+                                            <div class="input-group" style="display: flex; align-items: center;">
+                                                <input type="tel" class="form-control" id="phoneInput" name="phone" required
+                                                    value="{{ old('phone', $user->phone) }}" style="height: 43px;" readonly>
+                                            </div>
+                                            <small id="phoneError" class="text-danger"></small>
+                                            @error('phone')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
                                     </div>
+
 
                                     <div class="col-md-4">
                                         <div class=" mb-3">
@@ -388,7 +409,46 @@
     });
 </script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+   var input = document.querySelector("#phoneInput");
 
+   // Full country name from database (e.g., "India (भारत)")
+   var savedCountryName = "{{ $user->country_name }}";
+
+   // Extract only the English part before the first "("
+   var englishCountryName = savedCountryName.split(" (")[0].trim();
+
+   // Country name to ISO2 mapping
+   var countryNameToCode = {
+       "Afghanistan": "af", "Albania": "al", "Algeria": "dz", "Andorra": "ad", "Angola": "ao",
+       "Argentina": "ar", "Australia": "au", "Austria": "at", "Bangladesh": "bd", "Belgium": "be",
+       "Brazil": "br", "Canada": "ca", "China": "cn", "Denmark": "dk", "Egypt": "eg",
+       "France": "fr", "Germany": "de", "India": "in", "Indonesia": "id", "Italy": "it",
+       "Japan": "jp", "Mexico": "mx", "Nepal": "np", "Netherlands": "nl", "Pakistan": "pk",
+       "Russia": "ru", "Saudi Arabia": "sa", "South Africa": "za", "Spain": "es", "Sri Lanka": "lk",
+       "Sweden": "se", "Switzerland": "ch", "Thailand": "th", "United Kingdom": "gb", "United States": "us",
+       "Vietnam": "vn", "Zimbabwe": "zw"
+   };
+
+   // Convert English country name to country code
+   var savedCountryCode = countryNameToCode[englishCountryName] || "us"; // Default to "US" if not found
+
+   var iti = window.intlTelInput(input, {
+       separateDialCode: true,
+       initialCountry: savedCountryCode, // Set correct country based on database
+       utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+   });
+
+   // Ensure the correct country is set
+   iti.promise.then(() => {
+       if (savedCountryCode) {
+           iti.setCountry(savedCountryCode);
+       }
+   });
+});
+
+</script>
 
 @include('partials.footer')
 @endsection

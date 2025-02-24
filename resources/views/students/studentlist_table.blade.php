@@ -21,7 +21,7 @@
         </div>
     </td>
     <td>{{ $user->username }}</td>
-    <td>{{ $user->phone }}</td>
+    <td>{{ $user->country_code }}{{ $user->phone }}</td>
     <td>
         <span class="badge bg-light-info  rounded-pill f-14"> {{ $user->type }}</span>
     </td>

@@ -369,10 +369,11 @@ class ProfileController extends Controller
 
     public function updateProfile(Request $request)
     {
+
         $uid = Auth::user()->id;
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:14',
+            'phone' => 'nullable|string|max:10',
             'username' => 'nullable|string|min:6',
             'gender' => 'required|in:Male,Female,Other',
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -390,6 +391,8 @@ class ProfileController extends Controller
                 'phone' => $request->phone,
                 'gender' => $request->gender,
                 'username' => $request->username,
+                'country_code' => '+'.$request->country_code,
+                'country_name' => $request->country_name,
             ]);
 
 

@@ -1,6 +1,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 @extends('layouts.app')
 
 @section('pageTitle', 'Faculty Create')
@@ -8,7 +9,12 @@
 @section('content')
 @include('partials.sidebar')
 @include('partials.headerdashboard')
+<style>
+    .iti {
+        width: 100%;
+    }
 
+</style>
 <div class="pc-container">
     <div class="pc-content">
         <div class="page-header">
@@ -91,7 +97,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                {{-- <div class="col-md-4">
                                     <div class=" mb-3">
                                         <label for="phoneInput">Phone</label>
                                         <input type="tel" class="form-control" id="phoneInput" placeholder=""
@@ -102,7 +108,47 @@
                                         <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
+                                </div> --}}
+
+                                <div class="col-md-4" style="margin-top: -8px;">
+                                    <div class="mb-3">
+                                        <label for="phoneInput" class="form-label">Phone</label>
+                                        <div class="input-group" style="display: flex; align-items: center;">
+                                            <input type="tel" class="form-control" id="phoneInput" name="phone" required
+                                                value="{{ old('phone') }}" style="height: 43px;">
+                                            <input type="hidden" name="full_phone" id="fullPhone">
+                                            <input type="hidden" name="country_code" id="countryCode">
+                                            <input type="hidden" name="country_name" id="countryName">
+                                        </div>
+                                        <small id="phoneError" class="text-danger"></small>
+                                        @error('phone')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
                                 </div>
+
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", function() {
+                                        var input = document.querySelector("#phoneInput");
+                                        var iti = window.intlTelInput(input, {
+                                            initialCountry: "auto",
+                                            geoIpLookup: function(callback) {
+                                                fetch('https://ipapi.co/json')
+                                                    .then(response => response.json())
+                                                    .then(data => callback(data.country_code))
+                                                    .catch(() => callback("US"));
+                                            },
+                                            separateDialCode: true,
+                                            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+                                        });
+
+                                        input.addEventListener("blur", function() {
+                                            document.querySelector("#fullPhone").value = iti.getNumber(); // Full phone number
+                                            document.querySelector("#countryCode").value = iti.getSelectedCountryData().dialCode; // Country code
+                                            document.querySelector("#countryName").value = iti.getSelectedCountryData().name; // Country name
+                                        });
+                                    });
+                                </script>
 
                                 <div class="col-md-4">
                                     <div class=" mb-3">

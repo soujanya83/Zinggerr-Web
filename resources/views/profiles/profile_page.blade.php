@@ -3,7 +3,8 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Two+Tone" rel="stylesheet">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 @section('pageTitle', 'User Account Settings')
 
 @section('content')
@@ -13,6 +14,10 @@
 <style>
     .thspace {
         margin-left: 67%;
+    }
+
+    .iti {
+        width: 100%;
     }
 
     .eyebutton {
@@ -160,15 +165,15 @@
                                                 <span class="badge bg-primary">{{ Auth::user()->type }}</span>
                                             </div>
                                             <ul class="list-group list-group-flush">
-                                                <li class="list-group-item">
-                                                    <i class="material-icons-two-tone f-20">email</i>
+                                                <li class="list-group-item" style="margin-left: -16px;">
+                                                    <i class="material-icons-two-tone f-20" >email</i>
                                                     <strong>Emaiil</strong>
                                                     <span>&nbsp&nbsp {{ Auth::user()->email }}</span>
                                                 </li>
-                                                <li class="list-group-item">
+                                                <li class="list-group-item" style="margin-left: -16px;">
                                                     <i class="material-icons-two-tone f-20">phonelink_ring</i>
                                                     <strong>Phone</strong>
-                                                    <span>&nbsp&nbsp {{ Auth::user()->phone }}</span>
+                                                    <span>&nbsp&nbsp {{ Auth::user()->country_code.Auth::user()->phone }}</span>
                                                 </li>
                                                 {{-- <li class="list-group-item">
                                                     <i class="material-icons-two-tone f-20">pin_drop</i>
@@ -236,7 +241,7 @@
                                                     <tr>
                                                         <th>Phone</th>
                                                         <td>:</td>
-                                                        <td>{{ Auth::user()->phone }}</td>
+                                                        <td>{{ Auth::user()->country_code.Auth::user()->phone }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>Email</th>
@@ -316,9 +321,15 @@
                                                 <tr>
                                                     <th><span class="thspace">Phone</span></th>
                                                     <td>:</td>
-                                                    <td><input type="text" class="form-control" name="phone"
-                                                            value="{{ old('phone', Auth::user()->phone) }}" required>
+
+                                                    <td>
+                                                        <input type="text" class="form-control" id="phoneInput"
+                                                            name="phone" value="{{ old('phone', Auth::user()->phone) }}"
+                                                            required>
+                                                        <input type="hidden" id="country_code" name="country_code">
+                                                        <input type="hidden" id="country_name" name="country_name">
                                                     </td>
+
                                                 </tr>
                                                 <tr>
                                                     <th><span class="thspace">Email</span></th>
@@ -411,7 +422,9 @@
                                                                         <i class="fa fa-eye"></i>
                                                                     </button>
                                                                     <small class="form-text text-muted">
-                                                                        Forgot password? <a href="{{ route('forgot.password.sendOtp') }}">Click here</a>
+                                                                        Forgot password? <a
+                                                                            href="{{ route('forgot.password.sendOtp') }}">Click
+                                                                            here</a>
                                                                     </small>
                                                                 </div>
                                                             </div>
@@ -511,6 +524,78 @@
 
 </script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var input = document.querySelector("#phoneInput");
+        var countryCodeInput = document.querySelector("#country_code");
+        var countryNameInput = document.querySelector("#country_name");
+
+        // Get phone number from Laravel (ensure correct syntax)
+        var savedPhone = "{{ Auth::user()->phone }}".replace(/-/g, ""); // Remove any dashes if present
+
+        // Get country name from Laravel (ensure correct syntax)
+        var savedCountryName = "{{ Auth::user()->country_name }}";
+
+        // Extract only the English part before "("
+        var englishCountryName = savedCountryName.split(" (")[0].trim();
+
+        // Country name to ISO2 mapping
+        var countryNameToCode = {
+            "Afghanistan": "af", "Albania": "al", "Algeria": "dz", "Andorra": "ad", "Angola": "ao",
+            "Argentina": "ar", "Australia": "au", "Austria": "at", "Bangladesh": "bd", "Belgium": "be",
+            "Brazil": "br", "Canada": "ca", "China": "cn", "Denmark": "dk", "Egypt": "eg",
+            "France": "fr", "Germany": "de", "India": "in", "Indonesia": "id", "Italy": "it",
+            "Japan": "jp", "Mexico": "mx", "Nepal": "np", "Netherlands": "nl", "Pakistan": "pk",
+            "Russia": "ru", "Saudi Arabia": "sa", "South Africa": "za", "Spain": "es", "Sri Lanka": "lk",
+            "Sweden": "se", "Switzerland": "ch", "Thailand": "th", "United Kingdom": "gb", "United States": "us",
+            "Vietnam": "vn", "Zimbabwe": "zw"
+        };
+
+        // Convert country name to country code
+        var savedCountryCode = countryNameToCode[englishCountryName] || "au"; // Default to "US" if not found
+
+        // Initialize intlTelInput
+        var iti = window.intlTelInput(input, {
+            separateDialCode: true,
+            initialCountry: savedCountryCode,
+            nationalMode: false, // Ensures raw number input without formatting
+            formatOnDisplay: false, // Prevents display formatting (e.g., no dashes)
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+
+        // Ensure correct country is set
+        iti.promise.then(() => {
+            if (savedCountryCode) {
+                iti.setCountry(savedCountryCode);
+            }
+            updateHiddenFields();
+        });
+
+        // Update hidden fields when the country is changed
+        input.addEventListener("countrychange", function () {
+            updateHiddenFields();
+        });
+
+        function updateHiddenFields() {
+            var countryData = iti.getSelectedCountryData();
+            countryCodeInput.value = countryData.dialCode; // Country code (e.g., +91)
+            countryNameInput.value = countryData.name; // Full country name
+        }
+
+        // Remove dashes as user types
+        input.addEventListener("input", function () {
+            input.value = input.value.replace(/-/g, ""); // Remove dashes dynamically
+        });
+
+        // Remove dashes before form submission
+        document.querySelector("form").addEventListener("submit", function () {
+            input.value = input.value.replace(/-/g, ""); // Ensure number is saved without dashes
+        });
+
+        // Set phone number in input field without dashes
+        input.value = savedPhone;
+    });
+</script>
 
 
 @include('partials.footer')

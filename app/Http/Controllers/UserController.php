@@ -112,12 +112,14 @@ class UserController extends Controller
 
     public function createuser(Request $request)
     {
+// dd($request);
+
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:5|max:255',
             'username' => 'required|min:5|max:255|unique:users,username',
             'email' => 'required|email|unique:users,email',
-            'phone' => 'required|digits:10|unique:users,phone',
+            'phone' => 'required|max:10|unique:users,phone',
             'password' => 'required|min:6',
             'status' => 'required|in:1,0',
             'gender' => 'required', // Assuming 1=Male, 2=Female
@@ -143,6 +145,8 @@ class UserController extends Controller
                 'email' => $request->input('email'),
                 'phone' => $request->input('phone'),
                 'status' => $request->input('status'),
+                'country_code' =>'+'.$request->input('country_code'),
+                'country_name' => $request->input('country_name'),
                 'gender' => $request->input('gender'),
                 'type' => $request->input('role'),
                 'password' => bcrypt($request->input('password')),
@@ -195,13 +199,15 @@ class UserController extends Controller
 
     public function updateuser(Request $request)
     {
+
+
         $id = $request->userid;
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:5|max:255',
             'username' => 'required|min:5|max:255|unique:users,username,' . $id,
             'email' => 'required|email|unique:users,email,' . $id,
-            'phone' => 'required|digits:10|unique:users,phone,' . $id,
+            'phone' => 'required|max:10|unique:users,phone,' . $id,
             'status' => 'required|in:1,0',
             'gender' => 'required',
             'role' => 'required',
@@ -307,7 +313,9 @@ class UserController extends Controller
                     ->orWhere('email', 'like', '%' . $search . '%')
                     ->orWhere('username', 'like', '%' . $search . '%')
                     ->orWhere('phone', 'like', '%' . $search . '%')
-                    ->orWhere('type', 'like', '%' . $search . '%');
+                    ->orWhere('type', 'like', '%' . $search . '%')
+                    ->orWhere('country_code', 'like', '%' . $search . '%');
+
             });
         }
 
