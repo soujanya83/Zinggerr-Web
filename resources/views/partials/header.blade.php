@@ -201,26 +201,25 @@
                         style="height: 61px; width: 116px; padding: 5px; radius: 50px;">
 
                         @if(Auth::user()->profile_picture)
-                        <img
-                            src="{{ asset('storage/' . Auth::user()->profile_picture) }}"
-                            alt="user-image"
+                        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="user-image"
                             class="user-avatar"
                             style="margin-top: 11px; margin-bottom: 11px; border-radius: 50%; margin-right: 29px;">
-                    @else
-                        <img
-                            src="{{ asset('asset/images/user/download.jpg') }}"
-                            alt="image"
-                            class="user-avatar"
+                        @else
+                        <img src="{{ asset('asset/images/user/download.jpg') }}" alt="image" class="user-avatar"
                             style="margin-top: 11px; margin-bottom: 11px; border-radius: 50%; margin-right: 29px;">
-                    @endif
+                        @endif
 
                         <span><i class="ti ti-settings" style="font-size: 26px; margin-right: 13px;"></i></span>
 
                     </a>
                     <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                         <div class="dropdown-header">
-                            <h4><span class=" text-muted">{{ Auth::user()->name }}</span></h4>
-                            <p class="text-muted small">@if( Auth::user()->type =='Superadmin') <b>SuperAdmin</b> @else <b>{{ Auth::user()->type}}</b>@endif </p>
+                            <h4><span class="text-muted" style="font-size: 17px;">{{ Auth::user()->name }}</span></h4>
+                            <p class="text-muted small">@if( Auth::user()->type =='Superadmin') <b
+                                    class="badge bg-light-primary  rounded-pill f-14"
+                                    style="    font-size: 14px;">SuperAdmin</b> @else <b
+                                    class="badge bg-light-primary  rounded-pill f-14" style="    font-size: 14px;">{{
+                                    Auth::user()->type}}</b>@endif </p>
                             <hr>
                             <div class="profile-notification-scroll position-relative"
                                 style="max-height: calc(100vh - 280px)">
