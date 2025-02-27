@@ -72,20 +72,20 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="mb-3">
-                                                <label for="nameInput">Role Name</label>
+                                                <label for="nameInput">Name</label>
                                                 <input type="text" class="form-control" id="nameInput" name="name"
-                                                    required placeholder="Enter Name" value="{{ old('name') }}" oninput="this.value = this.value.replace(/\s/g, '')">
+                                                    required placeholder="Enter Name" value="{{ old('name') }}">
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-4" style="display:none">
                                             <div class="mb-3">
                                                 <label for="displayNameInput">Role Display
                                                     Name</label>
                                                 <input type="text" class="form-control" id="displayNameInput"
-                                                    name="displayname" required placeholder="Enter Display Name" value="{{ old('displayname') }}">
+                                                    name="displayname"  placeholder="Enter Display Name" value="{{ old('displayname') }}">
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-8">
                                             <div class="mb-3">
                                                 <label for="descriptionInput">Description</label>
                                                 <textarea class="form-control" id="descriptionInput" name="description"
@@ -125,8 +125,8 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Role Name</th>
-                                        <th>Role Display Name</th>
+                                        <th>Name</th>
+                                        {{-- <th>Role Display Name</th> --}}
                                         <th>Description</th>
                                         @if(Auth::user()->can('role') ||
                                         (isset($permissions) && in_array('roles_edit', $permissions)) ||
@@ -143,8 +143,10 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $role['name'] }}</td>
-                                        <td>{{ $role['display_name'] }}</td>
-                                        <td>{{ $role['description'] }}</td>
+                                        {{-- <td>{{ $role['display_name'] }}</td> --}}
+                                        <td>
+                                            {{Str::limit(strip_tags($role['description'] ), 130, '...') }}
+                                        </td>
                                         <td class="text-center">
                                             @if(Auth::user()->can('role') ||
                                             (isset($permissions) && in_array('roles_edit', $permissions)))
@@ -181,6 +183,8 @@
         </div>
     </div>
 </div>
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>

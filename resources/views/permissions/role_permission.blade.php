@@ -215,7 +215,7 @@
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>{{ $permission['name'] }}</td>
                                                 <td>{{ $permission['display_name'] }}</td>
-                                                <td>{{ $permission['description'] }}</td>
+                                                <td>{{Str::limit(strip_tags($permission['description'] ), 70, '...') }}</td>
                                                 <td>
 
                                                     <div class="form-check mb-2">

@@ -177,7 +177,7 @@ class PermissionsController extends Controller
                 }),
                 'regex:/^(?!.*superadmin).*$/i',
             ],
-            'displayname' => 'required|string|max:255',
+            // 'displayname' => 'required|string|max:255',
             'description' => 'nullable|string|max:500',
             [
                 'name.regex' => 'The role name cannot contain "Superadmin".'
@@ -196,7 +196,8 @@ class PermissionsController extends Controller
                 'id' => $uuid,
                 'name' => $request->name,
                 'user_id' => $userId,
-                'display_name' => $request->displayname,
+                // 'display_name' => $request->displayname,
+                'display_name' => $request->name,
                 'description' => $request->description,
             ]);
 

@@ -35,7 +35,7 @@
                     <div class="row">
                         <div class="d-flex justify-content-center">
                             <div class="auth-header">
-                                <h2 class="text-secondary mt-5"><b>Hi, Welcome Back</b></h2>
+                                <h2 class="text-secondary mt-5"><b>Welcome</b></h2>
                                 <p class="f-16 mt-2">Enter your credentials to continue</p>
                             </div>
                         </div>

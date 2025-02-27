@@ -227,7 +227,11 @@
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $permission['name'] }}</td>
                                         <td>{{ $permission['display_name'] }}</td>
-                                        <td>{{ $permission['description'] }}</td>
+                                        <td>
+
+                                            {{Str::limit(strip_tags($permission['description'] ), 65, '...') }}
+
+                                        </td>
                                         <td>
                                             <div class="btn-group">
                                                 @if(Auth::user()->can('role') ||
