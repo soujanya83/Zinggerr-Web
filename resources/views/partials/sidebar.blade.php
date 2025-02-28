@@ -1,3 +1,37 @@
+
+<style>
+    .suggestions-box {
+        border: 1px solid #ccc;
+        background: white;
+        position: absolute;
+        z-index: 10;
+        width: 100%;
+        border-radius: 5px;
+        margin-top: 2px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 8px;
+    }
+    .suggestions-heading {
+        font-size: 14px;
+        font-weight: bold;
+        display: block;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 5px;
+    }
+    .suggestion-item {
+        padding: 7px;
+        cursor: pointer;
+        border-bottom: 1px solid #eeeeee;
+    }
+    .suggestion-item:last-child {
+        border-bottom: none;
+    }
+    .suggestion-item:hover {
+        background: #f5f5f5;
+    }
+</style>
+
 <nav class="pc-sidebar">
     <div class="navbar-wrapper">
         <div class="m-header">
@@ -165,3 +199,83 @@
         </div>
     </div>
 </nav>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fullNameInput = document.getElementById('nameInput'); // Full Name field
+        const userNameInput = document.getElementById('usernameInput'); // Username field
+        const suggestionsBox = document.getElementById('usernameSuggestions'); // Suggestions box
+        const suggestionsList = document.getElementById('suggestionsList'); // Suggestions list inside the box
+
+        // Function to generate username suggestions based on full name
+        const generateUsernames = (fullName) => {
+            if (!fullName) return [];
+
+            let cleanName = fullName.trim().replace(/\s+/g, '').toLowerCase(); // Remove spaces
+            let randomNum = () => Math.floor(10000 + Math.random() * 90000); // 5-digit random number
+            let variations = [
+                cleanName.toLowerCase() + randomNum(),
+                cleanName.toUpperCase() + randomNum(),
+                cleanName.charAt(0).toUpperCase() + cleanName.slice(1) + randomNum(),
+                cleanName.slice(0, 3).toUpperCase() + cleanName.slice(3) + randomNum(),
+                cleanName + '_' + randomNum()
+            ];
+
+            return variations;
+        };
+
+        // Check if usernames exist in the database
+        const checkUsernames = async (usernames) => {
+            try {
+                let response = await fetch('{{ route("check.username.suggestions") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ usernames })
+                });
+                return await response.json();
+            } catch (error) {
+                console.error('Error checking usernames:', error);
+                return [];
+            }
+        };
+
+        // Function to update and display username suggestions
+        const updateUsernameSuggestions = async () => {
+            let fullName = fullNameInput.value.trim();
+            if (!fullName) return; // Don't show suggestions if full name is empty
+
+            let suggestions = generateUsernames(fullName);
+            let availableUsernames = await checkUsernames(suggestions);
+
+            // Show available usernames in the dropdown
+            suggestionsList.innerHTML = '';
+            availableUsernames.forEach(username => {
+                let div = document.createElement('div');
+                div.classList.add('suggestion-item');
+                div.textContent = username;
+                div.addEventListener('click', () => {
+                    userNameInput.value = username;
+                    suggestionsBox.style.display = 'none';
+                });
+                suggestionsList.appendChild(div);
+            });
+
+            suggestionsBox.style.display = availableUsernames.length > 0 ? 'block' : 'none';
+        };
+
+        // Show suggestions when typing in the username field
+        userNameInput.addEventListener('focus', updateUsernameSuggestions);
+        userNameInput.addEventListener('input', updateUsernameSuggestions);
+
+        // Hide suggestions if user clicks outside
+        document.addEventListener('click', (event) => {
+            if (!suggestionsBox.contains(event.target) && event.target !== userNameInput) {
+                suggestionsBox.style.display = 'none';
+            }
+        });
+    });
+</script>

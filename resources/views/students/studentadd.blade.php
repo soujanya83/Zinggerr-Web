@@ -104,6 +104,13 @@
                                            name="username" required
                                             value="{{ old('username') }}"
                                             oninput="this.value = this.value.replace(/\s/g, '')">
+                                               <!-- Suggestions Dropdown -->
+                                        <div class="position-relative">
+                                            <div id="usernameSuggestions" class="suggestions-box" style="display: none; position: absolute; background: #fff; border: 1px solid #ccc; width: 100%; z-index: 1000; padding: 5px;">
+                                                <strong style="color:rgb(18, 18, 98)">Suggested Usernames:</strong>
+                                                <div id="suggestionsList" class="mt-1"></div>
+                                            </div>
+                                        </div>
                                         <small id="usernameError" class="text-danger"></small>
                                         @error('username')
                                         <small class="text-danger">{{ $message }}</small>

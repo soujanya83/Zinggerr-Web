@@ -86,6 +86,8 @@ Route::post('/set-new-password', [ProfileController::class, 'set_new_password'])
 
 Route::get('/resend-otp', [ProfileController::class, 'resendOtp'])->name('resend.otp');
 Route::get('/forgot-password/send-otp', [ProfileController::class, 'sendForgotPasswordOtp'])->name('forgot.password.sendOtp');  /// this use for after login
+Route::post('/check-username-suggestions/register', [RegisterController::class, 'checkUsernameSuggestionsregister'])->name('check.username.suggestion');
+
 
 
 Route::get('/otp-verify', function () {
@@ -122,6 +124,8 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::post('/check-username', [RegisterController::class, 'checkUsername'])->name('check.username')->defaults('field', 'username');
     Route::post('/check-phone', [RegisterController::class, 'checkPhone'])->name('check.phone');
     Route::post('/check-email', [RegisterController::class, 'checkEmail'])->name('check.email');
+    Route::post('/check-username-suggestions', [RegisterController::class, 'checkUsernameSuggestions'])->name('check.username.suggestions');
+
 
     Route::get('courses/change-status', [CourseController::class, 'couserchangeStatus'])->name('coursechangeStatus');
     Route::get('/api/users', [CourseController::class, 'getUsers']);

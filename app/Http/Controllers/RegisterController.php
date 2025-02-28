@@ -17,6 +17,33 @@ use Carbon\Carbon;
 
 class RegisterController extends Controller
 {
+
+    public function checkUsernameSuggestionsregister(Request $request)
+    {
+        $usernames = $request->input('usernames', []);
+
+        // Find existing usernames in DB
+        $existingUsernames = User::whereIn('username', $usernames)->pluck('username')->toArray();
+
+        // Filter out existing usernames
+        $availableUsernames = array_values(array_diff($usernames, $existingUsernames));
+
+        return response()->json($availableUsernames);
+    }
+
+
+
+    public function checkUsernameSuggestions(Request $request)
+    {
+        $usernames = $request->usernames;
+        $existingUsernames = User::whereIn('username', $usernames)->pluck('username')->toArray();
+
+        // Return only usernames that do not exist
+        $availableUsernames = array_diff($usernames, $existingUsernames);
+        return response()->json(array_values($availableUsernames));
+    }
+
+
     public function verify(Request $request, $id, $hash)
     {
         $user = User::findOrFail($id);

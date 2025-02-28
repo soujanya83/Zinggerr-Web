@@ -13,7 +13,6 @@
     .iti {
         width: 100%;
     }
-
 </style>
 <div class="pc-container">
     <div class="pc-content">
@@ -54,7 +53,7 @@
         <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
             <ul>
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                <li>{{ $error }}</li>
                 @endforeach
             </ul>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -89,7 +88,17 @@
                                         <div class="mb-3">
                                             <label for="usernameInput">Username</label>
                                             <input type="text" class="form-control" id="usernameInput" name="username"
-                                                value="{{ old('username', $user->username) }}" required  oninput="this.value = this.value.replace(/\s/g, '')">
+                                                value="{{ old('username', $user->username) }}" required
+                                                oninput="this.value = this.value.replace(/\s/g, '')">
+
+                                            <!-- Suggestions Dropdown -->
+                                            <div class="position-relative">
+                                                <div id="usernameSuggestions" class="suggestions-box"
+                                                    style="display: none; position: absolute; background: #fff; border: 1px solid #ccc; width: 100%; z-index: 1000; padding: 5px;">
+                                                    <strong style="color:rgb(18, 18, 98)">Suggested Usernames:</strong>
+                                                    <div id="suggestionsList" class="mt-1"></div>
+                                                </div>
+                                            </div>
                                             @error('username')
                                             <small class="text-danger">{{ $message }}</small>
                                             @enderror
@@ -99,7 +108,8 @@
                                         <div class=" mb-3">
                                             <label for="phoneInput">Phone</label>
                                             <input type="tel" class="form-control" id="phoneInput" placeholder=""
-                                                name="phone" required value="{{ old('phone', $user->$user->phone) }}" readonly>
+                                                name="phone" required value="{{ old('phone', $user->$user->phone) }}"
+                                                readonly>
 
                                             <small id="phoneError" class="text-danger"></small>
                                             @error('phone')
@@ -113,12 +123,13 @@
                                         <div class="mb-3">
                                             <label for="phoneInput" class="form-label">Phone</label>
                                             <div class="input-group" style="display: flex; align-items: center;">
-                                                <input type="tel" class="form-control" id="phoneInput" name="phone" required
-                                                    value="{{ old('phone', $user->phone) }}" style="height: 43px;" readonly>
+                                                <input type="tel" class="form-control" id="phoneInput" name="phone"
+                                                    required value="{{ old('phone', $user->phone) }}"
+                                                    style="height: 43px;" readonly>
                                             </div>
                                             <small id="phoneError" class="text-danger"></small>
                                             @error('phone')
-                                                <small class="text-danger">{{ $message }}</small>
+                                            <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </div>
                                     </div>

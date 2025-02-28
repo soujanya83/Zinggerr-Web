@@ -13,7 +13,6 @@
     .iti {
         width: 100%;
     }
-
 </style>
 <div class="pc-container">
     <div class="pc-content">
@@ -90,7 +89,14 @@
                                         <input type="text" class="form-control" id="usernameInput" placeholder=""
                                             name="username" required value="{{ old('username') }}"
                                             oninput="this.value = this.value.replace(/\s/g, '')">
-
+                                        <!-- Suggestions Dropdown -->
+                                        <div class="position-relative">
+                                            <div id="usernameSuggestions" class="suggestions-box"
+                                                style="display: none; position: absolute; background: #fff; border: 1px solid #ccc; width: 100%; z-index: 1000; padding: 5px;">
+                                                <strong style="color:rgb(18, 18, 98)">Suggested Usernames:</strong>
+                                                <div id="suggestionsList" class="mt-1"></div>
+                                            </div>
+                                        </div>
                                         <small id="usernameError" class="text-danger"></small>
                                         @error('username')
                                         <small class="text-danger">{{ $message }}</small>
@@ -122,7 +128,7 @@
                                         </div>
                                         <small id="phoneError" class="text-danger"></small>
                                         @error('phone')
-                                            <small class="text-danger">{{ $message }}</small>
+                                        <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
@@ -167,7 +173,7 @@
                                         <label for="passwordInput">Password</label>
                                         <div class="input-group">
                                             <input type="password" class="form-control" id="passwordInput"
-                                                name="password"  required>
+                                                name="password" required>
                                             <button type="button" class="btn btn-outline-secondary" id="togglePassword">
                                                 <i class="fas fa-eye"></i>
                                             </button>
@@ -232,7 +238,8 @@
                                 </div>
 
                                 <div class="text-end">
-                                    <input type="submit" class="btn btn-shadow btn-primary" id="submitButton" value="Submit">
+                                    <input type="submit" class="btn btn-shadow btn-primary" id="submitButton"
+                                        value="Submit">
                                 </div>
                         </form>
                     </div>

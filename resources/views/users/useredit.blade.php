@@ -90,7 +90,15 @@
                                             <label for="usernameInput">Username</label>
                                             <input type="text" class="form-control" id="usernameInput" name="username"
                                                 value="{{ old('username', $user->username) }}" required  oninput="this.value = this.value.replace(/\s/g, '')">
-                                            @error('username')
+                                             <!-- Suggestions Dropdown -->
+                                        <div class="position-relative">
+                                            <div id="usernameSuggestions" class="suggestions-box" style="display: none; position: absolute; background: #fff; border: 1px solid #ccc; width: 100%; z-index: 1000; padding: 5px;">
+                                                <strong style="color:rgb(18, 18, 98)">Suggested Usernames:</strong>
+                                                <div id="suggestionsList" class="mt-1"></div>
+                                            </div>
+                                        </div>
+
+                                                @error('username')
                                             <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </div>

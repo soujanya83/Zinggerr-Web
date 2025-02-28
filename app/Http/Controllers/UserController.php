@@ -207,7 +207,7 @@ class UserController extends Controller
             'name' => 'required|min:5|max:255',
             'username' => 'required|min:5|max:255|unique:users,username,' . $id,
             'email' => 'required|email|unique:users,email,' . $id,
-            'phone' => 'required|max:10|unique:users,phone,' . $id,
+            // 'phone' => 'required|max:14|unique:users,phone,' . $id,
             'status' => 'required|in:1,0',
             'gender' => 'required',
             'role' => 'required',

@@ -395,8 +395,8 @@
                                             <div class="alert alert-warning" role="alert">
                                                 <h5 class="alert-heading"><i class="feather icon-alert-circle me-2"></i>
                                                     Alert!</h5>
-                                                <p>Your Password will expire in every 3 months. So change it
-                                                    periodically.</p>
+                                                {{-- <p>Your Password will expire in every 3 months. So change it
+                                                    periodically.</p> --}}
                                                 <hr>
                                                 <p class="mb-0"><b>Do not share your password</b></p>
                                             </div>

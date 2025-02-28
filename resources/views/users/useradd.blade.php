@@ -89,7 +89,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                {{-- <div class="col-md-4">
                                     <div class=" mb-3">
                                         <label for="usernameInput">Username</label>
                                         <input type="text" class="form-control" id="usernameInput" placeholder=""
@@ -101,7 +101,35 @@
                                         <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
+                                </div> --}}
+
+                                <div class="col-md-4">
+                                    <div class="mb-3 position-relative">
+                                        <label for="usernameInput">Username</label>
+                                        <input type="text" class="form-control" id="usernameInput" name="username" required
+                                               oninput="this.value = this.value.replace(/\s/g, '')">
+
+                                        <!-- Suggestions Dropdown -->
+                                        <div class="position-relative">
+                                            <div id="usernameSuggestions" class="suggestions-box" style="display: none; position: absolute; background: #fff; border: 1px solid #ccc; width: 100%; z-index: 1000; padding: 5px;">
+                                                <strong style="color:rgb(18, 18, 98)">Suggested Usernames:</strong>
+                                                <div id="suggestionsList" class="mt-1"></div>
+                                            </div>
+                                        </div>
+                                        <small id="usernameError" class="text-danger"></small>
+                                        @error('username')
+                                        <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
                                 </div>
+
+
+
+
+
+
+
+
 
 
                                 <div class="col-md-4" style="margin-top: -8px;">
@@ -120,35 +148,6 @@
                                         @enderror
                                     </div>
                                 </div>
-
-                                <script>
-                                    document.addEventListener("DOMContentLoaded", function() {
-                                        var input = document.querySelector("#phoneInput");
-                                        var iti = window.intlTelInput(input, {
-                                            initialCountry: "auto",
-                                            geoIpLookup: function(callback) {
-                                                fetch('https://ipapi.co/json')
-                                                    .then(response => response.json())
-                                                    .then(data => callback(data.country_code))
-                                                    .catch(() => callback("US"));
-                                            },
-                                            separateDialCode: true,
-                                            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
-                                        });
-
-                                        input.addEventListener("blur", function() {
-                                            document.querySelector("#fullPhone").value = iti.getNumber(); // Full phone number
-                                            document.querySelector("#countryCode").value = iti.getSelectedCountryData().dialCode; // Country code
-                                            document.querySelector("#countryName").value = iti.getSelectedCountryData().name; // Country name
-                                        });
-                                    });
-                                </script>
-
-
-
-
-
-
                                 <div class="col-md-4">
                                     <div class=" mb-3">
                                         <label for="emailInput">Email</label>
@@ -248,6 +247,8 @@
                                         value="Submit">
                                 </div>
                         </form>
+
+
                     </div>
                 </div>
             </div>
@@ -564,6 +565,28 @@
     });
 </script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var input = document.querySelector("#phoneInput");
+        var iti = window.intlTelInput(input, {
+            initialCountry: "auto",
+            geoIpLookup: function(callback) {
+                fetch('https://ipapi.co/json')
+                    .then(response => response.json())
+                    .then(data => callback(data.country_code))
+                    .catch(() => callback("US"));
+            },
+            separateDialCode: true,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+
+        input.addEventListener("blur", function() {
+            document.querySelector("#fullPhone").value = iti.getNumber(); // Full phone number
+            document.querySelector("#countryCode").value = iti.getSelectedCountryData().dialCode; // Country code
+            document.querySelector("#countryName").value = iti.getSelectedCountryData().name; // Country name
+        });
+    });
+</script>
 
 
 @include('partials.footer')
