@@ -26,8 +26,8 @@
                         <div class="d-flex justify-content-center">
                             <div class="auth-header text-center">
                                 <h2 class="text-secondary mt-5"><b>Forgot password?</b></h2>
-                                <p class="f-16 mt-3">Enter your email address or phone number below and we'll send you
-                                    password reset OTP.</p>
+                                <p class="f-16 mt-3">Enter your email address or phone number or username below and we'll send you
+                                    password reset OTP. on your Email.</p>
                             </div>
                         </div>
                     </div>
