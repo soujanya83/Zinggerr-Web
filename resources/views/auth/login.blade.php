@@ -22,7 +22,11 @@
 @endif
 
 @foreach ($errors->all() as $error)
-<div class="alert alert-danger">{{ $error }}</div>
+{{-- <div class="alert alert-danger">{{ $error }}</div> --}}
+<div class="alert alert-danger alert-dismissible fade" role="alert">
+    {{ $error }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
 @endforeach
 <div class="auth-main">
     <div class="auth-wrapper v3">

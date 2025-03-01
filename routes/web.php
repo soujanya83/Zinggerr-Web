@@ -255,10 +255,16 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
 
 
 
+    Route::get('permission/{slug}/assign', [PermissionsController::class, 'user_assign_permission'])->name('user.assign_permission');
 
     Route::get('permissions/create', [PermissionsController::class, 'create_permission'])->name('permissions.create');
+    Route::get('permissions/list', [PermissionsController::class, 'list_permission'])->name('permissions.list');
     Route::post('permission/submit', [PermissionsController::class, 'submit_permission'])->name('submit.permission');
     Route::post('/permissions/update', [PermissionsController::class, 'update_permission'])->name('update.permission');
+    Route::get('permission/{id}/edit', [PermissionsController::class, 'permission_edit'])->name('permission.edit');
+
+
+
     Route::get('permission/{id}/delete', [PermissionsController::class, 'destroy'])->name('permission.delete');
 
     Route::get('permissions/assign', [PermissionsController::class, 'role_permission'])->name('permissions.role');
@@ -266,9 +272,12 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::post('permissions/role-assign', [PermissionsController::class, 'assignpermissions'])->name('role.permission.assign');
 
     Route::post('roles/submit', [PermissionsController::class, 'submit_roles'])->name('roles.store');
-    Route::post('/role/update', [PermissionsController::class, 'update_role'])->name('update.role');
+    Route::post('roles/update', [PermissionsController::class, 'update_role'])->name('roles.update');
+    Route::post('/assign-permissions', [PermissionsController::class, 'user_assign_permissions'])->name('assign.permissions');
 
     Route::get('roles/create', [PermissionsController::class, 'createroles'])->name('roles.create');
+    Route::get('roles/list', [PermissionsController::class, 'listroles'])->name('roles.list');
+    Route::get('roles/{id}/edit', [PermissionsController::class, 'editroles'])->name('roles.edit');
     Route::get('/role-delete/{user}', [PermissionsController::class, 'role_delete'])
         ->name('role_delete')
         ->middleware('can:role');

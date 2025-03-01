@@ -1,4 +1,3 @@
-
 <style>
     .suggestions-box {
         border: 1px solid #ccc;
@@ -11,6 +10,7 @@
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         padding: 8px;
     }
+
     .suggestions-heading {
         font-size: 14px;
         font-weight: bold;
@@ -19,14 +19,17 @@
         border-bottom: 1px solid #ddd;
         margin-bottom: 5px;
     }
+
     .suggestion-item {
         padding: 7px;
         cursor: pointer;
         border-bottom: 1px solid #eeeeee;
     }
+
     .suggestion-item:last-child {
         border-bottom: none;
     }
+
     .suggestion-item:hover {
         background: #f5f5f5;
     }
@@ -165,6 +168,8 @@
                     <ul class="pc-submenu">
                         <li class="pc-item"><a class="pc-link" href="{{ route('roles.create') }}"
                                 data-i18n="Pricing">Create</a></li>
+                        <li class="pc-item"><a class="pc-link" href="{{ route('roles.list') }}"
+                                data-i18n="Pricing">List</a></li>
                     </ul>
                 </li>
                 @endif
@@ -182,11 +187,15 @@
                     <ul class="pc-submenu">
                         <li class="pc-item"><a class="pc-link" href="{{ route('permissions.create') }}"
                                 data-i18n="Pricing">Create</a></li>
-                        <li class="pc-item"><a class="pc-link" href="{{ route('permissions.role') }}"
-                                data-i18n="List">Assign</a></li>
 
-                        <li class="pc-item"><a class="pc-link" href="{{ route('permissions.assignedlist') }}"
-                                data-i18n="List">Assigned List</a></li>
+                        <li class="pc-item"><a class="pc-link" href="{{ route('permissions.list') }}"
+                                data-i18n="Pricing">List</a></li>
+
+                        {{-- <li class="pc-item"><a class="pc-link" href="{{ route('permissions.role') }}"
+                                data-i18n="List">Assign</a></li> --}}
+
+                        {{-- <li class="pc-item"><a class="pc-link" href="{{ route('permissions.assignedlist') }}"
+                                data-i18n="List">Assigned List</a></li> --}}
                     </ul>
 
                 </li>

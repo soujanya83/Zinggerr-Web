@@ -27,7 +27,7 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Users Create</h5>
+                            <h5 class="m-b-10">Create User</h5>
                         </div>
                     </div>
                     <div class="col-auto">
@@ -69,7 +69,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="mb-0">Users Create</h5>
+                        <h5 class="mb-0">Create User</h5>
                     </div>
                     <div class="card-body">
                         <form id="registerForm" action="{{ route('createuser') }}" method="post" autocomplete="off"
