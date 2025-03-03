@@ -43,15 +43,10 @@ class AuthServiceProvider extends ServiceProvider
             return false;
         });
 
-        Gate::define('staff-role', function ($user) {
-            if ($user->type == 'Staff') {
-                return true;
-            }
-            return false;
-        });
 
-        Gate::define('teacher-role', function ($user) {
-            if ($user->type == 'Teacher') {
+
+        Gate::define('faculty-role', function ($user) {
+            if ($user->type == 'Faculty') {
                 return true;
             }
             return false;

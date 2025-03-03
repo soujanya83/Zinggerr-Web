@@ -36,14 +36,14 @@ class UserController extends Controller
                 return redirect()->route('dashboard'); ////////////// this defalut user superadmin
             case 'Admin':
                 return redirect()->route('admin.dashboard');
-            case 'Teacher':
+            case 'Faculty':
                 return redirect()->route('teacher.dashboard');
             case 'Staff':
                 return redirect()->route('dashboard');
             case 'Student':
                 return redirect()->route('student.dashboard');
             default:
-                return redirect()->route('teacher.dashboard'); // Fallback route
+                return redirect()->route('student.dashboard'); // Fallback route
         }
     }
 
@@ -161,7 +161,7 @@ class UserController extends Controller
 
             $user->save();
 
-            if ($request->input('role') == 'Teacher') {
+            if ($request->input('role') == 'Faculty') {
                 $route_name = 'teacherlist';
             } elseif ($request->input('role') == 'Student') {
                 $route_name = 'studentlist';
@@ -275,7 +275,7 @@ class UserController extends Controller
 
     public function useredit($slug)
     {
-        $defaultRoles = ['Admin'];
+        $defaultRoles = ['Admin','Student','Faculty'];
         $userId = Auth::user()->id;
         $user = user::where('slug', $slug)->first();
         $role = Role::where(function ($query) use ($userId, $defaultRoles) {
@@ -290,7 +290,7 @@ class UserController extends Controller
     public function useradd(Request $request)
     {
         $userId = Auth::user()->id;
-        $defaultRoles = ['Admin'];
+        $defaultRoles = ['Admin','Faculty','Student'];
         $role = Role::where(function ($query) use ($userId, $defaultRoles) {
             $query->where('user_id', $userId)
                 ->orWhereIn('name', $defaultRoles);
@@ -304,7 +304,7 @@ class UserController extends Controller
     {
         $userId=Auth::user()->id;
         $query = User::query();
-        $query->whereNotIn('type', ['Superadmin','Teacher','Student'])->where('user_id',$userId)->whereNotNull('email_verified_at');
+        $query->whereNotIn('type', ['Superadmin'])->where('user_id',$userId)->whereNotNull('email_verified_at');
         // Search logic
         if ($request->has('search') && $request->search) {
             $search = $request->search;

@@ -188,7 +188,7 @@
 
 
 
-                                <input type="hidden" name="role" value="Teacher">
+                                <input type="hidden" name="role" value="Faculty">
                                 <div class="col-md-4">
                                     <div class=" mb-3">
                                         <label for="emailInput">Profile Picture</label>

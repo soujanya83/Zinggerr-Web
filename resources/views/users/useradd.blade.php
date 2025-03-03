@@ -11,6 +11,7 @@
 @section('content')
 @include('partials.sidebar')
 @include('partials.headerdashboard')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 <style>
     .iti {
@@ -76,7 +77,24 @@
                             enctype="multipart/form-data">
                             @csrf
 
+
+
                             <div class="row">
+
+                                <div class="col-md-4">
+                                    <div class=" mb-3">
+                                        <label for="emailInput">Role</label>
+                                        <select name="role" id="roleSelect" class="form-select" required>
+                                            <option value="">Select Role</option>
+                                            <option value="other">Other</option>
+                                            @foreach($role as $roledata)
+                                            <option value="{{ $roledata->name }}">{{ $roledata->display_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+
                                 <div class="col-md-4">
                                     <div class=" mb-3">
                                         <label for="nameInput">Full Name</label>
@@ -126,12 +144,6 @@
 
 
 
-
-
-
-
-
-
                                 <div class="col-md-4" style="margin-top: -8px;">
                                     <div class="mb-3">
                                         <label for="phoneInput" class="form-label">Phone</label>
@@ -177,20 +189,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <div class=" mb-3">
-                                        <label for="emailInput">Select Role</label>
-                                        <select name="role" class="form-select" required>
-                                            <option value="">Select Role</option>
-                                            @foreach($role as $roledata)
-                                            <option value="{{ $roledata->name }}">{{ $roledata->display_name }}</option>
-                                            @endforeach
 
-
-
-                                        </select>
-                                    </div>
-                                </div>
 
                                 <div class="col-md-4">
                                     <div class=" mb-3">
@@ -255,6 +254,48 @@
         </div>
     </div>
 </div>
+
+<!-- Modal for Creating New Role -->
+<div class="modal fade" id="createRoleModal" tabindex="-1" aria-labelledby="createRoleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createRoleModalLabel">Create New Role</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('roles.newstore') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="roleName" class="form-label">Role Name</label>
+                        <input type="text" class="form-control" id="roleName" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="roleDescription" class="form-label">Role Description</label>
+                        <textarea class="form-control" id="roleDescription" name="description" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Role</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const roleSelect = document.getElementById('roleSelect');
+    const createRoleModal = new bootstrap.Modal(document.getElementById('createRoleModal'));
+
+    roleSelect.addEventListener('change', function () {
+        if (this.value === 'other') {
+            createRoleModal.show();
+            this.value = ''; // Reset the dropdown selection
+        }
+    });
+});
+
+</script>
+
 
 <script>
     document.getElementById('togglePassword').addEventListener('click', function () {

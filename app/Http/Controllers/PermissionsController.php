@@ -316,7 +316,7 @@ class PermissionsController extends Controller
 
 
             return redirect()->route('roles.list')
-                ->with('success', 'Roles created successfully!');
+                ->with('success', 'Role created successfully!');
         } catch (\Exception $e) {
 
             return redirect()->back()
@@ -324,6 +324,52 @@ class PermissionsController extends Controller
         }
     }
 
+    public function new_submit_roles(Request $request)
+    {
+        $userId = Auth::user()->id;
+        $validator = Validator::make($request->all(), [
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('roles', 'name')->where(function ($query) use ($userId) {
+                    return $query->where('user_id', $userId);
+                }),
+                'regex:/^(?!.*superadmin).*$/i',
+            ],
+            // 'displayname' => 'required|string|max:255',
+            'description' => 'nullable|string|max:500',
+            [
+                'name.regex' => 'The role name cannot contain "Superadmin".'
+            ]
+        ]);
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+
+        try {
+            $uuid = (string) Guid::uuid4(); // Use Laravel's built-in Str helper for UUID
+            Role::create([
+                'id' => $uuid,
+                'name' => $request->name,
+                'user_id' => $userId,
+                // 'display_name' => $request->displayname,
+                'display_name' => $request->name,
+                'description' => $request->description,
+            ]);
+
+
+            return redirect()->back()
+                ->with('success', 'New Role created successfully!');
+        } catch (\Exception $e) {
+
+            return redirect()->back()
+                ->with('error', 'Something went wrong. Please try again.');
+        }
+    }
 
     public function role_delete($id)
 {

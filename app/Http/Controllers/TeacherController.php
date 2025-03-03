@@ -22,7 +22,7 @@ class TeacherController extends Controller
         $userId = Auth::user()->id;
 
         $student=User::where('type','Student')->count();
-        $teacher=User::where('type','Teacher')->count();
+        $teacher=User::where('type','Faculty')->count();
         $courses =  CoursesAssign::where('users_id', $userId)->where('courses.course_status', 1)->where('courses_assign.status', 1)->join('courses', 'courses.id', '=', 'courses_assign.courses_id')->count();
 
         $student_courses = CoursesAssign::where('users_id', $userId)->where('courses.course_status', 1)->where('courses_assign.status', 1)->join('courses', 'courses.id', '=', 'courses_assign.courses_id')->latest('courses_assign.created_at')->take(10)->get();
@@ -39,7 +39,7 @@ class TeacherController extends Controller
     public function teacherlist(Request $request)
     {
         $userid = Auth::user()->id;
-        $query = User::where('type', 'Teacher')->whereNotNull('email_verified_at')->where('user_id',$userid);
+        $query = User::where('type', 'Faculty')->whereNotNull('email_verified_at')->where('user_id',$userid);
 
         if ($request->has('search') && $request->search) {
             $search = $request->search;
@@ -69,7 +69,7 @@ class TeacherController extends Controller
     {
         try {
             $user->delete();
-            return response()->json(['status' => 'success', 'message' => 'User deleted successfully.']);
+            return response()->json(['status' => 'success', 'message' => 'User Deleted successfully.']);
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }

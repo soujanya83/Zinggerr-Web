@@ -272,6 +272,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::post('permissions/role-assign', [PermissionsController::class, 'assignpermissions'])->name('role.permission.assign');
 
     Route::post('roles/submit', [PermissionsController::class, 'submit_roles'])->name('roles.store');
+    Route::post('roles/submit-new', [PermissionsController::class, 'new_submit_roles'])->name('roles.newstore');
     Route::post('roles/update', [PermissionsController::class, 'update_role'])->name('roles.update');
     Route::post('/assign-permissions', [PermissionsController::class, 'user_assign_permissions'])->name('assign.permissions');
 

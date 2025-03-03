@@ -27,14 +27,14 @@ class CustomLoginResponse implements LoginResponseContract
                     return redirect()->route('dashboard'); ////////////// this defalut user superadmin
                 case 'Admin':
                     return redirect()->route('admin.dashboard');
-                case 'Teacher':
+                case 'Faculty':
                     return redirect()->route('teacher.dashboard');
                 case 'Staff':
                     return redirect()->route('dashboard');
                 case 'Student':
                     return redirect()->route('student.dashboard');
                 default:
-                    return redirect()->route('teacher.dashboard'); // Fallback route
+                    return redirect()->route('student.dashboard'); // Fallback route
             }
         }
     }

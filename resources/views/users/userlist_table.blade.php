@@ -23,7 +23,7 @@
     <td>{{ $user->username }}</td>
     <td>{{ $user->country_code }}{{ $user->phone }}</td>
     <td>
-        @if ($user->type == 'Superadmin')
+        @if ($user->type == 'Faculty')
         <span class="badge rounded-pill f-14 bg-light-success">{{ $user->type }}</span>
         @elseif($user->type == 'Admin')
         <span class="badge bg-light-danger rounded-pill f-14"> {{ $user->type }}</span>
