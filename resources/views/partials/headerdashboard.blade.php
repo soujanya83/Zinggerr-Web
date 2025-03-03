@@ -172,10 +172,10 @@
                         </div>
                     </div>
                 </li> --}}
-                <li class="dropdown pc-h-item header-user-profile" style="margin-right: 12px">
+                <li class="dropdown pc-h-item header-user-profile" style="margin-right: 64px">
                     <span class="dropdown-toggle arrow-none me-0" href="#" role="button"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                    style="height: 56px; radius: 50px;color:#04049b">
+                    style="height: 56px;     width: 162px; radius: 50px;color:#04049b">
 
                     @if(Auth::user()->profile_picture)
                     <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="user-image"
