@@ -69,7 +69,7 @@
                             <a class="pc-link" href="{{ route('courses') }}" data-i18n="Active List">List</a>
                         </li>
                         @if(Auth::user()->can('role') || Auth::user()->can('admin-role') ||
-                        Auth::user()->can('teacher-role'))
+                        Auth::user()->can('faculty-role'))
 
                         <li class="pc-item">
                             <a class="pc-link" href="{{ route('addCourse') }}" data-i18n="Add New">Create</a>

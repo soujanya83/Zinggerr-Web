@@ -18,16 +18,17 @@ use Illuminate\Support\Facades\Auth;
 class TeacherController extends Controller
 {
 
-    public function teacherdashboard(){
+    public function teacherdashboard()
+    {
         $userId = Auth::user()->id;
 
-        $student=User::where('type','Student')->count();
-        $teacher=User::where('type','Faculty')->count();
+        $student = User::where('type', 'Student')->count();
+        $teacher = User::where('type', 'Faculty')->count();
         $courses =  CoursesAssign::where('users_id', $userId)->where('courses.course_status', 1)->where('courses_assign.status', 1)->join('courses', 'courses.id', '=', 'courses_assign.courses_id')->count();
 
         $student_courses = CoursesAssign::where('users_id', $userId)->where('courses.course_status', 1)->where('courses_assign.status', 1)->join('courses', 'courses.id', '=', 'courses_assign.courses_id')->latest('courses_assign.created_at')->take(10)->get();
 
-        return view('app.teacherdashboard',compact('student','courses','teacher','student_courses'));
+        return view('app.teacherdashboard', compact('student', 'courses', 'teacher', 'student_courses'));
     }
 
 
@@ -39,7 +40,7 @@ class TeacherController extends Controller
     public function teacherlist(Request $request)
     {
         $userid = Auth::user()->id;
-        $query = User::where('type', 'Faculty')->whereNotNull('email_verified_at')->where('user_id',$userid);
+        $query = User::where('type', 'Faculty')->whereNotNull('email_verified_at')->where('user_id', $userid);
 
         if ($request->has('search') && $request->search) {
             $search = $request->search;
@@ -79,7 +80,7 @@ class TeacherController extends Controller
 
     public function teacheredit($slug)
     {
-        $user = User::where('slug',$slug)->first();
+        $user = User::where('slug', $slug)->first();
 
         return view('teachers.teacheredit', compact('user'));
     }
@@ -88,7 +89,7 @@ class TeacherController extends Controller
     public function updateteacher(Request $request)
     {
 
-        $id=$request->userid;
+        $id = $request->userid;
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:5|max:255',
             'username' => 'required|min:5|max:255|unique:users,username,' . $id,
