@@ -87,7 +87,7 @@ class TeacherController extends Controller
 
     public function updateteacher(Request $request)
     {
-      
+
         $id=$request->userid;
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:5|max:255',

@@ -1,13 +1,11 @@
 <style>
     .user-avatar {
-        width: 48%;
-        height: 100%;
+        width: 28%;
+        height: 80%;
         border-radius: 50%;
         /* Example for a circular avatar */
-        object-fit: cover;
+
     }
-
-
 
     /* ...................for pagination................................... */
 
@@ -45,6 +43,7 @@
         align-items: center;
         width: 30px;
         height: 30px;
+
         border-radius: 4px;
         color: #6c757d;
         text-decoration: none;
@@ -62,7 +61,7 @@
     }
 
     .datatable-pagination-list-item.datatable-disabled button {
-        background-color: #f8f9fa;
+        background-color: #f2f6f9;
         border: 1px solid #ddd;
         color: #6c757d;
         cursor: not-allowed;
@@ -70,27 +69,8 @@
 
     /* .......................................................... */
 
-    .pc-head-link-primary {
-        background-color: blue;
-        /* Set the background color */
-        border-radius: 50px;
-        /* Apply rounded corners */
-        overflow: hidden;
-        /* Clip content that overflows the container */
-    }
 
-    .user-avatar {
-        /* Existing styles */
-        position: relative;
-        /* Position the avatar */
-        left: 10px;
-        /* Adjust position as needed */
-    }
 
-    .pc-head-link-primary:hover .ti-settings {
-        color: white;
-        /* Change icon color to white on hover */
-    }
 </style>
 {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -193,25 +173,28 @@
                     </div>
                 </li> --}}
                 <li class="dropdown pc-h-item header-user-profile" style="margin-right: 12px">
-                    <a class="pc-head-link head-link-primary dropdown-toggle arrow-none me-0" href="#" role="button"
-                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                        style="height: 61px; width: 116px; padding: 5px; radius: 50px;">
+                    <span class="dropdown-toggle arrow-none me-0" href="#" role="button"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    style="height: 56px; radius: 50px;color:#04049b">
 
-                        @if(Auth::user()->profile_picture)
-                        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="user-image"
-                            class="user-avatar"
-                            style="margin-top: 11px; margin-bottom: 11px; border-radius: 50%; margin-right: 29px;">
-                        @else
-                        <img src="{{ asset('asset/images/user/download.jpg') }}" alt="image" class="user-avatar"
-                            style="margin-top: 11px; margin-bottom: 11px; border-radius: 50%; margin-right: 29px;">
-                        @endif
+                    @if(Auth::user()->profile_picture)
+                    <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="user-image"
+                        class="user-avatar"
+                        >
+                    @else
+                    <img src="{{ asset('asset/images/user/download.jpg') }}" alt="image" class="user-avatar"
+                        >
+                    @endif
+                  <b>{{ Str::title(Auth::user()->name) }}</b>
 
-                        <span><i class="ti ti-settings" style="font-size: 26px; margin-right: 13px;"></i></span>
+                    <span class="dropdown-toggle" type="button" id="settingsDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    </span>
+                </span>
 
-                    </a>
                     <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                         <div class="dropdown-header">
-                            <h4><span class="text-muted" style="font-size: 17px;">{{ Auth::user()->name }}</span></h4>
+                            <h4><span class="text-muted" style="font-size: 17px;">{{ Str::title(Auth::user()->name) }}</span></h4>
                             <p class="text-muted small">@if( Auth::user()->type =='Superadmin') <b
                                     class="badge bg-light-primary  rounded-pill f-14"
                                     style="font-size: 14px;">SuperAdmin</b> @else <b
