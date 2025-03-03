@@ -61,7 +61,7 @@ class UserController extends Controller
                 Carbon::now()->subMonth()->endOfMonth()
             ])->count();
 
-            $teacher = User::where('user_id', $userId)->where('type', 'Teacher')->count();
+            $teacher = User::where('user_id', $userId)->where('type', 'Faculty')->count();
             $staff = User::where('user_id', $userId)->where('type', 'Staff')->count();
 
             // $courseslast7day = Course::where('user_id', $userId)->count();
@@ -92,7 +92,7 @@ class UserController extends Controller
                 Carbon::now()->subMonth()->endOfMonth()
             ])->count();
 
-            $teacher = User::where('user_id', $userId)->where('type', 'Teacher')->count();
+            $teacher = User::where('user_id', $userId)->where('type', 'Faculty')->count();
             $staff = User::where('user_id', $userId)->where('type', 'Staff')->count();
 
             // $courseslast7day = Course::where('user_id', $userId)->count();
