@@ -43,6 +43,16 @@
             <i class="ti ti-edit f-20"></i>
         </a>
         @endif
+
+        @if(Auth::user()->can('role') ||
+        (isset($permissions) && in_array('assign_permission', $permissions)))
+
+        <a href="{{ route('user.assign_permission', $user->slug) }}" class="avtar avtar-xs btn-link-secondary read-more-btn"
+            data-id="{{ $user->id }}">
+            <i class="ti ti-info-circle f-20" title="Assign Permission"></i>
+        </a>
+        @endif
+
         @if(Auth::user()->can('role') ||
         (isset($permissions) && in_array('faculty_delete', $permissions)))
         <a href="{{ route('user_delete', $user->id) }}" class="avtar avtar-xs btn-link-secondary read-more-btn"

@@ -226,7 +226,7 @@ class UserController extends Controller
             $user->slug = $slug;
             $user->username = $request->input('username');
             $user->email = $request->input('email');
-            $user->phone = $request->input('phone');
+            // $user->phone = $request->input('phone');
             $user->status = $request->input('status');
             $user->gender = $request->input('gender');
             $user->type = $request->input('role');

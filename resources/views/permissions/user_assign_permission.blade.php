@@ -105,8 +105,8 @@
                                                             <div class="d-flex align-items-center">
                                                                 <input class="form-check-input me-2" type="checkbox"
                                                                     name="permissions[]" value="{{ $permission->id }}"
-                                                                    {{ in_array($permission->id, $assignedPermissions) ? 'checked' : '' }}>
-                                                                <label class="mb-0 text-muted text-truncate">{{ $permission->display_name }}</label>
+                                                                    {{ in_array($permission->id, $assignedPermissions) ? 'checked' : '' }} title="{{ $permission->description }}">
+                                                                <label class="mb-0 text-muted text-truncate" title="{{ $permission->description }}">{{ $permission->display_name }}</label>
                                                             </div>
                                                         </div>
                                                     </div>

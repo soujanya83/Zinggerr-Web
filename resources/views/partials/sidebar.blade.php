@@ -210,7 +210,7 @@
 </nav>
 
 
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', () => {
         const fullNameInput = document.getElementById('nameInput'); // Full Name field
         const userNameInput = document.getElementById('usernameInput'); // Username field
@@ -287,4 +287,95 @@
             }
         });
     });
+</script> --}}
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const fullNameInput = document.getElementById('nameInput'); // Full Name field
+    const userNameInput = document.getElementById('usernameInput'); // Username field
+    const suggestionsBox = document.getElementById('usernameSuggestions'); // Suggestions box
+    const suggestionsList = document.getElementById('suggestionsList'); // Suggestions list inside the box
+
+    // Function to generate username suggestions based on full name
+    const generateUsernames = (fullName) => {
+        if (!fullName) return [];
+
+        let nameParts = fullName.trim().toLowerCase().split(/\s+/); // Split by space
+        let firstName = nameParts[0] || ''; // First name
+        let lastName = nameParts[1] || ''; // Last name
+        let subName = nameParts.length > 2 ? nameParts[2] : ''; // Subname if exists
+        let randomNum = () => Math.floor(10 + Math.random() * 90); // 2-digit random number
+
+        let variations = [];
+
+        if (firstName && lastName) {
+            variations.push(`${firstName}_${lastName}`);
+            variations.push(`${firstName}${lastName}${randomNum()}`);
+            variations.push(`${lastName}_${firstName}${randomNum()}`);
+            variations.push(`${firstName.charAt(0)}_${lastName}${randomNum()}`);
+        }
+        if (subName) {
+            variations.push(`${firstName}_${subName}`);
+            variations.push(`${subName}_${lastName}${randomNum()}`);
+        }
+        variations.push(`${firstName}${randomNum()}`);
+        variations.push(`${fullName.replace(/\s+/g, '')}${randomNum()}`);
+
+        return variations;
+    };
+
+    // Check if usernames exist in the database
+    const checkUsernames = async (usernames) => {
+        try {
+            let response = await fetch('{{ route("check.username.suggestions") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ usernames })
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Error checking usernames:', error);
+            return [];
+        }
+    };
+
+    // Function to update and display username suggestions
+    const updateUsernameSuggestions = async () => {
+        let fullName = fullNameInput.value.trim();
+        if (!fullName) return; // Don't show suggestions if full name is empty
+
+        let suggestions = generateUsernames(fullName);
+        let availableUsernames = await checkUsernames(suggestions);
+
+        // Show available usernames in the dropdown
+        suggestionsList.innerHTML = '';
+        availableUsernames.forEach(username => {
+            let div = document.createElement('div');
+            div.classList.add('suggestion-item');
+            div.textContent = username;
+            div.addEventListener('click', () => {
+                userNameInput.value = username;
+                suggestionsBox.style.display = 'none';
+            });
+            suggestionsList.appendChild(div);
+        });
+
+        suggestionsBox.style.display = availableUsernames.length > 0 ? 'block' : 'none';
+    };
+
+    // Show suggestions when typing in the username field
+    userNameInput.addEventListener('focus', updateUsernameSuggestions);
+    userNameInput.addEventListener('input', updateUsernameSuggestions);
+
+    // Hide suggestions if user clicks outside
+    document.addEventListener('click', (event) => {
+        if (!suggestionsBox.contains(event.target) && event.target !== userNameInput) {
+            suggestionsBox.style.display = 'none';
+        }
+    });
+});
+
 </script>
