@@ -38,7 +38,7 @@
                                 <div class="row align-items-center">
                                     <div class="col">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10" style="font-size: 18px;">Welcome: {{ Auth::user()->name
+                                            <h5 class="m-b-10" style="font-size: 18px;">Welcome: {{  Str::title(Auth::user()->name)
                                                 }}</h5>
                                         </div>
                                     </div>
@@ -134,7 +134,7 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td >{{ $user->phone }}</td>
+                                            <td >{{ $user->country_code }}{{ $user->phone }}</td>
                                             <td >{{ $user->gender }}</td>
                                             <td>
                                                 @if($user->status == 1)

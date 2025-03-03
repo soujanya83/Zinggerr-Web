@@ -42,7 +42,7 @@
         <form action="{{ route('changeStatus') }}" method="GET" style="display: inline;">
             <input type="hidden" name="id" value="{{ $user->id }}">
             <input type="hidden" name="status" value="{{ $user->status == 1 ? 0 : 1 }}">
-            <button type="submit" class="btn  btn-shadow {{ $user->status == 1 ? 'btn-success' : 'btn-danger' }}">
+            <button type="submit" class="btn  btn-shadow {{ $user->status == 1 ? 'btn-success' : 'btn-danger' }}" title="User Status">
                 {{ $user->status == 1 ? 'Active' : 'Inactive' }}
             </button>
         </form>
@@ -55,7 +55,7 @@
 
         <a href="{{ route('user_edit', $user->slug) }}" class="avtar avtar-xs btn-link-secondary read-more-btn"
             data-id="{{ $user->id }}">
-            <i class="ti ti-edit f-20"></i>
+            <i class="ti ti-edit f-20" title="User Edit"></i>
         </a>
         @endif
 
@@ -64,7 +64,7 @@
 
         <a href="{{ route('user.assign_permission', $user->slug) }}" class="avtar avtar-xs btn-link-secondary read-more-btn"
             data-id="{{ $user->id }}">
-            <i class="ti ti-info-circle f-20"></i>
+            <i class="ti ti-info-circle f-20" title="Assign Permission"></i>
         </a>
         @endif
 
@@ -74,7 +74,7 @@
         (isset($permissions) && in_array('users_delete', $permissions)))
         <a href="{{ route('user_delete', $user->id) }}" class="avtar avtar-xs btn-link-secondary read-more-btn"
             data-id="{{ $user->id }}" onclick="return confirmDelete(this)">
-            <i class="ti ti-trash f-20" style="color: red;"></i>
+            <i class="ti ti-trash f-20" style="color: red;" title="User Delete"></i>
         </a>
         @endif
 

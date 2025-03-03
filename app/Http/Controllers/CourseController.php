@@ -829,7 +829,7 @@ class CourseController extends Controller
                     return $query->where('user_id', $userId);
                 }),
             ],
-            'displayname' => 'required|string|max:255',
+            // 'displayname' => 'required|string|max:255',
             'description' => 'nullable|string|max:500',
         ]);
         if ($validator->fails()) {
@@ -842,7 +842,7 @@ class CourseController extends Controller
             CoursesCategory::create([
                 'name' => $request->name,
                 'user_id' => $userId,
-                'display_name' => $request->displayname,
+                'display_name' => $request->name,
                 'description' => $request->description,
             ]);
 

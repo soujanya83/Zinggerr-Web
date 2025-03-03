@@ -160,20 +160,22 @@
                                                     class="rounded-circle" width="100" height="100">
                                                 @endif
 
-                                                <h5 class="card-title mt-3">{{ Auth::user()->name }}</h5>
+                                                <h5 class="card-title mt-3">{{ Str::title(Auth::user()->name) }}</h5>
                                                 {{-- <p class="card-text">{{ Auth::user()->type }}</p> --}}
-                                                <span class="badge bg-primary">{{ Auth::user()->type }}</span>
+                                                <span class="badge bg-primary">@if(Auth::user()->type =='Superadmin')
+                                                    SuperAdmin @else {{Auth::user()->type }} @endif</span>
                                             </div>
                                             <ul class="list-group list-group-flush">
                                                 <li class="list-group-item" style="margin-left: -16px;">
-                                                    <i class="material-icons-two-tone f-20" >email</i>
+                                                    <i class="material-icons-two-tone f-20">email</i>
                                                     <strong>Emaiil</strong>
                                                     <span>&nbsp&nbsp {{ Auth::user()->email }}</span>
                                                 </li>
                                                 <li class="list-group-item" style="margin-left: -16px;">
                                                     <i class="material-icons-two-tone f-20">phonelink_ring</i>
                                                     <strong>Phone</strong>
-                                                    <span>&nbsp&nbsp {{ Auth::user()->country_code.Auth::user()->phone }}</span>
+                                                    <span>&nbsp&nbsp {{ Auth::user()->country_code.Auth::user()->phone
+                                                        }}</span>
                                                 </li>
                                                 {{-- <li class="list-group-item">
                                                     <i class="material-icons-two-tone f-20">pin_drop</i>
@@ -221,7 +223,7 @@
                                                     <tr>
                                                         <th>Full Name</th>
                                                         <td>:</td>
-                                                        <td>{{ Auth::user()->name }}</td>
+                                                        <td>{{ Str::title(Auth::user()->name) }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>Username</th>

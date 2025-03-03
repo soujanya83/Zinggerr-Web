@@ -15,14 +15,14 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Category Create</h5>
+                            <h5 class="m-b-10">Create Category </h5>
                         </div>
                     </div>
 
                     <div class="col-auto">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item" aria-current="page">Category Create</li>
+                            <li class="breadcrumb-item" aria-current="page">Create Category</li>
                         </ul>
                     </div>
                 </div>
@@ -72,20 +72,20 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="mb-3">
-                                                <label for="nameInput">Category Name</label>
+                                                <label for="nameInput">Name</label>
                                                 <input type="text" class="form-control" id="nameInput" name="name"
                                                     required placeholder="Enter Name" value="{{ old('name') }}">
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-4" style="display: none">
                                             <div class="mb-3">
-                                                <label for="displayNameInput">Category Display
+                                                <label for="displayNameInput">Display
                                                     Name</label>
                                                 <input type="text" class="form-control" id="displayNameInput"
-                                                    name="displayname" required placeholder="Enter Display Name" value="{{ old('displayname') }}">
+                                                    name="displayname" placeholder="Enter Display Name" value="{{ old('displayname') }}">
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-8">
                                             <div class="mb-3">
                                                 <label for="descriptionInput">Description</label>
                                                 <textarea class="form-control" id="descriptionInput" name="description"
@@ -124,8 +124,8 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Category Name</th>
-                                        <th>Category Display Name</th>
+                                        <th>Name</th>
+                                        <th>Description</th>
                                         @if(Auth::user()->can('role') ||
                                         (isset($permissions) && in_array('category_edit', $permissions)) ||
                                         (isset($permissions) && in_array('category_delete', $permissions)))
@@ -137,8 +137,9 @@
                                     @foreach ($roles as $index => $role)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $role['name'] }}</td>
-                                        <td>{{ $role['display_name'] }}</td>
+                                        <td>{{ Str::title($role['name']) }}
+                                        </td>
+                                        <td>{{ Str::limit($role['description'], 80, '...') }}</td>
                                         <td class="text-center">
                                             @if(Auth::user()->can('role') ||
                                             (isset($permissions) && in_array('category_edit', $permissions)))
