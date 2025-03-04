@@ -44,10 +44,10 @@
                                     </div>
                                     <div class="col-auto">
                                         <ul class="breadcrumb">
-                                            <li class="breadcrumb-item" style="color:rgb(5, 18, 109)">
+                                            <li class="breadcrumb-item mt-1">
                                                 <b>
-                                                    <h6> @if ( Auth::user()->type =='Superadmin') SuperAdmin @else {{
-                                                        Auth::user()->type }} @endif</h6>
+                                                    <h4 style="color:#0707c2"> @if ( Auth::user()->type =='Superadmin') SuperAdmin @else {{
+                                                        Auth::user()->type }} @endif</h4>
                                                 </b>
                                             </li>
 
