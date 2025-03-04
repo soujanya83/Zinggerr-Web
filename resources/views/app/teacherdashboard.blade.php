@@ -46,7 +46,7 @@
                                         <ul class="breadcrumb">
                                             <li class="breadcrumb-item mt-1">
                                                 <b>
-                                                    <h4 style="color:#0707c2"> @if ( Auth::user()->type =='Superadmin') SuperAdmin @else {{
+                                                    <h4 style="color:#5a63ac"> @if ( Auth::user()->type =='Superadmin') SuperAdmin @else {{
                                                         Auth::user()->type }} @endif</h4>
                                                 </b>
                                             </li>
