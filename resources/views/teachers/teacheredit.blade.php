@@ -116,6 +116,7 @@
                                                 <input type="tel" class="form-control" id="phoneInput" name="phone"
                                                     required value="{{ old('phone', $user->phone) }}"
                                                     style="height: 43px;" readonly>
+
                                             </div>
                                             <small id="phoneError" class="text-danger"></small>
                                             @error('phone')
@@ -245,154 +246,6 @@
     });
 </script>
 
-{{-- <script>
-    const registerForm = document.getElementById('registerForm');
-
-    const fullNameInput = document.getElementById('nameInput');
-    const userNameInput = document.getElementById('usernameInput');
-    const phoneInput = document.getElementById('phoneInput');
-    const emailInput = document.getElementById('emailInput');
-    const passwordInput = document.getElementById('passwordInput');
-    const submitButton = document.getElementById('submitButton');
-
-    const nameError = document.getElementById('nameError');
-    const usernameError = document.getElementById('usernameError');
-    const phoneError = document.getElementById('phoneError');
-    const emailError = document.getElementById('emailError');
-    const passwordError = document.getElementById('passwordError');
-
-    let isFullNameUnique = true;
-    let isUsernameUnique = true;
-    let isPhoneUnique = true;
-    let isEmailUnique = true;
-
-    const checkUniqueness = (value, route, errorField, fieldName) => {
-        return fetch(route, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({ [fieldName]: value })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.exists) {
-                errorField.textContent = `This ${fieldName} is already registered.`;
-                return false;
-            } else {
-                errorField.textContent = '';
-                return true;
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            return false;
-        });
-    };
-
-    const validateFullName = () => {
-        const value = fullNameInput.value.trim();
-        if (value.length < 5) {
-            nameError.textContent = 'Full Name must be at least 5 characters.';
-            return false;
-        }
-        nameError.textContent = '';
-        return true;
-    };
-
-    const validateUserName = () => {
-        const value = userNameInput.value.trim();
-        if (value === '') {
-            usernameError.textContent = 'Username is required.';
-            isUsernameUnique = false;
-            return false;
-        }
-        if (value.length < 5) {
-            usernameError.textContent = 'User Name must be at least 5 characters.';
-            isUsernameUnique = false;
-            return false;
-        }
-
-        checkUniqueness(value, '{{ route("check.username") }}', usernameError, 'username')
-            .then(isUnique => (isUsernameUnique = isUnique));
-
-        return true;
-    };
-
-    const validatePhone = () => {
-        const value = phoneInput.value.trim();
-        if (!/^\d{10}$/.test(value)) {
-            phoneError.textContent = 'Phone number must be exactly 10 digits.';
-            isPhoneUnique = false;
-            return false;
-        }
-
-        checkUniqueness(value, '{{ route("check.phone") }}', phoneError, 'phone')
-            .then(isUnique => (isPhoneUnique = isUnique));
-
-        return true;
-    };
-
-    const validateEmail = () => {
-        const value = emailInput.value.trim();
-        const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-        if (!isValid) {
-            emailError.textContent = 'Invalid email format.';
-            isEmailUnique = false;
-            return false;
-        }
-
-        checkUniqueness(value, '{{ route("check.email") }}', emailError, 'email')
-            .then(isUnique => (isEmailUnique = isUnique));
-
-        return true;
-    };
-
-    const validatePassword = () => {
-        if (passwordInput.value.trim().length < 6) {
-            passwordError.textContent = 'Password must be at least 6 characters.';
-            return false;
-        }
-        passwordError.textContent = '';
-        return true;
-    };
-
-    registerForm.addEventListener('submit', async function (event) {
-        event.preventDefault();
-
-        const isFormValid =
-            validateFullName() &&
-            validateUserName() &&
-            validatePhone() &&
-            validateEmail() &&
-            validatePassword();
-
-        await Promise.all([
-            validateUserName(),
-            validatePhone(),
-            validateEmail()
-        ]);
-
-        if (
-            isFormValid &&
-            isFullNameUnique &&
-            isUsernameUnique &&
-            isPhoneUnique &&
-            isEmailUnique
-        ) {
-            this.submit();
-        } else {
-            console.error('Form has errors, fix them before submitting.');
-        }
-    });
-
-    fullNameInput.addEventListener('blur', validateFullName);
-    userNameInput.addEventListener('blur', validateUserName);
-    phoneInput.addEventListener('blur', validatePhone);
-    emailInput.addEventListener('blur', validateEmail);
-    passwordInput.addEventListener('input', validatePassword);
-</script> --}}
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -434,6 +287,8 @@
 });
 
 </script>
+
+
 
 
 

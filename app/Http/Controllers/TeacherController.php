@@ -89,12 +89,17 @@ class TeacherController extends Controller
     public function updateteacher(Request $request)
     {
 
+        $request->merge([
+            'phone' => preg_replace('/\D/', '', $request->phone) // Remove non-numeric characters
+        ]);
+
+
         $id = $request->userid;
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:5|max:255',
             'username' => 'required|min:5|max:255|unique:users,username,' . $id,
             'email' => 'required|email|unique:users,email,' . $id,
-            'phone' => 'required|max:10|unique:users,phone,' . $id,
+            'phone' => 'required|digits_between:9,15|unique:users,phone,' . $id,
             'status' => 'required|in:1,0',
             'gender' => 'required',
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:3072',

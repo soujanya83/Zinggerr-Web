@@ -92,7 +92,8 @@
 
 
 
-                @if (Auth::user()->can('role') || (isset($permissions) && in_array('faculty_sidebar',$permissions)))
+                {{-- @if (Auth::user()->can('role') || (isset($permissions) &&
+                in_array('faculty_sidebar',$permissions)))
 
 
                 <li class="pc-item pc-hasmenu">
@@ -110,10 +111,10 @@
                                 data-i18n="List">List</a></li>
                     </ul>
                 </li>
-                @endif
+                @endif --}}
 
 
-                @if(Auth::user()->can('role') || (isset($permissions) && in_array('student_sidebar',$permissions)))
+                {{-- @if(Auth::user()->can('role') || (isset($permissions) && in_array('student_sidebar',$permissions)))
 
 
                 <li class="pc-item pc-hasmenu">
@@ -131,13 +132,14 @@
                                 data-i18n="List">List</a></li>
                     </ul>
                 </li>
-                @endif
+                @endif --}}
+
                 {{-- @if(Auth::user()->can('role') || Auth::user()->can('admin-role') ||
                 Auth::user()->can('staff-role')) --}}
                 @if(Auth::user()->can('role') || (isset($permissions) && in_array('user_sidebar',
                 $permissions)))
 
-                <li class="pc-item pc-hasmenu">
+                {{-- <li class="pc-item pc-hasmenu">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
                             <i class="ti ti-user"></i>
@@ -152,7 +154,47 @@
                                 List</a>
                         </li>
                     </ul>
+                </li> --}}
+
+
+                <li class="pc-item pc-hasmenu {{ request()->routeIs('useradd') || request()->routeIs('userlist') || request()->routeIs('teacherlist') || request()->routeIs('studentlist') ? 'active pc-trigger' : '' }}">
+                    <a href="#" class="pc-link">
+                        <span class="pc-micon">
+                            <i class="ti ti-user"></i>
+                        </span>
+                        <span class="pc-mtext" data-i18n="User">Users</span>
+                        <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+                    </a>
+                    <ul class="pc-submenu">
+                        <li class="pc-item {{ request()->routeIs('useradd') ? 'active' : '' }}">
+                            <a class="pc-link" href="{{ route('useradd') }}" data-i18n="Create">Create</a>
+                        </li>
+                        <li class="pc-item {{ request()->routeIs('userlist') ? 'active' : '' }}">
+                            <a class="pc-link" href="{{ route('userlist') }}" data-i18n="List">List</a>
+                        </li>
+
+                        @if (Auth::user()->can('role') || (isset($permissions) && in_array('faculty_sidebar', $permissions)))
+                        <li class="pc-item {{ request()->routeIs('teacherlist') ? 'active' : '' }}">
+                            <a class="pc-link" href="{{ route('teacherlist', ['type' => 'faculty']) }}" data-i18n="Faculty">
+                                <i class="ti ti-users"></i> Faculty
+                            </a>
+                        </li>
+                        @endif
+
+                        @if (Auth::user()->can('role') || (isset($permissions) && in_array('student_sidebar', $permissions)))
+                        <li class="pc-item {{ request()->routeIs('studentlist') ? 'active' : '' }}">
+                            <a class="pc-link" href="{{ route('studentlist', ['type' => 'student']) }}" data-i18n="Students">
+                                <i class="ti ti-users"></i> Students
+                            </a>
+                        </li>
+                        @endif
+                    </ul>
                 </li>
+
+
+
+
+
                 @endif
 
                 @if(Auth::user()->can('role') || (isset($permissions) && in_array('role_sidebar',
