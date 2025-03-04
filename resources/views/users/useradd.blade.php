@@ -149,7 +149,7 @@
                                         <label for="phoneInput" class="form-label">Phone</label>
                                         <div class="input-group" style="display: flex; align-items: center;">
                                             <input type="tel" class="form-control" id="phoneInput" name="phone" required
-                                                value="{{ old('phone') }}" style="height: 43px;">
+                                                value="{{ old('phone') }}" style="height: 43px;" pattern="[0-9]*" inputmode="numeric">
                                             <input type="hidden" name="full_phone" id="fullPhone">
                                             <input type="hidden" name="country_code" id="countryCode">
                                             <input type="hidden" name="country_name" id="countryName">
