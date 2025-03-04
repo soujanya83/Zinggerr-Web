@@ -19,7 +19,7 @@
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar/main.min.js"></script>
 <link href="public/css/bootstrap.min.css" rel="stylesheet">
 <link href="public/css/style.css" rel="stylesheet">
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+{{-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"> --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
