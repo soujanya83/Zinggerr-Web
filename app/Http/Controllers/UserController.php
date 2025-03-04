@@ -79,7 +79,8 @@ class UserController extends Controller
         }
     }
 
-    public function admindashboard(){
+    public function admindashboard()
+    {
         $user = Auth::user();
         $userAuth = $user->email_verified_at;
         if (Auth::check() && ($userAuth != null)) {
@@ -112,14 +113,16 @@ class UserController extends Controller
 
     public function createuser(Request $request)
     {
-// dd($request);
-
+        // dd($request);
+        $request->merge([
+            'phone' => preg_replace('/\D/', '', $request->phone) // Remove non-numeric characters
+        ]);
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:5|max:255',
             'username' => 'required|min:5|max:255|unique:users,username',
             'email' => 'required|email|unique:users,email',
-            'phone' => 'required|max:10|unique:users,phone',
+            'phone' => 'required|digits_between:9,15|unique:users,phone',
             'password' => 'required|min:6',
             'status' => 'required|in:1,0',
             'gender' => 'required', // Assuming 1=Male, 2=Female
@@ -145,7 +148,7 @@ class UserController extends Controller
                 'email' => $request->input('email'),
                 'phone' => $request->input('phone'),
                 'status' => $request->input('status'),
-                'country_code' =>'+'.$request->input('country_code'),
+                'country_code' => '+' . $request->input('country_code'),
                 'country_name' => $request->input('country_name'),
                 'gender' => $request->input('gender'),
                 'type' => $request->input('role'),
@@ -200,14 +203,16 @@ class UserController extends Controller
     public function updateuser(Request $request)
     {
 
-
+        $request->merge([
+            'phone' => preg_replace('/\D/', '', $request->phone) // Remove non-numeric characters
+        ]);
         $id = $request->userid;
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:5|max:255',
             'username' => 'required|min:5|max:255|unique:users,username,' . $id,
             'email' => 'required|email|unique:users,email,' . $id,
-            // 'phone' => 'required|max:14|unique:users,phone,' . $id,
+            'phone' => 'required|digits_between:9,15|unique:users,phone,' . $id,
             'status' => 'required|in:1,0',
             'gender' => 'required',
             'role' => 'required',
@@ -226,7 +231,9 @@ class UserController extends Controller
             $user->slug = $slug;
             $user->username = $request->input('username');
             $user->email = $request->input('email');
-            // $user->phone = $request->input('phone');
+            $user->phone = $request->input('phone');
+            $user->country_code = $request->input('country_code');
+            $user->country_name = $request->input('country_name');
             $user->status = $request->input('status');
             $user->gender = $request->input('gender');
             $user->type = $request->input('role');
@@ -275,7 +282,7 @@ class UserController extends Controller
 
     public function useredit($slug)
     {
-        $defaultRoles = ['Admin','Student','Faculty'];
+        $defaultRoles = ['Admin', 'Student', 'Faculty'];
         $userId = Auth::user()->id;
         $user = user::where('slug', $slug)->first();
         $role = Role::where(function ($query) use ($userId, $defaultRoles) {
@@ -290,7 +297,7 @@ class UserController extends Controller
     public function useradd(Request $request)
     {
         $userId = Auth::user()->id;
-        $defaultRoles = ['Admin','Faculty','Student'];
+        $defaultRoles = ['Admin', 'Faculty', 'Student'];
         $role = Role::where(function ($query) use ($userId, $defaultRoles) {
             $query->where('user_id', $userId)
                 ->orWhereIn('name', $defaultRoles);
@@ -302,9 +309,9 @@ class UserController extends Controller
 
     public function userlist(Request $request)
     {
-        $userId=Auth::user()->id;
+        $userId = Auth::user()->id;
         $query = User::query();
-        $query->whereNotIn('type', ['Superadmin'])->where('user_id',$userId)->whereNotNull('email_verified_at');
+        $query->whereNotIn('type', ['Superadmin'])->where('user_id', $userId)->whereNotNull('email_verified_at');
         // Search logic
         if ($request->has('search') && $request->search) {
             $search = $request->search;
@@ -315,7 +322,6 @@ class UserController extends Controller
                     ->orWhere('phone', 'like', '%' . $search . '%')
                     ->orWhere('type', 'like', '%' . $search . '%')
                     ->orWhere('country_code', 'like', '%' . $search . '%');
-
             });
         }
 

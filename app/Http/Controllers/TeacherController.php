@@ -116,6 +116,8 @@ class TeacherController extends Controller
             $user->username = $request->input('username');
             $user->email = $request->input('email');
             $user->phone = $request->input('phone');
+            $user->country_code = $request->input('country_code');
+            $user->country_name = $request->input('country_name');
             $user->status = $request->input('status');
             $user->gender = $request->input('gender');
             $user->type = $request->input('role');

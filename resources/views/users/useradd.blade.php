@@ -540,8 +540,8 @@
 
         const validatePhone = () => {
             const value = phoneInput.value.trim();
-            if (!/^\d{10}$/.test(value)) {
-                phoneError.textContent = 'Phone number must be exactly 10 digits.';
+            if (!/^\d{9}$/.test(value)) {
+                phoneError.textContent = 'Phone number must be exactly 9 digits.';
                 isPhoneUnique = false;
                 return false;
             }

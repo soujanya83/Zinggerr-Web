@@ -123,16 +123,20 @@
                                         <div class="mb-3">
                                             <label for="phoneInput" class="form-label">Phone</label>
                                             <div class="input-group" style="display: flex; align-items: center;">
-                                                <input type="tel" class="form-control" id="phoneInput" name="phone"
-                                                    required value="{{ old('phone', $user->phone) }}"
-                                                    style="height: 43px;" readonly>
+                                                <input type="tel" class="form-control" id="phoneInput" name="phone" required
+                                                    value="{{ old('phone', $user->phone) }}" style="height: 43px;"
+                                                    pattern="[0-9\- ]*" inputmode="numeric">
+
+                                                <input type="hidden" name="country_code" id="countryCode">
+                                                <input type="hidden" name="country_name" id="countryName">
                                             </div>
                                             <small id="phoneError" class="text-danger"></small>
                                             @error('phone')
-                                            <small class="text-danger">{{ $message }}</small>
+                                                <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </div>
                                     </div>
+
 
 
                                     <div class="col-md-4">
@@ -235,6 +239,133 @@
         </div>
     </div>
 </div>
+
+
+{{-- <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var input = document.querySelector("#phoneInput");
+        var countryCodeInput = document.querySelector("#countryCode");
+        var countryNameInput = document.querySelector("#countryName");
+
+        // Allow only numeric input
+        input.addEventListener("input", function () {
+            this.value = this.value.replace(/\D/g, ''); // Remove non-numeric characters
+        });
+
+        // Full country name from database (e.g., "India (भारत)")
+        var savedCountryName = "{{ $user->country_name }}";
+        var englishCountryName = savedCountryName.split(" (")[0].trim();
+
+        // Country name to ISO2 mapping
+        var countryNameToCode = {
+            "Afghanistan": "af", "Albania": "al", "Algeria": "dz", "Andorra": "ad", "Angola": "ao",
+            "Argentina": "ar", "Australia": "au", "Austria": "at", "Bangladesh": "bd", "Belgium": "be",
+            "Brazil": "br", "Canada": "ca", "China": "cn", "Denmark": "dk", "Egypt": "eg",
+            "France": "fr", "Germany": "de", "India": "in", "Indonesia": "id", "Italy": "it",
+            "Japan": "jp", "Mexico": "mx", "Nepal": "np", "Netherlands": "nl", "Pakistan": "pk",
+            "Russia": "ru", "Saudi Arabia": "sa", "South Africa": "za", "Spain": "es", "Sri Lanka": "lk",
+            "Sweden": "se", "Switzerland": "ch", "Thailand": "th", "United Kingdom": "gb", "United States": "us",
+            "Vietnam": "vn", "Zimbabwe": "zw"
+        };
+
+        var savedCountryCode = countryNameToCode[englishCountryName] || "us";
+
+        var iti = window.intlTelInput(input, {
+            separateDialCode: true,
+            initialCountry: savedCountryCode,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+
+        iti.promise.then(() => {
+            if (savedCountryCode) {
+                iti.setCountry(savedCountryCode);
+            }
+            var countryData = iti.getSelectedCountryData();
+            countryCodeInput.value = "+" + countryData.dialCode;
+            countryNameInput.value = countryData.name;
+        });
+
+        // Update hidden inputs when country is changed
+        input.addEventListener("countrychange", function () {
+            var countryData = iti.getSelectedCountryData();
+            console.log("Changed Country:", countryData);
+            countryCodeInput.value = "+" + countryData.dialCode;
+            countryNameInput.value = countryData.name;
+        });
+
+        // Ensure values are set before form submission
+        document.querySelector("form").addEventListener("submit", function () {
+            var countryData = iti.getSelectedCountryData();
+            countryCodeInput.value = "+" + countryData.dialCode;
+            countryNameInput.value = countryData.name;
+        });
+    });
+</script> --}}
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var input = document.querySelector("#phoneInput");
+        var countryCodeInput = document.querySelector("#countryCode");
+        var countryNameInput = document.querySelector("#countryName");
+
+        // Allow only numeric input
+        input.addEventListener("input", function () {
+            this.value = this.value.replace(/\D/g, ''); // Remove non-numeric characters
+        });
+
+        // Full country name from database (e.g., "India (भारत)")
+        var savedCountryName = "{{ $user->country_name }}";
+        var englishCountryName = savedCountryName.split(" (")[0].trim();
+
+        // Country name to ISO2 mapping
+        var countryNameToCode = {
+            "Afghanistan": "af", "Albania": "al", "Algeria": "dz", "Andorra": "ad", "Angola": "ao",
+            "Argentina": "ar", "Australia": "au", "Austria": "at", "Bangladesh": "bd", "Belgium": "be",
+            "Brazil": "br", "Canada": "ca", "China": "cn", "Denmark": "dk", "Egypt": "eg",
+            "France": "fr", "Germany": "de", "India": "in", "Indonesia": "id", "Italy": "it",
+            "Japan": "jp", "Mexico": "mx", "Nepal": "np", "Netherlands": "nl", "Pakistan": "pk",
+            "Russia": "ru", "Saudi Arabia": "sa", "South Africa": "za", "Spain": "es", "Sri Lanka": "lk",
+            "Sweden": "se", "Switzerland": "ch", "Thailand": "th", "United Kingdom": "gb", "United States": "us",
+            "Vietnam": "vn", "Zimbabwe": "zw"
+        };
+
+        var savedCountryCode = countryNameToCode[englishCountryName] || "us";
+
+        var iti = window.intlTelInput(input, {
+            separateDialCode: true,
+            initialCountry: savedCountryCode,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+
+        iti.promise.then(() => {
+            if (savedCountryCode) {
+                iti.setCountry(savedCountryCode);
+            }
+            var countryData = iti.getSelectedCountryData();
+            countryCodeInput.value = "+" + countryData.dialCode;
+            countryNameInput.value = countryData.name;
+        });
+
+        // Update hidden inputs and clear phone input when country is changed
+        input.addEventListener("countrychange", function () {
+            var countryData = iti.getSelectedCountryData();
+            console.log("Changed Country:", countryData);
+            countryCodeInput.value = "+" + countryData.dialCode;
+            countryNameInput.value = countryData.name;
+
+            // Clear the phone input field when country changes
+            input.value = "";
+        });
+
+        // Ensure values are set before form submission
+        document.querySelector("form").addEventListener("submit", function () {
+            var countryData = iti.getSelectedCountryData();
+            countryCodeInput.value = "+" + countryData.dialCode;
+            countryNameInput.value = countryData.name;
+        });
+    });
+</script>
 
 <script>
     // JavaScript to toggle password visibility
@@ -405,7 +536,7 @@
 
 
 
-<script>
+{{-- <script>
     document.addEventListener("DOMContentLoaded", function () {
    var input = document.querySelector("#phoneInput");
 
@@ -442,9 +573,9 @@
            iti.setCountry(savedCountryCode);
        }
    });
-});
+    });
 
-</script>
+</script> --}}
 
 @include('partials.footer')
 @endsection
