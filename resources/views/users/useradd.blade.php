@@ -267,11 +267,11 @@
                 <form action="{{ route('roles.newstore') }}" method="POST">
                     @csrf
                     <div class="mb-3">
-                        <label for="roleName" class="form-label">Role Name</label>
+                        <label for="roleName" class="form-label">Name</label>
                         <input type="text" class="form-control" id="roleName" name="name" required>
                     </div>
                     <div class="mb-3">
-                        <label for="roleDescription" class="form-label">Role Description</label>
+                        <label for="roleDescription" class="form-label">Description</label>
                         <textarea class="form-control" id="roleDescription" name="description" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Save Role</button>
