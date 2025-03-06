@@ -264,7 +264,6 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('permission/{id}/edit', [PermissionsController::class, 'permission_edit'])->name('permission.edit');
 
 
-
     Route::get('permission/{id}/delete', [PermissionsController::class, 'destroy'])->name('permission.delete');
 
     Route::get('permissions/assign', [PermissionsController::class, 'role_permission'])->name('permissions.role');

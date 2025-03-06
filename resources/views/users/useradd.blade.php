@@ -274,7 +274,7 @@
                         <label for="roleDescription" class="form-label">Description</label>
                         <textarea class="form-control" id="roleDescription" name="description" required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Save Role</button>
+                    <button type="submit" class="btn btn-primary" style="margin-left: 39%;">Save Role</button>
                 </form>
             </div>
         </div>
