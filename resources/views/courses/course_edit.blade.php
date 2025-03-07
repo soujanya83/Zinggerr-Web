@@ -105,6 +105,7 @@
 
 
 
+
 @section('pageTitle', 'Course Update')
 
 @section('content')
@@ -391,10 +392,10 @@
                                                     <label style="align-content: center;" for="emailInput"
                                                         class="form-label">Format:
                                                         &nbsp&nbsp&nbsp</label>
-                                                    <button class="btn btn-shadow btn-primary dropdown-toggle"
+                                                    <button class="btn btn-shadow btn-primary-line dropdown-toggle"
                                                         type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
                                                         aria-expanded="false">
-                                                        Weekly sections
+                                                        Select Format
                                                     </button>
                                                     <ul class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
                                                         <li>
@@ -444,7 +445,7 @@
                                                                 </div>
                                                             </label>
                                                         </li>
-                                                     
+
 
                                                     </ul>
                                                     <a href="{{ route('add_assets', $course->slug) }}"
@@ -467,61 +468,29 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <!-- Interactive List Button -->
                                         <div class="col-md-3">
-                                            <div class="mb-3">
-                                                <label for="status" style="color: #000">Course
-                                                    Visibility:</label>
-                                                <div>
-
-                                                    <div class="form-check-inline">
-                                                        <input class="form-check-input" type="radio"
-                                                            name="course_status" id="statusshow" value="1" {{
-                                                            old('course_status', $course->course_status) == 1 ?
-                                                        'checked' : '' }}>
-                                                        <label class="form-check-label" for="statusshow"
-                                                            style="color: #000">Show</label>
-                                                    </div>
-
-
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio"
-                                                            name="course_status" id="statushide" value="0" {{
-                                                            old('course_status', $course->course_status) == 0 ?
-                                                        'checked' : '' }}>
-                                                        <label class="form-check-label" for="statushide"
-                                                            style="color: #000">Hide</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="mb-3">
-                                                <label for="status" style="color: #000">Enable
-                                                    Download Course Content:</label>
-                                                <div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio"
-                                                            name="downloa_status" id="statusyes" value="1" {{
-                                                            old('course_status', $course->downloa_status) == 1 ?
-                                                        'checked' : '' }}>
-                                                        <label class="form-check-label" for="statusyes"
-                                                            style="color: #000">Yes</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio"
-                                                            name="downloa_status" id="statusno" value="0" {{
-                                                            old('course_status', $course->downloa_status) == 0 ?
-                                                        'checked' : '' }}>
-                                                        <label class="form-check-label" for="statusno"
-                                                            style="color: #000">No</label>
-                                                    </div>
+                                            <div class="form-floating mb-3">
+                                                <div class="dropdown">
+                                                    <label for="emailInput" class="form-label">InterActive:
+                                                        &nbsp;&nbsp;</label>
+                                                    <button class="btn btn-shadow btn-primary" type="button"
+                                                        data-bs-toggle="modal" data-bs-target="#assetsModal">
+                                                        InterActive
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
 
 
-                                        <div class="col-md-3">
+
+
+
+
+
+
+                                        <div class="col-md-4">
                                             <label style="align-content: center;" for="tags"
                                                 class="form-label">Tags:</label> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
                                             <div class="form-floating mb-3">
@@ -556,6 +525,66 @@
                                             </div>
 
                                         </div>
+
+
+                                        <div class="col-md-2">
+                                            <div class="mb-3">
+                                                <label for="status" style="color: #000">Course
+                                                    Visibility:</label>
+                                                <div>
+
+                                                    <div class="form-check-inline">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="course_status" id="statusshow" value="1" {{
+                                                            old('course_status', $course->course_status) == 1 ?
+                                                        'checked' : '' }}>
+                                                        <label class="form-check-label" for="statusshow"
+                                                            style="color: #000">Show</label>
+                                                    </div>
+
+
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="course_status" id="statushide" value="0" {{
+                                                            old('course_status', $course->course_status) == 0 ?
+                                                        'checked' : '' }}>
+                                                        <label class="form-check-label" for="statushide"
+                                                            style="color: #000">Hide</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label for="status" style="color: #000">Enable
+                                                    Download Course Content:</label>
+                                                <div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="downloa_status" id="statusyes" value="1" {{
+                                                            old('course_status', $course->downloa_status) == 1 ?
+                                                        'checked' : '' }}>
+                                                        <label class="form-check-label" for="statusyes"
+                                                            style="color: #000">Yes</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="downloa_status" id="statusno" value="0" {{
+                                                            old('course_status', $course->downloa_status) == 0 ?
+                                                        'checked' : '' }}>
+                                                        <label class="form-check-label" for="statusno"
+                                                            style="color: #000">No</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
                                         <div class="col-md-12 mt-5" style="margin-left: 85%;">
                                             <button type="submit" class="btn btn-shadow btn-primary">Update
                                                 Course</button>
@@ -565,11 +594,16 @@
                                     </div>
                                 </div>
                             </div>
-                            {{-- ..............this use for faculty(teachers) list assigned and avaliable for this courses................ --}}
+
+
+
+                            {{-- ..............this use for faculty(teachers) list assigned and avaliable for this
+                            courses................ --}}
 
                             @include('courses.faculty_assigned_avaliable')
 
-                            {{-- ..............this use for students list assigned and avaliable for this courses................ --}}
+                            {{-- ..............this use for students list assigned and avaliable for this
+                            courses................ --}}
                             @include('courses.students_assigned_available_list')
 
 
@@ -581,6 +615,87 @@
     </div>
 </div>
 
+
+<!-- Bootstrap Modal for Assets Data -->
+<div class="modal fade" id="assetsModal" tabindex="-1" aria-labelledby="assetsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="assetsModalLabel">Assets List</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Asset Name</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if(!empty($assetsData) && count($assetsData) > 0)
+                        @foreach($assetsData as $index => $asset)
+                        <tr
+                            onclick="openAssetModal(event, '{{ $asset['assets_type'] }}', '{{ asset('storage/' .  $asset['assets_path']) }}', '{{ strip_tags($asset['topic_name']) }}')">
+                            <td>{{ $index + 1 }}</td>
+                            <td style="padding:5px">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        @if ($asset['thumbnail'])
+                                        <img src="{{'https://assets.zinggerr.com/storage/' .  $asset['thumbnail'] }}" alt="User image"
+                                            style="height:50px;width: 50px;">
+                                        @else
+                                        <img src="{{ asset('asset/images/user/download.jpg') }}"
+                                            alt="Default image" style="height:50px;width: 50px;">
+                                        @endif
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h5 class="mb-1">{{ Str::limit (strip_tags( $asset['topic_name']),40, '...') }}</h5>
+                                        <p class="text-muted f-12">{{ Str::limit(strip_tags( $asset['about']), 45, '...') }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ ucfirst( $asset['assets_type']) }}</td>
+                            {{-- <td>{{  $asset['topic_name'] }}</td> --}}
+                            <td>
+                                @if ($asset['asset_status'] == '0')
+                                <span class="badge rounded-pill f-14 bg-light-danger">Inactive</span>
+                                @elseif($asset['asset_status'] == '1')
+                                <span class="badge bg-light-success rounded-pill f-14">Active</span>
+                                @endif
+                            </td>
+                            <td>{{ \Carbon\Carbon::parse($asset['created_at'])->format('d-M-Y') }}</td>
+                            <td>
+
+                                <a href="{{ route('api.assetsdelete', $asset['asset_id']) }}"
+                                    class="avtar avtar-xs btn-link-secondary read-more-btn"
+                                    data-id="{{ $asset['asset_id'] }}" onclick="return confirmDelete(this)">
+                                    <i class="ti ti-trash f-20" style="color: red;"></i>
+                                </a>
+                            </td>
+
+                        </tr>
+                        @endforeach
+                        @else
+                        <tr>
+                            <td colspan="4" class="text-center text-danger">No
+                                Data Available</td>
+                        </tr>
+                        @endif
+                    </tbody>
+
+
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Remark Modal -->
 <div class="modal fade" id="remarkModal" tabindex="-1" aria-labelledby="remarkModalLabel" aria-hidden="true">

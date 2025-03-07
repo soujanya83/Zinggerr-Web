@@ -21,12 +21,29 @@ use Ramsey\Uuid\Guid\Guid;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\session;
 use Illuminate\Validation\Rule;
 
 class CourseController extends Controller
 {
+
+    public function api_asset_delete($id)
+    {
+        $response = Http::put('https://assets.zinggerr.com/api/course/assets-delete-status/' . $id, [
+            'deleted_at' => 0 // Mark as inactive
+        ]);
+
+        if ($response->successful()) {
+            return redirect()->back()->with('success', 'Asset Delete successfully.');
+        }
+
+        return redirect()->back()->with('error', 'Failed to asset delete. API Error');
+    }
+
+
+
 
 
     public function updatesectionvideo(Request $request)
@@ -259,7 +276,17 @@ class CourseController extends Controller
 
             session()->put('course_id_f_edit', $id);
 
-            return view('courses.course_edit', compact('course', 'categories', 'data', 'availableTeachers', 'userdata', 'availableUsers', 'id', 'permissionsdata'));
+            // assets data get from(API) assets project
+
+
+            $response = Http::timeout(300)->get('https://assets.zinggerr.com/api/course/assets-list');
+            if ($response->failed()) {
+                return back()->with('error', 'Failed to fetch data from API.');
+            }
+            $assetsData = $response->json()['data'];
+
+
+            return view('courses.course_edit', compact('course','assetsData','categories', 'data', 'availableTeachers', 'userdata', 'availableUsers', 'id', 'permissionsdata'));
         } else {
             return redirect()->route('courses')->with('error', 'Course not found.');
         }
