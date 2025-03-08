@@ -386,7 +386,7 @@
                                         </div>
 
 
-                                        <div class="col-md-3">
+                                        {{-- <div class="col-md-3">
                                             <div class="form-floating mb-3">
                                                 <div class="dropdown">
                                                     <label style="align-content: center;" for="emailInput"
@@ -467,10 +467,94 @@
                                                     </a>
                                                 </div>
                                             </div>
+                                        </div> --}}
+
+                                        <div class="col-md-3">
+                                            <div class="form-floating mb-3">
+                                                <div class="dropdown">
+                                                    <label for="dropdownMenuButton" class="form-label">Format:</label>
+                                                    <button class="btn btn-shadow btn-outline-primary dropdown-toggle"
+                                                        type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                                        aria-expanded="false" style="margin-left: 15px;">
+                                                        Select Format
+                                                    </button>
+                                                    <ul class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
+                                                        <li>
+                                                            <label class="dropdown-item d-flex align-items-start">
+                                                                <input type="radio" name="course_format"
+                                                                    value="Custom sections"
+                                                                    class="form-check-input me-2"
+                                                                    onchange="updateDropdown(this)" {{
+                                                                    old('course_format', $course->course_format) ==
+                                                                'Custom sections' ? 'checked' : '' }}>
+                                                                <div>
+                                                                    <strong>Custom sections</strong><br>
+                                                                    <span class="text-muted">The course is divided into
+                                                                        customizable sections.</span>
+                                                                </div>
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label class="dropdown-item d-flex align-items-start">
+                                                                <input type="radio" name="course_format"
+                                                                    value="Weekly sections"
+                                                                    class="form-check-input me-2"
+                                                                    onchange="updateDropdown(this)" {{
+                                                                    old('course_format', $course->course_format) ==
+                                                                'Weekly sections' ? 'checked' : '' }}>
+                                                                <div>
+                                                                    <strong>Weekly sections</strong><br>
+                                                                    <span class="text-muted">The course is divided into
+                                                                        sections corresponding to each week, beginning
+                                                                        from the course start date.</span>
+                                                                </div>
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label class="dropdown-item d-flex align-items-start">
+                                                                <input type="radio" name="course_format"
+                                                                    value="Single activity"
+                                                                    class="form-check-input me-2"
+                                                                    onchange="updateDropdown(this)" {{
+                                                                    old('course_format', $course->course_format) ==
+                                                                'Single activity' ? 'checked' : '' }}>
+                                                                <div>
+                                                                    <strong>Single activity</strong><br>
+                                                                    <span class="text-muted">The course contains only
+                                                                        one activity or resource.</span>
+                                                                </div>
+                                                            </label>
+                                                        </li>
+                                                    </ul>
+                                                    <a href="{{ route('add_assets', $course->slug) }}"
+                                                        id="createChapterButton" class="btn btn-shadow btn-success mt-3"
+                                                        style="display: none;width: 158px; margin-left: 63px;">
+                                                        Manage Assets
+                                                    </a>
+
+                                                    <a href="{{ route('create_section', $course->slug) }}"
+                                                        id="createsectionButton" class="btn btn-shadow btn-success mt-3"
+                                                        style="display: none;width: 158px; margin-left: 63px;">
+                                                        Create Sections
+                                                    </a>
+                                                    <a href="{{ route('manage_activity', $course->slug) }}"
+                                                        id="createactivityButton"
+                                                        class="btn btn-shadow btn-success mt-3"
+                                                        style="display: none;width: 158px; margin-left: 63px;">
+                                                        Manage Activity
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
 
+
+
+
+
+
+
                                         <!-- Interactive List Button -->
-                                        <div class="col-md-3">
+                                        <div class="col-md-3" style="display: none">
                                             <div class="form-floating mb-3">
                                                 <div class="dropdown">
                                                     <label for="emailInput" class="form-label">InterActive:
@@ -531,7 +615,7 @@
                                             <div class="mb-3">
                                                 <label for="status" style="color: #000">Course
                                                     Visibility:</label>
-                                                <div>
+                                                <div style="margin-top: 7px;">
 
                                                     <div class="form-check-inline">
                                                         <input class="form-check-input" type="radio"
@@ -555,13 +639,12 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-3">
-                                        </div>
+
                                         <div class="col-md-3">
                                             <div class="mb-3">
                                                 <label for="status" style="color: #000">Enable
                                                     Download Course Content:</label>
-                                                <div>
+                                                <div style="margin-top: 7px;">
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input" type="radio"
                                                             name="downloa_status" id="statusyes" value="1" {{
@@ -647,21 +730,23 @@
                                 <div class="d-flex align-items-center">
                                     <div class="flex-shrink-0">
                                         @if ($asset['thumbnail'])
-                                        <img src="{{'https://assets.zinggerr.com/storage/' .  $asset['thumbnail'] }}" alt="User image"
-                                            style="height:50px;width: 50px;">
+                                        <img src="{{'https://assets.zinggerr.com/storage/' .  $asset['thumbnail'] }}"
+                                            alt="User image" style="height:50px;width: 50px;">
                                         @else
-                                        <img src="{{ asset('asset/images/user/download.jpg') }}"
-                                            alt="Default image" style="height:50px;width: 50px;">
+                                        <img src="{{ asset('asset/images/user/download.jpg') }}" alt="Default image"
+                                            style="height:50px;width: 50px;">
                                         @endif
                                     </div>
                                     <div class="flex-grow-1 ms-3">
-                                        <h5 class="mb-1">{{ Str::limit (strip_tags( $asset['topic_name']),40, '...') }}</h5>
-                                        <p class="text-muted f-12">{{ Str::limit(strip_tags( $asset['about']), 45, '...') }}</p>
+                                        <h5 class="mb-1">{{ Str::limit (strip_tags( $asset['topic_name']),40, '...') }}
+                                        </h5>
+                                        <p class="text-muted f-12">{{ Str::limit(strip_tags( $asset['about']), 45,
+                                            '...') }}</p>
                                     </div>
                                 </div>
                             </td>
                             <td>{{ ucfirst( $asset['assets_type']) }}</td>
-                            {{-- <td>{{  $asset['topic_name'] }}</td> --}}
+                            {{-- <td>{{ $asset['topic_name'] }}</td> --}}
                             <td>
                                 @if ($asset['asset_status'] == '0')
                                 <span class="badge rounded-pill f-14 bg-light-danger">Inactive</span>
@@ -804,6 +889,24 @@
     });
 </script>
 
+
+<script>
+    function updateDropdown(element) {
+        let selectedText = element.value;
+        document.getElementById('dropdownMenuButton').textContent = selectedText;
+    }
+
+    // Auto-select the button text if an option is preselected
+    document.addEventListener("DOMContentLoaded", function () {
+        let selectedOption = document.querySelector('input[name="course_format"]:checked');
+        if (selectedOption) {
+            updateDropdown(selectedOption);
+        }
+    });
+</script>
+
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
     // Search functionality for permissions
@@ -851,81 +954,81 @@
                 .catch(error => console.error('Error fetching permissions:', error));
         });
     });
-});
+    });
 
 </script>
 
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-const radioButtons = document.querySelectorAll('input[name="course_format"]');
-const createChapterButton = document.getElementById('createChapterButton');
+        const radioButtons = document.querySelectorAll('input[name="course_format"]');
+        const createChapterButton = document.getElementById('createChapterButton');
 
-radioButtons.forEach(radio => {
-radio.addEventListener('change', function () {
-if (this.value === 'Custom sections') {
-createChapterButton.style.display = 'block'; // Show the button
-} else {
-createChapterButton.style.display = 'none'; // Hide the button
-}
-});
-});
+        radioButtons.forEach(radio => {
+        radio.addEventListener('change', function () {
+        if (this.value === 'Custom sections') {
+        createChapterButton.style.display = 'block'; // Show the button
+        } else {
+        createChapterButton.style.display = 'none'; // Hide the button
+        }
+        });
+        });
 
-// Initialize the button state based on the current selection
-const selectedRadio = document.querySelector('input[name="course_format"]:checked');
-if (selectedRadio && selectedRadio.value === 'Custom sections') {
-createChapterButton.style.display = 'block';
-}
-});
+        // Initialize the button state based on the current selection
+        const selectedRadio = document.querySelector('input[name="course_format"]:checked');
+        if (selectedRadio && selectedRadio.value === 'Custom sections') {
+        createChapterButton.style.display = 'block';
+        }
+        });
 
 </script>
 
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-const radioButtons = document.querySelectorAll('input[name="course_format"]');
-const createsectionButton = document.getElementById('createsectionButton');
+        const radioButtons = document.querySelectorAll('input[name="course_format"]');
+        const createsectionButton = document.getElementById('createsectionButton');
 
-radioButtons.forEach(radio => {
-radio.addEventListener('change', function () {
-if (this.value === 'Weekly sections') {
-createsectionButton.style.display = 'block'; // Show the button
-} else {
-createsectionButton.style.display = 'none'; // Hide the button
-}
-});
-});
+        radioButtons.forEach(radio => {
+        radio.addEventListener('change', function () {
+        if (this.value === 'Weekly sections') {
+        createsectionButton.style.display = 'block'; // Show the button
+        } else {
+        createsectionButton.style.display = 'none'; // Hide the button
+        }
+        });
+        });
 
-// Initialize the button state based on the current selection
-const selectedRadio = document.querySelector('input[name="course_format"]:checked');
-if (selectedRadio && selectedRadio.value === 'Weekly sections') {
-createsectionButton.style.display = 'block';
-}
-});
+        // Initialize the button state based on the current selection
+        const selectedRadio = document.querySelector('input[name="course_format"]:checked');
+        if (selectedRadio && selectedRadio.value === 'Weekly sections') {
+        createsectionButton.style.display = 'block';
+        }
+        });
 
 </script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-const radioButtons = document.querySelectorAll('input[name="course_format"]');
-const createactivityButton = document.getElementById('createactivityButton');
+        const radioButtons = document.querySelectorAll('input[name="course_format"]');
+        const createactivityButton = document.getElementById('createactivityButton');
 
-radioButtons.forEach(radio => {
-radio.addEventListener('change', function () {
-if (this.value === 'Single activity') {
-createactivityButton.style.display = 'block'; // Show the button
-} else {
-createactivityButton.style.display = 'none'; // Hide the button
-}
-});
-});
+        radioButtons.forEach(radio => {
+        radio.addEventListener('change', function () {
+        if (this.value === 'Single activity') {
+        createactivityButton.style.display = 'block'; // Show the button
+        } else {
+        createactivityButton.style.display = 'none'; // Hide the button
+        }
+        });
+        });
 
-// Initialize the button state based on the current selection
-const selectedRadio = document.querySelector('input[name="course_format"]:checked');
-if (selectedRadio && selectedRadio.value === 'Single activity') {
-createactivityButton.style.display = 'block';
-}
-});
+        // Initialize the button state based on the current selection
+        const selectedRadio = document.querySelector('input[name="course_format"]:checked');
+        if (selectedRadio && selectedRadio.value === 'Single activity') {
+        createactivityButton.style.display = 'block';
+        }
+        });
 
 </script>
 
@@ -968,7 +1071,7 @@ createactivityButton.style.display = 'block';
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
     function confirmDelete(element) {
     event.preventDefault(); // Prevent the default link behavior
@@ -991,12 +1094,12 @@ createactivityButton.style.display = 'block';
     });
 
     return false; // Prevent immediate navigation
-}
+    }
 
 </script>
 
 <script>
-  function confirmDelete(element) {
+    function confirmDelete(element) {
     event.preventDefault(); // Prevent default link behavior
     const url = element.href;
 
@@ -1025,7 +1128,7 @@ createactivityButton.style.display = 'block';
     });
 
     return false; // Prevent immediate navigation
-}
+    }
 
 
 </script>

@@ -279,7 +279,7 @@ class CourseController extends Controller
             // assets data get from(API) assets project
 
 
-            $response = Http::timeout(300)->get('https://assets.zinggerr.com/api/course/assets-list');
+            $response = Http::timeout(0)->get('https://assets.zinggerr.com/api/course/assets-list');
             if ($response->failed()) {
                 return back()->with('error', 'Failed to fetch data from API.');
             }
