@@ -669,7 +669,7 @@
                                 <span class="badge bg-light-success rounded-pill f-14">Active</span>
                                 @endif
                             </td>
-                            <td>{{ \Carbon\Carbon::parse($asset['created_at'])->format('d-M-Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($asset['asset_create_date'])->format('d-M-Y') }}</td>
                             <td>
 
                                 <a href="{{ route('api.assetsdelete', $asset['asset_id']) }}"
@@ -995,7 +995,40 @@ createactivityButton.style.display = 'block';
 
 </script>
 
+<script>
+  function confirmDelete(element) {
+    event.preventDefault(); // Prevent default link behavior
+    const url = element.href;
 
+    // Close the modal
+    $('.modal').modal('hide');
+
+    // Remove the modal backdrop manually
+    $('.modal-backdrop').remove();
+    $('body').removeClass('modal-open'); // Remove extra class added by Bootstrap
+
+    // Show SweetAlert
+    Swal.fire({
+        title: 'Are you sure? For Remove',
+        text: 'This action cannot be undone!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, Remove it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Redirect to delete URL after confirmation
+            window.location.href = url;
+        }
+    });
+
+    return false; // Prevent immediate navigation
+}
+
+
+</script>
 
 
 @include('partials.footer')
