@@ -180,7 +180,20 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::post('/sections/video/update', [CourseController::class, 'updatesectionvideo']);
 
 
+    Route::post('/save-checkpoint', [CourseController::class, 'interactive_setup'])->name('save.checkpoint');
+    Route::post('add/fillintheblanks', [CourseController::class, 'storefillintheblanks'])->name('add.fillintheblanks');
+    Route::post('get/video/quizzes', [CourseController::class, 'getvideoQuizzes'])->name('get.video.quizzes');
+    Route::post('get/video/fillblanks', [CourseController::class, 'getvideofillintheblanks'])->name('get.video.fillblanks');
+    Route::post('/update-quiz/{id}', [CourseController::class, 'updateQuiz'])->name('update.quiz');
+    Route::delete('/delete-quiz/{id}', [CourseController::class, 'deleteQuiz'])->name('delete.quiz');
 
+    Route::post('/update/fillintheblanks', [CourseController::class, 'updatefillintheblanks'])->name('update.fillintheblanks');
+    Route::post('/delete/fillintheblanks', [CourseController::class, 'deletefillintheblanks'])->name('delete.fillintheblanks');
+
+
+    // Route::get('/getInteractiveAsset/{videoId}', [CourseController::class, 'getInteractiveAsset']);
+    Route::get('/get-checkpoints', [CourseController::class, 'getCheckpoints'])->name('get.checkpoints');
+    Route::get('/interactive/play', [CourseController::class, 'play'])->name('interactive.play');
 
 
 
@@ -199,7 +212,9 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
 
     Route::post('upload/quizess', [CourseController::class, 'uploadQuizes'])->name('upload.quizess');
 
-
+    Route::post('interactive/setup', [CourseController::class, 'setupinteractive'])->name('interactive.setup');
+    Route::post('get/video/interactives', [CourseController::class, 'getvideointeractives'])->name('get.video.interactives');
+    Route::post('get/asset/details', [CourseController::class, 'getassetdetails'])->name('get.asset.details');
 
     Route::get('/user-delete/{user}', [UserController::class, 'user_delete'])
         ->name('user_delete')

@@ -14,6 +14,7 @@ use App\Models\CoursesRemark;
 use App\Models\CoursesCategory;
 use App\Models\CourseUserPermission;
 use App\Models\CourseSection;
+use App\Models\InteractiveAsset;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Storage;
@@ -22,12 +23,436 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\session;
 use Illuminate\Validation\Rule;
-
+use App\Models\FillBlanks;
+use App\Models\VideoQuiz;
+use Illuminate\Support\Collection;
 class CourseController extends Controller
 {
+    public function setupinteractive(Request $request){
+        // dd($request->all());
+        $validated = $request->validate([
+            'video_id' => 'required|string', // UUIDs are strings
+            'asset_id' => 'required|string', // UUIDs are strings
+            'video_time' => 'required|numeric' // Ensure it's a valid number
+        ]);
+
+
+        $videoPath = $request->input('video_id');
+
+        // Remove domain dynamically and keep only the video file name
+        $parsedUrl = parse_url($videoPath, PHP_URL_PATH); // Get only the path
+        $videoName = str_replace('/storage/', '', $parsedUrl);
+
+        // dd($videoName);
+
+        try {
+            // ✅ Create Checkpoint
+            $checkpoint = InteractiveAsset::create([
+                'id' => (string) Str::uuid(), // Generate UUID
+                'video_id' => $videoName,
+                'user_id' => Auth::user()->id, // Use Auth::id() for cleaner code
+                'asset_id' => $validated['asset_id'],
+                'checkpoint_time' => $validated['video_time'],
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Checkpoint saved successfully.',
+                'data' => $checkpoint,
+            ]);
+        } catch (\Exception $e) {
+            dd($e);
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
+    public function getvideointeractives(Request $request){
+       // Extract video name from the VideoPaths URL
+       $videoPath = $request->video_name;
+
+       // Remove domain dynamically and keep only the video file name
+       $parsedUrl = parse_url($videoPath, PHP_URL_PATH); // Get only the path
+       $videoName = str_replace('/storage/', '', $parsedUrl);
+    //    dd($videoPath);
+
+     $interactives = InteractiveAsset::where('video_id', $videoName)
+                         ->orderBy('checkpoint_time', 'asc')
+                         ->get();
+
+
+
+     return response()->json([
+         'success' => true,
+         'interactives' => $interactives
+     ]);
+    }
+
+    public function getassetdetails(Request $request){
+        $assetid = $request->asset_id;
+
+
+
+        $response = Http::timeout(0)->get('https://assets.zinggerr.com/api/course/assets-list');
+
+        if ($response->failed()) {
+            return back()->with('error', 'Failed to fetch data from API.');
+        }
+
+        $assetsData = $response->json()['data'];
+
+        // Filter assets by $assetid
+        $filteredAssets = collect($assetsData)->where('asset_id', $assetid)->first();
+        // dd($filteredAssets);
+
+
+        return response()->json([
+            'success' => true,
+            'asset' => $filteredAssets
+    ]);
+
+}
+    public function deletefillintheblanks(Request $request)
+    {
+
+        try {
+
+            $fillBlanks = FillBlanks::findOrFail($request->id);
+            $fillBlanks->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'fillBlanks deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error Deleting fill in the blanks: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+    public function updatefillintheblanks(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'video_time' => 'nullable|numeric',
+                'instructions' => 'required|string',
+                'sentence' => 'required|string',
+                'answers' => 'required|array',
+                'answers.*' => 'required|string',
+                'is_skippable' => 'required|boolean',
+                'position_x' => 'required|numeric',
+                'position_y' => 'required|numeric',
+                'VideoPaths' => 'nullable|string'
+            ]);
+
+            $fillBlanks = FillBlanks::findOrFail($request->id);
+
+            // If VideoPaths is provided, update video_name accordingly
+            // if ($request->has('VideoPaths')) {
+            //     $videoPath = $request->input('VideoPaths');
+            //     $parsedUrl = parse_url($videoPath, PHP_URL_PATH); // Get only the path
+            //     $videoName = str_replace('/storage/', '', $parsedUrl);
+
+            //     $getcourseassestdata = CoursesAssets::where('assets_video', $videoName)->first();
+
+            //     if ($getcourseassestdata) {
+            //         $fillBlanks->course_id = $getcourseassestdata->course_id;
+            //         $fillBlanks->chapter_id = $getcourseassestdata->chapter_id;
+            //         $fillBlanks->video_name = $videoName;
+            //     }
+            // }
+
+            // Update the fillBlanks model with new data
+            // $fillBlanks->video_time = $validated['video_time'] ?? $fillBlanks->video_time; // Only update if provided
+            $fillBlanks->instructions = $validated['instructions'];
+            $fillBlanks->sentence = $validated['sentence'];
+            $fillBlanks->answers = json_encode($validated['answers']);
+            $fillBlanks->skippable = $validated['is_skippable'];
+            $fillBlanks->position_x = $validated['position_x'];
+            $fillBlanks->position_y = $validated['position_y'];
+
+            $fillBlanks->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Fill in the blanks updated successfully',
+                'data' => $fillBlanks
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating fill in the blanks: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+    public function deleteQuiz($id)
+    {
+        try {
+            // Find and delete the quiz
+            $quiz = VideoQuiz::findOrFail($id);
+            $quiz->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Quiz deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting quiz: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    public function updateQuiz(Request $request, $id)
+    {
+        // dd($request->all());
+        // Validate the request data
+        $request->validate([
+            'question' => 'required|string',
+            'options' => 'required|array|size:4',
+            'correct_option' => 'required|integer|min:1|max:4',
+            'time_position' => 'required|numeric',
+            'position_x' => 'required|numeric',
+            'position_y' => 'required|numeric',
+            'VideoPaths' => 'required|string',
+        ]);
+
+        // Find the quiz by ID
+        $quiz = VideoQuiz::findOrFail($id);
+
+        // Extract video name from the VideoPaths URL
+        $videoPath = $request->input('VideoPaths');
+        $parsedUrl = parse_url($videoPath, PHP_URL_PATH);
+        $videoName = str_replace('/storage/', '', $parsedUrl);
+
+        // Update quiz data
+        $quiz->video_name = $videoName;
+        $quiz->quiz_time = $request->input('time_position');
+        $quiz->quiz_question = $request->input('question');
+        $quiz->option_1 = $request->input('options')[0];
+        $quiz->option_2 = $request->input('options')[1];
+        $quiz->option_3 = $request->input('options')[2];
+        $quiz->option_4 = $request->input('options')[3];
+        $quiz->correct_option = $request->input('correct_option');
+        $quiz->position_x = $request->input('position_x');
+        $quiz->skippable = $request->input('skippable');
+        $quiz->position_y = $request->input('position_y');
+
+        // Save the changes
+        $quiz->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Quiz updated successfully'
+        ]);
+    }
+
+
+    public function getvideofillintheblanks(Request $request)
+    {
+        // Extract video name from the VideoPaths URL
+        $videoPath = $request->video_name;
+
+        // Remove domain dynamically and keep only the video file name
+        $parsedUrl = parse_url($videoPath, PHP_URL_PATH); // Get only the path
+        $videoName = str_replace('/storage/', '', $parsedUrl);
+
+        $fillBlanks = FillBlanks::where('video_name', $videoName)
+            ->orderBy('video_time', 'asc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'fillBlanks' => $fillBlanks
+        ]);
+    }
+
+    public function storefillintheblanks(Request $request)
+    {
+        // dd($request->all());
+        try {
+            $validated = $request->validate([
+                'video_time' => 'required|numeric',
+                'instructions' => 'required|string',
+                'sentence' => 'required|string',
+                'answers' => 'required|array',
+                'answers.*' => 'required|string',
+                'is_skippable' => 'required|boolean',
+                'position_x' => 'required|numeric',
+                'position_y' => 'required|numeric',
+                'VideoPaths' => 'required|string'
+            ]);
+
+            $videoPath = $request->input('VideoPaths');
+
+            // Remove domain dynamically and keep only the video file name
+            $parsedUrl = parse_url($videoPath, PHP_URL_PATH); // Get only the path
+            $videoName = str_replace('/storage/', '', $parsedUrl);
+
+            $getcourseassestdata = CoursesAssets::where('assets_video', $videoName)->first();
+
+            $id = (string) Guid::uuid4();
+
+            $course_id = $getcourseassestdata->course_id;
+            $chapter_id = $getcourseassestdata->chapter_id;
+            $video_name = $videoName;
+
+            // Save to database
+            $fillBlanks = FillBlanks::create([
+                'id' => $id,
+                'course_id' => $course_id,
+                'chapter_id' => $chapter_id,
+                'video_name' => $video_name,
+                'video_time' => $validated['video_time'],
+                'instructions' => $validated['instructions'],
+                'sentence' => $validated['sentence'],
+                'answers' => json_encode($validated['answers']),
+                'skippable' => $validated['is_skippable'],
+                'position_x' => $validated['position_x'],
+                'position_y' => $validated['position_y'],
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Fill in the blanks saved successfully',
+                'data' => $fillBlanks
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error saving fill in the blanks: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    public function getvideoQuizzes(Request $request)
+    {
+        // Extract video name from the VideoPaths URL
+        $videoPath = $request->video_path;
+
+        // Remove domain dynamically and keep only the video file name
+        $parsedUrl = parse_url($videoPath, PHP_URL_PATH); // Get only the path
+        $videoName = str_replace('/storage/', '', $parsedUrl);
+
+        $quizzes = VideoQuiz::where('video_name', $videoName)
+            ->orderBy('quiz_time', 'asc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'quizzes' => $quizzes
+        ]);
+    }
+    public function play(Request $request)
+    {
+        $asset_id = $request->query('asset_id');
+
+        // ✅ Fetch Asset List from API
+        $response = Http::timeout(0)->get('https://assets.zinggerr.com/api/course/assets-list');
+
+        if ($response->failed()) {
+            return back()->with('error', 'Failed to fetch data from API.');
+        }
+
+        // ✅ Convert API Data to Array
+        $assetsData = collect($response->json()['data']);
+
+        // ✅ Find the Matching Asset by `asset_id`
+        $asset = $assetsData->firstWhere('asset_id', $asset_id);
+
+        if (!$asset) {
+            return back()->with('error', 'Asset not found.');
+        }
+
+        return view('interactive.play', compact('asset'));
+    }
+
+
+    public function getCheckpoints(Request $request)
+    {
+        $video_id = $request->query('video_id'); // Get video_id from request
+
+        // Fetch checkpoints for the given video_id
+        $checkpoints = InteractiveAsset::where('video_id', $video_id)
+            ->orderBy('checkpoint_time', 'asc') // Order by checkpoint time
+            ->get(['checkpoint_time', 'asset_id']);
+
+        // Format the response
+        $formattedCheckpoints = $checkpoints->map(function ($checkpoint) {
+            return [
+                'video_time' => (int) $checkpoint->checkpoint_time, // Convert to integer
+                'formatted_time' => gmdate("i:s", $checkpoint->checkpoint_time), // Format as mm:ss
+                'asset_id' => $checkpoint->asset_id,
+            ];
+        });
+
+        return response()->json($formattedCheckpoints);
+    }
+
+
+
+
+
+
+    public function interactive_setup(Request $request)
+    {
+        $validated = $request->validate([
+            'video_id' => 'required|string', // UUIDs are strings
+            'asset_id' => 'required|string', // UUIDs are strings
+            'video_time' => 'required|numeric' // Ensure it's a valid number
+        ]);
+
+        try {
+            // ✅ Create Checkpoint
+            $checkpoint = InteractiveAsset::create([
+                'id' => (string) Str::uuid(), // Generate UUID
+                'video_id' => $validated['video_id'],
+                'user_id' => Auth::user()->id, // Use Auth::id() for cleaner code
+                'asset_id' => $validated['asset_id'],
+                'checkpoint_time' => $validated['video_time'],
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Checkpoint saved successfully.',
+                'data' => $checkpoint,
+            ]);
+        } catch (\Exception $e) {
+            dd($e);
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
+    public function add_assets(Request $request, $slug)
+    {
+        $courseId = Course::where('slug', $slug)->first();
+        $id = $courseId->id;
+
+        $data = CoursesChepters::where('courses_id', $id)->latest()->get();
+
+        $response = Http::timeout(0)->get('https://assets.zinggerr.com/api/course/assets-list');
+        if ($response->failed()) {
+            return back()->with('error', 'Failed to fetch data from API.');
+        }
+        $assetsData = $response->json()['data'];
+
+        return view('courses.create_chepter', compact('id', 'assetsData', 'data'));
+    }
 
     public function api_asset_delete($id)
     {
@@ -286,7 +711,7 @@ class CourseController extends Controller
             $assetsData = $response->json()['data'];
 
 
-            return view('courses.course_edit', compact('course','assetsData','categories', 'data', 'availableTeachers', 'userdata', 'availableUsers', 'id', 'permissionsdata'));
+            return view('courses.course_edit', compact('course', 'assetsData', 'categories', 'data', 'availableTeachers', 'userdata', 'availableUsers', 'id', 'permissionsdata'));
         } else {
             return redirect()->route('courses')->with('error', 'Course not found.');
         }
@@ -364,7 +789,7 @@ class CourseController extends Controller
     public function section_list($slug)
     {
 
-        $sections = Course::select('courses_weekly_sections.*')->where('slug', $slug)->join('courses_weekly_sections', 'courses_weekly_sections.course_id', '=', 'courses.id')->orderBy('courses_weekly_sections.date','asc')->get();
+        $sections = Course::select('courses_weekly_sections.*')->where('slug', $slug)->join('courses_weekly_sections', 'courses_weekly_sections.course_id', '=', 'courses.id')->orderBy('courses_weekly_sections.date', 'asc')->get();
 
         return view('courses.section_list', compact('sections'));
     }
@@ -610,20 +1035,58 @@ class CourseController extends Controller
         return redirect()->back()->with('success', 'Assets status updated successfully!');
     }
 
-    public function add_assets(Request $request, $slug)
-    {
-        $courseId = Course::where('slug', $slug)->first();
-        $id = $courseId->id;
 
-        $data = CoursesChepters::where('courses_id', $id)->latest()->get();
-
-        return view('courses.create_chepter', compact('id', 'data'));
-    }
 
 
     public function uploadQuizes(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
+        // Validate the request data
+        $request->validate([
+            'question' => 'required|string',
+            'options' => 'required|array|size:4',
+            'correct_option' => 'required|integer|min:1|max:4',
+            'time_position' => 'required|numeric',
+            'position_x' => 'required|numeric',
+            'position_y' => 'required|numeric',
+            'VideoPaths' => 'required|string',
+        ]);
+
+        // Extract video name from the VideoPaths URL
+        $videoPath = $request->input('VideoPaths');
+
+        // Remove domain dynamically and keep only the video file name
+        $parsedUrl = parse_url($videoPath, PHP_URL_PATH); // Get only the path
+        $videoName = str_replace('/storage/', '', $parsedUrl);
+
+        $getcourseassestdata = CoursesAssets::where('assets_video', $videoName)->first();
+        // dd($getcourseassestdata);
+
+        // Create a new quiz entry
+        $quiz = new VideoQuiz();
+        $quiz->id = (string) Guid::uuid4();
+        $quiz->course_id = $getcourseassestdata->course_id;
+        $quiz->chapter_id = $getcourseassestdata->chapter_id;
+        $quiz->video_name = $videoName;
+        $quiz->quiz_time = $request->input('time_position');
+        $quiz->quiz_question = $request->input('question');
+        $quiz->option_1 = $request->input('options')[0];
+        $quiz->option_2 = $request->input('options')[1];
+        $quiz->option_3 = $request->input('options')[2];
+        $quiz->option_4 = $request->input('options')[3];
+        $quiz->correct_option = $request->input('correct_option');
+        $quiz->skippable = $request->input('skippable');
+        $quiz->position_x = $request->input('position_x');
+        $quiz->position_y = $request->input('position_y');
+        // Store only the extracted video name
+
+        // Save to the database
+        $quiz->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Quiz added successfully'
+        ]);
     }
 
 
