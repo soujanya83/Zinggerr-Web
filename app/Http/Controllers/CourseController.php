@@ -196,7 +196,24 @@ class CourseController extends Controller
         }
     }
 
+    public function deleteInteractive($id)
+    {
+        try {
+            // Find and delete the quiz
+            $quiz = InteractiveAsset::findOrFail($id);
+            $quiz->delete();
 
+            return response()->json([
+                'success' => true,
+                'message' => 'InterActive deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error deleting quiz: ' . $e->getMessage()
+            ], 500);
+        }
+    }
     public function deleteQuiz($id)
     {
         try {

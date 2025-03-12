@@ -186,6 +186,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::post('get/video/fillblanks', [CourseController::class, 'getvideofillintheblanks'])->name('get.video.fillblanks');
     Route::post('/update-quiz/{id}', [CourseController::class, 'updateQuiz'])->name('update.quiz');
     Route::delete('/delete-quiz/{id}', [CourseController::class, 'deleteQuiz'])->name('delete.quiz');
+    Route::delete('/delete-interactive/{id}', [CourseController::class, 'deleteInteractive']);
 
     Route::post('/update/fillintheblanks', [CourseController::class, 'updatefillintheblanks'])->name('update.fillintheblanks');
     Route::post('/delete/fillintheblanks', [CourseController::class, 'deletefillintheblanks'])->name('delete.fillintheblanks');

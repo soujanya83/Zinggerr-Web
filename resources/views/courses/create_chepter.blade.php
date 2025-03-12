@@ -3,7 +3,9 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/resumable.js/1.0.2/resumable.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/resumablejs/resumable.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
 
@@ -29,87 +31,88 @@
         height: 100%;
         background-color: #4caf50;
     }
+
     .swal2-container {
-    z-index: 9999 !important; /* Ensure it's above everything */
-}
+        z-index: 9999 !important;
+        /* Ensure it's above everything */
+    }
 
-.swal2-highest-zindex {
-    z-index: 9999 !important;
-}
+    .swal2-highest-zindex {
+        z-index: 9999 !important;
+    }
 
 
 
-.quiz-overlay {
-    transition: all 0.3s ease;
-    background-color: rgba(255, 255, 255, 0.95);
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
+    .quiz-overlay {
+        transition: all 0.3s ease;
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
 
-.quiz-overlay .form-check {
-    margin-bottom: 8px;
-}
+    .quiz-overlay .form-check {
+        margin-bottom: 8px;
+    }
 
-.quiz-overlay .btn {
-    width: 100%;
-}
+    .quiz-overlay .btn {
+        width: 100%;
+    }
 
-.options-container {
-    margin: 15px 0;
-}
-
+    .options-container {
+        margin: 15px 0;
+    }
 </style>
 <style>
-#checkpoint-container {
-    position: absolute;
-    pointer-events: none;
-}
+    #checkpoint-container {
+        position: absolute;
+        pointer-events: none;
+    }
 
-.quiz-checkpoint {
-    position: absolute;
-    background-color: #ff4444;
-    box-shadow: 0 0 2px rgba(0,0,0,0.3);
-    border-radius: 1px;
-    transition: transform 0.2s ease;
-}
+    .quiz-checkpoint {
+        position: absolute;
+        background-color: #ff4444;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+        border-radius: 1px;
+        transition: transform 0.2s ease;
+    }
 
-/* Adjust video controls appearance */
-#editVideoPlayer::-webkit-media-controls-timeline {
-    margin-left: 10px;
-    margin-right: 10px;
-}
+    /* Adjust video controls appearance */
+    #editVideoPlayer::-webkit-media-controls-timeline {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
 
-/* Make sure video container is relative for absolute positioning */
-.modal-body {
-    position: relative;
-}
+    /* Make sure video container is relative for absolute positioning */
+    .modal-body {
+        position: relative;
+    }
 
-/* Ensure checkpoints are visible above video controls */
-#checkpoint-container {
-    z-index: 2147483647;
-    margin-bottom:2px;
-    margin-left:26px;
-    /* margin-right:50px; */
-}
-    </style>
+    /* Ensure checkpoints are visible above video controls */
+    #checkpoint-container {
+        z-index: 2147483647;
+        margin-bottom: 2px;
+        margin-left: 26px;
+        /* margin-right:50px; */
+    }
+</style>
 
 <style>
     #fillblanks-container {
-    position: absolute;
-    pointer-events: none;
-    z-index: 2147483647;
-    margin-top: 2px;
-    margin-left: 26px;
-}
+        position: absolute;
+        pointer-events: none;
+        z-index: 2147483647;
+        margin-top: 2px;
+        margin-left: 26px;
+    }
 
-.fillblank-checkpoint {
-    position: absolute;
-    background-color: #4CAF50;
-    box-shadow: 0 0 2px rgba(0,0,0,0.3);
-    border-radius: 1px;
-    transition: transform 0.2s ease;
-}
-    </style>
+    .fillblank-checkpoint {
+        position: absolute;
+        background-color: #4CAF50;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+        border-radius: 1px;
+        transition: transform 0.2s ease;
+    }
+</style>
 <div class="pc-container">
     <div class="pc-content">
         <div class="page-header">
@@ -245,8 +248,8 @@
                                                                     aria-controls="collapseChapter{{ $user->id }}">
                                                                     <span>{{ $user->chepter_name }}</span>
                                                                     <span class="position-absolute end-0  p-2"
-                                                                    style="margin-right: 59px;">Lectures: {{
-                                                                    $assets_count }}</span>
+                                                                        style="margin-right: 59px;">Lectures: {{
+                                                                        $assets_count }}</span>
                                                                 </button>
                                                             </h2>
                                                             <div id="collapseChapter{{ $user->id }}"
@@ -429,9 +432,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-            <button id="editButton" class="btn btn-outline-info" style="float:right;margin-bottom:6px;" onclick="openEditModal()">
-    Manage Interactives
-</button>
+                <button id="editButton" class="btn btn-outline-info" style="float:right;margin-bottom:6px;"
+                    onclick="openEditModal()">
+                    Manage Interactives
+                </button>
                 <video id="videoPlayer" width="100%" controls>
                     <source src="" type="video/mp4">
                     Your browser does not support the video tag.
@@ -440,7 +444,7 @@
             </div>
             <div class="modal-footer">
 
-</div>
+            </div>
         </div>
     </div>
 </div>
@@ -448,22 +452,26 @@
 
 
 <div id="videoEditModal" class="modal fade" tabindex="-1">
-<div class="modal-dialog modal-xl" style="height: 600px;width:1300px;margin-top:0px;"> <!-- Set your desired height here -->
+    <div class="modal-dialog modal-xl" style="height: 600px;width:1300px;margin-top:0px;">
+        <!-- Set your desired height here -->
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Interactive Video Editor</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="max-height:600px;overflow-y:auto;">
-            <button class="btn btn-primary" style="margin-bottom:5px;" onclick="addQuiz()">Add Quiz &nbsp;<i class="fa-solid fa-bars fa-fade" style="vertical-align: bottom;"></i> </button>
-            <button class="btn btn-info" style="margin-bottom:5px;" onclick="addFillintheBlanks()">Fill in the Blanks &nbsp;<i class="fa-solid fa-pen-to-square fa-fade"></i> </button>
-            <button class="btn btn-warning" style="margin-bottom:5px;" onclick="addintractivegames()">Add InterActive &nbsp;<i class="fa-solid fa-pen-to-square fa-fade"></i> </button>
-            <div id="quizContainer" style="position: relative; width: 100%; height: auto;"></div>
-            <div class="video-container" style="position: relative;">
-                <video id="editVideoPlayer" width="100%" controls>
-                    <source src="" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
+                <button class="btn btn-primary" style="margin-bottom:5px;" onclick="addQuiz()">Add Quiz &nbsp;<i
+                        class="fa-solid fa-bars fa-fade" style="vertical-align: bottom;"></i> </button>
+                <button class="btn btn-info" style="margin-bottom:5px;" onclick="addFillintheBlanks()">Fill in the
+                    Blanks &nbsp;<i class="fa-solid fa-pen-to-square fa-fade"></i> </button>
+                <button class="btn btn-warning" style="margin-bottom:5px;" onclick="addintractivegames()">Add
+                    InterActive &nbsp;<i class="fa-solid fa-pen-to-square fa-fade"></i> </button>
+                <div id="quizContainer" style="position: relative; width: 100%; height: auto;"></div>
+                <div class="video-container" style="position: relative;">
+                    <video id="editVideoPlayer" width="100%" controls>
+                        <source src="" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
                 </div>
 
                 <!-- <h4 id="editVideoTopic" class="mt-3"></h4> -->
@@ -547,55 +555,58 @@
                                 </thead>
                                 <tbody id="assetsTableBody">
                                     @if(!empty($assetsData) && count($assetsData) > 0)
-                                        @foreach($assetsData as $index => $asset)
-                                            <tr>
-                                                <td>{{ $index + 1 }}</td>
-                                                <td>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="flex-shrink-0">
-                                                            @if ($asset['thumbnail'])
-                                                                <img src="{{ 'https://assets.zinggerr.com/storage/' .  $asset['thumbnail'] }}"
-                                                                    alt="User image" style="height:45px;width: 45px;">
-                                                            @else
-                                                                <img src="{{ asset('asset/images/user/download.jpg') }}"
-                                                                    alt="Default image" style="height:45px;width:45px;">
-                                                            @endif
-                                                        </div>
-                                                        <div class="flex-grow-1 ms-3">
-                                                            <h5 class="mb-1">{{ Str::limit(strip_tags($asset['topic_name']),20, '...') }}</h5>
-                                                            <p class="text-muted f-12">{{ Str::limit(strip_tags($asset['about']), 25, '...') }}</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>{{ ucfirst($asset['assets_type']) }}</td>
-                                                <td>
-                                                    @if ($asset['asset_status'] == '0')
-                                                        <span class="badge rounded-pill bg-light-danger">Inactive</span>
-                                                    @elseif($asset['asset_status'] == '1')
-                                                        <span class="badge bg-light-success rounded-pill">Active</span>
+                                    @foreach($assetsData as $index => $asset)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-shrink-0">
+                                                    @if ($asset['thumbnail'])
+                                                    <img src="{{ 'https://assets.zinggerr.com/storage/' .  $asset['thumbnail'] }}"
+                                                        alt="User image" style="height:45px;width: 45px;">
+                                                    @else
+                                                    <img src="{{ asset('asset/images/user/download.jpg') }}"
+                                                        alt="Default image" style="height:45px;width:45px;">
                                                     @endif
-                                                </td>
-                                                <td>{{ \Carbon\Carbon::parse($asset['asset_create_date'])->format('d-M-Y') }}</td>
-                                                <td class="d-flex align-items-center">
-                                                    <button class="btn btn-sm btn-success setAssetBtn me-2"
-                                                        data-asset-id="{{ $asset['asset_id'] }}" title="Set Asset">
-                                                        Set
-                                                    </button>
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <h5 class="mb-1">{{ Str::limit(strip_tags($asset['topic_name']),20,
+                                                        '...') }}</h5>
+                                                    <p class="text-muted f-12">{{
+                                                        Str::limit(strip_tags($asset['about']), 25, '...') }}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{ ucfirst($asset['assets_type']) }}</td>
+                                        <td>
+                                            @if ($asset['asset_status'] == '0')
+                                            <span class="badge rounded-pill bg-light-danger">Inactive</span>
+                                            @elseif($asset['asset_status'] == '1')
+                                            <span class="badge bg-light-success rounded-pill">Active</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ \Carbon\Carbon::parse($asset['asset_create_date'])->format('d-M-Y') }}
+                                        </td>
+                                        <td class="d-flex align-items-center">
+                                            <button class="btn btn-sm btn-success setAssetBtn me-2"
+                                                data-asset-id="{{ $asset['asset_id'] }}" title="Set Asset">
+                                                Set
+                                            </button>
 
 
 
-                                                    <button class="btn btn-sm btn-outline-dark eyeAssetBtn"
-                                                        onclick="openAssetModal(event, '{{ $asset['assets_type'] }}', '{{ asset('storage/' . $asset['assets_path']) }}', '{{ strip_tags($asset['topic_name']) }}')"
-                                                        title="View Asset">
-                                                        <i class="fa fa-eye"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                            <button class="btn btn-sm btn-outline-dark eyeAssetBtn"
+                                                onclick="openAssetModal(event, '{{ $asset['assets_type'] }}', '{{ asset('storage/' . $asset['assets_path']) }}', '{{ strip_tags($asset['topic_name']) }}')"
+                                                title="View Asset">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    @endforeach
                                     @else
-                                        <tr>
-                                            <td colspan="6" class="text-center text-danger">No Data Available</td>
-                                        </tr>
+                                    <tr>
+                                        <td colspan="6" class="text-center text-danger">No Data Available</td>
+                                    </tr>
                                     @endif
                                 </tbody>
                             </table>
@@ -613,7 +624,7 @@
     document.getElementById('videoEditModal').addEventListener('hidden.bs.modal', function () {
     location.reload();
 });
-    </script>
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -693,6 +704,64 @@
 
             return false; // Prevent immediate navigation
             }
+
+</script>
+
+<script>
+function deleteInteractiveFromDB(interactiveId, interactiveElementId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+        customClass: {
+            popup: 'swal2-highest-zindex'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/delete-interactive/' + interactiveId, // Update with your actual route
+                method: 'DELETE',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    Swal.fire({
+                        title: 'Deleted!',
+                        text: 'Interactive content has been deleted.',
+                        icon: 'success',
+                        timer: 1000,
+                        customClass: {
+                            popup: 'swal2-highest-zindex'
+                        }
+                    });
+
+                    // Remove the interactive element from DOM
+                    $(`#${interactiveElementId}`).remove();
+
+                    // Optionally refresh interactive content list
+                    fetchInteractiveData(currentVideoPath);
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Error deleting interactive content: ' + error,
+                        icon: 'error',
+                        customClass: {
+                            popup: 'swal2-highest-zindex'
+                        }
+                    });
+
+                    // Remove the element even on failure to prevent UI clutter
+                    $(`#${interactiveElementId}`).remove();
+                }
+            });
+        }
+    });
+}
 
 </script>
 
@@ -914,7 +983,7 @@
 
 
 <script>
-//   function playVideo(videoPath, topicName) {
+    //   function playVideo(videoPath, topicName) {
 //         // Set the video source
 //         const videoPlayer = document.getElementById('videoPlayer');
 //         videoPlayer.src = videoPath;
@@ -3001,58 +3070,117 @@ function createInteractiveCheckpointDiv(interactive) {
             _token: $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response) {
-            if (response.success && response.asset) {
-                const asset = response.asset;
-                console.log(asset.thumbnail);
-                // Create HTML for the interactive checkpoint
-                interactiveDiv.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <strong>Interactive Content at ${interactive.checkpoint_time.toFixed(2)}s</strong>
-                        <div>
-                            <button class="btn btn-sm btn-warning me-2"
-                                    onclick="openInteractiveEditor('${interactive.id}', '${interactive.asset_id}')"
+
+
+           // Use a small delay to ensure the div is fully rendered
+
+           if (response.success && response.asset) {
+    setTimeout(() => {
+        try {
+            const asset = response.asset;
+
+            // Step 1: Test with minimal content first
+            interactiveDiv.innerHTML = "<p>Basic test content</p>";
+            console.log("Basic content inserted");
+
+            // Step 2: Verify interactive object properties
+            const checkpointTime = interactive.checkpoint_time || "0.00";
+            const interactiveId = interactive.id || "";
+            const assetId = interactive.asset_id || "";
+
+            console.log("Interactive properties verified:", {
+                checkpointTime, interactiveId, assetId
+            });
+
+            // in this html interactive change button use for interactive delete but change button not working
+            // let htmlContent = `
+            //     <div style="display: flex; justify-content: space-between; align-items: center;">
+            //         <strong>Interactive Content at ${checkpointTime}s</strong>
+            //         <div>
+            //             <button class="btn btn-sm btn-warning me-2"
+            //                     onclick="openInteractiveEditor('${interactiveId}', '${assetId}')"
+            //                     onmousedown="event.stopPropagation()">
+            //                 <i class="fas fa-edit"></i> Change
+            //             </button>
+            //             <button class="btn btn-sm delete-interactive"
+            //                     style="padding: 2px 6px; font-size: 12px; border-radius: 50%;"
+            //                     onclick="deleteInteractiveFromDB('${interactiveId}', '${interactiveElementId}')">
+            //                 <i class="fa-solid fa-trash fa-fade" style="color:#f70808;"></i>
+            //             </button>
+            //         </div>
+            //     </div>
+            // `;
+
+            let htmlContent = `
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <strong>Interactive Content at ${checkpointTime}s</strong>
+                    <div>
+
+                        <button class="btn btn-sm delete-interactive"
+                                style="padding: 2px 6px; font-size: 12px; border-radius: 50%;"
+                                onclick="deleteInteractiveFromDB('${interactiveId}', '${interactiveElementId}')">
+                            <i class="fa-solid fa-trash fa-fade" style="color:#f70808;"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+
+
+            // Step 4: Apply the header content
+            interactiveDiv.innerHTML = htmlContent;
+            console.log("Header content applied");
+
+            // Step 5: Build the asset details section
+            const thumbnailUrl = asset.thumbnail ?
+                'https://assets.zinggerr.com/storage/' + asset.thumbnail :
+                `${baseUrl}/asset/images/user/download.jpg`;
+
+            const assetDetailsHtml = `
+                <div class="mt-3 d-flex">
+                    <div class="flex-shrink-0">
+                        <img src="${thumbnailUrl}"
+                             alt="${asset.topic_name || 'Asset'}"
+                             style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;">
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5 class="mb-1">${asset.topic_name || 'Unnamed Asset'}</h5>
+                        <p class="mb-1">${asset.about || 'No description available'}</p>
+                        <span class="badge rounded-pill bg-light-info">${asset.assets_type || 'Unknown Type'}</span>
+                        <div class="mt-3">
+                            <button class="btn btn-sm btn-primary"
+                                    onclick="launchInteractive('${assetId}')"
                                     onmousedown="event.stopPropagation()">
-                                <i class="fas fa-edit"></i> Change
-                            </button>
-                            <button class="btn btn-sm delete-interactive"
-                                    style="padding: 2px 6px; font-size: 12px; border-radius: 50%;"
-                                    onclick="deleteInteractiveFromDB('${interactive.id}', '${interactiveElementId}')">
-                                    <i class="fa-solid fa-trash fa-fade" style="color:#f70808;"></i>
+                                <i class="fa-solid fa-gamepad me-1"></i> Launch Interactive
                             </button>
                         </div>
                     </div>
+                </div>
+            `;
 
-                    <div class="mt-3 d-flex">
-                        <div class="flex-shrink-0">
-                            <img src="${asset.thumbnail ? 'https://assets.zinggerr.com/storage/' + asset.thumbnail : `${baseUrl}/asset/images/user/download.jpg`}"
-                                 alt="${asset.topic_name}"
-                                 style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;">
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <h5 class="mb-1">${asset.topic_name}</h5>
-                            <p class="mb-1">${asset.about}</p>
-                            <span class="badge rounded-pill bg-light-info">${asset.assets_type}</span>
-                            <div class="mt-3">
-                                <button class="btn btn-sm btn-primary"
-                                        onclick="launchInteractive('${interactive.asset_id}')"
-                                        onmousedown="event.stopPropagation()">
-                                    <i class="fa-solid fa-gamepad me-1"></i> Launch Interactive
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
+            // Step 6: Apply the complete content
+            interactiveDiv.innerHTML = htmlContent + assetDetailsHtml;
+            console.log("Full content applied");
 
-                // Set position if available
-                if (interactive.position_x !== undefined && interactive.position_y !== undefined) {
-                    interactiveDiv.style.left = `${interactive.position_x}px`;
-                    interactiveDiv.style.top = `${interactive.position_y}px`;
-                }
+            // Step 7: Set position if available
+            if (interactive.position_x !== undefined && interactive.position_y !== undefined) {
+                interactiveDiv.style.left = `${interactive.position_x}px`;
+                interactiveDiv.style.top = `${interactive.position_y}px`;
+            }
 
-                // Make it draggable
-                makeDraggable(interactiveDiv);
+            // Step 8: Make it draggable
+            makeDraggable(interactiveDiv);
 
-            } else {
+            console.log("Interactive element fully configured");
+        } catch (error) {
+            console.error("Error updating interactive div:", error);
+            // Fallback content in case of error
+            interactiveDiv.innerHTML = "<p>Error loading interactive content. Please try again.</p>";
+        }
+    }, 100); // Increased delay for better reliability
+}// A 50ms delay should be sufficient
+
+         else {
                 interactiveDiv.innerHTML = `
                     <div class="alert alert-danger">
                         <i class="fa-solid fa-exclamation-triangle me-2"></i>
@@ -3089,13 +3217,90 @@ function createInteractiveCheckpointDiv(interactive) {
     return interactiveDiv;
 }
 
+// function openInteractiveEditor(interactiveId, currentAssetId) {
+//     // Create a new interactive selection form
+//     const interactiveEditorDiv = document.createElement("div");
+//     interactiveEditorDiv.classList.add("interactive-editor-box");
+//     interactiveEditorDiv.style.position = "absolute";
+//     interactiveEditorDiv.style.width = "500px";
+//     interactiveEditorDiv.style.zIndex = "10001"; // Higher than the checkpoint div
+//     interactiveEditorDiv.style.background = "rgba(255,255,255,0.98)";
+//     interactiveEditorDiv.style.padding = "15px";
+//     interactiveEditorDiv.style.border = "2px solid #0dcaf0"; // Info color
+//     interactiveEditorDiv.style.borderRadius = "5px";
+//     interactiveEditorDiv.style.cursor = "move";
+//     interactiveEditorDiv.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
+
+//     const editorId = `interactive-editor-${Date.now()}`;
+//     interactiveEditorDiv.id = editorId;
+
+//     interactiveEditorDiv.innerHTML = `
+//         <div style="display: flex; justify-content: space-between; align-items: center;">
+//             <strong><i class="fa-solid fa-edit me-1"></i> Change Interactive Asset</strong>
+//             <button class="btn btn-sm btn-close"
+//                     onclick="document.getElementById('${editorId}').remove()">
+//             </button>
+//         </div>
+
+//         <div class="mt-3">
+//             <p class="text-muted">Select a new interactive asset to replace the current one.</p>
+
+//             <div class="input-group mb-2">
+//                 <input type="text" class="form-control form-control-sm"
+//                        id="search-${editorId}"
+//                        placeholder="Search assets..."
+//                        onmousedown="event.stopPropagation()"
+//                        oninput="filterEditorAssets('${editorId}')">
+//                 <button class="btn btn-outline-secondary btn-sm" type="button"
+//                         onclick="filterEditorAssets('${editorId}')">
+//                     <i class="fa-solid fa-search"></i>
+//                 </button>
+//             </div>
+
+//             <div class="interactive-assets-list mb-3" style="max-height: 250px; overflow-y: auto;" id="assets-list-${editorId}">
+//                 <div class="text-center p-3">
+//                     <div class="spinner-border text-info" role="status">
+//                         <span class="visually-hidden">Loading...</span>
+//                     </div>
+//                     <p class="mt-2 text-muted">Loading available interactive assets...</p>
+//                 </div>
+//             </div>
+//         </div>
+
+//         <input type="hidden" id="selected-asset-${editorId}" value="${currentAssetId}">
+
+//         <div class="d-flex justify-content-between">
+//             <button class="btn btn-secondary"
+//                     onclick="document.getElementById('${editorId}').remove()"
+//                     onmousedown="event.stopPropagation()">
+//                 Cancel
+//             </button>
+//             <button class="btn btn-info"
+//                     onclick="updateInteractive('${interactiveId}', '${editorId}')"
+//                     onmousedown="event.stopPropagation()">
+//                 <i class="fa-solid fa-save me-1"></i> Update Interactive
+//             </button>
+//         </div>
+//     `;
+
+//     // Append to quiz container
+//     document.getElementById("quizContainer").appendChild(interactiveEditorDiv);
+
+//     // Make it draggable
+//     makeDraggable(interactiveEditorDiv);
+
+//     // Load assets
+//     loadEditorAssets(editorId, currentAssetId);
+// }
+
+
 function openInteractiveEditor(interactiveId, currentAssetId) {
     // Create a new interactive selection form
     const interactiveEditorDiv = document.createElement("div");
     interactiveEditorDiv.classList.add("interactive-editor-box");
     interactiveEditorDiv.style.position = "absolute";
     interactiveEditorDiv.style.width = "500px";
-    interactiveEditorDiv.style.zIndex = "10001"; // Higher than the checkpoint div
+    interactiveEditorDiv.style.zIndex = "10001"; // Higher than other elements
     interactiveEditorDiv.style.background = "rgba(255,255,255,0.98)";
     interactiveEditorDiv.style.padding = "15px";
     interactiveEditorDiv.style.border = "2px solid #0dcaf0"; // Info color
@@ -3108,15 +3313,14 @@ function openInteractiveEditor(interactiveId, currentAssetId) {
 
     interactiveEditorDiv.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: center;">
-            <strong><i class="fa-solid fa-edit me-1"></i> Change Interactive Asset</strong>
+            <strong><i class="fa-solid fa-edit me-1"></i> Edit Interactive Content</strong>
             <button class="btn btn-sm btn-close"
                     onclick="document.getElementById('${editorId}').remove()">
             </button>
         </div>
 
         <div class="mt-3">
-            <p class="text-muted">Select a new interactive asset to replace the current one.</p>
-
+            <label class="form-label"><i class="fa-solid fa-gamepad me-1"></i> Select an Interactive Asset:</label>
             <div class="input-group mb-2">
                 <input type="text" class="form-control form-control-sm"
                        id="search-${editorId}"
@@ -3161,9 +3365,13 @@ function openInteractiveEditor(interactiveId, currentAssetId) {
     // Make it draggable
     makeDraggable(interactiveEditorDiv);
 
-    // Load assets
+    // Load assets (same as "Add Interactive" but pre-selects the current asset)
     loadEditorAssets(editorId, currentAssetId);
 }
+
+
+
+
 
 // function loadEditorAssets(editorId, currentAssetId) {
 //     // Similar to loadInteractiveAssets but marks the currently selected asset
@@ -3218,7 +3426,7 @@ function openInteractiveEditor(interactiveId, currentAssetId) {
 
 
 
-    </script>
+</script>
 
 
 @include('partials.footer')
