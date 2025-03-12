@@ -708,7 +708,7 @@
 </script>
 
 <script>
-function deleteInteractiveFromDB(interactiveId, interactiveElementId) {
+    function deleteInteractiveFromDB(interactiveId, interactiveElementId) {
     Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -3146,17 +3146,39 @@ function createInteractiveCheckpointDiv(interactive) {
                     <div class="flex-grow-1 ms-3">
                         <h5 class="mb-1">${asset.topic_name || 'Unnamed Asset'}</h5>
                         <p class="mb-1">${asset.about || 'No description available'}</p>
-                        <span class="badge rounded-pill bg-light-info">${asset.assets_type || 'Unknown Type'}</span>
+                      <span class="badge rounded-pill ${asset.status == 1 ? 'bg-success' : 'bg-danger'}">
+                            ${asset.status == 1 ? 'Active' : 'Inactive'}
+                        </span>
+
                         <div class="mt-3">
-                            <button class="btn btn-sm btn-primary"
-                                    onclick="launchInteractive('${assetId}')"
-                                    onmousedown="event.stopPropagation()">
+                            <button class="btn btn-sm btn-primary launch-btn"
+                                    data-asset-id="${assetId}">
                                 <i class="fa-solid fa-gamepad me-1"></i> Launch Interactive
                             </button>
+
                         </div>
                     </div>
                 </div>
             `;
+
+            document.addEventListener("click", function (event) {
+    if (event.target.classList.contains("launch-btn") || event.target.closest(".launch-btn")) {
+        let assetId = event.target.closest(".launch-btn").getAttribute("data-asset-id");
+        launchInteractive(assetId);
+    }
+});
+
+
+
+                    function closeInteractive(assetId) {
+                        let existingFrame = document.getElementById(`interactiveFrame-${assetId}`);
+                        if (existingFrame) {
+                            existingFrame.parentElement.remove();
+                        }
+                    }
+
+
+
 
             // Step 6: Apply the complete content
             interactiveDiv.innerHTML = htmlContent + assetDetailsHtml;
@@ -3294,80 +3316,106 @@ function createInteractiveCheckpointDiv(interactive) {
 // }
 
 
-function openInteractiveEditor(interactiveId, currentAssetId) {
-    // Create a new interactive selection form
-    const interactiveEditorDiv = document.createElement("div");
-    interactiveEditorDiv.classList.add("interactive-editor-box");
-    interactiveEditorDiv.style.position = "absolute";
-    interactiveEditorDiv.style.width = "500px";
-    interactiveEditorDiv.style.zIndex = "10001"; // Higher than other elements
-    interactiveEditorDiv.style.background = "rgba(255,255,255,0.98)";
-    interactiveEditorDiv.style.padding = "15px";
-    interactiveEditorDiv.style.border = "2px solid #0dcaf0"; // Info color
-    interactiveEditorDiv.style.borderRadius = "5px";
-    interactiveEditorDiv.style.cursor = "move";
-    interactiveEditorDiv.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
+async function launchInteractive(assetId) {
+    console.log("Launching Interactive for Asset ID:", assetId);
 
-    const editorId = `interactive-editor-${Date.now()}`;
-    interactiveEditorDiv.id = editorId;
+    try {
+        // Show loader before API call
+        Swal.fire({
+            title: 'Loading...',
+            text: 'Fetching interactive content, please wait.',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
 
-    interactiveEditorDiv.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <strong><i class="fa-solid fa-edit me-1"></i> Edit Interactive Content</strong>
-            <button class="btn btn-sm btn-close"
-                    onclick="document.getElementById('${editorId}').remove()">
-            </button>
-        </div>
+        let response = await fetch('https://assets.zinggerr.com/api/course/assets-list');
+        let data = await response.json();
 
-        <div class="mt-3">
-            <label class="form-label"><i class="fa-solid fa-gamepad me-1"></i> Select an Interactive Asset:</label>
-            <div class="input-group mb-2">
-                <input type="text" class="form-control form-control-sm"
-                       id="search-${editorId}"
-                       placeholder="Search assets..."
-                       onmousedown="event.stopPropagation()"
-                       oninput="filterEditorAssets('${editorId}')">
-                <button class="btn btn-outline-secondary btn-sm" type="button"
-                        onclick="filterEditorAssets('${editorId}')">
-                    <i class="fa-solid fa-search"></i>
-                </button>
-            </div>
+        console.log("API Response:", data); // Debug API response
 
-            <div class="interactive-assets-list mb-3" style="max-height: 250px; overflow-y: auto;" id="assets-list-${editorId}">
-                <div class="text-center p-3">
-                    <div class="spinner-border text-info" role="status">
+        if (!data.success || !Array.isArray(data.assets)) {
+            console.error("Invalid API response:", data);
+            Swal.fire('Error', 'Failed to load assets!', 'error');
+            return;
+        }
+
+        // Filter assets for matching ID
+        const matchingAssets = data.assets.filter(a => a.asset_id == assetId);
+        if (matchingAssets.length === 0) {
+            console.error("No matching asset found in the API data:", assetId);
+            Swal.fire('Error', `Asset not found in the list!`, 'error');
+            return;
+        }
+
+        // Pick the first matching asset
+        const asset = matchingAssets[0];
+
+        let assetPath = asset.asset_path.replace("http://127.0.0.1:8000", "");
+        let interactivePath = `https://assets.zinggerr.com/storage/${assetPath}`;
+
+        if (!interactivePath.endsWith("/index.html")) {
+            interactivePath += "/index.html";
+        }
+
+        // Remove existing frame
+        let existingFrame = document.getElementById(`interactiveFrame-${assetId}`);
+        if (existingFrame) {
+            existingFrame.remove();
+        }
+
+        // Close the loading modal before showing content
+        Swal.close();
+
+        // Create interactive div
+        let interactiveDiv = document.createElement("div");
+        interactiveDiv.className = "mt-3";
+        interactiveDiv.innerHTML = `
+            <div class="interactive-box p-2 rounded border bg-light">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <strong>Interactive Content</strong>
+                    <button class="btn btn-sm btn-danger" onclick="closeInteractive('${assetId}')">Close</button>
+                </div>
+
+                <div id="loader-${assetId}" class="text-center my-3">
+                    <div class="spinner-border text-primary" role="status">
                         <span class="visually-hidden">Loading...</span>
                     </div>
-                    <p class="mt-2 text-muted">Loading available interactive assets...</p>
+                    <p>Loading interactive content...</p>
                 </div>
+
+                <iframe id="interactiveFrame-${assetId}" src="${interactivePath}"
+                        style="width: 100%; height: 500px; border-radius: 5px; border: none; display: none;"></iframe>
             </div>
-        </div>
+        `;
 
-        <input type="hidden" id="selected-asset-${editorId}" value="${currentAssetId}">
+        let assetContainer = document.getElementById(`asset-${assetId}`);
+        if (!assetContainer) {
+            console.warn(`Asset container not found for ID: ${assetId}`);
+            Swal.fire('Error', `Asset container not found for ID: ${assetId}!`, 'error');
+            return;
+        }
 
-        <div class="d-flex justify-content-between">
-            <button class="btn btn-secondary"
-                    onclick="document.getElementById('${editorId}').remove()"
-                    onmousedown="event.stopPropagation()">
-                Cancel
-            </button>
-            <button class="btn btn-info"
-                    onclick="updateInteractive('${interactiveId}', '${editorId}')"
-                    onmousedown="event.stopPropagation()">
-                <i class="fa-solid fa-save me-1"></i> Update Interactive
-            </button>
-        </div>
-    `;
+        assetContainer.appendChild(interactiveDiv);
 
-    // Append to quiz container
-    document.getElementById("quizContainer").appendChild(interactiveEditorDiv);
+        // Show iframe after loading
+        let iframe = document.getElementById(`interactiveFrame-${assetId}`);
+        let loader = document.getElementById(`loader-${assetId}`);
 
-    // Make it draggable
-    makeDraggable(interactiveEditorDiv);
+        iframe.onload = function () {
+            loader.style.display = "none";
+            iframe.style.display = "block";
+        };
 
-    // Load assets (same as "Add Interactive" but pre-selects the current asset)
-    loadEditorAssets(editorId, currentAssetId);
+    } catch (error) {
+        console.error("Error fetching assets:", error);
+        Swal.fire('Error', 'Failed to load assets!', 'error');
+    }
 }
+
+
+
 
 
 
