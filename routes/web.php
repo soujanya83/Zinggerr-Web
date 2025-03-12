@@ -196,7 +196,8 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('/get-checkpoints', [CourseController::class, 'getCheckpoints'])->name('get.checkpoints');
     Route::get('/interactive/play', [CourseController::class, 'play'])->name('interactive.play');
 
-
+    // Route::get('/interactive/{assetId}', [CourseController::class, 'getInteractiveAsset']);
+    Route::get('/api/interactive/{assetId}', [CourseController::class, 'getInteractiveAsset']);
 
 
     Route::post('cousers/chapter-submit', [CourseController::class, 'chepter_submit'])->name('chepter.submit');

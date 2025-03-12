@@ -404,6 +404,23 @@
     </div>
 </div>
 
+<!-- Interactive Modal -->
+<div class="modal fade" id="interactiveModalplay" tabindex="-1" aria-hidden="true" style="z-index:9999999">
+    <div class="modal-dialog modal-xl"> <!-- Bigger modal for better display -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Interactive Content</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <iframe id="interactiveFrameplay" width="100%" height="600px" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <div class="modal fade" id="blogModal" tabindex="-1" aria-labelledby="blogModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -3123,6 +3140,7 @@ function createInteractiveCheckpointDiv(interactive) {
                         </button>
                     </div>
                 </div>
+
             `;
 
 
@@ -3314,105 +3332,138 @@ function createInteractiveCheckpointDiv(interactive) {
 //     // Load assets
 //     loadEditorAssets(editorId, currentAssetId);
 // }
+// function launchInteractive(assetId) {
+//     console.log("Launching Interactive for Asset ID:", assetId);
 
+//     Swal.fire({
+//         title: 'Loading...',
+//         text: 'Fetching interactive content, please wait.',
+//         allowOutsideClick: false,
+//         didOpen: () => {
+//             Swal.showLoading();
+//         }
+//     });
 
-async function launchInteractive(assetId) {
+//     $.ajax({
+//         url: `/api/interactive/${assetId}`,
+//         type: "GET",
+//         dataType: "json",
+//         success: function (data) {
+//             console.log("API Response:", data);
+
+//             if (!data.success || !data.asset) {
+//                 Swal.fire('Error', 'Interactive asset not found!', 'error');
+//                 return;
+//             }
+
+//             let asset = data.asset;
+//             let assetPath = asset.assets_path.replace(/^\/+/, "");  // Remove leading slashes
+//             let interactivePath = `https://assets.zinggerr.com/storage/${assetPath}`+'/';
+//     console.log(interactivePath);
+//             if (!interactivePath.endsWith("/index.html")) {
+//                 interactivePath += "/index.html";
+//             }
+
+//             Swal.close();
+
+//             let assetContainer = $(`#asset-${assetId}`);
+//             if (assetContainer.length === 0) {
+//                 console.warn(`Asset container not found for ID: ${assetId}, creating dynamically.`);
+//                 assetContainer = $('<div>', { id: `asset-${assetId}` }).appendTo('body'); // Append to body or main container
+//             }
+
+//             let interactiveDiv = `
+//                 <div class="mt-3 interactive-box p-2 rounded border bg-light">
+//                     <div class="d-flex justify-content-between align-items-center mb-2">
+//                         <strong>Interactive Content</strong>
+//                         <button class="btn btn-sm btn-danger" onclick="closeInteractive('${assetId}')">Close</button>
+//                     </div>
+//                     <div id="loader-${assetId}" class="text-center my-3">
+//                         <div class="spinner-border text-primary" role="status">
+//                             <span class="visually-hidden">Loading...</span>
+//                         </div>
+//                         <p>Loading interactive content...</p>
+//                     </div>
+//                     <iframe id="interactiveFrame-${assetId}"
+//                             src="${interactivePath}"
+//                             style="width: 100%; height: 500px; border-radius: 5px; border: none; display: none;"
+//                             allow="fullscreen; accelerometer; gyroscope; xr-spatial-tracking">
+//                     </iframe>
+//                 </div>
+//             `;
+
+//             $(assetContainer).append(interactiveDiv);
+
+//             let iframe = document.getElementById(`interactiveFrame-${assetId}`);
+//             let loader = document.getElementById(`loader-${assetId}`);
+
+//             iframe.onload = function () {
+//                 loader.style.display = "none";
+//                 iframe.style.display = "block";
+//             };
+//         },
+//         error: function (xhr) {
+//             console.error("AJAX Error:", xhr.responseText);
+//             Swal.fire('Error', 'Failed to load interactive content!', 'error');
+//         }
+//     });
+// }
+
+function launchInteractive(assetId) {
     console.log("Launching Interactive for Asset ID:", assetId);
 
-    try {
-        // Show loader before API call
-        Swal.fire({
-            title: 'Loading...',
-            text: 'Fetching interactive content, please wait.',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
+    Swal.fire({
+        title: 'Loading...',
+        text: 'Fetching interactive content, please wait.',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    $.ajax({
+        url: `/api/interactive/${assetId}`,
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            console.log("API Response:", data);
+
+            if (!data.success || !data.asset) {
+                Swal.fire('Error', 'Interactive asset not found!', 'error');
+                return;
             }
-        });
 
-        let response = await fetch('https://assets.zinggerr.com/api/course/assets-list');
-        let data = await response.json();
+            let asset = data.asset;
+            let assetPath = asset.assets_path.replace(/^\/+/, "");  // Remove leading slashes
 
-        console.log("API Response:", data); // Debug API response
+            // Construct interactive URL
+            let interactivePath = `https://assets.zinggerr.com/storage/${assetPath}`;
 
-        if (!data.success || !Array.isArray(data.assets)) {
-            console.error("Invalid API response:", data);
-            Swal.fire('Error', 'Failed to load assets!', 'error');
-            return;
+            // Ensure correct file (index.html) is loaded
+            if (!interactivePath.endsWith("/index.html")) {
+                interactivePath += "/index.html";
+            }
+
+            console.log("🚀 Final Interactive Path:", interactivePath);
+
+            Swal.close();
+
+            // Set iframe src and show modal
+            let iframe = document.getElementById('interactiveFrameplay');
+            iframe.src = interactivePath;
+
+            let interactiveModal = new bootstrap.Modal(document.getElementById('interactiveModalplay'));
+            interactiveModal.show();
+        },
+        error: function (xhr) {
+            console.error("AJAX Error:", xhr.responseText);
+            Swal.fire('Error', 'Failed to load interactive content!', 'error');
         }
-
-        // Filter assets for matching ID
-        const matchingAssets = data.assets.filter(a => a.asset_id == assetId);
-        if (matchingAssets.length === 0) {
-            console.error("No matching asset found in the API data:", assetId);
-            Swal.fire('Error', `Asset not found in the list!`, 'error');
-            return;
-        }
-
-        // Pick the first matching asset
-        const asset = matchingAssets[0];
-
-        let assetPath = asset.asset_path.replace("http://127.0.0.1:8000", "");
-        let interactivePath = `https://assets.zinggerr.com/storage/${assetPath}`;
-
-        if (!interactivePath.endsWith("/index.html")) {
-            interactivePath += "/index.html";
-        }
-
-        // Remove existing frame
-        let existingFrame = document.getElementById(`interactiveFrame-${assetId}`);
-        if (existingFrame) {
-            existingFrame.remove();
-        }
-
-        // Close the loading modal before showing content
-        Swal.close();
-
-        // Create interactive div
-        let interactiveDiv = document.createElement("div");
-        interactiveDiv.className = "mt-3";
-        interactiveDiv.innerHTML = `
-            <div class="interactive-box p-2 rounded border bg-light">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <strong>Interactive Content</strong>
-                    <button class="btn btn-sm btn-danger" onclick="closeInteractive('${assetId}')">Close</button>
-                </div>
-
-                <div id="loader-${assetId}" class="text-center my-3">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <p>Loading interactive content...</p>
-                </div>
-
-                <iframe id="interactiveFrame-${assetId}" src="${interactivePath}"
-                        style="width: 100%; height: 500px; border-radius: 5px; border: none; display: none;"></iframe>
-            </div>
-        `;
-
-        let assetContainer = document.getElementById(`asset-${assetId}`);
-        if (!assetContainer) {
-            console.warn(`Asset container not found for ID: ${assetId}`);
-            Swal.fire('Error', `Asset container not found for ID: ${assetId}!`, 'error');
-            return;
-        }
-
-        assetContainer.appendChild(interactiveDiv);
-
-        // Show iframe after loading
-        let iframe = document.getElementById(`interactiveFrame-${assetId}`);
-        let loader = document.getElementById(`loader-${assetId}`);
-
-        iframe.onload = function () {
-            loader.style.display = "none";
-            iframe.style.display = "block";
-        };
-
-    } catch (error) {
-        console.error("Error fetching assets:", error);
-        Swal.fire('Error', 'Failed to load assets!', 'error');
-    }
+    });
 }
+
+
+
 
 
 

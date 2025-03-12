@@ -32,6 +32,49 @@ use App\Models\VideoQuiz;
 use Illuminate\Support\Collection;
 class CourseController extends Controller
 {
+
+    public function getInteractiveAsset($assetId)
+    {
+        try {
+            $response = Http::timeout(10)->get('https://assets.zinggerr.com/api/course/assets-list');
+
+            if ($response->failed()) {
+                Log::error("API Request Failed: " . $response->body());
+                return response()->json(['success' => false, 'message' => 'Failed to fetch data from API.'], 500);
+            }
+
+            $responseData = $response->json();
+
+            if (!isset($responseData['data']) || !is_array($responseData['data'])) {
+                Log::error("Invalid API Response: " . json_encode($responseData));
+                return response()->json(['success' => false, 'message' => 'Invalid API response format.'], 500);
+            }
+
+            $filteredAsset = collect($responseData['data'])
+                ->where('asset_id', $assetId)
+                ->where('assets_type', 'interactive')
+                ->first();
+
+            if (!$filteredAsset) {
+                return response()->json(['success' => false, 'message' => 'Interactive asset not found.'], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'asset' => $filteredAsset
+            ]);
+        } catch (\Exception $e) {
+            dd($e);
+            Log::error("Error in API: " . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+
     public function setupinteractive(Request $request){
         // dd($request->all());
         $validated = $request->validate([
