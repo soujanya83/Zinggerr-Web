@@ -3440,7 +3440,7 @@ function launchInteractive(assetId) {
             let interactivePath = `https://assets.zinggerr.com/storage/${assetPath}`;
 
             // Ensure correct file (index.html) is loaded
-            if (!interactivePath.endsWith("/WebGL/")) {
+            if (!interactivePath.endsWith("index.html")) {
                 interactivePath += "/WebGL/";
             }
 
