@@ -232,6 +232,10 @@
                                             --}} <form method="post" enctype="multipart/form-data"
                                             action="{{ route('course_update', $course->id) }}">
                                             @csrf
+
+                                            <input type="hidden" name="redirect_url" value="{{ url()->previous() }}">
+
+
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3">
@@ -259,7 +263,7 @@
                                                             Name</label>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-6" style="display:none">
                                                     <div class="form-floating mb-3">
                                                         <select name="course_category" class="form-select"
                                                             id="floatingShortname">
@@ -286,9 +290,45 @@
 
 
 
+
+
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3">
+                                                        <select name="age_groups" class="form-select"
+                                                            id="floatingShortname">
+                                                            <option>Select Age-Group</option>
+                                                            @foreach($agegroups as $agedata)
+                                                            <option value="{{ $agedata->short_name }}" {{ isset($course)
+                                                                && $course->age_group == $agedata->short_name ?
+                                                                'selected' : '' }}>
+                                                                {{ $agedata->short_name }}
+                                                            </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <label for="floatingShortname">Select Montessori Age
+                                                            Group</label>
+                                                    </div>
+                                                </div>
 
+
+                                                <div class="col-md-6">
+                                                    <div class="form-floating mb-3">
+                                                        <select name="areas" class="form-select" id="floatingShortname">
+                                                            <option>Select Area</option>
+                                                            @foreach($areas as $areadata)
+                                                            <option value="{{ $areadata->full_name }}" {{ isset($course)
+                                                                && $course->area == $areadata->full_name ? 'selected' :
+                                                                '' }}>
+                                                                {{ $areadata->full_name }}
+                                                            </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <label for="floatingShortname">Select Montessori Area</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-floating mb-3">
                                                         <input type="number" name="course_id_number"
                                                             class="form-control" placeholder="Enter Course ID Number"
                                                             value="{{ old('course_id_number', $course->course_id_number ?? '') }}">

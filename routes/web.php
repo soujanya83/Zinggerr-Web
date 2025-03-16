@@ -4,6 +4,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MontessoriController;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TeacherController;
@@ -217,6 +218,34 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::post('interactive/setup', [CourseController::class, 'setupinteractive'])->name('interactive.setup');
     Route::post('get/video/interactives', [CourseController::class, 'getvideointeractives'])->name('get.video.interactives');
     Route::post('get/asset/details', [CourseController::class, 'getassetdetails'])->name('get.asset.details');
+
+    Route::get('montessori/areas-list', [MontessoriController::class, 'montessori_areas_list'])->name('montessori.areas_list');
+    Route::get('montessori/age-group-list', [MontessoriController::class, 'montessori_agegroup_list'])->name('montessori.age_groups');
+
+    Route::get('montessori/areas-create', [MontessoriController::class, 'montessori_areas_create'])->name('montessori.areas_create');
+    Route::get('montessori/age-group-create', [MontessoriController::class, 'montessori_agegroup_create'])->name('montessori.age_groups_create');
+
+    Route::post('montessori/areas-store', [MontessoriController::class, 'montessori_areas_stores'])->name('montessori.areas_store');
+    Route::post('montessori/agegroup-store', [MontessoriController::class, 'montessori_agegroup_stores'])->name('montessori.agegroup_store');
+
+    Route::get('montessori/age-group/{slug}/edit', [MontessoriController::class, 'montessori_agegroup_edit'])->name('montessori.agegroup_edit');
+    Route::get('montessori/area/{slug}/edit', [MontessoriController::class, 'montessori_areas_edit'])->name('montessori.areas_edit');
+
+    Route::post('montessori/areas-update', [MontessoriController::class, 'montessori_areas_update'])->name('montessori.areas_update');
+    Route::post('montessori/agegroup-update', [MontessoriController::class, 'montessori_agegroup_update'])->name('montessori.agegroup_update');
+
+    Route::get('montessori/areas-delete/{id}', [MontessoriController::class, 'montessori_areas_delete'])->name('montessori.areas_delete');
+    Route::get('montessori/age-group-delete/{id}', [MontessoriController::class, 'montessori_agegroup_delete'])->name('montessori.agegroup_delete');
+
+
+
+
+
+    Route::get('/courses/{ageGroup}/{area}', [MontessoriController::class, 'show'])->name('montessori.course.show');
+
+
+
+
 
     Route::get('/user-delete/{user}', [UserController::class, 'user_delete'])
         ->name('user_delete')

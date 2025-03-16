@@ -86,10 +86,11 @@
                                         <label for="emailInput">Role</label>
                                         <select name="role" id="roleSelect" class="form-select" required>
                                             <option value="">Select Role</option>
-                                            <option value="other">Other</option>
                                             @foreach($role as $roledata)
                                             <option value="{{ $roledata->name }}">{{ $roledata->display_name }}</option>
                                             @endforeach
+                                            <option value="other">Other</option>
+
                                         </select>
                                     </div>
                                 </div>

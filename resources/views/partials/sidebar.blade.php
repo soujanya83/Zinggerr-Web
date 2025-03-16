@@ -58,34 +58,112 @@
                 </li>
 
 
+                {{-- <li class="pc-item pc-hasmenu">
+                    <a href="#!" class="pc-link">
+                        <span class="pc-micon"><i class="ti ti-book"></i></span>
+                        <span class="pc-mtext" data-i18n="Courses">Courses</span>
+                        <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+                    </a>
+
+                    <ul class="pc-submenu">
+                        <!-- Toddlers (0-3 years) -->
+                        <li class="pc-item pc-hasmenu">
+                            <a href="#!" class="pc-link">
+                                <span class="pc-mtext">Toddlers(0-3 years)</span>
+                                <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+                            </a>
+                            <ul class="pc-submenu" style="list-style: none; padding-left: 15px;">
+                                <li class="pc-item"><a class="pc-link"
+                                        href="{{ route('montessori.toddlers_practical') }}">Practical Life</a></li>
+                                <li class="pc-item"><a class="pc-link"
+                                        href="{{ route('montessori.toddlers_sensorial') }}">Sensorial</a></li>
+                                <li class="pc-item"><a class="pc-link"
+                                        href="{{ route('montessori.toddlers_mathematics') }}">Mathematics</a></li>
+                                <li class="pc-item"><a class="pc-link"
+                                        href="{{ route('montessori.toddlers_language') }}">Language</a></li>
+                                <li class="pc-item"><a class="pc-link"
+                                        href="{{ route('montessori.toddlers_cultural') }}">Cultural Studies</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Early Childhood (3-6 years) -->
+                        <li class="pc-item pc-hasmenu">
+                            <a href="#!" class="pc-link">
+                                <span class="pc-mtext">Early Childhood(3-6 years)</span>
+                                <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+                            </a>
+                            <ul class="pc-submenu" style="list-style: none; padding-left: 15px;">
+                                <li class="pc-item"><a class="pc-link"
+                                        href="{{ route('montessori.earlychildhood_practical') }}">Practical Life</a>
+                                </li>
+                                <li class="pc-item"><a class="pc-link"
+                                        href="{{ route('montessori.earlychildhood_sensorial') }}">Sensorial</a></li>
+                                <li class="pc-item"><a class="pc-link"
+                                        href="{{ route('montessori.earlychildhood_mathematics') }}">Mathematics</a></li>
+                                <li class="pc-item"><a class="pc-link"
+                                        href="{{ route('montessori.earlychildhood_language') }}">Language</a></li>
+                                <li class="pc-item"><a class="pc-link"
+                                        href="{{ route('montessori.earlychildhood_cultural') }}">Cultural Studies</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!-- Elementary (6-12 years) -->
+                        <li class="pc-item pc-hasmenu">
+                            <a href="#!" class="pc-link">
+                                <span class="pc-mtext">Elementary(6-12 years)</span>
+                                <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+                            </a>
+                            <ul class="pc-submenu" style="list-style: none; padding-left: 15px;">
+                                <li class="pc-item"><a class="pc-link"
+                                        href="{{ route('montessori.elementary_practical') }}">Practical Life</a></li>
+                                <li class="pc-item"><a class="pc-link"
+                                        href="{{ route('montessori.elementary_sensorial') }}">Sensorial</a></li>
+                                <li class="pc-item"><a class="pc-link"
+                                        href="{{ route('montessori.elementary_mathematics') }}">Mathematics</a></li>
+                                <li class="pc-item"><a class="pc-link"
+                                        href="{{ route('montessori.elementary_language') }}">Language</a></li>
+                                <li class="pc-item"><a class="pc-link"
+                                        href="{{ route('montessori.elementary_cultural') }}">Cultural Studies</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li> --}}
+
                 <li class="pc-item pc-hasmenu">
                     <a href="#!" class="pc-link">
-                        <span class="pc-micon"><i class="ti ti-book"></i> </span>
+                        <span class="pc-micon"><i class="ti ti-book"></i></span>
                         <span class="pc-mtext" data-i18n="Courses">Courses</span>
                         <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
                     </a>
                     <ul class="pc-submenu">
-                        <li class="pc-item">
-                            <a class="pc-link" href="{{ route('courses') }}" data-i18n="Active List">List</a>
-                        </li>
-                        @if(Auth::user()->can('role') || Auth::user()->can('admin-role') ||
-                        Auth::user()->can('faculty-role'))
+                        @php
+                        $ageGroups = [
+                        'toddlers' => 'Toddlers (0-3 years)',
+                        'early-childhood' => 'Early Childhood (3-6 years)',
+                        'elementary' => 'Elementary (6-12 years)'
+                        ];
+                        $areas = ['practical-life', 'sensorial', 'mathematics', 'language', 'cultural-studies'];
+                        @endphp
 
-                        <li class="pc-item">
-                            <a class="pc-link" href="{{ route('addCourse') }}" data-i18n="Add New">Create</a>
+                        @foreach ($ageGroups as $key => $ageGroup)
+                        <li class="pc-item pc-hasmenu">
+                            <a href="#!" class="pc-link">
+                                <span class="pc-mtext">{{ $ageGroup }}</span>
+                                <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+                            </a>
+                            <ul class="pc-submenu" style="list-style: none; padding-left: 15px;">
+                                @foreach ($areas as $area)
+                                <li class="pc-item">
+                                    <a class="pc-link"
+                                        href="{{ route('montessori.course.show', ['ageGroup' => $key, 'area' => $area]) }}">
+                                        {{ ucwords(str_replace('-', ' ', $area)) }}
+                                    </a>
+                                </li>
+                                @endforeach
+                            </ul>
                         </li>
-
-                        <li class="pc-item">
-                            <a class="pc-link" href="{{ route('course.category') }}"
-                                data-i18n="Expired List">Category</a>
-                        </li>
-                        @endif
-                        {{-- <li class="pc-item">
-                            <a class="pc-link" href="#" data-i18n="Expired List">Expired List</a>
-                        </li>
-                        <li class="pc-item">
-                            <a class="pc-link" href="#" data-i18n="View All">View All</a>
-                        </li> --}}
+                        @endforeach
                     </ul>
                 </li>
 
@@ -108,7 +186,8 @@
                         <li class="pc-item"><a class="pc-link" href="{{ route('teacheradd') }}"
                                 data-i18n="Pricing">Create</a></li>
                         <li class="pc-item"><a class="pc-link" href="{{ route('teacherlist') }}"
-                                data-i18n="List">List</a></li>
+                                data-i18n="List">List</a>
+                        </li>
                     </ul>
                 </li>
                 @endif --}}
@@ -129,7 +208,8 @@
                         <li class="pc-item"><a class="pc-link" href="{{ route('studentadd') }}"
                                 data-i18n="Pricing">Create</a></li>
                         <li class="pc-item"><a class="pc-link" href="{{ route('studentlist') }}"
-                                data-i18n="List">List</a></li>
+                                data-i18n="List">List</a>
+                        </li>
                     </ul>
                 </li>
                 @endif --}}
@@ -157,7 +237,8 @@
                 </li> --}}
 
 
-                <li class="pc-item pc-hasmenu {{ request()->routeIs('useradd') || request()->routeIs('userlist') || request()->routeIs('teacherlist') || request()->routeIs('studentlist') ? 'active pc-trigger' : '' }}">
+                <li
+                    class="pc-item pc-hasmenu {{ request()->routeIs('useradd') || request()->routeIs('userlist') || request()->routeIs('teacherlist') || request()->routeIs('studentlist') ? 'active pc-trigger' : '' }}">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
                             <i class="ti ti-user"></i>
@@ -173,17 +254,21 @@
                             <a class="pc-link" href="{{ route('userlist') }}" data-i18n="List">List</a>
                         </li>
 
-                        @if (Auth::user()->can('role') || (isset($permissions) && in_array('faculty_sidebar', $permissions)))
+                        @if (Auth::user()->can('role') || (isset($permissions) && in_array('faculty_sidebar',
+                        $permissions)))
                         <li class="pc-item {{ request()->routeIs('teacherlist') ? 'active' : '' }}">
-                            <a class="pc-link" href="{{ route('teacherlist', ['type' => 'faculty']) }}" data-i18n="Faculty">
+                            <a class="pc-link" href="{{ route('teacherlist', ['type' => 'faculty']) }}"
+                                data-i18n="Faculty">
                                 <i class="ti ti-users"></i> Faculty
                             </a>
                         </li>
                         @endif
 
-                        @if (Auth::user()->can('role') || (isset($permissions) && in_array('student_sidebar', $permissions)))
+                        @if (Auth::user()->can('role') || (isset($permissions) && in_array('student_sidebar',
+                        $permissions)))
                         <li class="pc-item {{ request()->routeIs('studentlist') ? 'active' : '' }}">
-                            <a class="pc-link" href="{{ route('studentlist', ['type' => 'student']) }}" data-i18n="Students">
+                            <a class="pc-link" href="{{ route('studentlist', ['type' => 'student']) }}"
+                                data-i18n="Students">
                                 <i class="ti ti-users"></i> Students
                             </a>
                         </li>
@@ -211,7 +296,8 @@
                         <li class="pc-item"><a class="pc-link" href="{{ route('roles.create') }}"
                                 data-i18n="Pricing">Create</a></li>
                         <li class="pc-item"><a class="pc-link" href="{{ route('roles.list') }}"
-                                data-i18n="Pricing">List</a></li>
+                                data-i18n="Pricing">List</a>
+                        </li>
                     </ul>
                 </li>
                 @endif
@@ -242,6 +328,56 @@
 
                 </li>
                 @endif
+
+
+                <li class="pc-item pc-hasmenu">
+                    <a href="#" class="pc-link">
+                        <span class="pc-micon">
+                            <i class="ti ti-settings"></i>
+                        </span>
+                        <span class="pc-mtext" data-i18n="Teachers">Settings</span>
+                        <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+                    </a>
+                    <ul class="pc-submenu">
+                        <!-- Montessori Settings -->
+                        <li class="pc-item pc-hasmenu">
+                            <a href="#" class="pc-link">
+                                <span class="pc-mtext" data-i18n="Montessori">Montessori</span>
+                                <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+                            </a>
+                            <ul class="pc-submenu">
+                                <li class="pc-item">
+                                    <a class="pc-link" href="{{ route('montessori.age_groups') }}"
+                                        data-i18n="AgeGroup">Age
+                                        Group</a>
+                                </li>
+                                <li class="pc-item">
+                                    <a class="pc-link" href="{{ route('montessori.areas_list') }}"
+                                        data-i18n="Areas">Areas</a>
+                                </li>
+                                <li class="pc-item">
+                                    <a class="pc-link" href="{{ route('courses') }}"
+                                        data-i18n="Expired List">Courses</a>
+                                </li>
+                                <li class="pc-item">
+                                    <a class="pc-link" href="{{ route('course.category') }}"
+                                        data-i18n="Expired List">Category</a>
+                                </li>
+                                <li class="pc-item">
+                                    <a class="pc-link" href="{{ route('addCourse') }}"
+                                        data-i18n="Expired List">Create</a>
+                                </li>
+
+
+                            </ul>
+                        </li>
+
+                        <!-- Account Settings -->
+                        <li class="pc-item">
+                            <a class="pc-link" href="{{ route('userprofile') }}" data-i18n="AccountSettings">Account</a>
+                        </li>
+                    </ul>
+                </li>
 
 
 

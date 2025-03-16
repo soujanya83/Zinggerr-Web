@@ -179,7 +179,7 @@
                 </li> --}}
 
 
-                <li class="dropdown pc-h-item header-user-profile" style="margin-right: 64px;">
+                <li class="dropdown pc-h-item header-user-profile" style="margin-right: 14px;">
                     <span class="dropdown-toggle arrow-none me-0" href="#" role="button"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                         style="height: 56px;    width: 162px; radius: 50px;color:#04049b">
@@ -192,8 +192,7 @@
                         <img src="{{ asset('asset/images/user/download.jpg') }}" alt="image" class="user-avatar"
                             >
                         @endif
-                      <b>{{ Str::title(Auth::user()->name) }}</b>
-
+                        &nbsp;<b>{{ ucfirst(Str::before(Auth::user()->name, ' ')) }}</b>
                         <span class="dropdown-toggle" type="button" id="settingsDropdown"
                             data-bs-toggle="dropdown" aria-expanded="false">
                         </span>

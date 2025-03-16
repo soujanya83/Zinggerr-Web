@@ -302,8 +302,8 @@ class UserController extends Controller
             $query->where('user_id', $userId)
                 ->orWhereIn('name', $defaultRoles);
         })
-            ->whereNotIn('name', ['Superadmin'])->latest()
-            ->get();
+            ->whereNotIn('name', ['Superadmin'])->orderBy('created_at', 'asc')->get();
+
         return view('users.useradd', compact('role'));
     }
 

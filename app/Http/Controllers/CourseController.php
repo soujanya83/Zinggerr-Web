@@ -30,8 +30,119 @@ use Illuminate\Validation\Rule;
 use App\Models\FillBlanks;
 use App\Models\VideoQuiz;
 use Illuminate\Support\Collection;
+use App\Models\MontessoriAgeGroup;
+use App\Models\MontessoriAreas;
 class CourseController extends Controller
 {
+
+    public function courseadd(Request $request)
+    {
+        $userid = Auth::user()->id;
+        $categories = CoursesCategory::where('user_id', $userid)->get();
+
+        $agegroup = MontessoriAgeGroup::where('status', 1)->orderBy('created_at', 'asc')->get();
+        $areas = MontessoriAreas::where('status', 1)->orderBy('created_at', 'asc')->get();
+
+        return view('courses.add', compact('categories','agegroup','areas'));
+    }
+
+
+    public function courseupdate(Request $request, $id)
+    {
+        $back_url = $request->redirect_url ?? route('courses.list');
+        $validator = Validator::make($request->all(), [
+            'course_full_name' => 'required|string|max:255',
+            'course_short_name' => 'required|string|max:255',
+            'course_category' => 'required|string|max:100',
+            'age_groups' => 'required|string|max:100',
+            'areas' => 'required|string|max:100',
+            'course_id_number' => 'nullable|string|max:50',
+            'course_status' => 'required|boolean',
+            'downloa_status' => 'nullable|boolean',
+            'course_summary' => 'required|nullable|string|max:1000',
+            'course_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'course_layout' => 'required|nullable|string|max:255',
+            'course_format' => 'required|nullable|string|max:100',
+            'tags' => 'required|nullable|array',
+            'tags.*' => 'string|max:50',
+
+            // 'hidden_section' => 'nullable|string|max:255',
+            // 'course_sections' => 'required|integer|min:0|max:100',
+            // 'force_theme' => 'nullable|string|max:50',
+            // 'force_language' => 'nullable|string|max:50',
+            // 'no_announcements' => 'nullable|integer|min:0|max:255',
+            // 'gradebook_student' => 'nullable|boolean',
+            // 'activity_report' => 'nullable|boolean',
+            // 'activity_date' => 'nullable|boolean',
+            // 'file_uploads_size' => 'required',
+            // 'completion_tracking' => 'nullable|in:0,1',
+            // 'activity_completion_conditions' => 'nullable|in:0,1',
+            // 'group_mode' => 'nullable|string|max:50',
+            // 'force_group_mode' => 'nullable|boolean',
+            // 'default_group' => 'nullable|string|max:50',
+            // 'module_credit' => 'nullable|integer|min:0|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+
+        $course = Course::find($id);
+        if (!$course) {
+            // return response()->json(['success' => false, 'message' => 'Course not found'], 404);
+            return redirect()->back()->with('error', 'Course not found.');
+        }
+        $tags = $request->tags;
+        $tagsString = implode(',', $tags);
+        $slug = $this->generateUniqueSlug($request->course_full_name);
+        try {
+            $course->course_full_name = $request->course_full_name;
+            $course->slug = $slug;
+            $course->user_id = Auth::user()->id;
+            $course->course_short_name = $request->course_short_name;
+            $course->course_category = $request->course_category;
+            $course->course_start_date = $request->course_start_date;
+            $course->course_end_date = $request->course_end_date;
+            $course->course_id_number = $request->course_id_number ?? null;
+            $course->course_status = $request->course_status;
+            $course->downloa_status = $request->downloa_status ?? 0;
+            $course->course_summary = $request->course_summary;
+            $course->hidden_section = null;
+            $course->course_layout = $request->course_layout;
+            $course->course_sections = null;
+            $course->force_theme = null;
+            $course->force_language = null;
+            $course->no_announcements = null;
+            $course->gradebook_student = null;
+            $course->activity_report = null;
+            $course->activity_date = null;
+            $course->file_uploads_size = null;
+            $course->completion_tracking = null;
+            $course->activity_completion_conditions = null;
+            $course->group_mode = null;
+            $course->force_group_mode = null;
+            $course->default_group = null;
+            $course->course_format = $request->course_format;
+            $course->tags = $tagsString;
+            $course->module_credit = null;
+
+            if ($request->hasFile('course_image')) {
+                $filePath = $request->file('course_image')->store('courses', 'public');
+                $course->course_image = $filePath;
+            }
+            $course->save();
+            return redirect($back_url)->with('success', 'Course Updated successfully.');
+        } catch (\Exception $e) {
+
+            return redirect()->back()->with('error', 'Something went wrong. Please try again.');
+        }
+    }
+
+
+
 
     public function getInteractiveAsset($assetId)
     {
@@ -75,7 +186,8 @@ class CourseController extends Controller
 
 
 
-    public function setupinteractive(Request $request){
+    public function setupinteractive(Request $request)
+    {
         // dd($request->all());
         $validated = $request->validate([
             'video_id' => 'required|string', // UUIDs are strings
@@ -117,28 +229,30 @@ class CourseController extends Controller
     }
 
 
-    public function getvideointeractives(Request $request){
-       // Extract video name from the VideoPaths URL
-       $videoPath = $request->video_name;
+    public function getvideointeractives(Request $request)
+    {
+        // Extract video name from the VideoPaths URL
+        $videoPath = $request->video_name;
 
-       // Remove domain dynamically and keep only the video file name
-       $parsedUrl = parse_url($videoPath, PHP_URL_PATH); // Get only the path
-       $videoName = str_replace('/storage/', '', $parsedUrl);
-    //    dd($videoPath);
+        // Remove domain dynamically and keep only the video file name
+        $parsedUrl = parse_url($videoPath, PHP_URL_PATH); // Get only the path
+        $videoName = str_replace('/storage/', '', $parsedUrl);
+        //    dd($videoPath);
 
-     $interactives = InteractiveAsset::where('video_id', $videoName)
-                         ->orderBy('checkpoint_time', 'asc')
-                         ->get();
+        $interactives = InteractiveAsset::where('video_id', $videoName)
+            ->orderBy('checkpoint_time', 'asc')
+            ->get();
 
 
 
-     return response()->json([
-         'success' => true,
-         'interactives' => $interactives
-     ]);
+        return response()->json([
+            'success' => true,
+            'interactives' => $interactives
+        ]);
     }
 
-    public function getassetdetails(Request $request){
+    public function getassetdetails(Request $request)
+    {
         $assetid = $request->asset_id;
 
 
@@ -159,9 +273,8 @@ class CourseController extends Controller
         return response()->json([
             'success' => true,
             'asset' => $filteredAssets
-    ]);
-
-}
+        ]);
+    }
     public function deletefillintheblanks(Request $request)
     {
 
@@ -723,6 +836,9 @@ class CourseController extends Controller
     public function courseedit(Request $request, $slug)
     {
 
+        $agegroups = MontessoriAgeGroup::where('status', 1)->orderBy('created_at', 'asc')->get();
+        $areas = MontessoriAreas::where('status', 1)->orderBy('created_at', 'asc')->get();
+
         $userId = Auth::user()->id;
 
         $course = Course::where('slug', $slug)->first();
@@ -771,7 +887,19 @@ class CourseController extends Controller
             $assetsData = $response->json()['data'];
 
 
-            return view('courses.course_edit', compact('course', 'assetsData', 'categories', 'data', 'availableTeachers', 'userdata', 'availableUsers', 'id', 'permissionsdata'));
+            return view('courses.course_edit', compact(
+                'course',
+                'assetsData',
+                'categories',
+                'data',
+                'availableTeachers',
+                'userdata',
+                'availableUsers',
+                'id',
+                'permissionsdata',
+                'areas',
+                'agegroups'
+            ));
         } else {
             return redirect()->route('courses')->with('error', 'Course not found.');
         }
@@ -1197,7 +1325,9 @@ class CourseController extends Controller
             'course_full_name' => 'required|string|max:255',
             'course_short_name' => 'required|string|max:255',
             'course_category' => 'required|string|max:100',
-            'course_id_number' => 'required|nullable|string|max:50',
+            'age_groups' => 'required|string|max:100',
+            'areas' => 'required|string|max:100',
+            'course_id_number' => 'nullable|string|max:50',
             'course_status' => 'required|boolean',
             'downloa_status' => 'nullable|boolean',
             'course_summary' => 'required|nullable|string|max:1000',
@@ -1230,9 +1360,11 @@ class CourseController extends Controller
             $course->course_full_name = $request->course_full_name;
             $course->course_short_name = $request->course_short_name;
             $course->course_category = $request->course_category;
+            $course->age_group = $request->age_groups;
+            $course->area = $request->areas;
             $course->course_start_date = null;
             $course->course_end_date = null;
-            $course->course_id_number = $request->course_id_number;
+            $course->course_id_number = $request->course_id_number ?? null;
             $course->course_status = $request->course_status;
             $course->downloa_status = $request->downloa_status ?? 0;
             $course->course_summary = $request->course_summary;
@@ -1559,12 +1691,7 @@ class CourseController extends Controller
 
 
 
-    public function courseadd(Request $request)
-    {
-        $userid = Auth::user()->id;
-        $categories = CoursesCategory::where('user_id', $userid)->get();
-        return view('courses.add', compact('categories'));
-    }
+
 
     public function getUsers(Request $request)
     {
@@ -1608,99 +1735,7 @@ class CourseController extends Controller
 
 
 
-    public function courseupdate(Request $request, $id)
-    {
 
-
-        $validator = Validator::make($request->all(), [
-            'course_full_name' => 'required|string|max:255',
-            'course_short_name' => 'required|string|max:255',
-            'course_category' => 'required|string|max:100',
-            'course_id_number' => 'required|nullable|string|max:50',
-            'course_status' => 'required|boolean',
-            'downloa_status' => 'nullable|boolean',
-            'course_summary' => 'required|nullable|string|max:1000',
-            'course_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'course_layout' => 'required|nullable|string|max:255',
-            'course_format' => 'required|nullable|string|max:100',
-            'tags' => 'required|nullable|array',
-            'tags.*' => 'string|max:50',
-
-
-            // 'hidden_section' => 'nullable|string|max:255',
-            // 'course_sections' => 'required|integer|min:0|max:100',
-            // 'force_theme' => 'nullable|string|max:50',
-            // 'force_language' => 'nullable|string|max:50',
-            // 'no_announcements' => 'nullable|integer|min:0|max:255',
-            // 'gradebook_student' => 'nullable|boolean',
-            // 'activity_report' => 'nullable|boolean',
-            // 'activity_date' => 'nullable|boolean',
-            // 'file_uploads_size' => 'required',
-            // 'completion_tracking' => 'nullable|in:0,1',
-            // 'activity_completion_conditions' => 'nullable|in:0,1',
-            // 'group_mode' => 'nullable|string|max:50',
-            // 'force_group_mode' => 'nullable|boolean',
-            // 'default_group' => 'nullable|string|max:50',
-            // 'module_credit' => 'nullable|integer|min:0|max:255',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-
-        $course = Course::find($id);
-        if (!$course) {
-            // return response()->json(['success' => false, 'message' => 'Course not found'], 404);
-            return redirect()->back()->with('error', 'Course not found.');
-        }
-        $tags = $request->tags;
-        $tagsString = implode(',', $tags);
-        $slug = $this->generateUniqueSlug($request->course_full_name);
-        try {
-            $course->course_full_name = $request->course_full_name;
-            $course->slug = $slug;
-            $course->user_id = Auth::user()->id;
-            $course->course_short_name = $request->course_short_name;
-            $course->course_category = $request->course_category;
-            $course->course_start_date = $request->course_start_date;
-            $course->course_end_date = $request->course_end_date;
-            $course->course_id_number = $request->course_id_number;
-            $course->course_status = $request->course_status;
-            $course->downloa_status = $request->downloa_status ?? 0;
-            $course->course_summary = $request->course_summary;
-            $course->hidden_section = null;
-            $course->course_layout = $request->course_layout;
-            $course->course_sections = null;
-            $course->force_theme = null;
-            $course->force_language = null;
-            $course->no_announcements = null;
-            $course->gradebook_student = null;
-            $course->activity_report = null;
-            $course->activity_date = null;
-            $course->file_uploads_size = null;
-            $course->completion_tracking = null;
-            $course->activity_completion_conditions = null;
-            $course->group_mode = null;
-            $course->force_group_mode = null;
-            $course->default_group = null;
-            $course->course_format = $request->course_format;
-            $course->tags = $tagsString;
-            $course->module_credit = null;
-
-            if ($request->hasFile('course_image')) {
-                $filePath = $request->file('course_image')->store('courses', 'public');
-                $course->course_image = $filePath;
-            }
-            $course->save();
-            return redirect('courses')->with('success', 'Course Updated successfully.');
-        } catch (\Exception $e) {
-
-            return redirect()->back()->with('error', 'Something went wrong. Please try again.');
-        }
-    }
 
     public function coursedelete($id)
     {

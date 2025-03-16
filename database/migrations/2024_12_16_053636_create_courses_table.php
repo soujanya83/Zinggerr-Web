@@ -15,7 +15,9 @@ return new class extends Migration
             $table->string('slug', 255);
             $table->string('user_id', 255);
             $table->string('course_short_name', 255);
-            $table->string('course_category', 100);
+            $table->string('course_category', 100)->default(null)->nullable();
+            $table->string('age_group', 100)->default(null)->nullable();
+            $table->string('area', 100)->default(null)->nullable();
             $table->date('course_start_date')->nullable();
             $table->date('course_end_date')->nullable();
             $table->string('course_id_number', 50)->nullable();

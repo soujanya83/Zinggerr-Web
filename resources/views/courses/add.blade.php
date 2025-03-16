@@ -47,10 +47,12 @@
     .nav-link:hover i {
         background-color: #007bff;
     }
+
     .nav-tabs .nav-link:hover {
         color: #007bff;
         /* Hover effect for inactive tabs */
     }
+
     /* ............................ */
 </style>
 <style>
@@ -98,6 +100,7 @@
         background: rgb(248, 250, 252);
         border-radius: 8px;
     }
+
     .nav-link.active i {
         background-color: #007bff
     }
@@ -232,7 +235,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <div class="col-md-6" style="display: none">
                                                 <div class="form-floating mb-3">
                                                     <select name="course_category" class="form-select"
                                                         id="floatingShortname">
@@ -252,9 +255,51 @@
 
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3">
+                                                    <select name="age_groups" class="form-select"
+                                                        id="floatingShortname">
+                                                        <option>Select Age-Group</option>
+                                                        @foreach($agegroup as $agedata)
+                                                        <option value="{{ $agedata->short_name }}">{{
+                                                            $agedata->short_name
+                                                            }}</option>
+                                                        @endforeach
+
+                                                    </select>
+                                                    <label style="align-content: center;" for="floatingShortname">Select
+                                                        Montessori
+                                                        Age Group</label>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3">
+                                                    <select name="areas" class="form-select" id="floatingShortname">
+                                                        <option>Select Area</option>
+                                                        @foreach($areas as $areadata)
+                                                        <option value="{{ $areadata->full_name }}">{{
+                                                            $areadata->full_name
+                                                            }}</option>
+                                                        @endforeach
+
+                                                    </select>
+                                                    <label style="align-content: center;" for="floatingShortname">Select
+                                                        Montessori
+                                                        Area </label>
+                                                </div>
+
+                                            </div>
+
+
+
+
+
+
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3">
 
                                                     <input type="number" name="course_id_number" class="form-control"
-                                                        placeholder="Enter Course ID Number" required
+                                                        placeholder="Enter Course ID Number"
                                                         value="{{ old('course_id_number') }}">
                                                     <label style="align-content: center;" class="form-label">Course
                                                         ID Number</label>
@@ -400,7 +445,8 @@
                                                 class="form-label">Course layout</label>
                                         </div>
 
-                                    {{-- </div> --}}
+                                        {{--
+                                    </div> --}}
 
 
 
@@ -413,7 +459,7 @@
 
                                                 <div class="form-check-inline">
                                                     <input class="form-check-input" type="radio" name="course_status"
-                                                        id="statusshow" value="1" >
+                                                        id="statusshow" value="1">
                                                     <label class="form-check-label" for="statusshow"
                                                         style="color: #000">Show</label>
                                                 </div>
@@ -423,7 +469,7 @@
                                                     <input class="form-check-input" type="radio" name="course_status"
                                                         id="statushide" value="0" checked>
                                                     <label class="form-check-label" for="statushide"
-                                                        style="color: #000" >Hide</label>
+                                                        style="color: #000">Hide</label>
                                                 </div>
                                             </div>
                                         </div>

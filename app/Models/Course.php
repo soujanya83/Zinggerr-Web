@@ -11,6 +11,8 @@ class Course extends Model
         'course_short_name',
         'user_id',
         'course_category',
+        'age_group',
+        'area',
         'course_start_date',
         'course_end_date',
         'course_id_number',
