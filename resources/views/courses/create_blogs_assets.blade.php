@@ -191,7 +191,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="videosContent" class="asset-content" style="display: none;">
+
+
+                                    {{-- <div id="videosContent" class="asset-content" style="display: none;">
                                         <label for="course_assets_video">Assets Video:</label>
                                         <div class="form-floating mb-3">
 
@@ -225,7 +227,39 @@
                                             </div>
                                             <p id="progressText" class="mt-2 text-center">0%</p>
                                         </div>
+                                    </div> --}}
+
+                                    <div class="col-md-12">
+                                        <div id="videosContent" class="asset-content" style="display: none;">
+                                            <label for="course_assets_video">Assets Video:</label>
+                                            <div class="form-floating mb-3">
+                                                <div class="d-flex align-items-center rounded">
+                                                    <div class="d-flex align-items-center w-100">
+                                                        <label for="fileUpload" class="file-upload-label w-100">
+                                                            <div class="upload-icon mb-3 text-center">
+                                                                <i class="fas fa-cloud-upload-alt fa-3x text-primary"></i>
+                                                            </div>
+                                                            <span class="text-muted d-block text-center" style="    margin-top: -19px;">Click to upload file here</span>
+                                                            <span id="fileName" class="ms-2"></span>
+                                                            <input type="file" id="fileUpload" name="course_assets_video"
+                                                                class="file-upload-input d-none" onchange="showFileName(this)">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div id="progressWrapper" style="display: none; margin-top: 20px;">
+                                                <div class="progress">
+                                                    <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated"
+                                                        role="progressbar" style="width: 0%;" aria-valuemin="0" aria-valuemax="100">
+                                                    </div>
+                                                </div>
+                                                <p id="progressText" class="mt-2 text-center">0%</p>
+                                            </div>
+                                        </div>
                                     </div>
+
+
 
                                     <div id="youtubeContent" class="asset-content" style="display: none;">
                                         <div class="col-md-12">

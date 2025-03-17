@@ -202,6 +202,33 @@
                             </li>
 
                             <li class="nav-item" role="presentation">
+                                <a href="{{ route('add_assets', $course->slug) }}" id="createChapterButton"
+                                    class="btn nav-link   mt-1" style="display: none;" tabindex="-1"
+                                    style="background-color: white;">
+                                    <i class="material-icons-two-tone me-2" style="font-size: 21px;">layers</i> Manage
+                                    Assets
+                                </a>
+
+                                <a href="{{ route('create_section', $course->slug) }}" id="createsectionButton"
+                                    class="btn  nav-link  mt-1" style="display: none;" tabindex="-1"
+                                    style="background-color: white;">
+                                    <i class="material-icons-two-tone me-2" style="font-size: 21px;">layers</i> Create
+                                    Sections
+                                </a>
+                                <a href="{{ route('manage_activity', $course->slug) }}" id="createactivityButton"
+                                    class="btn nav-link  mt-1" style="display: none;" tabindex="-1"
+                                    style="background-color: white;">
+                                    <i class="material-icons-two-tone me-2" style="font-size: 21px;">layers</i> Manage
+                                    Activity
+                                </a>
+                            </li>
+
+
+
+
+
+
+                            <li class="nav-item" role="presentation">
                                 <a class="nav-link" id="profile-tab-8" data-bs-toggle="tab" href="#profile-8" role="tab"
                                     aria-selected="false" tabindex="-1" style="    background-color: white;">
                                     <i class="material-icons-two-tone me-2">group</i>
@@ -402,318 +429,200 @@
 
                             <div class="tab-pane fade mt-3 {{ Request::is('course/*/format') ? 'show active' : '' }}"
                                 id="profile-3" role="tabpanel" aria-labelledby="profile-tab-3">
-                                <div class="">
-                                    <div class="row">
-                                        <div class="col-md-4" style="display:none">
-                                            <div class="form-floating mb-3">
+                                <div class="row">
+                                    <div class="card-body">
+                                        <form method="post" enctype="multipart/form-data"
+                                            action="{{ route('course_update', $course->id) }}">
+                                            @csrf
+                                            <input type="hidden" name="redirect_url" value="{{ url()->previous() }}">
 
-                                                <select name="course_layout" class="form-select">
-                                                    <option value="Hidden sections are shown as not available" {{
-                                                        old('course_layout', $course->course_layout) == 'Hidden sections
-                                                        are shown as not available' ? 'selected' : '' }}>
-                                                        Hidden sections are shown as not available
-                                                    </option>
-                                                    <option value="Hidden sections are completely invisible" {{
-                                                        old('course_layout', $course->course_layout) == 'Hidden sections
-                                                        are completely invisible' ? 'selected' : '' }}>
-                                                        Hidden sections are completely invisible
-                                                    </option>
-                                                </select>
-                                                <label style="align-content: center;" for="emailInput"
-                                                    class="form-label">Course layout</label>
-                                            </div>
-
-                                        </div>
-
-
-                                        {{-- <div class="col-md-3">
-                                            <div class="form-floating mb-3">
-                                                <div class="dropdown">
-                                                    <label style="align-content: center;" for="emailInput"
-                                                        class="form-label">Format:
-                                                        &nbsp&nbsp&nbsp</label>
-                                                    <button class="btn btn-shadow btn-primary-line dropdown-toggle"
-                                                        type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                                        aria-expanded="false">
-                                                        Select Format
-                                                    </button>
-                                                    <ul class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
-                                                        <li>
-                                                            <label style="align-content: center;"
-                                                                class="dropdown-item d-flex align-items-start">
-                                                                <input type="radio" name="course_format"
-                                                                    value="Custom sections"
-                                                                    class="form-check-input me-2" {{
-                                                                    old('course_format', $course->course_format) ==
-                                                                'Custom sections' ? 'checked' : '' }}>
-                                                                &nbsp; &nbsp;
-                                                                <div>
-                                                                    <strong>Custom sections</strong><br>
-                                                                    <span class="text-muted">The course is divided into
-                                                                        customizable sections.</span>
-                                                                </div>
-                                                            </label>
-                                                        </li>
-                                                        <li>
-                                                            <label style="align-content: center;"
-                                                                class="dropdown-item d-flex align-items-start">
-                                                                <input type="radio" name="course_format"
-                                                                    value="Weekly sections"
-                                                                    class="form-check-input me-2" {{
-                                                                    old('course_format', $course->course_format) ==
-                                                                'Weekly sections' ? 'checked' : '' }}> &nbsp; &nbsp;
-                                                                <div>
-                                                                    <strong>Weekly sections</strong><br>
-                                                                    <span class="text-muted">The course is divided into
-                                                                        sections corresponding to each week, beginning
-                                                                        from the course start date.</span>
-                                                                </div>
-                                                            </label>
-                                                        </li>
-                                                        <li>
-                                                            <label style="align-content: center;"
-                                                                class="dropdown-item d-flex align-items-start">
-                                                                <input type="radio" name="course_format"
-                                                                    value="Single activity"
-                                                                    class="form-check-input me-2" {{
-                                                                    old('course_format', $course->course_format) ==
-                                                                'Single activity' ? 'checked' : '' }}> &nbsp; &nbsp;
-                                                                <div>
-                                                                    <strong>Single activity</strong><br>
-                                                                    <span class="text-muted">The course contains only
-                                                                        one activity or resource.</span>
-                                                                </div>
-                                                            </label>
-                                                        </li>
-
-
-                                                    </ul>
-                                                    <a href="{{ route('add_assets', $course->slug) }}"
-                                                        id="createChapterButton" class="btn btn-shadow btn-success mt-3"
-                                                        style="display: none;width: 158px; margin-left: 63px;">
-                                                        Manage Assets
-                                                    </a>
-
-                                                    <a href="{{ route('create_section', $course->slug) }}"
-                                                        id="createsectionButton" class="btn btn-shadow btn-success mt-3"
-                                                        style="display: none;width: 158px; margin-left: 63px;">
-                                                        Create Sections
-                                                    </a>
-                                                    <a href="{{ route('manage_activity', $course->slug) }}"
-                                                        id="createactivityButton"
-                                                        class="btn btn-shadow btn-success mt-3"
-                                                        style="display: none;width: 158px; margin-left: 63px;">
-                                                        Manage Activity
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div> --}}
-
-                                        <div class="col-md-3">
-                                            <div class="form-floating mb-3">
-                                                <div class="dropdown">
-                                                    <label for="dropdownMenuButton" class="form-label">Format:</label>
-                                                    <button class="btn btn-shadow btn-outline-primary dropdown-toggle"
-                                                        type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                                        aria-expanded="false" style="margin-left: 15px;">
-                                                        Select Format
-                                                    </button>
-                                                    <ul class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
-                                                        <li>
-                                                            <label class="dropdown-item d-flex align-items-start">
-                                                                <input type="radio" name="course_format"
-                                                                    value="Custom sections"
-                                                                    class="form-check-input me-2"
-                                                                    onchange="updateDropdown(this)" {{
-                                                                    old('course_format', $course->course_format) ==
-                                                                'Custom sections' ? 'checked' : '' }}>
-                                                                <div>
-                                                                    <strong>Custom sections</strong><br>
-                                                                    <span class="text-muted">The course is divided into
-                                                                        customizable sections.</span>
-                                                                </div>
-                                                            </label>
-                                                        </li>
-                                                        <li>
-                                                            <label class="dropdown-item d-flex align-items-start">
-                                                                <input type="radio" name="course_format"
-                                                                    value="Weekly sections"
-                                                                    class="form-check-input me-2"
-                                                                    onchange="updateDropdown(this)" {{
-                                                                    old('course_format', $course->course_format) ==
-                                                                'Weekly sections' ? 'checked' : '' }}>
-                                                                <div>
-                                                                    <strong>Weekly sections</strong><br>
-                                                                    <span class="text-muted">The course is divided into
-                                                                        sections corresponding to each week, beginning
-                                                                        from the course start date.</span>
-                                                                </div>
-                                                            </label>
-                                                        </li>
-                                                        <li>
-                                                            <label class="dropdown-item d-flex align-items-start">
-                                                                <input type="radio" name="course_format"
-                                                                    value="Single activity"
-                                                                    class="form-check-input me-2"
-                                                                    onchange="updateDropdown(this)" {{
-                                                                    old('course_format', $course->course_format) ==
-                                                                'Single activity' ? 'checked' : '' }}>
-                                                                <div>
-                                                                    <strong>Single activity</strong><br>
-                                                                    <span class="text-muted">The course contains only
-                                                                        one activity or resource.</span>
-                                                                </div>
-                                                            </label>
-                                                        </li>
-                                                    </ul>
-                                                    <a href="{{ route('add_assets', $course->slug) }}"
-                                                        id="createChapterButton" class="btn btn-shadow btn-success mt-3"
-                                                        style="display: none;width: 158px; margin-left: 63px;">
-                                                        Manage Assets
-                                                    </a>
-
-                                                    <a href="{{ route('create_section', $course->slug) }}"
-                                                        id="createsectionButton" class="btn btn-shadow btn-success mt-3"
-                                                        style="display: none;width: 158px; margin-left: 63px;">
-                                                        Create Sections
-                                                    </a>
-                                                    <a href="{{ route('manage_activity', $course->slug) }}"
-                                                        id="createactivityButton"
-                                                        class="btn btn-shadow btn-success mt-3"
-                                                        style="display: none;width: 158px; margin-left: 63px;">
-                                                        Manage Activity
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-
-
-
-
-                                        <!-- Interactive List Button -->
-                                        <div class="col-md-3" style="display: none">
-                                            <div class="form-floating mb-3">
-                                                <div class="dropdown">
-                                                    <label for="emailInput" class="form-label">InterActive:
-                                                        &nbsp;&nbsp;</label>
-                                                    <button class="btn btn-shadow btn-primary" type="button"
-                                                        data-bs-toggle="modal" data-bs-target="#assetsModal">
-                                                        InterActive
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-
-
-
-
-
-                                        <div class="col-md-4">
-                                            <label style="align-content: center;" for="tags"
-                                                class="form-label">Tags:</label> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
-                                            <div class="form-floating mb-3">
-                                                @php
-                                                // Ensure $tags is always an array
-                                                $tags = is_array(old('tags', $course->tags ?? []))
-                                                ? old('tags', $course->tags ?? [])
-                                                : explode(',', old('tags', $course->tags ?? ''));
-                                                @endphp
-
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" value="Basic"
-                                                        id="basic" name="tags[]" {{ in_array('Basic', $tags) ? 'checked'
-                                                        : '' }}>
-                                                    <label class="form-check-label" for="basic"
-                                                        style="color: black;">Basic</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" value="Advanced"
-                                                        id="advanced" name="tags[]" {{ in_array('Advanced', $tags)
-                                                        ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="advanced"
-                                                        style="color: black;">Advanced</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" value="Intermediate"
-                                                        id="intermediate" name="tags[]" {{ in_array('Intermediate',
-                                                        $tags) ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="intermediate"
-                                                        style="color: black;">Intermediate</label>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-
-                                        <div class="col-md-2">
-                                            <div class="mb-3">
-                                                <label for="status" style="color: #000">Course
-                                                    Visibility:</label>
-                                                <div style="margin-top: 7px;">
-
-                                                    <div class="form-check-inline">
-                                                        <input class="form-check-input" type="radio"
-                                                            name="course_status" id="statusshow" value="1" {{
-                                                            old('course_status', $course->course_status) == 1 ?
-                                                        'checked' : '' }}>
-                                                        <label class="form-check-label" for="statusshow"
-                                                            style="color: #000">Show</label>
-                                                    </div>
-
-
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio"
-                                                            name="course_status" id="statushide" value="0" {{
-                                                            old('course_status', $course->course_status) == 0 ?
-                                                        'checked' : '' }}>
-                                                        <label class="form-check-label" for="statushide"
-                                                            style="color: #000">Hide</label>
+                                            <div class="row">
+                                                <div class="col-md-4" style="display:none">
+                                                    <div class="form-floating mb-3">
+                                                        <select name="course_layout" class="form-select">
+                                                            <option value="Hidden sections are shown as not available"
+                                                                {{ old('course_layout', $course->course_layout) ==
+                                                                'Hidden sections are shown as not available' ?
+                                                                'selected' : '' }}>
+                                                                Hidden sections are shown as not available
+                                                            </option>
+                                                            <option value="Hidden sections are completely invisible" {{
+                                                                old('course_layout', $course->course_layout) == 'Hidden
+                                                                sections are completely invisible' ? 'selected' : '' }}>
+                                                                Hidden sections are completely invisible
+                                                            </option>
+                                                        </select>
+                                                        <label style="align-content: center;" for="emailInput"
+                                                            class="form-label">Course layout</label>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-md-3">
-                                            <div class="mb-3">
-                                                <label for="status" style="color: #000">Enable
-                                                    Download Course Content:</label>
-                                                <div style="margin-top: 7px;">
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio"
-                                                            name="downloa_status" id="statusyes" value="1" {{
-                                                            old('course_status', $course->downloa_status) == 1 ?
-                                                        'checked' : '' }}>
-                                                        <label class="form-check-label" for="statusyes"
-                                                            style="color: #000">Yes</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio"
-                                                            name="downloa_status" id="statusno" value="0" {{
-                                                            old('course_status', $course->downloa_status) == 0 ?
-                                                        'checked' : '' }}>
-                                                        <label class="form-check-label" for="statusno"
-                                                            style="color: #000">No</label>
+                                                <div class="col-md-3">
+                                                    <div class="form-floating mb-3">
+                                                        <div class="dropdown">
+                                                            <label for="dropdownMenuButton"
+                                                                class="form-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Format:</label><br>
+                                                            <button
+                                                                class="btn btn-shadow btn-outline-primary dropdown-toggle"
+                                                                type="button" id="dropdownMenuButton"
+                                                                data-bs-toggle="dropdown" aria-expanded="false"
+                                                                style="margin-left: 15px;">
+                                                                Select Format
+                                                            </button>
+                                                            <ul class="dropdown-menu p-3"
+                                                                aria-labelledby="dropdownMenuButton">
+                                                                <li>
+                                                                    <label
+                                                                        class="dropdown-item d-flex align-items-start">
+                                                                        <input type="radio" name="course_format"
+                                                                            value="Custom sections"
+                                                                            class="form-check-input me-2"
+                                                                            onchange="updateDropdown(this)" {{
+                                                                            old('course_format', $course->course_format)
+                                                                        == 'Custom sections' ? 'checked' : '' }}>
+                                                                        <div>
+                                                                            <strong>Custom sections</strong><br>
+                                                                            <span class="text-muted">The course is
+                                                                                divided into customizable
+                                                                                sections.</span>
+                                                                        </div>
+                                                                    </label>
+                                                                </li>
+                                                                <li>
+                                                                    <label
+                                                                        class="dropdown-item d-flex align-items-start">
+                                                                        <input type="radio" name="course_format"
+                                                                            value="Weekly sections"
+                                                                            class="form-check-input me-2"
+                                                                            onchange="updateDropdown(this)" {{
+                                                                            old('course_format', $course->course_format)
+                                                                        == 'Weekly sections' ? 'checked' : '' }}>
+                                                                        <div>
+                                                                            <strong>Weekly sections</strong><br>
+                                                                            <span class="text-muted">The course is
+                                                                                divided into sections corresponding to
+                                                                                each week, beginning from the course
+                                                                                start date.</span>
+                                                                        </div>
+                                                                    </label>
+                                                                </li>
+                                                                <li>
+                                                                    <label
+                                                                        class="dropdown-item d-flex align-items-start">
+                                                                        <input type="radio" name="course_format"
+                                                                            value="Single activity"
+                                                                            class="form-check-input me-2"
+                                                                            onchange="updateDropdown(this)" {{
+                                                                            old('course_format', $course->course_format)
+                                                                        == 'Single activity' ? 'checked' : '' }}>
+                                                                        <div>
+                                                                            <strong>Single activity</strong><br>
+                                                                            <span class="text-muted">The course contains
+                                                                                only one activity or resource.</span>
+                                                                        </div>
+                                                                    </label>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-3" style="display: none">
+                                                    <div class="form-floating mb-3">
+                                                        <div class="dropdown">
+                                                            <label for="emailInput"
+                                                                class="form-label">InterActive:</label>
+                                                            <button class="btn btn-shadow btn-primary" type="button"
+                                                                data-bs-toggle="modal" data-bs-target="#assetsModal">
+                                                                InterActive
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label style="align-content: center;" for="tags"
+                                                        class="form-label">Tags:</label>
+                                                    <div class="form-floating mb-3">
+                                                        @php
+                                                        $tags = is_array(old('tags', $course->tags ?? [])) ? old('tags',
+                                                        $course->tags ?? []) : explode(',', old('tags', $course->tags ??
+                                                        ''));
+                                                        @endphp
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                value="Basic" id="basic" name="tags[]" {{
+                                                                in_array('Basic', $tags) ? 'checked' : '' }}>
+                                                            <label class="form-check-label" for="basic"
+                                                                style="color: black;">Basic</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                value="Advanced" id="advanced" name="tags[]" {{
+                                                                in_array('Advanced', $tags) ? 'checked' : '' }}>
+                                                            <label class="form-check-label" for="advanced"
+                                                                style="color: black;">Advanced</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                value="Intermediate" id="intermediate" name="tags[]" {{
+                                                                in_array('Intermediate', $tags) ? 'checked' : '' }}>
+                                                            <label class="form-check-label" for="intermediate"
+                                                                style="color: black;">Intermediate</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="mb-3">
+                                                        <label for="status" style="color: #000">Course
+                                                            Visibility:</label>
+                                                        <div style="margin-top: 7px;">
+                                                            <div class="form-check-inline">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="course_status" id="statusshow" value="1" {{
+                                                                    old('course_status', $course->course_status) == 1 ?
+                                                                'checked' : '' }}>
+                                                                <label class="form-check-label" for="statusshow"
+                                                                    style="color: #000">Show</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="course_status" id="statushide" value="0" {{
+                                                                    old('course_status', $course->course_status) == 0 ?
+                                                                'checked' : '' }}>
+                                                                <label class="form-check-label" for="statushide"
+                                                                    style="color: #000">Hide</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="mb-3">
+                                                        <label for="status" style="color: #000">Enable Download Course
+                                                            Content:</label>
+                                                        <div style="margin-top: 7px;">
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="downloa_status" id="statusyes" value="1" {{
+                                                                    old('course_status', $course->downloa_status) == 1 ?
+                                                                'checked' : '' }}>
+                                                                <label class="form-check-label" for="statusyes"
+                                                                    style="color: #000">Yes</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="downloa_status" id="statusno" value="0" {{
+                                                                    old('course_status', $course->downloa_status) == 0 ?
+                                                                'checked' : '' }}>
+                                                                <label class="form-check-label" for="statusno"
+                                                                    style="color: #000">No</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 mt-5 text-end">
+                                                    <button type="submit" class="btn btn-shadow btn-primary">Update
+                                                        Course</button>
+                                                </div>
                                             </div>
-                                        </div>
-
-
-
-
-                                        <div class="col-md-12 mt-5" style="margin-left: 85%;">
-                                            <button type="submit" class="btn btn-shadow btn-primary">Update
-                                                Course</button>
-                                        </div>
                                         </form>
-
                                     </div>
                                 </div>
                             </div>

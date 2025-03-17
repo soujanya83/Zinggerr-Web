@@ -7,6 +7,9 @@
     integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+<!-- Plyr.js CSS & JS -->
+<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+<script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
 
 
 @extends('layouts.app')
@@ -15,7 +18,7 @@
 
 @section('content')
 @include('partials.sidebar')
-@include('partials.headerdashboard')
+@include('partials.header')
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/resumable.js/1.0.0/resumable.min.js"></script> --}}
 <style>
     #uploadProgress {
@@ -112,7 +115,16 @@
         border-radius: 1px;
         transition: transform 0.2s ease;
     }
+
+
+
+
+
 </style>
+
+
+
+
 <div class="pc-container">
     <div class="pc-content">
         <div class="page-header">
@@ -406,7 +418,8 @@
 
 <!-- Interactive Modal -->
 <div class="modal fade" id="interactiveModalplay" tabindex="-1" aria-hidden="true" style="z-index:9999999">
-    <div class="modal-dialog modal-xl"> <!-- Bigger modal for better display -->
+    <div class="modal-dialog modal-xl">
+        <!-- Bigger modal for better display -->
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Interactive Content</h5>
@@ -484,15 +497,13 @@
                 <button class="btn btn-warning" style="margin-bottom:5px;" onclick="addintractivegames()">Add
                     InterActive &nbsp;<i class="fa-solid fa-pen-to-square fa-fade"></i> </button>
                 <div id="quizContainer" style="position: relative; width: 100%; height: auto;"></div>
+
                 <div class="video-container" style="position: relative;">
-                    <video id="editVideoPlayer" width="100%" controls>
+                    <video id="editVideoPlayer" width="100%"  controls>
                         <source src="" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 </div>
-
-                <!-- <h4 id="editVideoTopic" class="mt-3"></h4> -->
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
@@ -500,6 +511,11 @@
         </div>
     </div>
 </div>
+
+
+
+
+
 
 
 
