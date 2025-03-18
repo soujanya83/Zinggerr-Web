@@ -32,28 +32,206 @@ use App\Models\VideoQuiz;
 use Illuminate\Support\Collection;
 use App\Models\MontessoriAgeGroup;
 use App\Models\MontessoriAreas;
+
 class CourseController extends Controller
 {
 
     public function courseadd(Request $request)
     {
+        $montessori_area = $request->has('montessori_area') ? ucwords($request->montessori_area) : null;
+        $montessori_agegroup = $request->has('montessori_agegroup') ? ucwords($request->montessori_agegroup) : null;
+
         $userid = Auth::user()->id;
         $categories = CoursesCategory::where('user_id', $userid)->get();
 
         $agegroup = MontessoriAgeGroup::where('status', 1)->orderBy('created_at', 'asc')->get();
         $areas = MontessoriAreas::where('status', 1)->orderBy('created_at', 'asc')->get();
 
-        return view('courses.add', compact('categories','agegroup','areas'));
+        return view('courses.add', compact('categories', 'agegroup', 'areas', 'montessori_area', 'montessori_agegroup'));
     }
 
 
-    public function courseupdate(Request $request, $id)
+    public function courseedit(Request $request, $slug)
     {
-        $back_url = $request->redirect_url ?? route('courses.list');
+
+
+        $agegroups = MontessoriAgeGroup::where('status', 1)->orderBy('created_at', 'asc')->get();
+        $areas = MontessoriAreas::where('status', 1)->orderBy('created_at', 'asc')->get();
+
+        $userId = Auth::user()->id;
+
+        $course = Course::where('slug', $slug)->first();
+
+        if ($course) {
+            $id = $course->id;
+            $data = CoursesAssign::select('users.*', 'courses_assign.id as assignId', 'courses_assign.status as assignStatus')
+                ->where('courses_id', $id)->where('users.type', 'Teacher')->where('users.user_id', $userId)
+                ->join('users', 'users.id', 'courses_assign.users_id')
+                ->paginate(10);
+
+            $assignedTeachersIds = CoursesAssign::where('courses_id', $id)
+                ->pluck('users_id');
+
+            $availableTeachers = User::where('type', 'Teacher')->where('user_id', $userId)
+                ->whereNotIn('id', $assignedTeachersIds) // Exclude assigned teachers
+                ->paginate(10);
+
+
+            $userdata = CoursesAssign::select('users.*', 'courses_assign.id as assignId', 'courses_assign.status as assignStatus')
+                ->where('courses_id', $id)->where('users.type', 'Student')->where('users.user_id', $userId)
+                ->join('users', 'users.id', 'courses_assign.users_id')
+                ->paginate(10);
+
+            $assignedUsersIds = CoursesAssign::where('courses_id', $id)
+                ->pluck('users_id'); // Get all assigned teacher IDs for the course
+
+            $availableUsers = User::where('type', 'Student')->where('user_id', $userId)
+                ->whereNotIn('id', $assignedUsersIds) // Exclude assigned teachers
+                ->paginate(10);
+
+            $categories = CoursesCategory::all();
+
+            $courseName = 'course';
+            $permissionsdata = Permission::where('name', 'LIKE', '%' . 'course' . '%')->get();
+
+            session()->put('course_id_f_edit', $id);
+
+            // assets data get from(API) assets project
+
+
+            $response = Http::timeout(0)->get('https://assets.zinggerr.com/api/course/assets-list');
+            if ($response->failed()) {
+                return back()->with('error', 'Failed to fetch data from API.');
+            }
+            $assetsData = $response->json()['data'];
+
+
+            return view('courses.course_edit', compact(
+                'course',
+                'assetsData',
+                'categories',
+                'data',
+                'availableTeachers',
+                'userdata',
+                'availableUsers',
+                'id',
+                'permissionsdata',
+                'areas',
+                'agegroups'
+            ));
+        } else {
+            return redirect()->route('courses')->with('error', 'Course not found.');
+        }
+    }
+
+
+    public function createCourse(Request $request)
+    {
+
+
         $validator = Validator::make($request->all(), [
             'course_full_name' => 'required|string|max:255',
             'course_short_name' => 'required|string|max:255',
-            'course_category' => 'required|string|max:100',
+            // 'course_category' => 'required|string|max:100',
+            'age_groups' => 'required|string|max:100',
+            'areas' => 'required|string|max:100',
+            'course_id_number' => 'nullable|string|max:50',
+            'course_status' => 'required|boolean',
+            'downloa_status' => 'nullable|boolean',
+            'course_summary' => 'required|nullable|string|max:1000',
+            'course_image' => 'required|nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'course_layout' => 'nullable|string|max:255',
+            'course_format' => 'nullable|string|max:100',
+            'tags' => 'required|nullable|array',
+            'tags.*' => 'string|max:50',
+        ]);
+
+
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // Step 1 back
+
+
+        $tags = $request->tags; // This should be an array like ['Basic', 'Advanced', 'Intermediate']
+        $tagsString = implode(',', $tags);
+        $uuid = (string) Guid::uuid4();
+
+        $slug = $this->generateUniqueSlug($request->course_full_name);
+
+        try {
+            $course = new Course();
+            $course->id = $uuid;
+            $course->slug = $slug;
+
+            $course->user_id = Auth::user()->id;
+            $course->course_full_name = $request->course_full_name;
+            $course->course_short_name = $request->course_short_name;
+            $course->course_category = $request->course_category ?? null;
+            $course->age_group = $request->age_groups;
+            $course->area = $request->areas;
+            $course->course_start_date = null;
+            $course->course_end_date = null;
+            $course->course_id_number = $request->course_id_number ?? null;
+            $course->course_status = $request->course_status;
+            $course->downloa_status = $request->downloa_status ?? 0;
+            $course->course_summary = $request->course_summary;
+            $course->hidden_section = null;
+            $course->course_layout = $request->course_layout;
+            $course->course_sections = null;
+            $course->force_theme = null;
+            $course->force_language = null;
+            $course->no_announcements = null;
+            $course->gradebook_student = null;
+            $course->activity_report = null;
+            $course->activity_date = null;
+            $course->file_uploads_size = null;
+            $course->completion_tracking = null;
+            $course->activity_completion_conditions = null;
+            $course->group_mode = null;
+            $course->force_group_mode = null;
+            $course->default_group = null;
+            $course->course_format = $request->course_format;
+            $course->tags = $tagsString;
+            $course->module_credit = null;
+
+
+            if ($request->hasFile('course_image')) {
+                $filePath = $request->file('course_image')->store('courses', 'public');
+                $course->course_image = $filePath;
+            }
+            $course->save();
+            return redirect()->route('after_course_create', ['slug' => $slug])->with('success', 'Course Create successfully.');
+        } catch (\Exception $e) {
+
+            return redirect()->back()->with('error', 'Something went wrong. Please try again.');
+        }
+    }
+
+    public function courseupdate(Request $request, $id)
+    {
+
+        // $back_url = $request->redirect_url ?? route('courses.list');
+        $ageGroups = ['toddlers', 'early-childhood', 'elementarys'];
+        $areas = ['practical-life', 'sensorial', 'mathematics', 'language', 'cultural-studies'];
+
+        // Convert age_groups to lowercase and replace spaces with hyphens
+        $formattedAgeGroup = strtolower(str_replace(' ', '-', $request->age_groups));
+        $selectedAgeGroup = in_array($formattedAgeGroup, $ageGroups) ? $formattedAgeGroup : null;
+
+        // Convert areas to lowercase and replace spaces with hyphens
+        $formattedArea = strtolower(str_replace(' ', '-', $request->areas));
+        $selectedArea = in_array($formattedArea, $areas) ? $formattedArea : null;
+
+        $back_url = url('courses/' . $selectedAgeGroup . '/' . $selectedArea);
+
+        $validator = Validator::make($request->all(), [
+            'course_full_name' => 'required|string|max:255',
+            'course_short_name' => 'required|string|max:255',
+            // 'course_category' => 'required|string|max:100',
             'age_groups' => 'required|string|max:100',
             'areas' => 'required|string|max:100',
             'course_id_number' => 'nullable|string|max:50',
@@ -103,13 +281,17 @@ class CourseController extends Controller
             $course->slug = $slug;
             $course->user_id = Auth::user()->id;
             $course->course_short_name = $request->course_short_name;
-            $course->course_category = $request->course_category;
+            $course->course_category = $request->course_category ?? null;
             $course->course_start_date = $request->course_start_date;
             $course->course_end_date = $request->course_end_date;
             $course->course_id_number = $request->course_id_number ?? null;
             $course->course_status = $request->course_status;
             $course->downloa_status = $request->downloa_status ?? 0;
             $course->course_summary = $request->course_summary;
+
+            $course->age_group = $request->age_groups;
+            $course->area = $request->areas;
+
             $course->hidden_section = null;
             $course->course_layout = $request->course_layout;
             $course->course_sections = null;
@@ -833,77 +1015,7 @@ class CourseController extends Controller
     }
 
 
-    public function courseedit(Request $request, $slug)
-    {
 
-        $agegroups = MontessoriAgeGroup::where('status', 1)->orderBy('created_at', 'asc')->get();
-        $areas = MontessoriAreas::where('status', 1)->orderBy('created_at', 'asc')->get();
-
-        $userId = Auth::user()->id;
-
-        $course = Course::where('slug', $slug)->first();
-
-        if ($course) {
-            $id = $course->id;
-            $data = CoursesAssign::select('users.*', 'courses_assign.id as assignId', 'courses_assign.status as assignStatus')
-                ->where('courses_id', $id)->where('users.type', 'Teacher')->where('users.user_id', $userId)
-                ->join('users', 'users.id', 'courses_assign.users_id')
-                ->paginate(10);
-
-            $assignedTeachersIds = CoursesAssign::where('courses_id', $id)
-                ->pluck('users_id');
-
-            $availableTeachers = User::where('type', 'Teacher')->where('user_id', $userId)
-                ->whereNotIn('id', $assignedTeachersIds) // Exclude assigned teachers
-                ->paginate(10);
-
-
-            $userdata = CoursesAssign::select('users.*', 'courses_assign.id as assignId', 'courses_assign.status as assignStatus')
-                ->where('courses_id', $id)->where('users.type', 'Student')->where('users.user_id', $userId)
-                ->join('users', 'users.id', 'courses_assign.users_id')
-                ->paginate(10);
-
-            $assignedUsersIds = CoursesAssign::where('courses_id', $id)
-                ->pluck('users_id'); // Get all assigned teacher IDs for the course
-
-            $availableUsers = User::where('type', 'Student')->where('user_id', $userId)
-                ->whereNotIn('id', $assignedUsersIds) // Exclude assigned teachers
-                ->paginate(10);
-
-            $categories = CoursesCategory::all();
-
-            $courseName = 'course';
-            $permissionsdata = Permission::where('name', 'LIKE', '%' . 'course' . '%')->get();
-
-            session()->put('course_id_f_edit', $id);
-
-            // assets data get from(API) assets project
-
-
-            $response = Http::timeout(0)->get('https://assets.zinggerr.com/api/course/assets-list');
-            if ($response->failed()) {
-                return back()->with('error', 'Failed to fetch data from API.');
-            }
-            $assetsData = $response->json()['data'];
-
-
-            return view('courses.course_edit', compact(
-                'course',
-                'assetsData',
-                'categories',
-                'data',
-                'availableTeachers',
-                'userdata',
-                'availableUsers',
-                'id',
-                'permissionsdata',
-                'areas',
-                'agegroups'
-            ));
-        } else {
-            return redirect()->route('courses')->with('error', 'Course not found.');
-        }
-    }
 
 
     public function getUserPermissions(Request $request, $userId)
@@ -1317,88 +1429,7 @@ class CourseController extends Controller
         }
     }
 
-    public function createCourse(Request $request)
-    {
 
-
-        $validator = Validator::make($request->all(), [
-            'course_full_name' => 'required|string|max:255',
-            'course_short_name' => 'required|string|max:255',
-            'course_category' => 'required|string|max:100',
-            'age_groups' => 'required|string|max:100',
-            'areas' => 'required|string|max:100',
-            'course_id_number' => 'nullable|string|max:50',
-            'course_status' => 'required|boolean',
-            'downloa_status' => 'nullable|boolean',
-            'course_summary' => 'required|nullable|string|max:1000',
-            'course_image' => 'required|nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'course_layout' => 'nullable|string|max:255',
-            'course_format' => 'nullable|string|max:100',
-            'tags' => 'required|nullable|array',
-            'tags.*' => 'string|max:50',
-        ]);
-
-
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        $tags = $request->tags; // This should be an array like ['Basic', 'Advanced', 'Intermediate']
-        $tagsString = implode(',', $tags);
-        $uuid = (string) Guid::uuid4();
-
-        $slug = $this->generateUniqueSlug($request->course_full_name);
-
-        try {
-            $course = new Course();
-            $course->id = $uuid;
-            $course->slug = $slug;
-
-            $course->user_id = Auth::user()->id;
-            $course->course_full_name = $request->course_full_name;
-            $course->course_short_name = $request->course_short_name;
-            $course->course_category = $request->course_category;
-            $course->age_group = $request->age_groups;
-            $course->area = $request->areas;
-            $course->course_start_date = null;
-            $course->course_end_date = null;
-            $course->course_id_number = $request->course_id_number ?? null;
-            $course->course_status = $request->course_status;
-            $course->downloa_status = $request->downloa_status ?? 0;
-            $course->course_summary = $request->course_summary;
-            $course->hidden_section = null;
-            $course->course_layout = $request->course_layout;
-            $course->course_sections = null;
-            $course->force_theme = null;
-            $course->force_language = null;
-            $course->no_announcements = null;
-            $course->gradebook_student = null;
-            $course->activity_report = null;
-            $course->activity_date = null;
-            $course->file_uploads_size = null;
-            $course->completion_tracking = null;
-            $course->activity_completion_conditions = null;
-            $course->group_mode = null;
-            $course->force_group_mode = null;
-            $course->default_group = null;
-            $course->course_format = $request->course_format;
-            $course->tags = $tagsString;
-            $course->module_credit = null;
-
-
-            if ($request->hasFile('course_image')) {
-                $filePath = $request->file('course_image')->store('courses', 'public');
-                $course->course_image = $filePath;
-            }
-            $course->save();
-            return redirect()->route('after_course_create', ['slug' => $slug])->with('success', 'Course Create successfully.');
-        } catch (\Exception $e) {
-
-            return redirect()->back()->with('error', 'Something went wrong. Please try again.');
-        }
-    }
     private function generateUniqueSlug($courseFullName)
     {
         $slug = Str::slug($courseFullName);

@@ -138,7 +138,8 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('course/{slug}/edit', [CourseController::class, 'courseedit'])->name('course_edit');
     Route::get('course/{slug}/format', [CourseController::class, 'courseedit'])->name('after_course_create');
     Route::post('course-update/{id}', [CourseController::class, 'courseupdate'])->name('course_update');
-    Route::get('create/course', [CourseController::class, 'courseadd'])->name('addCourse');
+    Route::match(['get', 'post'],'create/course', [CourseController::class, 'courseadd'])->name('addCourse');
+
     Route::get('/courses-delete/{id}', [CourseController::class, 'coursedelete'])
         ->name('course_delete')
         ->middleware('can:role');

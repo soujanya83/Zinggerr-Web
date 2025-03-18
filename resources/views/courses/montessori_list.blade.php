@@ -69,8 +69,18 @@
                                 </div>
                             </form> --}}
 
-                            {{-- <div><a href="{{ route('addCourse') }}" class="btn btn-success">Add New Course</a>
-                            </div> --}}
+                            @if(Auth::user()->can('role')|| (isset($permissions) && in_array('create_course',
+                            $permissions)))
+
+                            <div>
+                                <form action="{{ route('addCourse') }}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="montessori_area" value="{{ $area }}">
+                                    <input type="hidden" name="montessori_agegroup" value="{{ $ageGroup }}">
+                                    <button type="submit" class="btn btn-success">Create Course</button>
+                                </form>
+                            </div>
+                            @endif
                         </div>
                     </div>
                     <div class="card-body">

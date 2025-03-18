@@ -563,8 +563,8 @@
     }
 
     // Validate if filled (must be 9 digits)
-    if (!/^\d{9}$/.test(value)) {
-        phoneError.textContent = "Phone number must be exactly 9 digits.";
+    if (!/^\d{10}$/.test(value)) {
+        phoneError.textContent = "Phone number must be exactly 10 digits.";
         isPhoneUnique = false;
         return Promise.resolve(false);
     }

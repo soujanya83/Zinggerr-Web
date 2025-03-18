@@ -195,6 +195,7 @@
                                     <form action="{{ route('courses.create') }}" method="POST"
                                         enctype="multipart/form-data">
                                         @csrf
+
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3">
@@ -209,6 +210,7 @@
                                                         Name</label>
                                                 </div>
                                             </div>
+
 
                                             {{-- <div class="col-md-6">
                                                 <div class="form-floating mb-3">
@@ -259,10 +261,12 @@
                                                         id="floatingShortname">
                                                         <option>Select Age-Group</option>
                                                         @foreach($agegroup as $agedata)
-                                                        <option value="{{ $agedata->short_name }}">{{
-                                                            $agedata->short_name
-                                                            }}</option>
-                                                        @endforeach
+                                                        <option value="{{ $agedata->short_name }}"
+                                                            {{ $montessori_agegroup== $agedata->short_name ? 'selected' : '' }}>
+                                                            {{ $agedata->short_name }}
+                                                        </option>
+                                                    @endforeach
+
 
                                                     </select>
                                                     <label style="align-content: center;" for="floatingShortname">Select
@@ -277,10 +281,12 @@
                                                     <select name="areas" class="form-select" id="floatingShortname">
                                                         <option>Select Area</option>
                                                         @foreach($areas as $areadata)
-                                                        <option value="{{ $areadata->full_name }}">{{
-                                                            $areadata->full_name
-                                                            }}</option>
+                                                        <option value="{{ $areadata->full_name }}" {{
+                                                            $montessori_area==$areadata->full_name ? 'selected' : '' }}>
+                                                            {{ $areadata->full_name }}
+                                                        </option>
                                                         @endforeach
+
 
                                                     </select>
                                                     <label style="align-content: center;" for="floatingShortname">Select

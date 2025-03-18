@@ -141,7 +141,7 @@
                         $ageGroups = [
                         'toddlers' => 'Toddlers (0-3 years)',
                         'early-childhood' => 'Early Childhood (3-6 years)',
-                        'elementary' => 'Elementary (6-12 years)'
+                        'elementarys' => 'Elementary (6-12 years)'
                         ];
                         $areas = ['practical-life', 'sensorial', 'mathematics', 'language', 'cultural-studies'];
                         @endphp
@@ -363,10 +363,10 @@
                                     <a class="pc-link" href="{{ route('course.category') }}"
                                         data-i18n="Expired List">Category</a>
                                 </li>
-                                <li class="pc-item">
+                                {{-- <li class="pc-item">
                                     <a class="pc-link" href="{{ route('addCourse') }}"
                                         data-i18n="Expired List">Create</a>
-                                </li>
+                                </li> --}}
 
 
                             </ul>
