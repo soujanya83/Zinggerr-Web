@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Redirect;
 use Laravel\Fortify\Http\Responses\RedirectAsIntended;
 use Ramsey\Uuid\Guid\Guid;
 use Carbon\Carbon;
-
+use Illuminate\Validation\Rule;
 class UserController extends Controller
 {
 
@@ -115,14 +115,13 @@ class UserController extends Controller
     {
         // dd($request);
         $request->merge([
-            'phone' => preg_replace('/\D/', '', $request->phone) // Remove non-numeric characters
+            'phone' => $request->phone !== '' ? preg_replace('/\D/', '', $request->phone) : null
         ]);
-
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:5|max:255',
             'username' => 'required|min:5|max:255|unique:users,username',
             'email' => 'required|email|unique:users,email',
-            'phone' => 'required|digits_between:9,15|unique:users,phone',
+            'phone' => 'nullable|digits_between:9,15|unique:users,phone',
             'password' => 'required|min:6',
             'status' => 'required|in:1,0',
             'gender' => 'required', // Assuming 1=Male, 2=Female
@@ -135,6 +134,16 @@ class UserController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+
+        if ($request->phone == null) {
+            $country_code = null;
+            $country_name = null;
+        } else {
+            $country_code = '+' . $request->input('country_code');
+            $country_name = $request->input('country_name');
+        }
+
+
         $userId = Auth::user()->id;
         try {
             $slug = $this->generateUniqueSlug($request->name);
@@ -146,10 +155,10 @@ class UserController extends Controller
                 'user_id' => $userId,
                 'username' => $request->input('username'),
                 'email' => $request->input('email'),
-                'phone' => $request->input('phone'),
+                'phone' => $request->input('phone') !== '' ? $request->input('phone') : null,
                 'status' => $request->input('status'),
-                'country_code' => '+' . $request->input('country_code'),
-                'country_name' => $request->input('country_name'),
+                'country_code' =>  $country_code,
+                'country_name' => $country_name,
                 'gender' => $request->input('gender'),
                 'type' => $request->input('role'),
                 'password' => bcrypt($request->input('password')),
@@ -181,7 +190,7 @@ class UserController extends Controller
 
             return redirect()->route($route_name)->with('success', $request->input('role') . ' created successfully!');
         } catch (\Exception $e) {
-
+            dd($e);
             return redirect()->back()->with('error', 'Something went wrong. Please try again.');
         }
     }
@@ -204,7 +213,7 @@ class UserController extends Controller
     {
 
         $request->merge([
-            'phone' => preg_replace('/\D/', '', $request->phone) // Remove non-numeric characters
+            'phone' => $request->phone ?: null, // Convert empty phone to NULL
         ]);
         $id = $request->userid;
 
@@ -212,7 +221,11 @@ class UserController extends Controller
             'name' => 'required|min:5|max:255',
             'username' => 'required|min:5|max:255|unique:users,username,' . $id,
             'email' => 'required|email|unique:users,email,' . $id,
-            'phone' => 'required|digits_between:9,15|unique:users,phone,' . $id,
+            'phone' => [
+                'nullable',
+                'digits_between:9,15',
+                Rule::unique('users', 'phone')->ignore($id),
+            ],
             'status' => 'required|in:1,0',
             'gender' => 'required',
             'role' => 'required',
@@ -224,6 +237,16 @@ class UserController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+
+        if ($request->phone == null) {
+            $country_code = null;
+            $country_name = null;
+        } else {
+            $country_code = '+' . $request->input('country_code');
+            $country_name = $request->input('country_name');
+        }
+
+
         try {
             $slug = $this->generateUniqueSlug($request->name);
             $user = User::findOrFail($request->userid);
@@ -231,9 +254,9 @@ class UserController extends Controller
             $user->slug = $slug;
             $user->username = $request->input('username');
             $user->email = $request->input('email');
-            $user->phone = $request->input('phone');
-            $user->country_code = $request->input('country_code');
-            $user->country_name = $request->input('country_name');
+            $user->phone = $request->input('phone') ?? null;
+            $user->country_code = $country_code;
+            $user->country_name = $country_name;
             $user->status = $request->input('status');
             $user->gender = $request->input('gender');
             $user->type = $request->input('role');

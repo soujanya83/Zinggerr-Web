@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\CoursesAssign;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CourseSection;
+use Illuminate\Validation\Rule;
 
 
 class StudentController extends Controller
@@ -165,14 +166,19 @@ class StudentController extends Controller
     public function updatestudent(Request $request)
     {
         $request->merge([
-            'phone' => preg_replace('/\D/', '', $request->phone) // Remove non-numeric characters
+            'phone' => $request->phone ?: null, // Convert empty phone to NULL
         ]);
+
         $id = $request->userid;
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:5|max:255',
             'username' => 'required|min:5|max:255|unique:users,username,' . $id,
             'email' => 'required|email|unique:users,email,' . $id,
-            'phone' => 'required|digits_between:9,15|unique:users,phone,' . $id,
+            'phone' => [
+                'nullable',
+                'digits_between:9,15',
+                Rule::unique('users', 'phone')->ignore($id),
+            ],
             'status' => 'required|in:1,0',
             'gender' => 'required',
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:3072',
@@ -183,7 +189,13 @@ class StudentController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-
+        if ($request->phone == null) {
+            $country_code = null;
+            $country_name = null;
+        } else {
+            $country_code = $request->input('country_code');
+            $country_name = $request->input('country_name');
+        }
         try {
 
             $user = User::findOrFail($request->userid);
@@ -191,8 +203,8 @@ class StudentController extends Controller
             $user->username = $request->input('username');
             $user->email = $request->input('email');
             $user->phone = $request->input('phone');
-            $user->country_code = $request->input('country_code');
-            $user->country_name = $request->input('country_name');
+            $user->country_code = $country_code;
+            $user->country_name = $country_name;
             $user->status = $request->input('status');
             $user->gender = $request->input('gender');
             $user->type = $request->input('role');
@@ -212,7 +224,7 @@ class StudentController extends Controller
 
             return redirect()->route('studentlist')->with('success', 'Student updated successfully!');
         } catch (\Exception $e) {
-
+dd($e);
             return redirect()->back()->with('error', 'Something went wrong. Please try again.');
         }
     }

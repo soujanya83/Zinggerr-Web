@@ -149,7 +149,7 @@
                                     <div class="mb-3">
                                         <label for="phoneInput" class="form-label">Phone</label>
                                         <div class="input-group" style="display: flex; align-items: center;">
-                                            <input type="tel" class="form-control" id="phoneInput" name="phone" required
+                                            <input type="tel" class="form-control" id="phoneInput" name="phone"
                                                 value="{{ old('phone') }}" style="height: 43px;" pattern="[0-9]*" inputmode="numeric">
                                             <input type="hidden" name="full_phone" id="fullPhone">
                                             <input type="hidden" name="country_code" id="countryCode">
@@ -539,17 +539,42 @@
                 .then(isUnique => (isUsernameUnique = isUnique));
         };
 
-        const validatePhone = () => {
-            const value = phoneInput.value.trim();
-            if (!/^\d{9}$/.test(value)) {
-                phoneError.textContent = 'Phone number must be exactly 9 digits.';
-                isPhoneUnique = false;
-                return false;
-            }
+        // const validatePhone = () => {
+        //     const value = phoneInput.value.trim();
+        //     if (!/^\d{9}$/.test(value)) {
+        //         phoneError.textContent = 'Phone number must be exactly 9 digits.';
+        //         isPhoneUnique = false;
+        //         return false;
+        //     }
 
-            return checkUniqueness(value, '{{ route("check.phone") }}', phoneError, 'phone')
-                .then(isUnique => (isPhoneUnique = isUnique));
-        };
+        //     return checkUniqueness(value, '{{ route("check.phone") }}', phoneError, 'phone')
+        //         .then(isUnique => (isPhoneUnique = isUnique));
+        // };
+
+
+        const validatePhone = () => {
+    const value = phoneInput.value.trim();
+
+    // Allow empty input (null allowed)
+    if (value === "") {
+        phoneError.textContent = ""; // Clear error message
+        isPhoneUnique = true; // No need for uniqueness check
+        return Promise.resolve(true);
+    }
+
+    // Validate if filled (must be 9 digits)
+    if (!/^\d{9}$/.test(value)) {
+        phoneError.textContent = "Phone number must be exactly 9 digits.";
+        isPhoneUnique = false;
+        return Promise.resolve(false);
+    }
+
+    // If valid, check uniqueness
+    return checkUniqueness(value, '{{ route("check.phone") }}', phoneError, "phone")
+        .then(isUnique => (isPhoneUnique = isUnique));
+};
+
+
 
         const validateEmail = () => {
             const value = emailInput.value.trim();

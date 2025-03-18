@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('country_code',5)->nullable();
             $table->string('country_name',255)->nullable();
-            $table->string('phone')->unique();
+            $table->string('phone')->unique()->nullable()->default(null);
             $table->timestamp('phone_verified_at')->nullable();
             $table->string('password');
             $table->text('profile_picture')->nullable();

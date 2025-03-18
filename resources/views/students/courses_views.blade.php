@@ -120,9 +120,10 @@
                                         <ul>
                                             <li> <strong>Summary:</strong> {{ strip_tags($course->course_summary) }}
                                             </li>
-                                            <li><strong>Category:</strong> {{ ucfirst($course->course_category) }}</li>
+                                            {{-- <li><strong>Category:</strong> {{ ucfirst($course->course_category) }}</li> --}}
+                                            <li><strong>Type:</strong> {{ ucfirst($course->course_format) }}</li>
                                             <li>Id: {{ $course->course_id_number }}</li>
-                                            <li>{{ $course->tags }}</li>
+                                            <li>Tag: {{ $course->tags }}</li>
                                             <li>
                                                 @php
                                                 $rating = round($course->rating * 2) / 2;
