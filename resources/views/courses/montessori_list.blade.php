@@ -7,7 +7,38 @@
 @section('content')
 @include('partials.sidebar')
 @include('partials.header')
+<style>
+  /* Example CSS corrections */
 
+.modal-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+table thead th {
+    font-size: 16px;
+    font-weight: 600;
+    background-color: #f0f0f0; /* Light background for headers */
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+table td {
+    padding: 10px;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff; /* Example active page color */
+    border-color: #007bff;
+}
+
+.pagination .page-link {
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+/* Add more CSS to refine the other elements */
+</style>
 <div class="pc-container">
     <div class="pc-content">
         <div class="page-header">
@@ -138,7 +169,8 @@
                                             (isset($permissions) && in_array('courses_delete',
                                             $permissions)) || (isset($permissions) && in_array('courses_edit',
                                             $permissions)) || $permissionsallow->contains('name', 'courses_edit')
-                                            || $permissionsallow->contains('name', 'courses_delete'))
+                                            || $permissionsallow->contains('name', 'courses_delete') ||
+                                            $permissionsallow->contains('name', 'courses_share'))
 
                                             <div class="position-absolute end-0 top-0 p-2"
                                                 style="background-color: rgb(255, 255, 255); border-radius: 50px;margin: 6px;">
@@ -175,6 +207,21 @@
                                                                 <i class="ti ti-trash f-20 text-danger"></i> Delete
                                                             </a>
                                                             @endif
+
+                                                            @if(Auth::user()->type === 'Superadmin' ||
+                                                            (isset($permissions) && in_array('courses_share',
+                                                            $permissions))||$permissionsallow->contains('name',
+                                                            'courses_share'))
+                                                            <a href="javascript:void(0);" class="dropdown-item"
+                                                                data-bs-toggle="modal" data-bs-target="#shareModal"
+                                                                data-course-name="{{ $course->course_full_name }}">
+                                                                <i class="ti ti-share"></i> Share
+                                                            </a>
+
+
+                                                            @endif
+
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -430,6 +477,81 @@
         </div>
     </div>
 </div>
+
+
+
+<!-- Bootstrap share  Modal -->
+<div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="shareModalLabel">Select User to Share <span id="courseName"></span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+
+            <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+            <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.7.0.js"></script>
+            <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered" id="permissionsTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($users as $index => $user)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $user['name'] }}</td>
+                            <td>
+                                @if ($user->type == 'Faculty')
+                                <span class="badge rounded-pill f-14 bg-light-success">{{ $user->type }}</span>
+                                @elseif($user->type == 'Admin')
+                                <span class="badge bg-light-danger rounded-pill f-14"> {{ $user->type }}</span>
+                                @elseif($user->type == 'Student')
+                                <span class="badge bg-light-primary rounded-pill f-14"> {{ $user->type }}</span>
+                                @elseif($user->type == 'Staff')
+                                <span class="badge bg-light-warning rounded-pill f-14"> {{ $user->type }}</span>
+                                @else
+                                <span class="badge bg-light-primary rounded-pill f-14"> {{ $user->type }}</span>
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+
+
+            <script>
+                $(document).ready(function() {
+                    $('#permissionsTable').DataTable();
+                });
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("[data-bs-target='#shareModal']").forEach(button => {
+            button.addEventListener("click", function () {
+                let courseName = this.getAttribute("data-course-name");
+                document.getElementById("courseName").textContent = `(${courseName})`;
+            });
+        });
+    });
+</script>
+
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     function confirmDelete(element) {

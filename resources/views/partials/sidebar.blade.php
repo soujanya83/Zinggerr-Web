@@ -137,11 +137,12 @@
                         <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
                     </a>
                     <ul class="pc-submenu">
-                        @php
+                        {{-- @php
                         $ageGroups = [
                         'toddlers' => 'Toddlers (0-3 years)',
                         'early-childhood' => 'Early Childhood (3-6 years)',
-                        'elementarys' => 'Elementary (6-12 years)'
+                        'elementarys' => 'Elementary (6-12 years)',
+
                         ];
                         $areas = ['practical-life', 'sensorial', 'mathematics', 'language', 'cultural-studies'];
                         @endphp
@@ -163,12 +164,35 @@
                                 @endforeach
                             </ul>
                         </li>
+                        @endforeach --}}
+                        @php
+                        use Illuminate\Support\Str;
+                        $ageGroups = DB::table('montessori_age_groups')->where('status', 1)->get();
+                        $areas = DB::table('montessori_areas')->where('status', 1)->get();
+                        @endphp
+
+                        @foreach ($ageGroups as $ageGroup)
+                        <li class="pc-item pc-hasmenu">
+                            <a href="#!" class="pc-link">
+                                <span class="pc-mtext">{{ ucwords($ageGroup->full_name) }}</span>
+                                <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+                            </a>
+                            <ul class="pc-submenu" style="list-style: none; padding-left: 15px;">
+                                @foreach ($areas as $area)
+                                <li class="pc-item">
+                                    <a class="pc-link" href="{{ route('montessori.course.show', [
+                                                'ageGroup' => Str::slug($ageGroup->short_name),
+                                                'area' => Str::slug($area->full_name)
+                                            ]) }}">
+                                        {{ ucwords($area->full_name) }}
+                                    </a>
+                                </li>
+                                @endforeach
+                            </ul>
+                        </li>
                         @endforeach
                     </ul>
                 </li>
-
-
-
 
                 {{-- @if (Auth::user()->can('role') || (isset($permissions) &&
                 in_array('faculty_sidebar',$permissions)))

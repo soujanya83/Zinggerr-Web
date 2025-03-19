@@ -34,6 +34,7 @@ class MontessoriController extends Controller
                 ->select('courses.*'); // Select only needed fields
         }
 
+
         $query->where('courses.age_group', 'like', '%' . $ageGroup . '%')->where('courses.area', 'like', '%' . $area . '%');
 
         if ($request->has('name')) {
@@ -124,8 +125,8 @@ class MontessoriController extends Controller
             MontessoriAreas::where('id', $request->id)->update([
                 'id' => (string) Str::uuid(),
                 'slug' => $slug,
-                'full_name' => $request->fullname,
-                'short_name' => $request->shortname,
+                'full_name' => ucwords(strtolower($request->fullname)),
+                'short_name' => ucwords(strtolower($request->shortname)),
                 'description' => $request->description,
                 'status' => $request->areas_status,
                 'updated_by' => Auth::user()->id,
@@ -165,8 +166,8 @@ class MontessoriController extends Controller
             MontessoriAgeGroup::where('id', $request->id)->update([
                 'id' => (string) Str::uuid(),
                 'slug' => $slug,
-                'full_name' => $request->fullname,
-                'short_name' => $request->shortname,
+                'full_name' => ucwords(strtolower($request->fullname)),
+                'short_name' => ucwords(strtolower($request->shortname)),
                 'description' => $request->description,
                 'status' => $request->age_status,
                 'updated_by' => Auth::user()->id,
@@ -200,8 +201,8 @@ class MontessoriController extends Controller
             MontessoriAgeGroup::create([
                 'id' => (string) Str::uuid(),
                 'slug' => $slug,
-                'full_name' => $request->fullname,
-                'short_name' => $request->shortname,
+                'full_name' => ucwords(strtolower($request->fullname)),
+                'short_name' => ucwords(strtolower($request->shortname)),
                 'description' => $request->description,
                 'status' => $request->age_status,
                 'created_by' => Auth::user()->id,
@@ -245,8 +246,8 @@ class MontessoriController extends Controller
             MontessoriAreas::create([
                 'id' => (string) Str::uuid(),
                 'slug' => $slug,
-                'full_name' => $request->fullname,
-                'short_name' => $request->shortname,
+                'full_name' => ucwords(strtolower($request->fullname)),
+                'short_name' => ucwords(strtolower($request->shortname)),
                 'description' => $request->description,
                 'status' => $request->areas_status,
                 'created_by' => Auth::user()->id,

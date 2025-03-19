@@ -213,20 +213,9 @@ class CourseController extends Controller
 
     public function courseupdate(Request $request, $id)
     {
-
-        // $back_url = $request->redirect_url ?? route('courses.list');
-        $ageGroups = ['toddlers', 'early-childhood', 'elementarys'];
-        $areas = ['practical-life', 'sensorial', 'mathematics', 'language', 'cultural-studies'];
-
-        // Convert age_groups to lowercase and replace spaces with hyphens
-        $formattedAgeGroup = strtolower(str_replace(' ', '-', $request->age_groups));
-        $selectedAgeGroup = in_array($formattedAgeGroup, $ageGroups) ? $formattedAgeGroup : null;
-
-        // Convert areas to lowercase and replace spaces with hyphens
-        $formattedArea = strtolower(str_replace(' ', '-', $request->areas));
-        $selectedArea = in_array($formattedArea, $areas) ? $formattedArea : null;
-
-        $back_url = url('courses/' . $selectedAgeGroup . '/' . $selectedArea);
+        $formattedAgeGroup = Str::slug($request->age_groups); // Converts "Toddlers" -> "toddlers"
+        $formattedArea = Str::slug($request->areas); // Converts "Sensorial" -> "sensorial"
+        $back_url = url('courses/' . $formattedAgeGroup . '/' . $formattedArea);
 
         $validator = Validator::make($request->all(), [
             'course_full_name' => 'required|string|max:255',
