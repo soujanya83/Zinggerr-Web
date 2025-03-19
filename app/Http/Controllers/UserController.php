@@ -79,6 +79,21 @@ class UserController extends Controller
         }
     }
 
+    public function searchUsers(Request $request)
+    {
+        $query = $request->search;
+        $users = User::where(function ($q) use ($query) {
+                    $q->where('name', 'LIKE', "%{$query}%")
+                      ->orWhere('type', 'LIKE', "%{$query}%");
+                })
+                ->whereNotIn('type', ['Superadmin', 'Admin']) // Excludes Superadmin and Admin
+                ->get(['id', 'name', 'type']);
+        return response()->json(['users' => $users]);
+    }
+
+
+
+
     public function admindashboard()
     {
         $user = Auth::user();

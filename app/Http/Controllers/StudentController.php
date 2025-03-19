@@ -17,7 +17,11 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CoursesAssign;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Models\CourseSection;
+use App\Models\CourseUserPermission;
+use App\Models\Permission;
+use App\Models\UsersPermission;
 use Illuminate\Validation\Rule;
 
 
@@ -84,6 +88,57 @@ class StudentController extends Controller
 
         return view('app.studentdashboard', compact('student', 'courses', 'teacher', 'student_courses'));
     }
+
+
+    public function shareCourse(Request $request)
+    {
+
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'course_id' => 'required|exists:courses,id',
+        ]);
+
+        $courseId = $request->input('course_id');
+        $userId = $request->input('user_id');
+
+        $uuid = (string) Guid::uuid4();
+        CoursesAssign::updateOrCreate(
+            ['courses_id' => $courseId, 'users_id' => $userId],
+            ['id' => $uuid]
+        );
+
+        $userdata=User::select('type')->where('id',$userId)->first();
+        if ($userdata->type == 'Faculty') {
+            $allPermissions = Permission::all();
+            $editCoursePermission = $allPermissions->firstWhere('name', 'courses_edit');
+            $statusCoursePermission = $allPermissions->firstWhere('name', 'courses_status');
+            $permissionsToAssign = [];
+            if ($editCoursePermission) {
+                $permissionsToAssign[] = $editCoursePermission->id;
+            }
+            if ($statusCoursePermission) {
+                $permissionsToAssign[] = $statusCoursePermission->id;
+            }
+            foreach ($permissionsToAssign as $permissionId) {
+                $uuid = (string) Guid::uuid4();
+                CourseUserPermission::updateOrCreate(
+                    [
+                        'permission_id' => $permissionId,
+                        'assign_user_id' => $userId
+                    ],
+                    [
+                        'course_id'=>$courseId,
+                        'user_id'=>Auth::user()->id,
+                        'id' => $uuid // Assuming $uuid is a unique identifier (e.g., a UUID)
+                    ]
+                );
+            }
+        }
+        return response()->json(['message' => 'Course shared successfully']);
+    }
+
+
+
 
     public function studentadd(Request $request)
     {

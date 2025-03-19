@@ -4,40 +4,46 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Two+Tone" rel="stylesheet">
 @section('pageTitle', 'Courses')
 
+
 @section('content')
 @include('partials.sidebar')
 @include('partials.header')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<meta name="share-course-url" content="{{ route('share.course') }}">
+
 <style>
-  /* Example CSS corrections */
+    /* Example CSS corrections */
 
-.modal-title {
-    font-size: 20px;
-    font-weight: bold;
-}
+    .modal-title {
+        font-size: 20px;
+        font-weight: bold;
+    }
 
-table thead th {
-    font-size: 16px;
-    font-weight: 600;
-    background-color: #f0f0f0; /* Light background for headers */
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-}
+    table thead th {
+        font-size: 16px;
+        font-weight: 600;
+        background-color: #f0f0f0;
+        /* Light background for headers */
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
 
-table td {
-    padding: 10px;
-}
+    table td {
+        padding: 10px;
+    }
 
-.pagination .page-item.active .page-link {
-    background-color: #007bff; /* Example active page color */
-    border-color: #007bff;
-}
+    .pagination .page-item.active .page-link {
+        background-color: #007bff;
+        /* Example active page color */
+        border-color: #007bff;
+    }
 
-.pagination .page-link {
-    border-radius: 5px;
-    padding: 5px 10px;
-}
+    .pagination .page-link {
+        border-radius: 5px;
+        padding: 5px 10px;
+    }
 
-/* Add more CSS to refine the other elements */
+    /* Add more CSS to refine the other elements */
 </style>
 <div class="pc-container">
     <div class="pc-content">
@@ -143,11 +149,11 @@ table td {
                                                         </button>
                                                     </div>
                                                 </form>
-
                                                 @elseif(isset($permissions) && in_array('courses_status',
                                                 $permissions) || ($permissionsallow->contains('name',
                                                 'courses_status'))|| $permissionsallow->contains('name',
                                                 'courses_status'))
+
 
 
                                                 <form action="{{ route('coursechangeStatus') }}" method="get"
@@ -212,11 +218,21 @@ table td {
                                                             (isset($permissions) && in_array('courses_share',
                                                             $permissions))||$permissionsallow->contains('name',
                                                             'courses_share'))
-                                                            <a href="javascript:void(0);" class="dropdown-item"
+                                                            {{-- <a href="javascript:void(0);" class="dropdown-item"
                                                                 data-bs-toggle="modal" data-bs-target="#shareModal"
                                                                 data-course-name="{{ $course->course_full_name }}">
                                                                 <i class="ti ti-share"></i> Share
+                                                            </a> --}}
+
+                                                            <a href="javascript:void(0);"
+                                                                class="dropdown-item share-btn" data-bs-toggle="modal"
+                                                                data-bs-target="#shareModal"
+                                                                data-course-name="{{ $course->course_full_name }}"
+                                                                data-course-id="{{ $course->id }}"
+                                                                data-share-url="{{ route('share.course') }}">
+                                                                <i class="ti ti-share"></i> Share
                                                             </a>
+
 
 
                                                             @endif
@@ -478,83 +494,188 @@ table td {
     </div>
 </div>
 
-
-
-<!-- Bootstrap share  Modal -->
-<div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="shareModalLabel">Select User to Share <span id="courseName"></span></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- Bootstrap Share Modal -->
+{{-- <div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true"> --}}
+    <div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <b id="shareModalLabel">Select User to Share <span id="courseName"></span></b>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <div style="position: relative; display: inline-block; width: 100%;">
+                            <input type="text" id="searchUser" class="form-control" placeholder="Search user..."
+                                onkeyup="searchUsers()" style="padding-right: 30px; width: 85%; margin-left: 7%;">
+                            <button id="clearSearch" onclick="clearSearch()"
+                                style="display: none; position: absolute; right: 44px; top: 50%; transform: translateY(-50%); background: transparent; border: none; font-size: 18px; cursor: pointer;">✖</button>
+                        </div>
+                        <input type="hidden" id="selectedCourseId">
+                        <table class="table table-striped table-bordered" id="permissionsTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-
-
-            <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-            <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.7.0.js"></script>
-            <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered" id="permissionsTable">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Type</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($users as $index => $user)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $user['name'] }}</td>
-                            <td>
-                                @if ($user->type == 'Faculty')
-                                <span class="badge rounded-pill f-14 bg-light-success">{{ $user->type }}</span>
-                                @elseif($user->type == 'Admin')
-                                <span class="badge bg-light-danger rounded-pill f-14"> {{ $user->type }}</span>
-                                @elseif($user->type == 'Student')
-                                <span class="badge bg-light-primary rounded-pill f-14"> {{ $user->type }}</span>
-                                @elseif($user->type == 'Staff')
-                                <span class="badge bg-light-warning rounded-pill f-14"> {{ $user->type }}</span>
-                                @else
-                                <span class="badge bg-light-primary rounded-pill f-14"> {{ $user->type }}</span>
-                                @endif
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-
-
-
-            <script>
-                $(document).ready(function() {
-                    $('#permissionsTable').DataTable();
-                });
-            </script>
         </div>
     </div>
-</div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll("[data-bs-target='#shareModal']").forEach(button => {
-            button.addEventListener("click", function () {
-                let courseName = this.getAttribute("data-course-name");
-                document.getElementById("courseName").textContent = `(${courseName})`;
-            });
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    // Share button click handler
+    document.querySelectorAll(".share-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            const courseName = this.getAttribute("data-course-name");
+            const courseId = this.getAttribute("data-course-id");
+            const shareUrl = this.getAttribute("data-share-url");
+
+            document.getElementById("courseName").textContent = `(${courseName})`;
+            document.getElementById("selectedCourseId").value = courseId;
+            document.getElementById("selectedCourseId").setAttribute("data-share-url", shareUrl);
         });
     });
-</script>
+});
+
+// Search users dynamically
+function searchUsers() {
+    const query = document.getElementById("searchUser").value.trim();
+    const clearBtn = document.getElementById("clearSearch");
+    const tableBody = $("#permissionsTable tbody");
+
+    clearBtn.style.display = query.length > 0 ? "block" : "none";
+
+    if (query === "") {
+        tableBody.empty();
+        return;
+    }
+
+    $.ajax({
+        url: "{{ route('search.users') }}",
+        type: "GET",
+        data: { search: query },
+        success: function (response) {
+            tableBody.empty();
+            if (response.users && response.users.length > 0) {
+                response.users.forEach((user, index) => {
+                    // Wrap user.id in single quotes to ensure it's passed as a string
+                    const userRow = `
+                        <tr onclick="shareCourse('${user.id}')" style="cursor: pointer;">
+                            <td>${index + 1}</td>
+                            <td>${user.name}</td>
+                            <td>
+                            <span class="badge rounded-pill f-14 ${
+                                user.type === 'Faculty' ? 'bg-light-success' :
+                                user.type === 'Admin' ? 'bg-light-danger' :
+                                user.type === 'Student' ? 'bg-light-primary' :
+                                user.type === 'Staff' ? 'bg-light-warning' :
+                                'bg-light-primary' // Default case
+                            }">${user.type}</span>
+                             </td>
+                        </tr>`;
+                    tableBody.append(userRow);
+                });
+            } else {
+                tableBody.append(`<tr><td colspan="3" class="text-center">No data available</td></tr>`);
+            }
+        },
+        error: function () {
+            tableBody.empty();
+            tableBody.append(`<tr><td colspan="3" class="text-center">Error fetching users</td></tr>`);
+        }
+    });
+}
+
+// Share course with selected user
+function shareCourse(userId) {
+    const courseId = document.getElementById("selectedCourseId").value;
+    const shareUrl = document.getElementById("selectedCourseId").getAttribute("data-share-url");
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
+
+    console.log("User ID:", userId);
+    console.log("Course ID:", courseId);
+    console.log("Share URL:", shareUrl);
+    console.log("CSRF Token:", csrfToken);
+
+    if (!courseId) {
+        alert("Course ID is missing!");
+        return;
+    }
+    if (!userId) {
+        alert("User ID is missing!");
+        return;
+    }
+    if (!shareUrl) {
+        alert("Share URL is missing!");
+        return;
+    }
+    if (!csrfToken) {
+        alert("CSRF token is missing! Please ensure the CSRF meta tag is present.");
+        return;
+    }
+
+    $.ajax({
+        url: shareUrl,
+        type: "POST",
+        data: {
+            _token: csrfToken,
+            user_id: userId,
+            course_id: courseId
+        },
+                    success: function (response) {
+                console.log("Success Response:", response);
+                $('#shareModal').modal('hide');
+                $('#shareModal').one('hidden.bs.modal', function () {
+                    $('.modal-backdrop').remove();
+                    $('body').removeClass('modal-open');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: response.message || "Course shared successfully!",
+                        showConfirmButton: false, // Remove the OK button
+                        timer: 2000, // Auto-close after 3 seconds (3000ms)
+                        backdrop: 'rgba(0,0,0,0.2)' // Lighter backdrop for SweetAlert
+                    }).then(() => {
+                        location.reload();
+                    });
+                });
+            },
+                    error: function (xhr) {
+                        console.error("Error Response:", xhr);
+                        const errorMessage = xhr.responseJSON?.message || "Failed to share the course. Please try again.";
+                        alert(errorMessage);
+                    }
+                });
+            }
+
+// Clear search input
+function clearSearch() {
+    const searchInput = document.getElementById("searchUser");
+    searchInput.value = "";
+    document.getElementById("clearSearch").style.display = "none";
+    $("#permissionsTable tbody").empty();
+    searchInput.focus();
+}
+    </script>
 
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    function confirmDelete(element) {
+
+    <script>
+        function confirmDelete(element) {
     event.preventDefault(); // Prevent the default link behavior
     const url = element.href;
 
@@ -577,9 +698,9 @@ table td {
     return false; // Prevent immediate navigation
 }
 
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
         const searchInput = document.getElementById('searchPermissions');
         const table = document.getElementById('permissionsTable');
         const rows = table.getElementsByTagName('tr');
@@ -611,6 +732,6 @@ table td {
             }
         });
     });
-</script>
-@include('partials.footer')
-@endsection
+    </script>
+    @include('partials.footer')
+    @endsection

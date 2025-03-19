@@ -238,11 +238,13 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('montessori/areas-delete/{id}', [MontessoriController::class, 'montessori_areas_delete'])->name('montessori.areas_delete');
     Route::get('montessori/age-group-delete/{id}', [MontessoriController::class, 'montessori_agegroup_delete'])->name('montessori.agegroup_delete');
 
+    Route::get('/search-users', [UserController::class, 'searchUsers'])->name('search.users');
 
 
 
 
     Route::get('/courses/{ageGroup}/{area}', [MontessoriController::class, 'show'])->name('montessori.course.show');
+    Route::post('user/share-course', [StudentController::class, 'shareCourse'])->name('share.course');
 
 
 

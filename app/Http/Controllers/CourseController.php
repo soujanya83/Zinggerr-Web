@@ -53,26 +53,23 @@ class CourseController extends Controller
 
     public function courseedit(Request $request, $slug)
     {
-
-
         $agegroups = MontessoriAgeGroup::where('status', 1)->orderBy('created_at', 'asc')->get();
         $areas = MontessoriAreas::where('status', 1)->orderBy('created_at', 'asc')->get();
 
         $userId = Auth::user()->id;
-
         $course = Course::where('slug', $slug)->first();
 
         if ($course) {
             $id = $course->id;
             $data = CoursesAssign::select('users.*', 'courses_assign.id as assignId', 'courses_assign.status as assignStatus')
-                ->where('courses_id', $id)->where('users.type', 'Teacher')->where('users.user_id', $userId)
+                ->where('courses_id', $id)->where('users.type', 'Faculty')->where('users.user_id', $userId)
                 ->join('users', 'users.id', 'courses_assign.users_id')
                 ->paginate(10);
 
             $assignedTeachersIds = CoursesAssign::where('courses_id', $id)
                 ->pluck('users_id');
 
-            $availableTeachers = User::where('type', 'Teacher')->where('user_id', $userId)
+            $availableTeachers = User::where('type', 'Faculty')->where('user_id', $userId)
                 ->whereNotIn('id', $assignedTeachersIds) // Exclude assigned teachers
                 ->paginate(10);
 
