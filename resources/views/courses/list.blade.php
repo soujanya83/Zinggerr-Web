@@ -48,10 +48,10 @@
                                 @csrf
                                 <div>
                                     <input type="text" id="name" class="form-control" name="name"
-                                        placeholder="Course Name" value="{{ request('name') }}"
-                                        style="margin-top: -10px;width: 216px;margin-left: -185px;" />
+                                        placeholder="course name..." value="{{ request('name') }}"
+                                        style="margin-top: -10px;width: 216px;margin-left: 48px;" />
                                     <select id="category" class="form-select" name="category"
-                                        style="margin-top: -42px; margin-left: 47px;width: 216px;">
+                                        style="margin-top: -42px; margin-left: 47px;width: 216px; display:none">
                                         <option value="">All Categories</option>
                                         @foreach($categories as $category)
                                         <option value="{{ $category->name }}" {{ request('category')==$category->name ?
@@ -62,9 +62,9 @@
                                     </select>
                                 </div>
                                 <div style="margin-left: 276px; margin-top: -42px;">
-                                    <button type="submit" class="btn  btn-shadow btn-primary">Filter</button>
-                                    <span style="margin-left: 35px;">
-                                        <a href="{{ route('courses') }}">Refresh</a>
+                                    <button type="submit" class="btn  btn-shadow btn-outline-primary">Filter</button>
+                                    <span style="margin-left: 9px;">
+                                        <a href="{{ route('courses') }}" class="btn  btn-shadow btn-outline-primary">Refresh</a>
                                     </span>
                                 </div>
                             </form>

@@ -45,6 +45,8 @@
 
     /* Add more CSS to refine the other elements */
 </style>
+
+
 <div class="pc-container">
     <div class="pc-content">
         <div class="page-header">
@@ -85,10 +87,10 @@
                                 @csrf
                                 <div>
                                     <input type="text" id="name" class="form-control" name="name"
-                                        placeholder="Course Name" value="{{ request('name') }}"
-                                        style="margin-top: -10px;width: 216px;margin-left: -185px;" />
+                                        placeholder="course name..." value="{{ request('name') }}"
+                                        style="margin-top: -10px;width: 216px;margin-left: 48px;" />
                                     <select id="category" class="form-select" name="category"
-                                        style="margin-top: -42px; margin-left: 47px;width: 216px;">
+                                        style="margin-top: -42px; margin-left: 47px;width: 216px; display:none">
                                         <option value="">All Categories</option>
                                         @foreach($categories as $category)
                                         <option value="{{ $category->name }}" {{ request('category')==$category->name ?
@@ -99,12 +101,14 @@
                                     </select>
                                 </div>
                                 <div style="margin-left: 276px; margin-top: -42px;">
-                                    <button type="submit" class="btn  btn-shadow btn-primary">Filter</button>
-                                    <span style="margin-left: 35px;">
-                                        <a href="{{ route('courses') }}">Refresh</a>
+                                    <button type="submit" class="btn  btn-shadow btn-outline-primary">Filter</button>
+                                    <span style="margin-left: 9px;">
+                                        <a href="{{ route('courses') }}"
+                                            class="btn  btn-shadow btn-outline-primary">Refresh</a>
                                     </span>
                                 </div>
                             </form> --}}
+
 
                             @if(Auth::user()->can('role')|| (isset($permissions) && in_array('create_course',
                             $permissions)))
@@ -114,7 +118,8 @@
                                     @csrf
                                     <input type="hidden" name="montessori_area" value="{{ $area }}">
                                     <input type="hidden" name="montessori_agegroup" value="{{ $ageGroup }}">
-                                    <button type="submit" class="btn btn-success">Create Course</button>
+                                    <button type="submit" class="btn btn-outline-success btn-shadow">Create
+                                        Course</button>
                                 </form>
                             </div>
                             @endif
@@ -174,9 +179,14 @@
                                             @if(Auth::user()->type === 'Superadmin' ||
                                             (isset($permissions) && in_array('courses_delete',
                                             $permissions)) || (isset($permissions) && in_array('courses_edit',
-                                            $permissions)) || $permissionsallow->contains('name', 'courses_edit')
+                                            $permissions))|| (isset($permissions) && in_array('courses_share',
+                                            $permissions))|| (isset($permissions) && in_array('courses_link',
+                                            $permissions))
+
+                                            || $permissionsallow->contains('name', 'courses_edit')
                                             || $permissionsallow->contains('name', 'courses_delete') ||
-                                            $permissionsallow->contains('name', 'courses_share'))
+                                            $permissionsallow->contains('name', 'courses_share') ||
+                                            $permissionsallow->contains('name', 'courses_link'))
 
                                             <div class="position-absolute end-0 top-0 p-2"
                                                 style="background-color: rgb(255, 255, 255); border-radius: 50px;margin: 6px;">
@@ -230,11 +240,24 @@
                                                                 data-course-name="{{ $course->course_full_name }}"
                                                                 data-course-id="{{ $course->id }}"
                                                                 data-share-url="{{ route('share.course') }}">
-                                                                <i class="ti ti-share"></i> Share
+                                                                <i class="ti ti-user-plus"></i> Share
                                                             </a>
 
 
 
+                                                            @endif
+                                                            @if(Auth::user()->type === 'Superadmin' ||
+                                                            (isset($permissions) && in_array('courses_link',
+                                                            $permissions))||$permissionsallow->contains('name',
+                                                            'courses_link'))
+                                                            <a href="javascript:void(0);"
+                                                                class="dropdown-item share-btn" data-bs-toggle="modal"
+                                                                data-bs-target="#shareLinkModal"
+                                                                data-course-name="{{ $course->course_full_name }}"
+                                                                data-course-id="{{ $course->id }}"
+                                                                data-share-url="{{ route('share.course_link', ['slug' => $course->slug]) }}">
+                                                                <i class="ti ti-share"></i> Share Link
+                                                            </a>
                                                             @endif
 
 
@@ -494,6 +517,30 @@
     </div>
 </div>
 
+
+<!-- Share Link Modal -->
+<div class="modal fade" id="shareLinkModal" tabindex="-1" aria-labelledby="shareLinkModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="shareLinkModalLabel">Share Course</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Share this course using the link below:</p>
+                <div class="input-group">
+                    <input type="text" class="form-control share-link" readonly>
+                    <button class="btn btn-outline-primary copy-btn" type="button" title="Copy link to clipboard">
+                        <i class="ti ti-copy"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
 <!-- Bootstrap Share Modal -->
 {{-- <div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true"> --}}
     <div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel">
@@ -668,6 +715,66 @@ function clearSearch() {
     $("#permissionsTable tbody").empty();
     searchInput.focus();
 }
+    </script>
+
+
+
+
+  <!-- JavaScript for Modal and Copy Functionality -->
+<script>
+    $(document).on('click', '.share-btn', function () {
+        const courseName = $(this).data('course-name');
+        const shareUrl = $(this).data('share-url');
+
+        $('#shareLinkModal .modal-title').text(`Share Course: ${courseName}`);
+        $('#shareLinkModal .share-link').val(shareUrl);
+    });
+
+    $(document).on('click', '.copy-btn', function () {
+        const shareUrl = $('#shareLinkModal .share-link').val();
+
+        if (!shareUrl) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'No share link available.',
+                showConfirmButton: true
+            });
+            return;
+        }
+
+        // Trigger the modal to close
+        $('#shareLinkModal').modal('hide');
+
+        // Wait for the modal to fully close before proceeding
+        $('#shareLinkModal').one('hidden.bs.modal', function () {
+            // Ensure the modal backdrop is removed
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+
+            // Attempt to copy the link to the clipboard
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                // Show success SweetAlert
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Link Copied!',
+                    text: 'The share link has been copied to your clipboard.',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    // backdrop: 'rgba(0,0,0,0.2)'
+                });
+            }).catch(err => {
+                // Show error SweetAlert
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Failed to copy the link.',
+                    showConfirmButton: true
+                });
+                console.error('Failed to copy: ', err);
+            });
+        });
+    });
     </script>
 
 

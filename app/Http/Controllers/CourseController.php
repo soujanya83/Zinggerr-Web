@@ -1488,8 +1488,6 @@ class CourseController extends Controller
         }
     }
 
-
-
     public function assigned_delete($id)
     {
         $course = CoursesAssign::find($id);
@@ -1500,13 +1498,6 @@ class CourseController extends Controller
             return redirect()->back()->with('error', 'Assigned ID not found.');
         }
     }
-
-
-
-
-
-
-
 
     public function courses_category()
     {
@@ -1705,11 +1696,6 @@ class CourseController extends Controller
         }
     }
 
-
-
-
-
-
     public function getUsers(Request $request)
     {
         return response()->json(User::select('id', 'name', 'type')->where('type', 'Student')->where('status', 1)->get());
@@ -1731,12 +1717,6 @@ class CourseController extends Controller
         );
         return redirect()->back()->with('success', 'Courses assigned successfully!');
     }
-
-
-
-
-
-
     public function coursedetails(Request $request, $id)
     {
         $course = Course::find($id);
@@ -1747,12 +1727,6 @@ class CourseController extends Controller
             return redirect()->route('courses')->with('error', 'Course not found.');
         }
     }
-
-
-
-
-
-
 
     public function coursedelete($id)
     {

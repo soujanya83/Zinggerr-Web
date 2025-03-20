@@ -138,7 +138,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('course/{slug}/edit', [CourseController::class, 'courseedit'])->name('course_edit');
     Route::get('course/{slug}/format', [CourseController::class, 'courseedit'])->name('after_course_create');
     Route::post('course-update/{id}', [CourseController::class, 'courseupdate'])->name('course_update');
-    Route::match(['get', 'post'],'create/course', [CourseController::class, 'courseadd'])->name('addCourse');
+    Route::match(['get', 'post'], 'create/course', [CourseController::class, 'courseadd'])->name('addCourse');
 
     Route::get('/courses-delete/{id}', [CourseController::class, 'coursedelete'])
         ->name('course_delete')
@@ -247,8 +247,11 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::post('user/share-course', [StudentController::class, 'shareCourse'])->name('share.course');
 
 
+    Route::get('/course-link/{slug}/', [StudentController::class, 'generateShareLink'])
+        ->name('share.course_link');
 
-
+        Route::get('/share-user/register-page', [StudentController::class, 'share_user_register_page'])
+        ->name('user.share_link');
 
     Route::get('/user-delete/{user}', [UserController::class, 'user_delete'])
         ->name('user_delete')

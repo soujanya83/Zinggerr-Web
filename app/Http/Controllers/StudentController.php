@@ -27,6 +27,21 @@ use Illuminate\Validation\Rule;
 
 class StudentController extends Controller
 {
+
+    public function share_user_register_page(){
+        echo "working.....";
+    }
+
+    public function generateShareLink($slug){
+      $course= Course::where('slug',$slug)->first();
+        $userData=User::select('profile_picture')->where('id',$course->user_id)->first();
+
+        $courseAssetsData=CoursesAssets::select('assets_type','topic_name')->where('course_id',$course->id)->get();
+
+        return view('students.course_share_view',compact('course','userData','courseAssetsData'));
+    }
+
+
     public function courses_views($slug)
     {
         $course = Course::where('slug', $slug)->firstOrFail();
