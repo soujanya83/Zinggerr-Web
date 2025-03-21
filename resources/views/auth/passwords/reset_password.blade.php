@@ -22,7 +22,7 @@
             <div class="card mt-5">
                 <div class="card-body">
                     <a href="#" class="d-flex justify-content-center">
-                        <img src="asset/images/logo.png" alt="image" style="max-width: 50%;">
+                        <img src="../asset/images/logo.png" alt="image" style="max-width: 50%;">
                     </a>
                     <div class="row">
                         <div class="d-flex justify-content-center">
@@ -86,7 +86,7 @@
 
         // Email Match Validation
         if (email !== otpEmail) {
-            emailError.textContent = "Email does not match otp email !";
+            emailError.textContent = "Email does not match your email !";
             valid = false;
         } else {
             emailError.textContent = "";

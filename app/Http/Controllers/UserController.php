@@ -24,6 +24,130 @@ use Illuminate\Validation\Rule;
 class UserController extends Controller
 {
 
+    public function createuser(Request $request)
+    {
+        $request->merge([
+            'phone' => $request->phone !== '' ? preg_replace('/\D/', '', $request->phone) : null
+        ]);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:5|max:255',
+            'username' => 'required|min:5|max:255|unique:users,username',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'nullable|digits_between:9,15|unique:users,phone',
+            'password' => 'required|min:6',
+            'status' => 'required|in:1,0',
+            'gender' => 'required', // Assuming 1=Male, 2=Female
+            'role' => 'required',  // Adjust based on role values in your system
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:3072',
+        ]);
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+        if ($request->phone == null) {
+            $country_code = null;
+            $country_name = null;
+        } else {
+            $country_code = '+' . $request->input('country_code');
+            $country_name = $request->input('country_name');
+        }
+        $userId = Auth::user()->id;
+        try {
+            $slug = $this->generateUniqueSlug($request->name);
+            $uuid = (string) Guid::uuid4();
+            $user = new User([
+                'id' => $uuid,
+                'name' => $request->input('name'),
+                'slug' => $slug,
+                'user_id' => $userId,
+                'username' => $request->input('username'),
+                'email' => $request->input('email'),
+                'phone' => $request->input('phone') !== '' ? $request->input('phone') : null,
+                'status' => $request->input('status'),
+                'reset_password_status' => 0,
+                'country_code' =>  $country_code,
+                'country_name' => $country_name,
+                'gender' => $request->input('gender'),
+                'type' => $request->input('role'),
+                'password' => bcrypt($request->input('password')),
+                'email_verified_at' => now()
+            ]);
+            if ($request->hasFile('profile_picture')) {
+                $filePath = $request->file('profile_picture')->store('users pictures', 'public');
+                $user->profile_picture = $filePath;
+            }
+            $user->save();
+            $userpassword=$request->input('password');
+            $this->sharelink_user_passwordset($user,$userpassword);
+
+            if ($request->input('role') == 'Faculty') {
+                $route_name = 'teacherlist';
+            } elseif ($request->input('role') == 'Student') {
+                $route_name = 'studentlist';
+            } else {
+                $route_name = 'userlist';
+            }
+
+
+            // return redirect()->route($route_name)->with('success', $request->input('role') . ' created successfully!');
+            return redirect()->route($route_name)->with('success', 'Account created successfully! Login details have been sent to the user\'s email.');
+        } catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()->with('error', 'Something went wrong. Please try again.');
+        }
+    }
+
+
+    private function sharelink_user_passwordset($user, $userpassword)
+    {
+        $postData = [
+            "from" => ["address" => "noreply@zinggerr.com"],
+            "to" => [
+                [
+                    "email_address" => [
+                        "address" => $user->email,
+                        "name" => $user->name
+                    ]
+                ]
+            ],
+            "subject" => "Your Zinggerr Account Details",
+            "htmlbody" => view('auth.passwords.share_link_resetpassword', [
+                'userName' => $user->name,
+                'userType' => $user->type,
+                'username' => $user->username,
+                'email' => $user->email,
+                'password' => $userpassword,
+            ])->render()
+        ];
+
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => "https://api.zeptomail.com.au/v1.1/email",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => json_encode($postData),
+            CURLOPT_HTTPHEADER => [
+                "accept: application/json",
+                "authorization: Zoho-enczapikey GkDdjPiC+lYbwFqX8426YIQGbJRi7cDiHJq2MZ9SoBN+vtwJ4UxNeZVLwnAkyzBNuiHIBVfBd7tz8THZsO6OfXMrJSqrcETuOpwzGB+edd0FvHvXUPi/9/tgVkjNnvCoNQtu7RIy9Ctv4A==",
+                "content-type: application/json",
+            ],
+        ]);
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+
+        if ($err) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+
+
     public function dashboard()
     {
 
@@ -126,89 +250,7 @@ class UserController extends Controller
         }
     }
 
-    public function createuser(Request $request)
-    {
-        // dd($request);
-        $request->merge([
-            'phone' => $request->phone !== '' ? preg_replace('/\D/', '', $request->phone) : null
-        ]);
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|min:5|max:255',
-            'username' => 'required|min:5|max:255|unique:users,username',
-            'email' => 'required|email|unique:users,email',
-            'phone' => 'nullable|digits_between:9,15|unique:users,phone',
-            'password' => 'required|min:6',
-            'status' => 'required|in:1,0',
-            'gender' => 'required', // Assuming 1=Male, 2=Female
-            'role' => 'required',  // Adjust based on role values in your system
-            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:3072',
-        ]);
 
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        if ($request->phone == null) {
-            $country_code = null;
-            $country_name = null;
-        } else {
-            $country_code = '+' . $request->input('country_code');
-            $country_name = $request->input('country_name');
-        }
-
-
-        $userId = Auth::user()->id;
-        try {
-            $slug = $this->generateUniqueSlug($request->name);
-            $uuid = (string) Guid::uuid4();
-            $user = new User([
-                'id' => $uuid,
-                'name' => $request->input('name'),
-                'slug' => $slug,
-                'user_id' => $userId,
-                'username' => $request->input('username'),
-                'email' => $request->input('email'),
-                'phone' => $request->input('phone') !== '' ? $request->input('phone') : null,
-                'status' => $request->input('status'),
-                'country_code' =>  $country_code,
-                'country_name' => $country_name,
-                'gender' => $request->input('gender'),
-                'type' => $request->input('role'),
-                'password' => bcrypt($request->input('password')),
-                'email_verified_at' => now()
-            ]);
-
-            // Handle file upload
-            if ($request->hasFile('profile_picture')) {
-                $filePath = $request->file('profile_picture')->store('users pictures', 'public');
-                $user->profile_picture = $filePath;
-            }
-
-            $user->save();
-
-            if ($request->input('role') == 'Faculty') {
-                $route_name = 'teacherlist';
-            } elseif ($request->input('role') == 'Student') {
-                $route_name = 'studentlist';
-            } else {
-                $route_name = 'userlist';
-            }
-
-            // $verificationUrl = URL::temporarySignedRoute(
-            //     'verification.verify',
-            //     now()->addMinutes(60),
-            //     ['id' => $user->id, 'hash' => sha1($user->email)]
-            // );
-            // Mail::to($user->email)->send(new VerifyEmail($user, $verificationUrl));
-
-            return redirect()->route($route_name)->with('success', $request->input('role') . ' created successfully!');
-        } catch (\Exception $e) {
-            dd($e);
-            return redirect()->back()->with('error', 'Something went wrong. Please try again.');
-        }
-    }
 
     private function generateUniqueSlug($Name)
     {

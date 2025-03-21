@@ -24,6 +24,7 @@ class User extends Authenticatable
         'country_code',
         'phone',
         'status',
+        'reset_password_status',
         'password',
         'gender',
         'phone_verified_at',

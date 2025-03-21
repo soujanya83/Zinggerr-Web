@@ -205,6 +205,7 @@ class ProfileController extends Controller
             return back()->with('error', 'User not found!')->withInput();
         }
         $user->password = bcrypt($request->input('password'));
+        $user->reset_password_status =1;
         $user->save();
 
         session()->forget('otp_identifier_email');

@@ -98,8 +98,6 @@
                         </div>
                     </div>
 
-
-
                     <form id="registerForm" action="{{ route('register') }}" method="post" autocomplete="off">
                         @csrf
                         <div class="row">
@@ -137,9 +135,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
 
                             <div class="col-md-6 mt-3">
                                 <div class="form-floating mb-3">
@@ -222,9 +217,6 @@
                             <input type="submit" id="submitButton" class="btn btn-secondary p-2" value="Sign Up">
                         </div>
                     </form>
-
-
-
                     <hr>
                     <a href="{{ route('login') }}" class="d-flex justify-content-center">Already have an account?</a>
                 </div>
@@ -234,41 +226,6 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-{{-- <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    var input = document.querySelector("#phoneInput");
-
-    var iti = window.intlTelInput(input, {
-        initialCountry: "auto",
-        separateDialCode: true,  // Show country code separately
-        preferredCountries: ["in", "us", "gb"], // Preferred countries
-        geoIpLookup: function (callback) {
-            fetch('https://ipapi.co/json/') // Detect user location
-                .then(response => response.json())
-                .then(data => callback(data.country_code))
-                .catch(() => callback("IN")); // Fallback to India
-        },
-        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
-    });
-
-    // Ensure only numbers are entered
-    input.addEventListener("input", function () {
-        this.value = this.value.replace(/\D/g, ''); // Allow only numbers
-    });
-
-    // Capture country code and validate phone number on form submit
-    document.querySelector("#registerForm").addEventListener("submit", function (e) {
-        var phoneNumber = iti.getNumber(); // Full number with country code
-        var nationalNumber = input.value.replace(/\D/g, ''); // Strip non-numeric characters
-        var countryCode = iti.getSelectedCountryData().dialCode; // Get selected country code
-
-        // Store country code separately
-        document.querySelector("#countryCode").value = "+" + countryCode;
-
-    });
-});
-</script> --}}
-
 <script>
     document.addEventListener("DOMContentLoaded", function () {
     var input = document.querySelector("#phoneInput");
@@ -300,11 +257,7 @@
         document.querySelector("#countryName").value = countryName;
     });
 });
-
 </script>
-
-
-
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -398,6 +351,5 @@
 });
 
 </script>
-
 
 @endsection

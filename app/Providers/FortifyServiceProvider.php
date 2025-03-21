@@ -27,7 +27,7 @@ use Laravel\Fortify\Events\Login;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController as BaseController;
-
+use Illuminate\Auth\AuthenticationException;
 class FortifyServiceProvider extends ServiceProvider
 {
     /**
@@ -70,7 +70,30 @@ class FortifyServiceProvider extends ServiceProvider
             $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
             return Limit::perMinute(5)->by($throttleKey);
         });
+        // Fortify::authenticateUsing(function (Request $request) {
+        //     $request->validate([
+        //         'login' => ['required'],
+        //         'password' => ['required'],
+        //     ]);
 
+        //     $user = User::where('status', 1)->where('email_verified_at', '!=', null)
+        //         ->where(function ($query) use ($request) {
+        //             $query->where('email', $request->login)
+        //                 // ->orWhere('phone', $request->login)
+        //                 ->orWhere('username', $request->login);
+        //         })
+        //         ->first();
+        //     if ($user && Hash::check($request->password, $user->password)) {
+        //         return $user;
+        //     }
+        //     $resetPasswordStatus = User::where('reset_password_status', 0)->first();
+        //     if ($resetPasswordStatus) {
+        //         return view('auth.passwords.newpassword_set');
+        //     }
+
+
+        //     return null;
+        // });
 
         Fortify::authenticateUsing(function (Request $request) {
             $request->validate([
@@ -78,22 +101,31 @@ class FortifyServiceProvider extends ServiceProvider
                 'password' => ['required'],
             ]);
 
-            $user = User::where('status', 1)->where('email_verified_at', '!=' ,null)
-                ->where(function ($query) use ($request) {
-                    $query->where('email', $request->login)
-                        // ->orWhere('phone', $request->login)
-                        ->orWhere('username', $request->login);
-                })
-                ->first();
+            // First, find the user by email or username
+            $user = User::where(function ($query) use ($request) {
+                $query->where('email', $request->login)
+                      ->orWhere('username', $request->login);
+            })->first();
 
-            // Log::info('Login attempt', $request->only('email', 'password'));
-            // Log::info('Found user:', $user ? $user->toArray() : ['user' => 'not found']);
-
-            // Log::info(session()->all());
-
-            if ($user && Hash::check($request->password, $user->password)) {
-                return $user;
+            // If the user doesn't exist or the password is incorrect, return null to show the default error
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                return null; // This will trigger Fortify's default error: "These credentials do not match our records."
             }
+
+            // If the password is correct, check reset_password_status
+            if ($user->reset_password_status == 0) {
+                // Store the user's email in the session for the reset form
+                $request->session()->put('otp_identifier_email', $user->email);
+                // Throw an exception to redirect to the password reset page
+                throw new AuthenticationException('Password reset required.', [], route('password.newpassword'));
+            }
+
+            // If reset_password_status is not 0, proceed with other checks and allow login
+            if ($user->status == 1 && !is_null($user->email_verified_at)) {
+                return $user; // Login successful
+            }
+
+            // If status != 1 or email_verified_at is null, return null to fail authentication
             return null;
         });
 

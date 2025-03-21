@@ -30,6 +30,7 @@ return new class extends Migration
             $table->String('type',50)->nullable()->default('Superadmin');
             $table->rememberToken();
             $table->integer('status');
+            $table->integer('reset_password_status')->default(1);
             $table->timestamps();
         });
 

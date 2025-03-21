@@ -104,6 +104,11 @@ Route::get('/reset-password', function () {
 })->name('password.reset.form');
 
 
+Route::get('reset/new-password', function () {
+    // return view('auth.passwords.newpassword_set');
+    return view('auth.passwords.reset_password');
+})->name('password.newpassword');
+
 
 Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function () {
     Route::get('/app', function () {
