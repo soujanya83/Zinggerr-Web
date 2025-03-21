@@ -92,7 +92,7 @@ Route::post('/check-username-suggestions/register', [RegisterController::class, 
 Route::get('/course-link/{slug}/', [StudentController::class, 'generateShareLink'])
 ->name('share.course_link');
 
-Route::get('/share-user/register-page', [StudentController::class, 'share_user_register_page'])
+Route::get('/share-link/register', [StudentController::class, 'share_user_register_page'])
 ->name('user.share_link');
 
 Route::get('/otp-verify', function () {
