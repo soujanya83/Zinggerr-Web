@@ -29,7 +29,7 @@ class StudentController extends Controller
 {
 
     public function share_user_register_page(){
-        echo "working.....";
+        return view('auth.share_link_register');
     }
 
     public function generateShareLink($slug){

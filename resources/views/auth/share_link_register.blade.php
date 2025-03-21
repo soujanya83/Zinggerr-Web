@@ -87,8 +87,8 @@
         <div class="auth-form">
             <div class="card mt-5">
                 <div class="card-body">
-                    <a href="#" class="d-flex justify-content-center mt-0"><img src="asset/images/logo.png" alt="image"
-                            style="max-width: 50%;"></a>
+                    <a href="#" class="d-flex justify-content-center mt-0"><img src="../asset/images/logo.png"
+                            alt="image" style="max-width: 50%;"></a>
                     <div class="row">
                         <div class="d-flex justify-content-center">
                             <div class="auth-header">
@@ -102,7 +102,6 @@
 
                     <form id="registerForm" action="{{ route('register') }}" method="post" autocomplete="off">
                         @csrf
-                        <input type="hidden" name="role_type" value="Superadmin">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-floating mb-3">
@@ -116,21 +115,8 @@
                                     @enderror
                                 </div>
                             </div>
-                            {{-- <div class="col-md-6">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="usernameInput"
-                                        placeholder="Enter Username" name="user_name" required
-                                        value="{{ old('user_name') }}"
-                                        oninput="this.value = this.value.replace(/\s/g, '')">
 
-                                    <label for="usernameInput">Username</label>
-                                    <small id="usernameError" class="text-danger"></small>
-                                    @error('user_name')
-                                    <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                            </div> --}}
-                            <div class="col-md-6 position-relative">
+                            <div class="col-md-12 position-relative">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="usernameInput"
                                         placeholder="Enter Username" name="user_name" required
@@ -142,8 +128,8 @@
                                     <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
-                                 <!-- Suggestions Dropdown -->
-                                 <div class="position-relative" style="margin-top:-17px">
+                                <!-- Suggestions Dropdown -->
+                                <div class="position-relative" style="margin-top:-17px">
                                     <div id="usernameSuggestions" class="suggestions-box"
                                         style="display: none; position: absolute; background: #fff; border: 1px solid #ccc; width: 100%; z-index: 1000; padding: 5px;">
                                         <strong style="color:rgb(18, 18, 98)">Suggested Usernames:</strong>
@@ -155,25 +141,7 @@
 
 
 
-                            {{-- <div class="col-md-6">
-                                <div class="form-floating mb-3">
-                                    <input type="hidden" id="countryCode" name="country_code"
-                                        value="{{ old('country_code','+91') }}">
-                                    <input type="tel" class="form-control" id="phoneInput" placeholder="Enter Phone"
-                                        name="phone" required pattern="[0-9]*" inputmode="numeric"
-                                        oninput="this.value = this.value.replace(/\D/g, '')" value="{{ old('phone') }}">
-
-                                    <small id="phoneError" class="text-danger"></small>
-                                    @error('country_code')
-                                    <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                    @error('phone')
-                                    <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                            </div> --}}
-
-                            <div class="col-md-6">
+                            <div class="col-md-6 mt-3">
                                 <div class="form-floating mb-3">
                                     <!-- Hidden Fields for Country Code & Country Name -->
                                     <input type="hidden" id="countryCode" name="country_code"
@@ -202,6 +170,21 @@
                                 </div>
                             </div>
 
+                            <div class="col-md-6 mt-3">
+                                <div class="form-floating mb-3">
+                                    <select class="form-control" id="roleTypeInput" name="role_type" required>
+                                        <option value="" disabled selected>Select Role</option>
+                                        <option value="Faculty" {{ old('role_type') == 'Faculty' ? 'selected' : '' }}>Faculty</option>
+                                        <option value="Student" {{ old('role_type') == 'Student' ? 'selected' : '' }}>Student</option>
+                                    </select>
+                                    <label for="roleTypeInput">Role Type</label>
+
+                                    <small id="roleTypeError" class="text-danger"></small>
+                                    @error('role_type')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
 
 
                         </div>
@@ -324,7 +307,7 @@
 
 
 <script>
- document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
     const fullNameInput = document.getElementById('nameInput'); // Full Name field
     const userNameInput = document.getElementById('usernameInput'); // Username field
     const suggestionsBox = document.getElementById('usernameSuggestions'); // Suggestions box

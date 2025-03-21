@@ -89,7 +89,11 @@ Route::get('/resend-otp', [ProfileController::class, 'resendOtp'])->name('resend
 Route::get('/forgot-password/send-otp', [ProfileController::class, 'sendForgotPasswordOtp'])->name('forgot.password.sendOtp');  /// this use for after login
 Route::post('/check-username-suggestions/register', [RegisterController::class, 'checkUsernameSuggestionsregister'])->name('check.username.suggestion');
 
+Route::get('/course-link/{slug}/', [StudentController::class, 'generateShareLink'])
+->name('share.course_link');
 
+Route::get('/share-user/register-page', [StudentController::class, 'share_user_register_page'])
+->name('user.share_link');
 
 Route::get('/otp-verify', function () {
     return view('auth.passwords.otp_verify');
@@ -247,11 +251,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::post('user/share-course', [StudentController::class, 'shareCourse'])->name('share.course');
 
 
-    Route::get('/course-link/{slug}/', [StudentController::class, 'generateShareLink'])
-        ->name('share.course_link');
 
-        Route::get('/share-user/register-page', [StudentController::class, 'share_user_register_page'])
-        ->name('user.share_link');
 
     Route::get('/user-delete/{user}', [UserController::class, 'user_delete'])
         ->name('user_delete')
