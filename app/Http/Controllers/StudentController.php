@@ -36,6 +36,7 @@ class StudentController extends Controller
       $course= Course::where('slug',$slug)->first();
         $userData=User::select('profile_picture')->where('id',$course->user_id)->first();
 
+        session()->put('course_id_share',$course->id);
         $courseAssetsData=CoursesAssets::select('assets_type','topic_name')->where('course_id',$course->id)->get();
 
         return view('students.course_share_view',compact('course','userData','courseAssetsData'));

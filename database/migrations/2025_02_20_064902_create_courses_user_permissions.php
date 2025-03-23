@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('courses_user_permissions', function (Blueprint $table) {
             $table->char('id', 36)->primary();
-            $table->char('user_id', 36);
+            $table->char('user_id', 36)->nullable()->default(null);
             $table->char('assign_user_id', 36);
             $table->char('course_id', 36);
             $table->char('permission_id', 36);

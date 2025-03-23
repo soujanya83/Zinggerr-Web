@@ -3,12 +3,16 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use App\Models\CoursesAssign;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use App\Mail\VerifyEmail;
+use App\Models\CourseUserPermission;
+use App\Models\Permission;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Gate;
@@ -85,7 +89,7 @@ class CreateNewUser implements CreatesNewUsers
             'type' => $input['role_type'],
             'country_code' => $input['country_code'],
             'country_name' => $input['country_name'],
-            'phone' =>$input['phone'],
+            'phone' => $input['phone'],
             'status' => 0,
             'password' => Hash::make($input['password']),
         ]);
@@ -94,13 +98,52 @@ class CreateNewUser implements CreatesNewUsers
             now()->addMinutes(10),
             ['id' => $user->id, 'hash' => sha1($user->email)]
         );
-        // $this->sendZeptoMail($user, $verificationUrl);
+
+        $courseId = isset($input['course_id_share']) && !empty($input['course_id_share']) ? $input['course_id_share'] : null;
+        if ($courseId != null) {
+            if ($user->type == 'Student') {
+                $uuid = (string) Guid::uuid4();
+                CoursesAssign::updateOrCreate(
+                    ['courses_id' => $courseId, 'users_id' => $user->id],
+                    ['id' => $uuid]
+                );
+            }else{
+                $uuid = (string) Guid::uuid4();
+                CoursesAssign::updateOrCreate(
+                    ['courses_id' => $courseId, 'users_id' => $user->id],
+                    ['id' => $uuid]
+                );
+                $allPermissions = Permission::all();
+                $editCoursePermission = $allPermissions->firstWhere('name', 'courses_edit');
+                $statusCoursePermission = $allPermissions->firstWhere('name', 'courses_status');
+                $permissionsToAssign = [];
+                if ($editCoursePermission) {
+                    $permissionsToAssign[] = $editCoursePermission->id;
+                }
+                if ($statusCoursePermission) {
+                    $permissionsToAssign[] = $statusCoursePermission->id;
+                }
+                foreach ($permissionsToAssign as $permissionId) {
+                    $uuid = (string) Guid::uuid4();
+                    CourseUserPermission::updateOrCreate(
+                        [
+                            'permission_id' => $permissionId,
+                            'assign_user_id' => $user->id,
+                            'course_id' => $courseId,
+                        ],
+                        [
+
+                            'user_id' => null,
+                            'id' => $uuid
+                        ]
+                    );
+                }
+            }
+            session()->forget('course_id_share');
+
+        }
         session()->flash('registered_email', $user->email);
-
-
         session()->put('registered_email', $user->email);
-
-
         event(new Registered($user));
         return $user;
     }

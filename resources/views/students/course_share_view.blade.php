@@ -334,8 +334,6 @@
                 <img src="{{ asset('asset/images/user/download.jpg') }}" alt="image" class="user-avatar">
             </div>
             @endif
-
-
             <div class="instructor-details">
                 <h4>Instructor Name</h4>
                 <p>Expert in {{ $course->course_full_name }} with over 10 years of experience in the field.</p>

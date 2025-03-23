@@ -82,6 +82,7 @@
 
 <div class="auth-main">
 
+
     <div class="auth-wrapper v3">
 
         <div class="auth-form">
@@ -113,7 +114,8 @@
                                     @enderror
                                 </div>
                             </div>
-
+                            <input type="hidden" name="course_id_share" value="{{ session('course_id_share') ?? '' }}"
+                                readonly>
                             <div class="col-md-12 position-relative">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="usernameInput"
@@ -169,14 +171,16 @@
                                 <div class="form-floating mb-3">
                                     <select class="form-control" id="roleTypeInput" name="role_type" required>
                                         <option value="" disabled selected>Select Role</option>
-                                        <option value="Faculty" {{ old('role_type') == 'Faculty' ? 'selected' : '' }}>Faculty</option>
-                                        <option value="Student" {{ old('role_type') == 'Student' ? 'selected' : '' }}>Student</option>
+                                        <option value="Faculty" {{ old('role_type')=='Faculty' ? 'selected' : '' }}>
+                                            Faculty</option>
+                                        <option value="Student" {{ old('role_type')=='Student' ? 'selected' : '' }}>
+                                            Student</option>
                                     </select>
                                     <label for="roleTypeInput">Role Type</label>
 
                                     <small id="roleTypeError" class="text-danger"></small>
                                     @error('role_type')
-                                        <small class="text-danger">{{ $message }}</small>
+                                    <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
                             </div>
