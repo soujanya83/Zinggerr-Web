@@ -105,9 +105,9 @@ class StudentController extends Controller
     }
 
 
+
     public function shareCourse(Request $request)
     {
-
         $request->validate([
             'user_id' => 'required|exists:users,id',
             'course_id' => 'required|exists:courses,id',
@@ -122,7 +122,7 @@ class StudentController extends Controller
             ['id' => $uuid]
         );
 
-        $userdata=User::select('type')->where('id',$userId)->first();
+        $userdata = User::select('type')->where('id', $userId)->first();
         if ($userdata->type == 'Faculty') {
             $allPermissions = Permission::all();
             $editCoursePermission = $allPermissions->firstWhere('name', 'courses_edit');
@@ -139,21 +139,20 @@ class StudentController extends Controller
                 CourseUserPermission::updateOrCreate(
                     [
                         'permission_id' => $permissionId,
-                        'assign_user_id' => $userId
+                        'assign_user_id' => $userId,
+                        'course_id' => $courseId,
                     ],
                     [
-                        'course_id'=>$courseId,
-                        'user_id'=>Auth::user()->id,
-                        'id' => $uuid // Assuming $uuid is a unique identifier (e.g., a UUID)
+
+                        'user_id' => Auth::user()->id,
+                        'id' => $uuid
                     ]
                 );
             }
         }
+
         return response()->json(['message' => 'Course shared successfully']);
     }
-
-
-
 
     public function studentadd(Request $request)
     {

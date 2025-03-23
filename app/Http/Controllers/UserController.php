@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use App\Mail\VerifyEmail;
+use App\Models\CoursesAssign;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
@@ -21,6 +23,7 @@ use Laravel\Fortify\Http\Responses\RedirectAsIntended;
 use Ramsey\Uuid\Guid\Guid;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
+
 class UserController extends Controller
 {
 
@@ -78,8 +81,8 @@ class UserController extends Controller
                 $user->profile_picture = $filePath;
             }
             $user->save();
-            $userpassword=$request->input('password');
-            $this->sharelink_user_passwordset($user,$userpassword);
+            $userpassword = $request->input('password');
+            $this->sharelink_user_passwordset($user, $userpassword);
 
             if ($request->input('role') == 'Faculty') {
                 $route_name = 'teacherlist';
@@ -203,19 +206,58 @@ class UserController extends Controller
         }
     }
 
+
     public function searchUsers(Request $request)
     {
-        $query = $request->search;
-        $users = User::where(function ($q) use ($query) {
-                    $q->where('name', 'LIKE', "%{$query}%")
-                      ->orWhere('type', 'LIKE', "%{$query}%");
-                })
-                ->whereNotIn('type', ['Superadmin', 'Admin']) // Excludes Superadmin and Admin
-                ->get(['id', 'name', 'type']);
+        $query = $request->input('search');
+        $courseId = $request->input('course_id');
+
+        $usersQuery = User::whereNotIn('type', ['Superadmin', 'Admin'])
+            ->select('id', 'name', 'type', 'profile_picture') // Added profile_picture
+            ->orderBy('created_at', 'desc');
+
+        // Exclude users who are already assigned to the course
+        if ($courseId) {
+            $assignedUserIds = CoursesAssign::where('courses_id', $courseId)
+                ->pluck('users_id')
+                ->toArray();
+            $usersQuery->whereNotIn('id', $assignedUserIds);
+        }
+
+        if ($query) {
+            $query = strtolower($query);
+            $usersQuery->where(function ($q) use ($query) {
+                $q->whereRaw('LOWER(name) LIKE ?', ["%{$query}%"])
+                    ->orWhereRaw('LOWER(type) LIKE ?', ["%{$query}%"]);
+            });
+        } else {
+            $usersQuery->take(5);
+        }
+
+        $users = $usersQuery->get();
+
+        // Map users to include profile_image and is_assigned
+        $assignedUserIds = [];
+        if ($courseId) {
+            $assignedUserIds = CoursesAssign::where('courses_id', $courseId)
+                ->pluck('users_id')
+                ->toArray();
+        }
+
+        $users = $users->map(function ($user) use ($assignedUserIds) {
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'type' => $user->type,
+                'profile_image' => $user->profile_picture
+                    ? asset('storage/' . $user->profile_picture)
+                    : asset('asset/images/user/download.jpg'),
+                'is_assigned' => in_array($user->id, $assignedUserIds),
+            ];
+        });
+
         return response()->json(['users' => $users]);
     }
-
-
 
 
     public function admindashboard()

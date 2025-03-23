@@ -541,186 +541,218 @@
 </div>
 
 
-<!-- Bootstrap Share Modal -->
-{{-- <div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true"> --}}
-    <div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <b id="shareModalLabel">Select User to Share <span id="courseName"></span></b>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <b id="shareModalLabel">Select User to Share <span id="courseName"></span></b>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div style="position: relative; display: inline-block; width: 100%;">
+                    <input type="text" id="searchUser" class="form-control" placeholder="Search user..."
+                        style="padding-right: 30px; width: 85%; margin-left: 7%;">
+                    <button id="clearSearch" onclick="clearSearch()"
+                        style="display: none; position: absolute; right: 44px; top: 50%; transform: translateY(-50%); background: transparent; border: none; font-size: 18px; cursor: pointer;">
+                    </button>
                 </div>
-                <div class="modal-body">
-                    <div class="table-responsive">
-                        <div style="position: relative; display: inline-block; width: 100%;">
-                            <input type="text" id="searchUser" class="form-control" placeholder="Search user..."
-                                onkeyup="searchUsers()" style="padding-right: 30px; width: 85%; margin-left: 7%;">
-                            <button id="clearSearch" onclick="clearSearch()"
-                                style="display: none; position: absolute; right: 44px; top: 50%; transform: translateY(-50%); background: transparent; border: none; font-size: 18px; cursor: pointer;">✖</button>
-                        </div>
-                        <input type="hidden" id="selectedCourseId">
-                        <table class="table table-striped table-bordered" id="permissionsTable">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Type</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </div>
+                <input type="hidden" id="selectedCourseId">
+                <ul class="user-list" id="permissionsList" style="list-style: none; padding: 0; margin-top: 15px;"></ul>
             </div>
         </div>
     </div>
+</div>
+
+<!-- JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 
 
-    <!-- JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-    // Share button click handler
-    document.querySelectorAll(".share-btn").forEach(button => {
-        button.addEventListener("click", function () {
-            const courseName = this.getAttribute("data-course-name");
-            const courseId = this.getAttribute("data-course-id");
-            const shareUrl = this.getAttribute("data-share-url");
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Share button click handler
+        document.querySelectorAll(".share-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                const courseName = this.getAttribute("data-course-name");
+                const courseId = this.getAttribute("data-course-id");
+                const shareUrl = this.getAttribute("data-share-url");
 
-            document.getElementById("courseName").textContent = `(${courseName})`;
-            document.getElementById("selectedCourseId").value = courseId;
-            document.getElementById("selectedCourseId").setAttribute("data-share-url", shareUrl);
+                document.getElementById("courseName").textContent = `(${courseName})`;
+                document.getElementById("selectedCourseId").value = courseId;
+                document.getElementById("selectedCourseId").setAttribute("data-share-url", shareUrl);
+
+                loadDefaultUsers(courseId);
+            });
         });
-    });
-});
 
-// Search users dynamically
-function searchUsers() {
-    const query = document.getElementById("searchUser").value.trim();
-    const clearBtn = document.getElementById("clearSearch");
-    const tableBody = $("#permissionsTable tbody");
-
-    clearBtn.style.display = query.length > 0 ? "block" : "none";
-
-    if (query === "") {
-        tableBody.empty();
-        return;
-    }
-
-    $.ajax({
-        url: "{{ route('search.users') }}",
-        type: "GET",
-        data: { search: query },
-        success: function (response) {
-            tableBody.empty();
-            if (response.users && response.users.length > 0) {
-                response.users.forEach((user, index) => {
-                    // Wrap user.id in single quotes to ensure it's passed as a string
-                    const userRow = `
-                        <tr onclick="shareCourse('${user.id}')" style="cursor: pointer;">
-                            <td>${index + 1}</td>
-                            <td>${user.name}</td>
-                            <td>
-                            <span class="badge rounded-pill f-14 ${
-                                user.type === 'Faculty' ? 'bg-light-success' :
-                                user.type === 'Admin' ? 'bg-light-danger' :
-                                user.type === 'Student' ? 'bg-light-primary' :
-                                user.type === 'Staff' ? 'bg-light-warning' :
-                                'bg-light-primary' // Default case
-                            }">${user.type}</span>
-                             </td>
-                        </tr>`;
-                    tableBody.append(userRow);
-                });
-            } else {
-                tableBody.append(`<tr><td colspan="3" class="text-center">No data available</td></tr>`);
+        // Event delegation for list item clicks
+        document.getElementById("permissionsList").addEventListener("click", function (e) {
+            const targetItem = e.target.closest("li");
+            if (targetItem) {
+                const userId = targetItem.getAttribute("data-user-id");
+                if (userId) {
+                    shareCourse(userId, targetItem);
+                }
             }
-        },
-        error: function () {
-            tableBody.empty();
-            tableBody.append(`<tr><td colspan="3" class="text-center">Error fetching users</td></tr>`);
+        });
+
+        // Attach keyup event listener to the search input
+        const searchInput = document.getElementById("searchUser");
+        let searchTimeout;
+
+        searchInput.addEventListener("keyup", function () {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(searchUsers, 300);
+        });
+
+        // Load the latest 5 users by default
+        function loadDefaultUsers(courseId) {
+            const listContainer = $("#permissionsList");
+            listContainer.empty();
+
+            $.ajax({
+                url: "{{ route('search.users') }}",
+                type: "GET",
+                data: { course_id: courseId },
+                success: function (response) {
+                    listContainer.empty();
+                    if (response.users && response.users.length > 0) {
+                        response.users.forEach((user) => {
+                            const userItem = `
+                                <li data-user-id="${user.id}" style="cursor: pointer; padding: 10px; display: flex; align-items: center; border-bottom: 1px solid #eee;">
+                                    <img src="${user.profile_image}" alt="${user.name}" class="img-radius" style="height: 45px; width: 45px; margin-right: 10px; margin-top: 5px;">
+                                    <div>
+                                        <span>${user.name}</span>
+                                        <span class="badge rounded-pill f-14 ${
+                                            user.type === 'Faculty' ? 'bg-light-success' :
+                                            user.type === 'Admin' ? 'bg-light-danger' :
+                                            user.type === 'Student' ? 'bg-light-primary' :
+                                            user.type === 'Staff' ? 'bg-light-warning' :
+                                            'bg-light-primary'
+                                        }" style="margin-left: 10px;">${user.type}</span>
+                                    </div>
+                                </li>`;
+                            listContainer.append(userItem);
+                        });
+                    } else {
+                        listContainer.append(`<li class="text-center" style="padding: 10px;">No users available</li>`);
+                    }
+                },
+                error: function () {
+                    listContainer.empty();
+                    listContainer.append(`<li class="text-center" style="padding: 10px;">Error fetching users</li>`);
+                }
+            });
+        }
+
+        // Search users dynamically
+        function searchUsers() {
+            const query = document.getElementById("searchUser").value.trim();
+            const clearBtn = document.getElementById("clearSearch");
+            const listContainer = $("#permissionsList");
+            const courseId = document.getElementById("selectedCourseId").value;
+
+            clearBtn.style.display = query.length > 0 ? "block" : "none";
+
+            if (query === "") {
+                loadDefaultUsers(courseId);
+                return;
+            }
+
+            $.ajax({
+                url: "{{ route('search.users') }}",
+                type: "GET",
+                data: { search: query, course_id: courseId },
+                success: function (response) {
+                    listContainer.empty();
+                    if (response.users && response.users.length > 0) {
+                        response.users.forEach((user) => {
+                            const userItem = `
+                                <li data-user-id="${user.id}" style="cursor: pointer; padding: 10px; display: flex; align-items: center; border-bottom: 1px solid #eee;">
+                                    <img src="${user.profile_image}" alt="${user.name}" class="img-radius" style="height: 45px; width: 45px; margin-right: 10px; margin-top: 5px;">
+                                    <div>
+                                        <span>${user.name}</span>
+                                        <span class="badge rounded-pill f-14 ${
+                                            user.type === 'Faculty' ? 'bg-light-success' :
+                                            user.type === 'Admin' ? 'bg-light-danger' :
+                                            user.type === 'Student' ? 'bg-light-primary' :
+                                            user.type === 'Staff' ? 'bg-light-warning' :
+                                            'bg-light-primary'
+                                        }" style="margin-left: 10px;">${user.type}</span>
+                                    </div>
+                                </li>`;
+                            listContainer.append(userItem);
+                        });
+                    } else {
+                        listContainer.append(`<li class="text-center" style="padding: 10px;">No data available</li>`);
+                    }
+                },
+                error: function (xhr) {
+                    listContainer.empty();
+                    listContainer.append(`<li class="text-center" style="padding: 10px;">Error fetching users: ${xhr.status} ${xhr.statusText}</li>`);
+                }
+            });
+        }
+
+        // Share course with selected user
+        function shareCourse(userId, item) {
+            const courseId = document.getElementById("selectedCourseId").value;
+            const shareUrl = document.getElementById("selectedCourseId").getAttribute("data-share-url");
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
+
+            if (!courseId || !userId || !shareUrl || !csrfToken) {
+                alert("Missing required data!");
+                return;
+            }
+
+            $.ajax({
+                url: shareUrl,
+                type: "POST",
+                data: {
+                    _token: csrfToken,
+                    user_id: userId,
+                    course_id: courseId
+                },
+                success: function (response) {
+                    item.innerHTML += '<i class="fas fa-check-circle text-success" style="margin-left: 10px;"></i>';
+                    setTimeout(() => {
+                        $(item).fadeOut(500, function () {
+                            $(this).remove();
+                            const listContainer = $("#permissionsList");
+                            if (listContainer.children().length === 0) {
+                                listContainer.append(`<li class="text-center" style="padding: 10px;">No users available</li>`);
+                            }
+                        });
+                    }, 3000);
+                },
+                error: function (xhr) {
+                    alert(xhr.responseJSON?.message || "Failed to share the course. Please try again.");
+                }
+            });
+        }
+
+        // Clear search input
+        function clearSearch() {
+            const searchInput = document.getElementById("searchUser");
+            searchInput.value = "";
+            document.getElementById("clearSearch").style.display = "none";
+            const courseId = document.getElementById("selectedCourseId").value;
+            loadDefaultUsers(courseId);
+            searchInput.focus();
         }
     });
-}
-
-// Share course with selected user
-function shareCourse(userId) {
-    const courseId = document.getElementById("selectedCourseId").value;
-    const shareUrl = document.getElementById("selectedCourseId").getAttribute("data-share-url");
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
-
-    console.log("User ID:", userId);
-    console.log("Course ID:", courseId);
-    console.log("Share URL:", shareUrl);
-    console.log("CSRF Token:", csrfToken);
-
-    if (!courseId) {
-        alert("Course ID is missing!");
-        return;
-    }
-    if (!userId) {
-        alert("User ID is missing!");
-        return;
-    }
-    if (!shareUrl) {
-        alert("Share URL is missing!");
-        return;
-    }
-    if (!csrfToken) {
-        alert("CSRF token is missing! Please ensure the CSRF meta tag is present.");
-        return;
-    }
-
-    $.ajax({
-        url: shareUrl,
-        type: "POST",
-        data: {
-            _token: csrfToken,
-            user_id: userId,
-            course_id: courseId
-        },
-                    success: function (response) {
-                console.log("Success Response:", response);
-                $('#shareModal').modal('hide');
-                $('#shareModal').one('hidden.bs.modal', function () {
-                    $('.modal-backdrop').remove();
-                    $('body').removeClass('modal-open');
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: response.message || "Course shared successfully!",
-                        showConfirmButton: false, // Remove the OK button
-                        timer: 2000, // Auto-close after 3 seconds (3000ms)
-                        backdrop: 'rgba(0,0,0,0.2)' // Lighter backdrop for SweetAlert
-                    }).then(() => {
-                        location.reload();
-                    });
-                });
-            },
-                    error: function (xhr) {
-                        console.error("Error Response:", xhr);
-                        const errorMessage = xhr.responseJSON?.message || "Failed to share the course. Please try again.";
-                        alert(errorMessage);
-                    }
-                });
-            }
-
-// Clear search input
-function clearSearch() {
-    const searchInput = document.getElementById("searchUser");
-    searchInput.value = "";
-    document.getElementById("clearSearch").style.display = "none";
-    $("#permissionsTable tbody").empty();
-    searchInput.focus();
-}
-    </script>
+</script>
 
 
+<script>
+    window.App = window.App || {};
+    window.App.routes = {
+        searchUsers: "{{ route('search.users') }}"
+    };
+</script>
 
-
-  <!-- JavaScript for Modal and Copy Functionality -->
+<!-- JavaScript for Modal and Copy Functionality -->
 <script>
     $(document).on('click', '.share-btn', function () {
         const courseName = $(this).data('course-name');
@@ -775,14 +807,14 @@ function clearSearch() {
             });
         });
     });
-    </script>
+</script>
 
 
 
 
 
-    <script>
-        function confirmDelete(element) {
+<script>
+    function confirmDelete(element) {
     event.preventDefault(); // Prevent the default link behavior
     const url = element.href;
 
@@ -803,11 +835,11 @@ function clearSearch() {
     });
 
     return false; // Prevent immediate navigation
-}
+    }
 
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
         const searchInput = document.getElementById('searchPermissions');
         const table = document.getElementById('permissionsTable');
         const rows = table.getElementsByTagName('tr');
@@ -839,6 +871,6 @@ function clearSearch() {
             }
         });
     });
-    </script>
-    @include('partials.footer')
-    @endsection
+</script>
+@include('partials.footer')
+@endsection
