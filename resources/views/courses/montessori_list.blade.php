@@ -553,7 +553,7 @@
                     <input type="text" id="searchUser" class="form-control" placeholder="Search user..."
                         style="padding-right: 30px; width: 85%; margin-left: 7%;">
                     <button id="clearSearch" onclick="clearSearch()"
-                        style="display: none; position: absolute; right: 44px; top: 50%; transform: translateY(-50%); background: transparent; border: none; font-size: 18px; cursor: pointer;">
+                        style="display: none; position: absolute; right: 44px; top: 50%; transform: translateY(-50%); background: transparent; border: none; font-size: 18px; cursor: pointer;">✖
                     </button>
                 </div>
                 <input type="hidden" id="selectedCourseId">
@@ -604,6 +604,17 @@
         searchInput.addEventListener("keyup", function () {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(searchUsers, 300);
+        });
+
+        // Clear search input when modal is closed
+        const shareModal = document.getElementById("shareModal");
+        shareModal.addEventListener("hidden.bs.modal", function () {
+            searchInput.value = ""; // Clear the search input
+            document.getElementById("clearSearch").style.display = "none"; // Hide the clear button
+            const listContainer = $("#permissionsList");
+            listContainer.empty(); // Optionally clear the list
+            document.getElementById("selectedCourseId").value = ""; // Clear the hidden course ID
+            document.getElementById("courseName").textContent = ""; // Clear the course name
         });
 
         // Load the latest 5 users by default
