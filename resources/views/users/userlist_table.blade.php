@@ -38,15 +38,16 @@
     <td>{{ $user->gender }}</td>
     @if(Auth::user()->can('role') ||
     (isset($permissions) && in_array('users_status', $permissions)))
+
     <td>
-        <form action="{{ route('changeStatus') }}" method="GET" style="display: inline;">
-            <input type="hidden" name="id" value="{{ $user->id }}">
-            <input type="hidden" name="status" value="{{ $user->status == 1 ? 0 : 1 }}">
-            <button type="submit" class="btn  btn-shadow {{ $user->status == 1 ? 'btn-success' : 'btn-danger' }}" title="User Status">
-                {{ $user->status == 1 ? 'Active' : 'Inactive' }}
-            </button>
-        </form>
+        <label class="switch" title="Status change">
+            <input type="checkbox" class="status-toggle" data-id="{{ $user->id }}"
+                data-status="{{ $user->status == 1 ? 0 : 1 }}" {{ $user->status == 1 ? 'checked' : '' }}
+            title="Status change">
+            <span class="slider round"></span>
+        </label>
     </td>
+
     @endif
 
     <td class="text-center">
@@ -61,11 +62,17 @@
 
         @if(Auth::user()->can('role') ||
         (isset($permissions) && in_array('assign_permission', $permissions)))
-
-        <a href="{{ route('user.assign_permission', $user->slug) }}" class="avtar avtar-xs btn-link-secondary read-more-btn"
-            data-id="{{ $user->id }}">
+        @if($user->type == 'Admin')
+        <a href="{{ route('user.assign_permission', $user->slug) }}"
+            class="avtar avtar-xs btn-link-secondary read-more-btn" data-id="{{ $user->id }}">
             <i class="ti ti-info-circle f-20" title="Assign Permission"></i>
         </a>
+        @else
+        <a href="{{ route('user.allassign_permission', $user->slug) }}"
+            class="avtar avtar-xs btn-link-secondary read-more-btn" data-id="{{ $user->id }}">
+            <i class="ti ti-info-circle f-20" title="Assign Permission"></i>
+        </a>
+        @endif
         @endif
 
 
@@ -113,70 +120,51 @@
 
 </script>
 
-{{-- <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const statusToggleBtns = document.querySelectorAll('.status-toggle-btn');
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-      statusToggleBtns.forEach(function(button) {
-        button.addEventListener('click', function(event) {
-          event.preventDefault(); // Prevent default form submission
+<script>
+    $(document).ready(function() {
+        $('.status-toggle').change(function() {
+            var toggle = $(this);
+            var userId = toggle.data('id');
+            var newStatus = toggle.is(':checked') ? 1 : 0;
 
-          const userId = button.dataset.id;
-          const currentStatus = button.dataset.status;
-          const newStatus = currentStatus === '1' ? '0' : '1'; // Toggle status
-
-          Swal.fire({
-            title: 'Confirm Status Change',
-            text: `Are you sure you want to change the status to ${newStatus === '1' ? 'Active' : 'Inactive'}?`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6', // Blue confirmation button
-            cancelButtonColor: '#d33', // Red cancel button
-            confirmButtonText: 'Yes, Change',
-            cancelButtonText: 'Cancel'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              // Send AJAX request to update user status
-              fetch(`/users/${userId}/status`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRF-TOKEN': '{{ csrf_token() }}' // Laravel CSRF protection
+            $.ajax({
+                url: '{{ route("changeStatus") }}',
+                type: 'POST',
+                data: {
+                    id: userId,
+                    status: newStatus,
+                    _token: '{{ csrf_token() }}'
                 },
-                body: JSON.stringify({ status: newStatus })
-              })
-              .then(response => response.json())
-              .then(data => {
-                if (data.success) {
-                  // Update button text and class based on new status
-                  button.textContent = newStatus === '1' ? 'Active' : 'Inactive';
-                  button.classList.remove(currentStatus === '1' ? 'btn-success' : 'btn-danger');
-                  button.classList.add(newStatus === '1' ? 'btn-success' : 'btn-danger');
-
-                  Swal.fire({
-                    title: 'Success!',
-                    text: 'User status updated successfully.',
-                    icon: 'success'
-                  });
-                } else {
-                  Swal.fire({
-                    title: 'Error!',
-                    text: data.message || 'An error occurred while updating status.',
-                    icon: 'error'
-                  });
+                success: function(response) {
+                    if(response.success) {
+                        toggle.data('status', newStatus === 1 ? 0 : 1);
+                        Swal.fire({
+                            title: 'Success!',
+                            text: 'User status change successfully',
+                            icon: 'success',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    } else {
+                        toggle.prop('checked', !toggle.is(':checked'));
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Failed to update status',
+                            icon: 'error'
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    toggle.prop('checked', !toggle.is(':checked'));
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'An error occurred while updating status',
+                        icon: 'error'
+                    });
                 }
-              })
-              .catch(error => {
-                console.error('Error updating user status:', error);
-                Swal.fire({
-                  title: 'Error!',
-                  text: 'An error occurred while updating status.',
-                  icon: 'error'
-                });
-              });
-            }
-          });
+            });
         });
-      });
     });
-</script> --}}
+</script>

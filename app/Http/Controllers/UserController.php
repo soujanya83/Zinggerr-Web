@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use App\Mail\VerifyEmail;
 use App\Models\CoursesAssign;
+use App\Models\Permission;
+use App\Models\UsersPermission;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -83,6 +85,41 @@ class UserController extends Controller
             $user->save();
             $userpassword = $request->input('password');
             $this->sharelink_user_passwordset($user, $userpassword);
+
+            if ($user->type == 'Admin') {
+                $roleId = Role::where('name', 'Admin')->first();
+                $allPermissions = Permission::get();
+                foreach ($allPermissions as $permission) {
+                    $uuid = (string) Guid::uuid4();
+                    PermissionRole::create([
+                        'id' => $uuid,
+                        'role_id' => $roleId->id,
+                        'user_id' => $user->id,
+                        'permission_id' => $permission->id,
+                        'created_by' => Auth::user()->id
+
+                    ]);
+                }
+            } else {
+                try {
+                    if ($user->type != 'Student') {
+                        $userId = Auth::user()->id;
+                        $userAssignPermissions = PermissionRole::where('user_id', $userId)->get();
+                        foreach ($userAssignPermissions as $userPermission) {
+                            $uuid = (string) Guid::uuid4();
+                            UsersPermission::create([
+                                'id' => $uuid,
+                                'permission_id' => $userPermission->permission_id,
+                                'user_id' => $user->id
+                            ]);
+                        }
+                    }
+                } catch (\Exception $e) {
+                    dd($e);
+                    return redirect()->back()->with('error', 'Something went wrong. Please try again.');
+                }
+            }
+
 
             if ($request->input('role') == 'Faculty') {
                 $route_name = 'teacherlist';
@@ -506,10 +543,14 @@ class UserController extends Controller
 
     public function changeStatus(Request $request)
     {
+
         $user = User::findOrFail($request->id);
         $user->status = $request->status;
         $user->save();
 
-        return redirect()->back()->with('success', 'User status updated successfully!');
+        return response()->json([
+            'success' => true,
+            'message' => 'User status updated successfully!'
+        ]);
     }
 }

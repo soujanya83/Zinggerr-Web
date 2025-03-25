@@ -90,10 +90,10 @@ Route::get('/forgot-password/send-otp', [ProfileController::class, 'sendForgotPa
 Route::post('/check-username-suggestions/register', [RegisterController::class, 'checkUsernameSuggestionsregister'])->name('check.username.suggestion');
 
 Route::get('/course-link/{slug}/', [StudentController::class, 'generateShareLink'])
-->name('share.course_link');
+    ->name('share.course_link');
 
 Route::get('/share-link/register', [StudentController::class, 'share_user_register_page'])
-->name('user.share_link');
+    ->name('user.share_link');
 
 Route::get('/otp-verify', function () {
     return view('auth.passwords.otp_verify');
@@ -147,7 +147,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('course/{slug}/edit', [CourseController::class, 'courseedit'])->name('course_edit');
     Route::get('course/{slug}/format', [CourseController::class, 'courseedit'])->name('after_course_create');
     Route::post('course-update/{id}', [CourseController::class, 'courseupdate'])->name('course_update');
-    Route::match(['get', 'post'], 'create/course', [CourseController::class, 'courseadd'])->name('addCourse');
+    Route::match(['get', 'post'], 'courses/{ageGroup}/{area}/create-course', [CourseController::class, 'courseadd'])->name('addCourse');
 
     Route::get('/courses-delete/{id}', [CourseController::class, 'coursedelete'])
         ->name('course_delete')
@@ -258,12 +258,12 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
 
 
 
-    Route::get('/user-delete/{user}', [UserController::class, 'user_delete'])
-        ->name('user_delete')
-        ->middleware('can:role');
-    Route::get('/users-edit/{slug}', [UserController::class, 'useredit'])->name('user_edit')->middleware('can:role');
-    Route::post('/users-update', [UserController::class, 'updateuser'])->name('updateuser')->middleware('can:role');
-    Route::get('/change-status', [UserController::class, 'changeStatus'])->name('changeStatus');
+    Route::get('/user-delete/{user}', [UserController::class, 'user_delete'])->name('user_delete')->middleware('can:role');
+
+
+    Route::get('/users-edit/{slug}', [UserController::class, 'useredit'])->name('user_edit');
+    Route::post('/users-update', [UserController::class, 'updateuser'])->name('updateuser');
+    Route::post('/change-status', [UserController::class, 'changeStatus'])->name('changeStatus');
     // Route::get('/changes-status', [UserController::class, 'changeStatus'])->name('changeStatus');
 
     Route::get('/admin/dashboard', [UserController::class, 'admindashboard'])->name('admin.dashboard');
@@ -314,7 +314,8 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
 
 
 
-    Route::get('permission/{slug}/assign', [PermissionsController::class, 'user_assign_permission'])->name('user.assign_permission');
+    Route::get('user-admin/permission-assign/{slug}', [PermissionsController::class, 'user_assign_permission'])->name('user.assign_permission');
+    Route::get('user/permission-assign/{slug}', [PermissionsController::class, 'alluser_assign_permission'])->name('user.allassign_permission');
 
     Route::get('permissions/create', [PermissionsController::class, 'create_permission'])->name('permissions.create');
     Route::get('permissions/list', [PermissionsController::class, 'list_permission'])->name('permissions.list');
@@ -333,6 +334,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::post('roles/submit-new', [PermissionsController::class, 'new_submit_roles'])->name('roles.newstore');
     Route::post('roles/update', [PermissionsController::class, 'update_role'])->name('roles.update');
     Route::post('/assign-permissions', [PermissionsController::class, 'user_assign_permissions'])->name('assign.permissions');
+    Route::post('all-users/assign-permissions', [PermissionsController::class, 'alluser_assign_permissions'])->name('assign.allusers_permissions');
 
     Route::get('roles/create', [PermissionsController::class, 'createroles'])->name('roles.create');
     Route::get('roles/list', [PermissionsController::class, 'listroles'])->name('roles.list');

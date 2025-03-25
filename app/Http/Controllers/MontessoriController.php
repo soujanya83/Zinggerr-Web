@@ -20,6 +20,9 @@ class MontessoriController extends Controller
 
     public function show(Request $request, $ageGroup, $area)
     {
+        $ageGroupUrl=$ageGroup;
+        $areaUrl=$area;
+
         $ageGroup = str_replace('-', ' ', ucfirst($ageGroup));
         $area = str_replace('-', ' ', ucfirst($area));
 
@@ -59,7 +62,7 @@ class MontessoriController extends Controller
         $users = User::where('status', 1)->get();
         $categories = CoursesCategory::where('user_id', $userId)->get();
 
-        return view('courses.montessori_list', compact('courses', 'users', 'categories', 'CourseUserPermission', 'area', 'ageGroup'));
+        return view('courses.montessori_list', compact('courses', 'users', 'categories', 'CourseUserPermission', 'area', 'ageGroup','ageGroupUrl','areaUrl'));
     }
 
 

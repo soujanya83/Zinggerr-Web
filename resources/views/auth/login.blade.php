@@ -28,6 +28,16 @@
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 @endforeach
+<style>
+    .password-toggle-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        z-index: 2;
+    }
+</style>
 <div class="auth-main">
     <div class="auth-wrapper v3">
         <div class="auth-form">
@@ -52,11 +62,20 @@
                                 placeholder="Email address / Username" required>
                             <label for="floatingInput">Email address / Username</label>
                         </div>
-                        <div class="form-floating mb-3">
+                        {{-- <div class="form-floating mb-3">
                             <input type="password" class="form-control" id="passwordInput" placeholder="Password"
                                 name="password" required>
                             <label for="passwordInput">Password</label>
+                        </div> --}}
+                        <div class="form-floating mb-3 position-relative">
+                            <input type="password" class="form-control" id="passwordInput" placeholder="Password"
+                                name="password" required>
+                            <label for="passwordInput">Password</label>
+                            <span class="password-toggle-icon" onclick="togglePassword()" style="">
+                                <i class="bi bi-eye-slash" id="toggleEyeIcon" style="font-size:18px"></i>
+                            </span>
                         </div>
+
                         <div class="d-flex mt-1 justify-content-between">
                             <div class="form-check">
                                 <input class="form-check-input input-primary" type="checkbox" id="rememberCheck"
@@ -79,6 +98,23 @@
         </div>
     </div>
 </div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
+<script>
+    function togglePassword() {
+        const passwordInput = document.getElementById('passwordInput');
+        const toggleEyeIcon = document.getElementById('toggleEyeIcon');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleEyeIcon.classList.remove('bi-eye-slash');
+            toggleEyeIcon.classList.add('bi-eye');
+        } else {
+            passwordInput.type = 'password';
+            toggleEyeIcon.classList.remove('bi-eye');
+            toggleEyeIcon.classList.add('bi-eye-slash');
+        }
+    }
+</script>
 
 @endsection

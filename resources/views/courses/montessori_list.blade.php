@@ -114,7 +114,8 @@
                             $permissions)))
 
                             <div>
-                                <form action="{{ route('addCourse') }}" method="post">
+                                <form action="{{ route('addCourse', ['ageGroup' => $ageGroupUrl, 'area' => $areaUrl]) }}" method="post">
+
                                     @csrf
                                     <input type="hidden" name="montessori_area" value="{{ $area }}">
                                     <input type="hidden" name="montessori_agegroup" value="{{ $ageGroup }}">

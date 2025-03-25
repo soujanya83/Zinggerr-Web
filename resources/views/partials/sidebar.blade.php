@@ -240,6 +240,9 @@
 
                 {{-- @if(Auth::user()->can('role') || Auth::user()->can('admin-role') ||
                 Auth::user()->can('staff-role')) --}}
+                {{-- @php
+                dd($permissions);
+                @endphp --}}
                 @if(Auth::user()->can('role') || (isset($permissions) && in_array('user_sidebar',
                 $permissions)))
 
@@ -283,7 +286,7 @@
                         <li class="pc-item {{ request()->routeIs('teacherlist') ? 'active' : '' }}">
                             <a class="pc-link" href="{{ route('teacherlist', ['type' => 'faculty']) }}"
                                 data-i18n="Faculty">
-                                <i class="ti ti-users"></i> Faculty
+                                Faculty
                             </a>
                         </li>
                         @endif
@@ -293,7 +296,7 @@
                         <li class="pc-item {{ request()->routeIs('studentlist') ? 'active' : '' }}">
                             <a class="pc-link" href="{{ route('studentlist', ['type' => 'student']) }}"
                                 data-i18n="Students">
-                                <i class="ti ti-users"></i> Students
+                                Students
                             </a>
                         </li>
                         @endif
@@ -328,7 +331,7 @@
 
                 @if(Auth::user()->can('role')|| (isset($permissions) && in_array('permission_sidebar',
                 $permissions)))
-                <li class="pc-item pc-hasmenu">
+                <li class="pc-item pc-hasmenu" style="display: none">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
                             <i class="ti ti-login"></i>
@@ -353,7 +356,8 @@
                 </li>
                 @endif
 
-
+                @if(Auth::user()->can('role')|| (isset($permissions) && in_array('settings_sidebar',
+                $permissions)))
                 <li class="pc-item pc-hasmenu">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
@@ -402,7 +406,7 @@
                         </li>
                     </ul>
                 </li>
-
+                @endif
 
 
 

@@ -69,14 +69,8 @@
                                     <!-- Hidden field for the ID -->
 
                                     <div class="row">
+
                                         <div class="col-md-4">
-                                            <div class="mb-3">
-                                                <label for="nameInput">Name</label>
-                                                <input type="text" class="form-control" id="nameInput" name="name"
-                                                    required placeholder="Enter Name" value="{{ $roles->name }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4" style="display:none">
                                             <div class="mb-3">
                                                 <label for="displayNameInput">Display
                                                     Name</label>
@@ -85,7 +79,17 @@
                                                     value="{{ $roles->display_name }}">
                                             </div>
                                         </div>
-                                        <div class="col-md-8">
+
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label for="nameInput">Name</label>
+                                                <input type="text" class="form-control" id="nameInput" name="name"
+                                                    required placeholder="Enter Name" value="{{ $roles->name }}"
+                                                    oninput="this.value = this.value.replace(/\s/g, '')">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label for="descriptionInput">Description</label>
                                                 <textarea class="form-control" id="descriptionInput" name="description"

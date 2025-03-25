@@ -97,7 +97,7 @@
                                     @foreach ($roles as $index => $role)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $role['name'] }}</td>
+                                        <td>{{ $role['display_name'] }}</td>
                                         {{-- <td>{{ $role['display_name'] }}</td> --}}
                                         <td>
                                             {{Str::limit(strip_tags($role['description'] ), 130, '...') }}

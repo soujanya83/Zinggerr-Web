@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('permission_role', function (Blueprint $table) {
             $table->char('id', 36)->primary();
             $table->char('permission_id', 36);
-            $table->string('user_id', 50);
-            $table->string('assigned_user_id', 50);
+            $table->char('role_id', 36);
+            $table->char('user_id', 36);
+            $table->char('created_by', 36)->nullable()->default(null);
+            $table->char('updated_by', 36)->nullable()->default(null);
             $table->timestamps();
 
-            $table->foreign('permission_id')->references('id')->on('permissions')->onDelete('cascade');
-            $table->foreign('assigned_user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
 
         });
     }

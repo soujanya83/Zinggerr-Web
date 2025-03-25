@@ -79,7 +79,16 @@
         background: #f5f5f5;
     }
 </style>
-
+<style>
+    .password-toggle-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        z-index: 2;
+    }
+</style>
 <div class="auth-main">
 
     <div class="auth-wrapper v3">
@@ -142,8 +151,8 @@
                                     <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
-                                 <!-- Suggestions Dropdown -->
-                                 <div class="position-relative" style="margin-top:-17px">
+                                <!-- Suggestions Dropdown -->
+                                <div class="position-relative" style="margin-top:-17px">
                                     <div id="usernameSuggestions" class="suggestions-box"
                                         style="display: none; position: absolute; background: #fff; border: 1px solid #ccc; width: 100%; z-index: 1000; padding: 5px;">
                                         <strong style="color:rgb(18, 18, 98)">Suggested Usernames:</strong>
@@ -214,7 +223,7 @@
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        <div class="form-floating mb-3">
+                        {{-- <div class="form-floating mb-3">
                             <input type="password" class="form-control" id="passwordInput" placeholder="Password"
                                 name="password" required>
                             <label for="passwordInput">Password</label>
@@ -222,7 +231,21 @@
                             @error('password')
                             <small class="text-danger">{{ $message }}</small>
                             @enderror
+                        </div> --}}
+
+                        <div class="form-floating mb-3 position-relative">
+                            <input type="password" class="form-control" id="passwordInput" placeholder="Password"
+                                name="password" required>
+                            <label for="passwordInput">Password</label>
+                            <span class="password-toggle-icon" onclick="togglePassword()">
+                                <i class="bi bi-eye-slash" id="toggleEyeIcon" style="font-size:18px"></i>
+                            </span>
+                            <small id="passwordError" class="text-danger"></small>
+                            @error('password')
+                            <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
+
                         <div class="form-check mt-3">
                             <input class="form-check-input input-primary" type="checkbox" id="customCheckc1"
                                 name="tandc_status" value="1">
@@ -285,7 +308,23 @@
     });
 });
 </script> --}}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<script>
+    function togglePassword() {
+        const passwordInput = document.getElementById('passwordInput');
+        const toggleEyeIcon = document.getElementById('toggleEyeIcon');
 
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleEyeIcon.classList.remove('bi-eye-slash');
+            toggleEyeIcon.classList.add('bi-eye');
+        } else {
+            passwordInput.type = 'password';
+            toggleEyeIcon.classList.remove('bi-eye');
+            toggleEyeIcon.classList.add('bi-eye-slash');
+        }
+    }
+</script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
     var input = document.querySelector("#phoneInput");
@@ -324,7 +363,7 @@
 
 
 <script>
- document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
     const fullNameInput = document.getElementById('nameInput'); // Full Name field
     const userNameInput = document.getElementById('usernameInput'); // Username field
     const suggestionsBox = document.getElementById('usernameSuggestions'); // Suggestions box
