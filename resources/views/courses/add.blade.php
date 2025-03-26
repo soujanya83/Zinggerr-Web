@@ -266,6 +266,7 @@
                                                             {{ $agedata->short_name }}
                                                         </option>
                                                     @endforeach
+                                                    <option value="other">Other</option>
 
 
                                                     </select>
@@ -286,6 +287,7 @@
                                                             {{ $areadata->full_name }}
                                                         </option>
                                                         @endforeach
+                                                        <option value="other">Other</option>
 
 
                                                     </select>
