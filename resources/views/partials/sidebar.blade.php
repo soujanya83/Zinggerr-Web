@@ -130,69 +130,155 @@
                     </ul>
                 </li> --}}
 
+
                 <li class="pc-item pc-hasmenu">
-                    <a href="#!" class="pc-link">
-                        <span class="pc-micon"><i class="ti ti-book"></i></span>
-                        <span class="pc-mtext" data-i18n="Courses">Courses</span>
+                    <a href="#" class="pc-link">
+                        <span class="pc-micon">
+                            <i class="ti ti-settings"></i>
+                        </span>
+                        <span class="pc-mtext" data-i18n="Teachers">Montessori Training</span>
                         <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
                     </a>
                     <ul class="pc-submenu">
-                        {{-- @php
-                        $ageGroups = [
-                        'toddlers' => 'Toddlers (0-3 years)',
-                        'early-childhood' => 'Early Childhood (3-6 years)',
-                        'elementarys' => 'Elementary (6-12 years)',
-
-                        ];
-                        $areas = ['practical-life', 'sensorial', 'mathematics', 'language', 'cultural-studies'];
-                        @endphp
-
-                        @foreach ($ageGroups as $key => $ageGroup)
+                        <!-- Montessori (0-3) -->
                         <li class="pc-item pc-hasmenu">
-                            <a href="#!" class="pc-link">
-                                <span class="pc-mtext">{{ $ageGroup }}</span>
+                            <a href="#" class="pc-link">
+                                <span class="pc-mtext" data-i18n="Montessori">Montessori (0-3)</span>
                                 <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
                             </a>
-                            <ul class="pc-submenu" style="list-style: none; padding-left: 15px;">
-                                @foreach ($areas as $area)
+                            <ul class="pc-submenu">
                                 <li class="pc-item">
-                                    <a class="pc-link"
-                                        href="{{ route('montessori.course.show', ['ageGroup' => $key, 'area' => $area]) }}">
-                                        {{ ucwords(str_replace('-', ' ', $area)) }}
-                                    </a>
+                                    <a class="pc-link" href="#" data-i18n="AgeGroup">Nido (2-14 months) Group</a>
                                 </li>
-                                @endforeach
+                                <li class="pc-item">
+                                    <a class="pc-link" href="#" data-i18n="Areas">Infant (14 months-3 years)</a>
+                                </li>
                             </ul>
                         </li>
-                        @endforeach --}}
+                        <!-- Casa Dei Bambini (3-6 years) -->
                         @php
                         use Illuminate\Support\Str;
                         $ageGroups = DB::table('montessori_age_groups')->where('status', 1)->get();
                         $areas = DB::table('montessori_areas')->where('status', 1)->get();
                         @endphp
-
-                        @foreach ($ageGroups as $ageGroup)
                         <li class="pc-item pc-hasmenu">
-                            <a href="#!" class="pc-link">
-                                <span class="pc-mtext">{{ ucwords($ageGroup->full_name) }}</span>
+                            <a href="#" class="pc-link">
+                                <span class="pc-mtext" data-i18n="Montessori">Casa Dei Bambini (3-6 years)</span>
                                 <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
                             </a>
-                            <ul class="pc-submenu" style="list-style: none; padding-left: 15px;">
+                            <ul class="pc-submenu">
                                 @foreach ($areas as $area)
                                 <li class="pc-item">
-                                    <a class="pc-link" href="{{ route('montessori.course.show', [
-                                                'ageGroup' => Str::slug($ageGroup->short_name),
-                                                'area' => Str::slug($area->full_name)
-                                            ]) }}">
+                                    <a class="pc-link" href="#">
                                         {{ ucwords($area->full_name) }}
                                     </a>
                                 </li>
                                 @endforeach
                             </ul>
                         </li>
-                        @endforeach
                     </ul>
                 </li>
+
+                {{-- <li class="pc-item pc-hasmenu">
+                    <a href="#" class="pc-link">
+                        <span class="pc-micon">
+                            <i class="ti ti-settings"></i>
+                        </span>
+                        <span class="pc-mtext" data-i18n="Teachers">Montessori Training</span>
+                        <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+                    </a>
+                    <ul class="pc-submenu">
+                        <!-- Montessori Settings -->
+                        <li class="pc-item pc-hasmenu">
+                            <a href="#" class="pc-link">
+                                <span class="pc-mtext" data-i18n="Montessori">Montessori (0-3)</span>
+                                <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+                            </a>
+                            <ul class="pc-submenu">
+                                <li class="pc-item">
+                                    <a class="pc-link" href="#" data-i18n="AgeGroup">Nido(2-14 months)
+                                        Group</a>
+                                </li>
+                                <li class="pc-item">
+                                    <a class="pc-link" href="#" data-i18n="Areas">Infant (14 months-3 years)</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    @php
+                    use Illuminate\Support\Str;
+                    $ageGroups = DB::table('montessori_age_groups')->where('status', 1)->get();
+                    $areas = DB::table('montessori_areas')->where('status', 1)->get();
+                    @endphp
+                    <ul class="pc-submenu">
+                        <!-- Montessori Settings -->
+                        <li class="pc-item pc-hasmenu">
+                            <a href="#" class="pc-link">
+                                <span class="pc-mtext" data-i18n="Montessori">Casa Dei Bambini (3-6 years)</span>
+                                <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+                            </a>
+                            <ul class="pc-submenu">
+                                @foreach ($areas as $area)
+                                <li class="pc-item">
+                                    <a class="pc-link" href="#">
+                                        {{ ucwords($area->full_name) }}
+                                    </a>
+                                </li>
+                                @endforeach
+                            </ul>
+                        </li>
+                    </ul>
+
+
+                </li> --}}
+
+                {{-- <li class="pc-item pc-hasmenu">
+                    <a href="#" class="pc-link">
+                        <span class="pc-micon">
+                            <i class="ti ti-settings"></i>
+                        </span>
+                        <span class="pc-mtext" data-i18n="Teachers">Montessori Training</span>
+                        <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+                    </a>
+                    <ul class="pc-submenu">
+                        <!-- Montessori Settings -->
+                        <li class="pc-item pc-hasmenu">
+                            <a href="#" class="pc-link">
+                                <span class="pc-mtext" data-i18n="Montessori">Montessori (0-3)</span>
+                                <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+                            </a>
+                            <ul class="pc-submenu">
+                                <li class="pc-item">
+                                    <a class="pc-link" href="#" data-i18n="AgeGroup">Nido (2-14 months) Group</a>
+                                </li>
+                                <li class="pc-item">
+                                    <a class="pc-link" href="#" data-i18n="Areas">Infant (14 months-3 years)</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <ul class="pc-submenu">
+                        <!-- Montessori Settings -->
+                        <li class="pc-item pc-hasmenu">
+                            <a href="#" class="pc-link">
+                                <span class="pc-mtext" data-i18n="Montessori">Casa Dei Bambini (3-6 years)</span>
+                                <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+                            </a>
+                            <ul class="pc-submenu">
+
+                                <!-- Added two new submenu items -->
+                                <li class="pc-item">
+                                    <a class="pc-link" href="#">Practical Life Skills</a>
+                                </li>
+                                <li class="pc-item">
+                                    <a class="pc-link" href="#">Sensorial Activities</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li> --}}
+
 
                 {{-- @if (Auth::user()->can('role') || (isset($permissions) &&
                 in_array('faculty_sidebar',$permissions)))
