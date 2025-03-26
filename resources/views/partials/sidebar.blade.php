@@ -79,7 +79,7 @@
                             <ul class="pc-submenu">
                                 <li class="pc-item">
                                     <a class="pc-link" href="{{ route('montessori.course.show', ['ageGroup' => 'montessori', 'area' => 'nido']) }}" data-i18n="Areas">
-                                        Nido (2-14 months) Group
+                                        Nido (2-14 months)
                                     </a>
 
                                 </li>
