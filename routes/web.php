@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\ToDoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoQuizController;
 use Illuminate\Support\Facades\Route;
@@ -346,6 +347,17 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
 
     Route::get('/video/{id}', [VideoQuizController::class, 'showVideo'])->name('video.show');
 
+
+    Route::prefix('api')->group(function () {
+        Route::get('/todos', [TodoController::class, 'index']);
+        Route::post('/todos', [TodoController::class, 'store']);
+        Route::delete('/todos/{id}', [TodoController::class, 'destroy']);
+        Route::patch('/todos/{id}/complete', [TodoController::class, 'complete']);
+    });
+
+    Route::get('/tasks', [TodoController::class, 'all_tasks'])->name('to_do_list');
+    Route::delete('/tasks/delete/{id}', [TodoController::class, 'deleteTask'])->name('to_do_tasks_delete');
+    Route::get('/tasks/{id}/edit', [TodoController::class, 'tasks_edit'])->name('tasks_edit');
 
     Route::post('/logout', function () {
         Auth::logout();

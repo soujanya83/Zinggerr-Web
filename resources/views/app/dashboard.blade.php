@@ -3,9 +3,10 @@
 @section('pageTitle', 'Dashboard')
 
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 @include('partials.sidebar')
-@include('partials.header')
+@include('partials.headerdashboard')
 <!-- Favicon -->
 <link href="img/favicon.ico" rel="icon">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,10 +20,87 @@
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar/main.min.js"></script>
 <link href="public/css/bootstrap.min.css" rel="stylesheet">
 <link href="public/css/style.css" rel="stylesheet">
-{{-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"> --}}
+{{--
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"> --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{{-- <style>
+    .table-card {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
+    .card-header h5 {
+        font-size: 1.25rem;
+        font-weight: 500;
+        margin: 0;
+    }
 
+    .card-header .task-date {
+        font-size: 0.875rem;
+        color: #666;
+        margin-left: 5px;
+    }
+
+    .card-body {
+        padding: 5px;
+    }
+
+    .task-item {
+        transition: all 0.3s ease;
+    }
+
+    .task-item span {
+        font-size: 0.875rem;
+        color: #333;
+    }
+
+    .task-completed span {
+        text-decoration: line-through;
+        color: #888;
+    }
+
+    .btn-sm i {
+        font-size: 0.875rem;
+        color: #888;
+    }
+
+    .btn-sm i:hover {
+        color: #333;
+    }
+
+    .card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .card-footer .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        padding: 8px 16px;
+        font-size: 0.875rem;
+    }
+
+    .card-footer .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+
+    .card-footer a {
+        font-size: 0.875rem;
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .card-footer a:hover {
+        text-decoration: underline;
+    }
+</style> --}}
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 <div class="pc-container">
     <div class="pc-content">
@@ -38,7 +116,8 @@
                                 <div class="row align-items-center">
                                     <div class="col">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10" style="font-size: 18px;">Welcome: {{  Str::title(Auth::user()->name)
+                                            <h5 class="m-b-10" style="font-size: 18px;">Welcome: {{
+                                                Str::title(Auth::user()->name)
                                                 }}</h5>
                                         </div>
                                     </div>
@@ -46,7 +125,8 @@
                                         <ul class="breadcrumb">
                                             <li class="breadcrumb-item mt-1">
                                                 <b>
-                                                    <h4 style="color:#5a63ac"> @if ( Auth::user()->type =='Superadmin') SuperAdmin @else {{
+                                                    <h4 style="color:#5a63ac"> @if ( Auth::user()->type =='Superadmin')
+                                                        SuperAdmin @else {{
                                                         Auth::user()->type }} @endif</h4>
                                                 </b>
                                             </li>
@@ -134,8 +214,8 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td >{{ $user->country_code }}{{ $user->phone }}</td>
-                                            <td >{{ $user->gender }}</td>
+                                            <td>{{ $user->country_code }}{{ $user->phone }}</td>
+                                            <td>{{ $user->gender }}</td>
                                             <td>
                                                 @if($user->status == 1)
                                                 <span class="badge rounded-pill f-14 bg-light-success">Active</span>
@@ -165,53 +245,79 @@
 
 
                 <div class="card table-card">
-                    <div class="card-header">
-                        <h5>To Do List</h5>
-                    </div>
-                    <div class="card-body" style="padding:5px">
-                        <div class="table-responsive">
-                            <div class="customers-scroll">
-
-                                <div class="d-flex mb-2">
-                                    <input class="form-control bg-transparent" type="text" placeholder="Enter task">
-                                    <button type="button" class="btn btn-primary ms-2">Add</button>
-                                </div>
-                                <div class="d-flex align-items-center border-bottom py-2">
-                                    {{-- <input class="form-check-input m-0" type="checkbox"> --}}
-                                    <div class="w-100 ms-3">
-                                        <div class="d-flex w-100 align-items-center justify-content-between">
-                                            <span>Short task goes here...</span>
-                                            <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center border-bottom py-2">
-                                    {{-- <input class="form-check-input m-0" type="checkbox"> --}}
-                                    <div class="w-100 ms-3">
-                                        <div class="d-flex w-100 align-items-center justify-content-between">
-                                            <span>Short task goes here...</span>
-                                            <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center border-bottom py-2">
-                                    {{-- <input class="form-check-input m-0" type="checkbox" checked> --}}
-                                    <div class="w-100 ms-3">
-                                        <div class="d-flex w-100 align-items-center justify-content-between">
-                                            <span><del>Short task goes here...</del></span>
-                                            <button class="btn btn-sm text-primary"><i class="fa fa-times"></i></button>
-                                        </div>
+                    <div class=""
+                        style="border: 1px solid #e0e0e0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                        <div class="card-header"
+                            style="display: flex; justify-content: space-between; align-items: center;">
+                            <h5 id="cardHeaderTitle" style="font-size: 1.25rem; font-weight: 500; margin: 0;">To Do List
+                            </h5>
+                            <div>
+                                <button id="prevDateBtn"
+                                    style="background-color: #2c3e50; color: white; border: none; padding: 5px 10px; border-radius: 5px; margin-right: 5px;">&lt;</button>
+                                <button id="nextDateBtn"
+                                    style="background-color: #2c3e50; color: white; border: none; padding: 5px 10px; border-radius: 5px;">&gt;</button>
+                            </div>
+                        </div>
+                        <div class="card-body" style="padding: 5px;">
+                            <div class="table-responsive">
+                                <div class="customers-scroll">
+                                    <!-- Task List Container -->
+                                    <div id="taskList">
+                                        <!-- Tasks will be dynamically loaded here -->
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="card-footer"
+                            style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #f8f9fa; border-top: 1px solid #e0e0e0;">
+                            <!-- Add Button on the Left -->
+                            <a href="#" class="text-primary add-task-link" data-bs-toggle="modal"
+                                data-bs-target="#addTaskModal"
+                                style=" color: white; padding: 8px 16px; font-size: 0.875rem; text-decoration: none; border-radius: 4px;">Add
+                                Task</a>
+                            <!-- View All Link on the Right -->
+                            <a href="{{ route('to_do_list') }}" class="text-primary"
+                                style="font-size: 0.875rem; color: #007bff; text-decoration: none;">View all</a>
+                        </div>
                     </div>
-                    {{-- <div class="card-footer text-end"><a href="{{ route('studentlist') }}"
-                            class="b-b-primary text-primary">View
-                            all</a></div> --}}
                 </div>
 
 
+
+
+
+
+                <!-- Modal for Adding Task -->
+                <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addTaskModalLabel">Add New Task</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="addTaskForm">
+                                    <div class="mb-3">
+                                        <label for="taskInput" class="form-label">Task</label>
+                                        <input type="text" class="form-control" id="taskInput" name="task"
+                                            placeholder="Enter task" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="dueDate" class="form-label">Due Date</label>
+                                        <input type="date" class="form-control" id="dueDate" name="due_date" required>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                {{-- <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Close</button> --}}
+                                <button type="button" class="btn btn-primary" onclick="saveTask()">Save Task</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
             <div class="col-xxl-4">
@@ -813,6 +919,204 @@ const studentChart = new Chart(ctx, {
             }
         }
     });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function () {
+            // Set up CSRF token for all AJAX requests
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            // Set the default due date to the current date
+            let currentDate = new Date();
+            $('#dueDate').val(currentDate.toISOString().split('T')[0]);
+
+            // Load tasks for the current date on page load
+            loadTasks(currentDate);
+
+            // Previous button click
+            $('#prevDateBtn').click(function () {
+                currentDate.setDate(currentDate.getDate() - 1);
+                loadTasks(currentDate);
+            });
+
+            // Next button click
+            $('#nextDateBtn').click(function () {
+                currentDate.setDate(currentDate.getDate() + 1);
+                loadTasks(currentDate);
+            });
+
+            // Event delegation for checkbox changes
+            $('#taskList').on('change', '.task-checkbox', function () {
+                const taskId = $(this).data('id');
+                const isChecked = this.checked;
+                toggleTaskCompletion(taskId, isChecked);
+            });
+
+            // Save a new task
+            window.saveTask = function () {
+                const task = $('#taskInput').val().trim();
+                const dueDate = $('#dueDate').val();
+
+                if (!task || !dueDate) {
+                    alert('Please fill in all fields!');
+                    return;
+                }
+
+                $.ajax({
+                    url: '/api/todos',
+                    method: 'POST',
+                    data: {
+                        task: task,
+                        due_date: dueDate,
+                        completed: 0 // Default to 0 (not completed)
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            $('#addTaskModal').modal('hide');
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop').remove();
+                            $('#addTaskForm')[0].reset();
+                            $('#dueDate').val(currentDate.toISOString().split('T')[0]); // Reset to current date
+                            loadTasks(currentDate);
+                        } else {
+                            alert('Failed to save task: ' + response.message);
+                        }
+                    },
+                    error: function (xhr) {
+                        alert('Error saving task: ' + xhr.responseText);
+                    }
+                });
+            };
+
+            // Load tasks for a specific date
+            function loadTasks(date) {
+                const formattedDateForApi = date.toISOString().split('T')[0];
+                $.ajax({
+                    url: '/api/todos',
+                    method: 'GET',
+                    data: { date: formattedDateForApi }, // Pass the date as a query parameter
+                    success: function (response) {
+                        const taskList = $('#taskList');
+                        taskList.empty();
+
+                        // Update the header with the selected date
+                        const formattedDate = date.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+                        const headerText = `To Do List <span style="font-size: 0.875rem; color: #666; margin-left: 5px;">( ${formattedDate} )</span>`;
+                        $('#cardHeaderTitle').html(headerText);
+
+                        if (response.length === 0) {
+                            taskList.append('<p>No tasks available.</p>');
+                            return;
+                        }
+
+                        response.forEach(function (task) {
+                            const isCompleted = task.completed === 1 || task.completed === true;
+                            const taskItem = `
+                                        <div style="transition: all 0.3s ease;margin-left: 14px; margin-right: 12px;" class="d-flex align-items-center border-bottom py-2">
+
+                                            <input type="checkbox" class="form-check-input m-0 task-checkbox" data-id="${task.id}" ${isCompleted ? 'checked' : ''} >
+                                            <div class="w-100 ms-3">
+                                                <div class="d-flex w-100 align-items-center justify-content-between">
+                                                    <span style="font-size: 0.875rem; color: ${isCompleted ? '#888' : '#333'}; ${isCompleted ? 'text-decoration: line-through;' : ''}">${task.task}</span>
+                                                    <button class="btn btn-sm" onclick="deleteTask('${task.id}')"><i class="fa fa-trash" style="font-size: 0.875rem; color: #888;"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                            taskList.append(taskItem);
+                        });
+
+                        // Add hover effects using jQuery
+                        $('.fa-trash').hover(
+                            function() { $(this).css('color', '#333'); },
+                            function() { $(this).css('color', '#888'); }
+                        );
+
+                        $('.btn-primary').hover(
+                            function() { $(this).css({ 'background-color': '#0056b3', 'border-color': '#004085' }); },
+                            function() { $(this).css({ 'background-color': '#007bff', 'border-color': '#007bff' }); }
+                        );
+
+                        $('.text-primary').hover(
+                            function() { $(this).css('text-decoration', 'underline'); },
+                            function() { $(this).css('text-decoration', 'none'); }
+                        );
+                    },
+                    error: function (xhr) {
+                        alert('Error loading tasks: ' + xhr.responseText);
+                    }
+                });
+            }
+
+            // Toggle task completion status
+            window.toggleTaskCompletion = function (taskId, isChecked) {
+                const completedValue = isChecked ? 1 : 0;
+
+                $.ajax({
+                    url: `/api/todos/${taskId}/complete`,
+                    method: 'PATCH',
+                    data: {
+                        completed: completedValue
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            loadTasks(currentDate);
+                        } else {
+                            alert('Failed to update task: ' + response.message);
+                        }
+                    },
+                    error: function (xhr) {
+                        alert('Error updating task: ' + xhr.responseText);
+                    }
+                });
+            };
+
+                   // Delete a task with SweetAlert confirmation
+                        window.deleteTask = function (taskId) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Do you want to delete this task?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: `/api/todos/${taskId}`,
+                            method: 'DELETE',
+                            success: function (response) {
+                                if (response.success) {
+                                    loadTasks(currentDate);
+                                    Swal.fire({
+                                        title: 'Deleted!',
+                                        text: 'Your task has been deleted.',
+                                        icon: 'success',
+                                        showConfirmButton: false, // Hide the "OK" button
+                                        timer: 1500 // Auto-close after 2 seconds (2000 milliseconds)
+                                    });
+                                } else {
+                                    alert('Failed to delete task: ' + response.message);
+                                }
+                            },
+                            error: function (xhr) {
+                                alert('Error deleting task: ' + xhr.responseText);
+                            }
+                        });
+                    }
+                });
+            };
+        });
 </script>
 
 @include('partials.footer')
