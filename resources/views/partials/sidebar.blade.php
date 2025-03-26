@@ -79,12 +79,12 @@
                             <ul class="pc-submenu">
                                 <li class="pc-item">
                                     <a class="pc-link" href="{{ route('montessori.course.show', ['ageGroup' => 'montessori', 'area' => 'nido']) }}" data-i18n="Areas">
-                                        Nido (2 - 14 months)
+                                        Nido (2-14 months)
                                     </a>
 
                                 </li>
                                 <li class="pc-item">
-                                    <a class="pc-link" href="{{ route('montessori.course.show', ['ageGroup' => 'montessori', 'area' => 'infant']) }}" data-i18n="Areas">Infant (14 months - 3 years)</a>
+                                    <a class="pc-link" href="{{ route('montessori.course.show', ['ageGroup' => 'montessori', 'area' => 'infant']) }}" data-i18n="Areas">Infant (14 months- 3 years)</a>
                                 </li>
                             </ul>
                         </li>
@@ -96,7 +96,7 @@
                         @endphp
                        <li class="pc-item pc-hasmenu">
                         <a href="#" class="pc-link">
-                            <span class="pc-mtext" data-i18n="Montessori">Casa Dei Bambini (3 - 6 years)</span>
+                            <span class="pc-mtext" data-i18n="Montessori">Casa Dei Bambini (3-6 years)</span>
                             <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
                         </a>
                         <ul class="pc-submenu">
