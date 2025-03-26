@@ -219,7 +219,7 @@ class UserController extends Controller
             $userId = Auth::user()->id;
             $student = User::where('type', 'Student')->where('user_id', $userId)->count();
             $studentlast7day = User::where('user_id', $userId)->where('type', 'Student')->where('created_at', '>=', Carbon::now()->subDays(7))->count();
-            $latestStudents = User::where('type', 'Student')->where('user_id', $userId)->latest()->take(10)->get();
+            $latestStudents = User::where('type', 'Student')->where('user_id', $userId)->whereNotNull('email_verified_at')->latest()->take(10)->get();
             $studentlastmonth = User::where('user_id', $userId)->where('type', 'Student')->whereBetween('created_at', [
                 Carbon::now()->subMonth()->startOfMonth(),
                 Carbon::now()->subMonth()->endOfMonth()
