@@ -249,8 +249,10 @@
                         style="border: 1px solid #e0e0e0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
                         <div class="card-header"
                             style="display: flex; justify-content: space-between; align-items: center;">
-                            <h5 id="cardHeaderTitle" style="font-size: 1.25rem; font-weight: 500; margin: 0;">To Do List
+                            <h5 id="cardHeaderTitle" style=" font-weight: 500; margin: 0;">To Do List
                             </h5>
+
+
                             <div>
                                 <button id="prevDateBtn"
                                     style="background-color: #2c3e50; color: white; border: none; padding: 5px 10px; border-radius: 5px; margin-right: 5px;">&lt;</button>

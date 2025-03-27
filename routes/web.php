@@ -358,6 +358,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('/tasks', [TodoController::class, 'all_tasks'])->name('to_do_list');
     Route::delete('/tasks/delete/{id}', [TodoController::class, 'deleteTask'])->name('to_do_tasks_delete');
     Route::get('/tasks/{id}/edit', [TodoController::class, 'tasks_edit'])->name('tasks_edit');
+    Route::post('/tasks/update', [TodoController::class, 'tasks_update'])->name('task.update');
 
     Route::post('/logout', function () {
         Auth::logout();
