@@ -262,7 +262,7 @@
 
                 @if(Auth::user()->can('role')|| (isset($permissions) && in_array('permission_sidebar',
                 $permissions)))
-                <li class="pc-item pc-hasmenu" style="display: none">
+                <li class="pc-item pc-hasmenu" style="display:none">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
                             <i class="ti ti-login"></i>

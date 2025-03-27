@@ -55,7 +55,7 @@
         <div class="row">
             <div class="tab-pane" id="request" role="tabpanel" aria-labelledby="request-tab">
                 <div class="card">
-                    @if($todos->count() > 0)
+
                     <div class="card-header">
                         <div class="row align-items-center g-2">
                             <div class="col">
@@ -82,6 +82,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="taskTableBody">
+                                    @if($todos->count() > 0)
                                     @foreach ($todos as $index => $data)
                                     <tr id="taskRow-{{ $data->id }}">
                                         <td>{{ $index + 1 }}</td>
@@ -111,13 +112,18 @@
                                     </tr>
 
                                     @endforeach
+                                    @else
+                                    <tr class="nodata">
+                                        <td colspan="6" class="text-center">No Data Found!</td>
+                                    </tr>
+                                    @endif
                                 </tbody>
 
                             </table>
                         </div>
 
                     </div>
-                    @endif
+
 
                 </div>
             </div>
