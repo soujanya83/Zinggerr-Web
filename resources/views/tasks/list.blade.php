@@ -88,15 +88,25 @@
                                         <td>{{ Str::limit(strip_tags($data['task']), 130, '...') }}</td>
                                         <td>{{ \Carbon\Carbon::parse($data->date)->format('d F Y') }}</td>
                                         <td>
-                                            {{ $data->completed == 1 ? 'Completed' : 'Not Completed' }}
+                                            {{ $data->completed == 1 ? 'Complete' : 'Incomplete' }}
                                         </td>
                                         <td>
-                                            <a href="{{ route('tasks_edit', $data->id) }}" class="avtar avtar-xs btn-link-secondary">
+                                            @if(
+                                            Auth::user()->can('role') ||
+                                            (isset($permissions) && in_array('tasks_edit', $permissions)))
+                                            <a href="{{ route('tasks_edit', $data->id) }}"
+                                                class="avtar avtar-xs btn-link-secondary">
                                                 <i class="ti ti-edit f-20"></i>
                                             </a>
-                                            <a href="#" class="delete-task avtar avtar-xs btn-link-secondary" data-id="{{ $data->id }}">
+                                            @endif
+                                            @if(
+                                            Auth::user()->can('role') ||
+                                            (isset($permissions) && in_array('tasks_delete', $permissions)))
+                                            <a href="#" class="delete-task avtar avtar-xs btn-link-secondary"
+                                                data-id="{{ $data->id }}">
                                                 <i class="ti ti-trash f-20" style="color: red;"></i>
                                             </a>
+                                            @endif
                                         </td>
                                     </tr>
 
@@ -191,7 +201,7 @@
                                 <td>${index + 1}</td>
                                 <td>${task.task.length > 130 ? task.task.substring(0, 130) + "..." : task.task}</td>
                                 <td>${new Date(task.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })}</td>
-                                <td>${task.completed == 1 ? 'Completed' : 'Not Completed'}</td>
+                                <td>${task.completed == 1 ? 'Complete' : 'Incomplete'}</td>
                                 <td>
                                     <a href="/tasks_edit/${task.id}" class="avtar avtar-xs btn-link-secondary">
                                         <i class="ti ti-edit f-20"></i>

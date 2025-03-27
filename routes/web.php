@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\LoginController;
@@ -359,6 +360,16 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::delete('/tasks/delete/{id}', [TodoController::class, 'deleteTask'])->name('to_do_tasks_delete');
     Route::get('/tasks/{id}/edit', [TodoController::class, 'tasks_edit'])->name('tasks_edit');
     Route::post('/tasks/update', [TodoController::class, 'tasks_update'])->name('task.update');
+
+    Route::get('event/create', [EventController::class, 'event_create_form'])->name('event.create');
+    Route::post('event/store', [EventController::class, 'event_store'])->name('event.store');
+    Route::get('events/list', [EventController::class, 'event_list'])->name('event.list');
+    Route::get('/event/{id}/edit', [EventController::class, 'event_edit'])->name('event_edit');
+    Route::post('/event/update', [EventController::class, 'event_update'])->name('event.update');
+    Route::delete('/event/delete/{id}', [EventController::class, 'event_delete'])->name('event.delete');
+    Route::post('/event/status/update', [EventController::class, 'updateEventStatus'])->name('event.status.update');
+
+
 
     Route::post('/logout', function () {
         Auth::logout();

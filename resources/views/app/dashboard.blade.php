@@ -377,140 +377,18 @@
                         </div>
                     </div>
                 </div>
+
                 {{-- <div class="card table-card">
-                    <div class="card-header borderless">
-                        <h5>Total Revenue</h5>
-                    </div>
-                    <div class="card-body px-0 py-0">
-                        <div class="table-responsive">
-                            <div class="revenue-scroll" style="height: 310px; position: relative">
-                                <table class="table table-hover mb-0">
-                                    <tbody>
-                                        <tr>
-                                            <td><i class="fas fa-caret-up text-success f-24"></i>
-                                            </td>
-                                            <td>Bitcoin</td>
-                                            <td>
-                                                <h6 class="text-success">+ $145.85</h6>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fas fa-caret-down text-danger f-24"></i>
-                                            </td>
-                                            <td>Ethereum</td>
-                                            <td>
-                                                <h6 class="text-danger">- $6.368</h6>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fas fa-caret-up text-success f-24"></i>
-                                            </td>
-                                            <td>Ripple</td>
-                                            <td>
-                                                <h6 class="text-success">+ $458.63</h6>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fas fa-caret-down text-danger f-24"></i>
-                                            </td>
-                                            <td>Neo</td>
-                                            <td>
-                                                <h6 class="text-danger">- $5.631</h6>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fas fa-caret-down text-danger f-24"></i>
-                                            </td>
-                                            <td>Bitcoin</td>
-                                            <td>
-                                                <h6 class="text-danger">- $75.86</h6>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fas fa-caret-up text-success f-24"></i>
-                                            </td>
-                                            <td>Ethereum</td>
-                                            <td>
-                                                <h6 class="text-success">+ $453.63</h6>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fas fa-caret-down text-danger f-24"></i>
-                                            </td>
-                                            <td>Ripple</td>
-                                            <td>
-                                                <h6 class="text-danger">+ $786.63</h6>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fas fa-caret-up text-success f-24"></i>
-                                            </td>
-                                            <td>Neo</td>
-                                            <td>
-                                                <h6 class="text-success">+ $145.85</h6>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fas fa-caret-down text-danger f-24"></i>
-                                            </td>
-                                            <td>Bitcoin</td>
-                                            <td>
-                                                <h6 class="text-danger">- $6.368</h6>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fas fa-caret-up text-success f-24"></i>
-                                            </td>
-                                            <td>Ethereum</td>
-                                            <td>
-                                                <h6 class="text-success">+ $458.63</h6>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fas fa-caret-down text-danger f-24"></i>
-                                            </td>
-                                            <td>Neo</td>
-                                            <td>
-                                                <h6 class="text-danger">- $5.631</h6>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fas fa-caret-down text-danger f-24"></i>
-                                            </td>
-                                            <td>Ripple</td>
-                                            <td>
-                                                <h6 class="text-danger">- $75.86</h6>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fas fa-caret-up text-success f-24"></i>
-                                            </td>
-                                            <td>Bitcoin</td>
-                                            <td>
-                                                <h6 class="text-success">+ $453.63</h6>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fas fa-caret-down text-danger f-24"></i>
-                                            </td>
-                                            <td>Ethereum</td>
-                                            <td>
-                                                <h6 class="text-danger">+ $786.63</h6>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                    <div class="calendar-container">
+                        <div id="calendar" style="padding:8px"></div>
                     </div>
                 </div> --}}
+
                 <div class="card table-card">
                     <div class="calendar-container">
                         <div id="calendar" style="padding:8px"></div>
                     </div>
-
                 </div>
-
 
                 <div class="card table-card">
                     <div class="h-100 bg-light rounded p-4">
@@ -783,7 +661,7 @@ const earningsChart = new Chart(earningsCtx, {
     }
 });
 </script>
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function() {
     const calendarEl = document.getElementById('calendar');
     const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -796,10 +674,71 @@ const earningsChart = new Chart(earningsCtx, {
         selectable: true
     });
     calendar.render();
-});
-</script>
+    });
+</script> --}}
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const calendarEl = document.getElementById('calendar');
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            selectable: true,
+            events: '/events',
+            eventColor: '#378006',
+            editable: true,
 
+            eventClick: function(info) {
+                alert('Event: ' + info.event.title + '\nDescription: ' + info.event.extendedProps.description);
+            },
+
+            dateClick: function(info) {
+                let title = prompt('Enter event title:');
+                let description = prompt('Enter event description (optional):');
+                if (title) {
+                    fetch('/events', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            title: title,
+                            description: description,
+                            start: info.dateStr,
+                            end: info.dateStr
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        calendar.addEvent(data);
+                    })
+                    .catch(error => console.error('Error:', error));
+                }
+            },
+
+            // Optional: Handle event drop for updates
+            eventDrop: function(info) {
+                fetch('/events/' + info.event.id, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        start: info.event.startStr,
+                        end: info.event.endStr
+                    })
+                });
+            }
+        });
+        calendar.render();
+    });
+    </script>
 
 <script>
     const ctx = document.getElementById('studentChart').getContext('2d');

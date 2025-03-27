@@ -104,8 +104,8 @@
                                         </td>
                                         <td class="text-center">
                                             @if(
-                                                Auth::user()->can('role') ||
-                                                (isset($permissions) && in_array('roles_edit', $permissions)))
+                                            Auth::user()->can('role') ||
+                                            (isset($permissions) && in_array('roles_edit', $permissions)))
 
 
                                             <a href="{{ route('roles.edit',$role->id) }}"

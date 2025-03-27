@@ -78,13 +78,17 @@
                             </a>
                             <ul class="pc-submenu">
                                 <li class="pc-item">
-                                    <a class="pc-link" href="{{ route('montessori.course.show', ['ageGroup' => 'montessori', 'area' => 'nido']) }}" data-i18n="Areas">
+                                    <a class="pc-link"
+                                        href="{{ route('montessori.course.show', ['ageGroup' => 'montessori', 'area' => 'nido']) }}"
+                                        data-i18n="Areas">
                                         Nido (2-14 months)
                                     </a>
 
                                 </li>
                                 <li class="pc-item">
-                                    <a class="pc-link" href="{{ route('montessori.course.show', ['ageGroup' => 'montessori', 'area' => 'infant']) }}" data-i18n="Areas">Infant (14 months- 3 years)</a>
+                                    <a class="pc-link"
+                                        href="{{ route('montessori.course.show', ['ageGroup' => 'montessori', 'area' => 'infant']) }}"
+                                        data-i18n="Areas">Infant (14 months- 3 years)</a>
                                 </li>
                             </ul>
                         </li>
@@ -94,24 +98,24 @@
                         $ageGroups = DB::table('montessori_age_groups')->where('status', 1)->get();
                         $areas = DB::table('montessori_areas')->where('status', 1)->get();
                         @endphp
-                       <li class="pc-item pc-hasmenu">
-                        <a href="#" class="pc-link">
-                            <span class="pc-mtext" data-i18n="Montessori">Casa dei Bambini (3-6 years)</span>
-                            <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
-                        </a>
-                        <ul class="pc-submenu">
-                            @foreach ($areas as $area)
-                            <li class="pc-item">
-                                <a class="pc-link" href="{{ route('montessori.course.show', [
+                        <li class="pc-item pc-hasmenu">
+                            <a href="#" class="pc-link">
+                                <span class="pc-mtext" data-i18n="Montessori">Casa dei Bambini (3-6 years)</span>
+                                <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+                            </a>
+                            <ul class="pc-submenu">
+                                @foreach ($areas as $area)
+                                <li class="pc-item">
+                                    <a class="pc-link" href="{{ route('montessori.course.show', [
                                     'ageGroup' => 'casa-dei-bambini',
                                     'area' => Str::slug($area->full_name)
                                 ]) }}">
-                                    {{ ucwords($area->full_name) }}
-                                </a>
-                            </li>
-                            @endforeach
-                        </ul>
-                    </li>
+                                        {{ ucwords($area->full_name) }}
+                                    </a>
+                                </li>
+                                @endforeach
+                            </ul>
+                        </li>
 
                     </ul>
                 </li>
@@ -335,7 +339,25 @@
                 </li>
                 @endif
 
-
+                @if(Auth::user()->can('role')|| (isset($permissions) && in_array('events_sidebar',
+                $permissions)))
+                <li class="pc-item pc-hasmenu">
+                    <a href="#" class="pc-link">
+                        <span class="pc-micon">
+                            <i class="ti ti-notes"></i>
+                        </span>
+                        <span class="pc-mtext" data-i18n="User">Events</span>
+                        <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+                    </a>
+                    <ul class="pc-submenu">
+                        <li class="pc-item"><a class="pc-link" href="{{ route('event.create') }}"
+                                data-i18n="Pricing">Create</a></li>
+                        <li class="pc-item"><a class="pc-link" href="{{ route('event.list') }}"
+                                data-i18n="Pricing">List</a>
+                        </li>
+                    </ul>
+                </li>
+                @endif
 
             </ul>
         </div>
