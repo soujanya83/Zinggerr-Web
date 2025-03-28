@@ -10,6 +10,26 @@ use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
 {
+
+    public function index()
+    {
+        $events = EventModel::where('status', 1)->get()->map(function ($event) {
+            $start = $event->event_start_date . ' ' . ($event->event_start_time ?? '00:00:00');
+            $end = $event->event_end_date . ' ' . ($event->event_end_time ?? '23:59:59');
+
+            return [
+                'id' => $event->id,
+                'title' => $event->event_topic,
+                'start' => trim($start),
+                'end' => trim($end),
+                'description' => $event->description
+            ];
+        });
+
+        return response()->json($events);
+    }
+
+
     public function event_delete($id)
     {
         $event = EventModel::find($id);

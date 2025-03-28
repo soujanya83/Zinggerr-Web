@@ -6,7 +6,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 @include('partials.sidebar')
-@include('partials.headerdashboard')
+@include('partials.header')
 <!-- Favicon -->
 <link href="img/favicon.ico" rel="icon">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,83 +23,113 @@
 {{--
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"> --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-{{-- <style>
-    .table-card {
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+
+
+<style>
+    /* Calendar container adjustments */
+    .calendar-container {
+        width: 100%;
+        margin: 0 auto;
     }
 
-    .card-header h5 {
-        font-size: 1.25rem;
-        font-weight: 500;
-        margin: 0;
+    /* Remove card padding and border for full width */
+    .card.table-card {
+        padding: 0;
+        border: none;
+        box-shadow: none;
     }
 
-    .card-header .task-date {
-        font-size: 0.875rem;
+    /* Calendar full width and fixed height */
+    #calendar {
+        width: 100% !important;
+        height: 600px !important;
+        /* Height to fit 6 weeks */
+    }
+
+    /* Remove vertical scrolling */
+    .fc-scroller {
+        overflow-y: hidden !important;
+    }
+
+    /* Calendar title styling */
+    .fc-toolbar-title {
+        font-size: 18px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    /* Day grid cell styling */
+    .fc-daygrid-day {
+        position: relative;
+        border: 2px solid #ddd !important;
+        /* Border thickness as previously set */
+    }
+
+    /* Event box styling */
+    .event-box {
+        color: rgb(1, 1, 1);
+        font-size: 11px;
+        /* Smaller font size for event title */
+        text-align: center;
+        padding: 0px;
+        border-radius: 0px;
+        display: block;
+        position: absolute;
+        top: -3px;
+        left: -2px;
+        height: 55px;
+        right: -2px;
+        bottom: 0;
+        background-size: cover;
+        background-position: center;
+        /* Watercolor effect using a subtle gradient and opacity */
+        opacity: 0.9;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Remove default event time text */
+    .fc-daygrid-event .fc-event-time {
+        display: none;
+    }
+
+    /* Navigation buttons */
+    .fc-prev-button,
+    .fc-next-button {
+        background-color: #007bff !important;
+        border: none !important;
+        color: white !important;
+    }
+
+    .fc-prev-button:hover,
+    .fc-next-button:hover {
+        background-color: #0056b3 !important;
+    }
+
+    /* Adjust day number positioning */
+    .fc-daygrid-day-number {
+        font-size: 12px;
         color: #666;
-        margin-left: 5px;
     }
 
-    .card-body {
-        padding: 5px;
+    /* Ensure the calendar grid takes full height */
+    .fc-daygrid-body {
+        height: 100% !important;
     }
 
-    .task-item {
-        transition: all 0.3s ease;
+    /* Adjust the day grid rows to fit within the height */
+    .fc-daygrid-day-frame {
+        height: 100% !important;
     }
 
-    .task-item span {
-        font-size: 0.875rem;
-        color: #333;
+    /* Set the height of tr elements with role="row" to 12px */
+    .fc-daygrid-body tr[role="row"] {
+        height: 12px !important;
+        /* Set height to 12px as requested */
     }
+</style>
 
-    .task-completed span {
-        text-decoration: line-through;
-        color: #888;
-    }
 
-    .btn-sm i {
-        font-size: 0.875rem;
-        color: #888;
-    }
-
-    .btn-sm i:hover {
-        color: #333;
-    }
-
-    .card-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-        background-color: #f8f9fa;
-        border-top: 1px solid #e0e0e0;
-    }
-
-    .card-footer .btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
-        padding: 8px 16px;
-        font-size: 0.875rem;
-    }
-
-    .card-footer .btn-primary:hover {
-        background-color: #0056b3;
-        border-color: #004085;
-    }
-
-    .card-footer a {
-        font-size: 0.875rem;
-        color: #007bff;
-        text-decoration: none;
-    }
-
-    .card-footer a:hover {
-        text-decoration: underline;
-    }
-</style> --}}
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <div class="pc-container">
@@ -390,6 +420,27 @@
                     </div>
                 </div>
 
+                <!-- Modal -->
+                <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="eventModalLabel">Event Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p><strong>📌 Title:</strong> <span id="eventTitle"></span></p>
+                                <p><strong>🕒 Start:</strong> <span id="eventStart"></span></p>
+                                <p><strong>⏳ End:</strong> <span id="eventEnd"></span></p>
+                                <p><strong>📝 Description:</strong> <span id="eventDescription"></span></p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card table-card">
                     <div class="h-100 bg-light rounded p-4">
                         <div class="d-flex align-items-center justify-content-between mb-2">
@@ -442,431 +493,95 @@
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js">
 </script>
-<!-- Chart.js Script -->
-<script>
-    const ctx = document.getElementById('activityChart').getContext('2d');
-new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['1', '2', '3', '4', '5', '6', '7'],
-        datasets: [{
-                label: 'Free Course',
-                data: [60, 90, 30, 70, 50, 40, 20],
-                borderColor: 'green',
-                fill: false,
-            },
-            {
-                label: 'Subscription',
-                data: [30, 20, 40, 50, 80, 90, 70],
-                borderColor: 'blue',
-                fill: false,
-            }
-        ]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top',
-            }
-        }
-    }
-});
-</script>
-
-
-
-<script>
-    const ctx = document.getElementById('revenueSalesChart').getContext('2d');
-const revenueSalesChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-        datasets: [{
-                label: 'Revenue',
-                data: [200, 250, 300, 350, 400, 370, 300, 320, 380, 420, 450, 400, 370, 390, 410, 450],
-                borderColor: '#f0ad4e',
-                backgroundColor: 'rgba(240, 173, 78, 0.1)',
-                fill: true,
-                tension: 0.4
-            },
-            {
-                label: 'Sales',
-                data: [220, 260, 290, 310, 380, 360, 330, 300, 370, 410, 430, 390, 350, 370, 400, 420],
-                borderColor: '#0275d8',
-                backgroundColor: 'rgba(2, 117, 216, 0.1)',
-                fill: true,
-                tension: 0.4
-            }
-        ]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                display: true,
-                position: 'top'
-            }
-        },
-        scales: {
-            x: {
-                title: {
-                    display: true,
-                    text: 'Days'
-                }
-            },
-            y: {
-                title: {
-                    display: true,
-                    text: 'Amount ($)'
-                },
-                beginAtZero: true
-            }
-        }
-    }
-});
-</script>
-
-
-<script>
-    // Earnings Chart
-const earningsCtx = document.getElementById('earningsChart').getContext('2d');
-const earningsChart = new Chart(earningsCtx, {
-    type: 'bar',
-    data: {
-        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-        datasets: [{
-                label: 'Net Profit',
-                data: [12, 19, 3, 5, 2, 3, 9, 12, 14, 16, 10, 15],
-                backgroundColor: '#36a2eb',
-            },
-            {
-                label: 'Revenue',
-                data: [15, 25, 6, 10, 4, 6, 12, 15, 18, 20, 13, 18],
-                backgroundColor: '#ffce56',
-            }
-        ]
-    },
-    options: {
-        responsive: true,
-        legend: {
-            display: true
-        },
-        scales: {
-            xAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }],
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
-    }
-});
-</script>
-
-
-
-<script>
-    // Worldwide Sales Chart
-const worldwideSalesCtx = document.getElementById('worldwide-sales').getContext('2d');
-const worldwideSalesChart = new Chart(worldwideSalesCtx, {
-    type: 'bar',
-    data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        datasets: [{
-            label: 'Sales',
-            data: [200, 300, 250, 400, 450, 350, 300, 320, 380, 420, 450, 400],
-            backgroundColor: '#0275d8',
-            borderColor: '#0275d8',
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                display: true,
-                position: 'top'
-            }
-        },
-        scales: {
-            x: {
-                title: {
-                    display: true,
-                    text: 'Months'
-                }
-            },
-            y: {
-                title: {
-                    display: true,
-                    text: 'Sales ($)'
-                },
-                beginAtZero: true
-            }
-        }
-    }
-});
-
-// Sales & Revenue Chart
-const earningsCtx = document.getElementById('earningsChart').getContext('2d');
-const earningsChart = new Chart(earningsCtx, {
-    type: 'line',
-    data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        datasets: [{
-                label: 'Revenue',
-                data: [300, 400, 350, 450, 500, 550, 600, 650, 700, 750, 800, 850],
-                borderColor: '#f0ad4e',
-                backgroundColor: 'rgba(240, 173, 78, 0.1)',
-                fill: true,
-                tension: 0.4
-            },
-            {
-                label: 'Sales',
-                data: [280, 390, 340, 440, 490, 540, 590, 640, 690, 740, 790, 840],
-                borderColor: '#0275d8',
-                backgroundColor: 'rgba(2, 117, 216, 0.1)',
-                fill: true,
-                tension: 0.4
-            }
-        ]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                display: true,
-                position: 'top'
-            }
-        },
-        scales: {
-            x: {
-                title: {
-                    display: true,
-                    text: 'Months'
-                }
-            },
-            y: {
-                title: {
-                    display: true,
-                    text: 'Amount ($)'
-                },
-                beginAtZero: true
-            }
-        }
-    }
-});
-</script>
-{{-- <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    const calendarEl = document.getElementById('calendar');
-    const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        headerToolbar: {
-            left: '',
-            center: 'title',
-            right: 'prev,next'
-        },
-        selectable: true
-    });
-    calendar.render();
-    });
-</script> --}}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const calendarEl = document.getElementById('calendar');
+
+        // Define an array of pastel colors
+        const colors = [
+            '#ADD8E6', // Light Blue
+            '#90EE90', // Light Green
+            '#FFB6C1', // Pink
+            '#20B2AA', // Light Sea Green
+            '#7FFFD4', // Aqua
+            '#FFDAB9', // Peach Puff
+            '#E6E6FA', // Lavender
+            '#F0E68C', // Khaki
+            '#DDA0DD', // Plum
+            '#87CEFA'  // Light Sky Blue
+        ];
+
         const calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             headerToolbar: {
-                left: 'prev,next today',
+                left: '',
                 center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                right: 'prev,next'
             },
-            selectable: true,
             events: '/events',
-            eventColor: '#378006',
-            editable: true,
 
-            eventClick: function(info) {
-                alert('Event: ' + info.event.title + '\nDescription: ' + info.event.extendedProps.description);
-            },
+            // Customize event rendering
+                        eventContent: function(arg) {
+                // Randomly select a color from the array
+                        const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
-            dateClick: function(info) {
-                let title = prompt('Enter event title:');
-                let description = prompt('Enter event description (optional):');
-                if (title) {
-                    fetch('/events', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                            title: title,
-                            description: description,
-                            start: info.dateStr,
-                            end: info.dateStr
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        calendar.addEvent(data);
-                    })
-                    .catch(error => console.error('Error:', error));
-                }
-            },
+                        // Truncate the event title to 8 characters and add "..."
+                        const truncatedTitle = arg.event.title.length > 8
+                            ? arg.event.title.substring(0, 8) + "..."
+                            : arg.event.title;
 
-            // Optional: Handle event drop for updates
-            eventDrop: function(info) {
-                fetch('/events/' + info.event.id, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        return {
+                            html: `<div class="event-box" style="background-color: ${randomColor};">
+                                    <strong>${truncatedTitle}</strong>
+                                </div>`
+                        };
                     },
-                    body: JSON.stringify({
-                        start: info.event.startStr,
-                        end: info.event.endStr
-                    })
-                });
-            }
-        });
+
+                                  eventClick: function(info) {
+                                        // Function to format date as "22 March 2025"
+                                        function formatDate(date) {
+                                            const options = { day: '2-digit', month: 'long', year: 'numeric' };
+                                            return new Date(date).toLocaleDateString('en-GB', options);
+                                        }
+
+                                        // Function to format time as "02:12 PM"
+                                        function formatTime(date) {
+                                            const options = { hour: '2-digit', minute: '2-digit', hour12: true };
+                                            return new Date(date).toLocaleTimeString('en-US', options);
+                                        }
+
+                                        // Get event details
+                                        const eventTitle = info.event.title;
+                                        const eventStartDate = formatDate(info.event.start);
+                                        const eventStartTime = formatTime(info.event.start);
+                                        const eventEndDate = info.event.end ? formatDate(info.event.end) : 'N/A';
+                                        const eventEndTime = info.event.end ? formatTime(info.event.end) : 'N/A';
+                                        const eventDescription = info.event.extendedProps.description || 'No description provided';
+
+                                        // Set modal content
+                                        document.getElementById('eventTitle').textContent = eventTitle;
+                                        document.getElementById('eventStart').textContent = `${eventStartDate} ${eventStartTime}`;
+                                        document.getElementById('eventEnd').textContent = eventEndDate !== 'N/A' ? `${eventEndDate} ${eventEndTime}` : 'N/A';
+                                        document.getElementById('eventDescription').textContent = eventDescription;
+
+                                        // Show modal
+                                        var eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
+                                        eventModal.show();
+                    }
+
+              });
+
         calendar.render();
     });
-    </script>
-
-<script>
-    const ctx = document.getElementById('studentChart').getContext('2d');
-const studentChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-        labels: ['Total Signups', 'Active Student'],
-        datasets: [{
-            data: [100, 30], // Example data
-            backgroundColor: ['#36a2eb', '#ff6384'],
-            hoverOffset: 4
-        }]
-    },
-    options: {
-        plugins: {
-            tooltip: {
-                callbacks: {
-                    label: function(context) {
-                        return `${context.label}: ${context.raw}`;
-                    }
-                }
-            }
-        },
-        maintainAspectRatio: false,
-    }
-});
-</script>
-
-<script>
-    // Revenue and Sales Chart
-    const revenueCtx = document.getElementById('revenueSalesChart').getContext('2d');
-    const revenueSalesChart = new Chart(revenueCtx, {
-        type: 'line',
-        data: {
-            labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-            datasets: [
-                {
-                    label: 'Revenue',
-                    data: [200, 250, 300, 350, 400, 370, 300, 320, 380, 420, 450, 400, 370, 390, 410, 450],
-                    borderColor: '#f0ad4e',
-                    backgroundColor: 'rgba(240, 173, 78, 0.1)',
-                    fill: true,
-                    tension: 0.4
-                },
-                {
-                    label: 'Sales',
-                    data: [220, 260, 290, 310, 380, 360, 330, 300, 370, 410, 430, 390, 350, 370, 400, 420],
-                    borderColor: '#0275d8',
-                    backgroundColor: 'rgba(2, 117, 216, 0.1)',
-                    fill: true,
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top'
-                }
-            },
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Days'
-                    }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Amount ($)'
-                    },
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
-    // Earnings Chart
-    const earningsCtx = document.getElementById('earningsChart').getContext('2d');
-    const earningsChart = new Chart(earningsCtx, {
-        type: 'bar',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            datasets: [
-                {
-                    label: 'Earnings',
-                    data: [500, 600, 550, 650, 700, 750, 720, 800, 850, 900, 950, 1000],
-                    backgroundColor: 'rgba(40, 167, 69, 0.5)',
-                    borderColor: 'rgba(40, 167, 69, 1)',
-                    borderWidth: 1
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top'
-                }
-            },
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Months'
-                    }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Earnings ($)'
-                    },
-                    beginAtZero: true
-                }
-            }
-        }
-    });
 </script>
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- SweetAlert2 JS -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 <script>
     $(document).ready(function () {
             // Set up CSRF token for all AJAX requests

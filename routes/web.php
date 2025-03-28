@@ -368,7 +368,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::post('/event/update', [EventController::class, 'event_update'])->name('event.update');
     Route::delete('/event/delete/{id}', [EventController::class, 'event_delete'])->name('event.delete');
     Route::post('/event/status/update', [EventController::class, 'updateEventStatus'])->name('event.status.update');
-
+    Route::get('/events', [EventController::class, 'index'])->name('events.index');
 
 
     Route::post('/logout', function () {
