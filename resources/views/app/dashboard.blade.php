@@ -670,7 +670,7 @@
                         $('#cardHeaderTitle').html(headerText);
 
                         if (response.length === 0) {
-                            taskList.append('<p>No tasks available.</p>');
+                            taskList.append('<p style="margin-left: 24px;">No tasks available.</p>');
                             return;
                         }
 
