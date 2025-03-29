@@ -63,49 +63,59 @@
                             </div>
 
                             <div class="card-body">
-                                <form id="permissionForm" action="{{route('event.update')  }}" method="post" autocomplete="off">
+                                <form id="permissionForm" action="{{ route('event.update') }}" method="post"
+                                    autocomplete="off">
                                     @csrf
+                                    <input type="hidden" name="event_id" value="{{ $event->id }}">
 
-                                    <input type="hidden" name="event_id" value="{{$event->id}}">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label>Title</label>
                                                 <input type="text" class="form-control" name="title"
-                                                    placeholder="Enter Title.."
+                                                    placeholder="Enter Title..."
                                                     value="{{ old('title', $event->event_topic) }}" required>
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <div class="mb-3">
-                                                <label>Start Date</label>
-                                                <input type="date" class="form-control" name="start_date" required
-                                                    value="{{ old('start_date', $event->event_start_date) }}">
+                                                <label for="start_datetime">Start Date & Time</label>
+                                                <input type="datetime-local" class="form-control" name="start_datetime"
+                                                    id="start_datetime" required
+                                                    value="{{ old('start_datetime', \Carbon\Carbon::parse($event->event_start)->format('Y-m-d\TH:i')) }}">
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <div class="mb-3">
-                                                <label>Start Time</label>
-                                                <input type="time" class="form-control" name="start_time" required
-                                                    value="{{ old('start_time', $event->event_start_time) }}">
+                                                <label>End Date & Time</label>
+                                                <input type="datetime-local" class="form-control" name="end_datetime"
+                                                    required
+                                                    value="{{ old('end_datetime', \Carbon\Carbon::parse($event->event_end)->format('Y-m-d\TH:i')) }}">
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4">
-                                            <div class="mb-3">
-                                                <label>End Date</label>
-                                                <input type="date" class="form-control" name="end_date" required
-                                                    value="{{ old('end_date', $event->event_end_date) }}">
-                                            </div>
-                                        </div>
 
-                                        <div class="col-md-4">
+
+                                        {{-- <div class="col-md-8">
                                             <div class="mb-3">
-                                                <label>End Time</label>
-                                                <input type="time" class="form-control" name="end_time" required
-                                                    value="{{ old('end_time', $event->event_end_time) }}">
+                                                <label for="descriptionInput">Description</label>
+                                                <textarea class="form-control" id="descriptionInput" name="description"
+                                                    required rows="1"
+                                                    placeholder="Enter Description...">{{ old('description', $event->description) }}</textarea>
+                                            </div>
+                                        </div> --}}
+
+                                        <div class="col-md-12">
+                                            <label class="form-label">Description</label>
+                                            <div class="form-floating mb-3">
+                                                <!-- Textarea for Summernote -->
+                                                <textarea id="summernote" name="description" class="form-control"
+                                                    required placeholder="Enter Description...">{{ old('description', $event->description) }}
+
+                                                 </textarea>
+
                                             </div>
                                         </div>
 
@@ -127,20 +137,14 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-8">
-                                            <div class="mb-3">
-                                                <label for="descriptionInput">Description</label>
-                                                <textarea class="form-control" id="descriptionInput" name="description"
-                                                    required rows="1"
-                                                    placeholder="Enter Description...">{{ old('description', $event->description) }}</textarea>
-                                            </div>
-                                        </div>
                                     </div>
 
                                     <div class="text-end">
                                         <input type="submit" class="btn btn-shadow btn-primary" value="Update">
                                     </div>
                                 </form>
+
+
                             </div>
 
 
@@ -154,7 +158,30 @@
         </div>
     </div>
 </div>
-
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs4.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Initialize Summernote on the textarea
+        $('#summernote').summernote({
+            placeholder: 'Enter course summary here...',
+            tabsize: 2,
+            height: 90, // Adjust the height as needed
+            toolbar: [
+                // Custom toolbar options
+                ['style', ['style']],
+                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['fontname', ['fontname']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                // ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ]
+        });
+    });
+</script>
 
 @include('partials.footer')
 @endsection

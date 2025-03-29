@@ -7,27 +7,33 @@ use Illuminate\Http\Request;
 use Ramsey\Uuid\Guid\Guid;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class EventController extends Controller
 {
 
+
     public function index()
     {
-        $events = EventModel::where('status', 1)->get()->map(function ($event) {
-            $start = $event->event_start_date . ' ' . ($event->event_start_time ?? '00:00:00');
-            $end = $event->event_end_date . ' ' . ($event->event_end_time ?? '23:59:59');
-
-            return [
-                'id' => $event->id,
-                'title' => $event->event_topic,
-                'start' => trim($start),
-                'end' => trim($end),
-                'description' => $event->description
-            ];
-        });
+        $events = EventModel::where('status', 1)
+            ->whereNotNull('event_start')
+            ->whereNotNull('event_end')
+            ->get()
+            ->groupBy(function ($event) {
+                return date('Y-m-d', strtotime($event->event_start)); // Group by event_start date
+            })
+            ->map(function ($events, $date) {
+                return [
+                    'title' => count($events) . ' Events',
+                    'start' => $date,
+                    'events' => $events->toArray(), // Store event details for modal
+                ];
+            })
+            ->values(); // Remove keys for JSON response
 
         return response()->json($events);
     }
+
 
 
     public function event_delete($id)
@@ -42,25 +48,16 @@ class EventController extends Controller
         }
     }
 
+
+
     public function event_update(Request $request)
     {
         try {
             $id = $request->event_id;
             $validator = Validator::make($request->all(), [
                 'title' => 'required|string|max:500',
-                'start_date' => 'required|date',
-                'start_time' => 'required',
-                'end_date' => 'required|date|after_or_equal:start_date',
-                'end_time' => [
-                    'required',
-                    function ($attribute, $value, $fail) use ($request) {
-                        if ($request->start_date === $request->end_date) {
-                            if ($request->start_time >= $value) {
-                                $fail('The end time must be after the start time when dates are the same.');
-                            }
-                        }
-                    },
-                ],
+                'start_datetime' => 'required|date_format:Y-m-d\TH:i',
+                'end_datetime' => 'required|date_format:Y-m-d\TH:i|after:start_datetime',
                 'status' => 'required|boolean',
                 'description' => 'required|string'
             ]);
@@ -72,12 +69,33 @@ class EventController extends Controller
             }
 
             $event = EventModel::findOrFail($id);
+
+            // Convert date-time values
+            $startDateTime = Carbon::parse($request->start_datetime);
+            $endDateTime = Carbon::parse($request->end_datetime);
+
+            // Check for conflicting events (excluding the current event)
+            // Uncomment if needed
+            // $conflictingEvent = EventModel::where('id', '!=', $id)
+            //     ->where(function ($query) use ($startDateTime, $endDateTime) {
+            //         $query->whereBetween('event_start', [$startDateTime, $endDateTime])
+            //             ->orWhereBetween('event_end', [$startDateTime, $endDateTime])
+            //             ->orWhere(function ($query) use ($startDateTime, $endDateTime) {
+            //                 $query->where('event_start', '<', $startDateTime)
+            //                     ->where('event_end', '>', $endDateTime);
+            //             });
+            //     })
+            //     ->exists();
+
+            // if ($conflictingEvent) {
+            //     return back()->withErrors(['start_datetime' => 'Another event is already scheduled during this time.'])->withInput();
+            // }
+
+            // Update event
             $event->event_topic = $request->title;
             $event->description = $request->description;
-            $event->event_start_date = $request->start_date;
-            $event->event_start_time = $request->start_time ?? '00:00:00';
-            $event->event_end_date = $request->end_date;
-            $event->event_end_time = $request->end_time ?? '23:59:59';
+            $event->event_start = $startDateTime;
+            $event->event_end = $endDateTime;
             $event->status = $request->status;
             $event->updated_by = auth::user()->id ?? null;
             $event->save();
@@ -87,6 +105,7 @@ class EventController extends Controller
             return back()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
     }
+
 
 
     public function event_edit($id)
@@ -102,31 +121,18 @@ class EventController extends Controller
 
     public function event_list(Request $request)
     {
-
-        $events = EventModel::get();
-
+        $events = EventModel::orderBy('event_start', 'asc')->get();
         return view('events.list', compact('events'));
     }
 
+
     public function event_store(Request $request)
     {
-
         try {
             $validator = Validator::make($request->all(), [
                 'title' => 'required|string|max:500',
-                'start_date' => 'required|date',
-                'start_time' => 'required',
-                'end_date' => 'required|date|after_or_equal:start_date',
-                'end_time' => [
-                    'required',
-                    function ($attribute, $value, $fail) use ($request) {
-                        if ($request->start_date === $request->end_date) {
-                            if ($request->start_time >= $value) {
-                                $fail('The end time must be after the start time when dates are the same.');
-                            }
-                        }
-                    },
-                ],
+                'start_datetime' => 'required|date_format:Y-m-d\TH:i',
+                'end_datetime' => 'required|date_format:Y-m-d\TH:i|after:start_datetime',
                 'status' => 'required|boolean',
                 'description' => 'required|string'
             ]);
@@ -137,14 +143,32 @@ class EventController extends Controller
                     ->withInput();
             }
 
+            $startDate = Carbon::parse($request->start_datetime)->toDateString();
+            $startDateTime = Carbon::parse($request->start_datetime);
+            $endDateTime = Carbon::parse($request->end_datetime);
+
+            // Check for overlapping events on the same date
+            // $conflictingEvent = EventModel::whereDate('event_start', $startDate)
+            //     ->where(function ($query) use ($startDateTime, $endDateTime) {
+            //         $query->whereBetween('event_start', [$startDateTime, $endDateTime])
+            //             ->orWhereBetween('event_end', [$startDateTime, $endDateTime])
+            //             ->orWhere(function ($query) use ($startDateTime, $endDateTime) {
+            //                 $query->where('event_start', '<', $startDateTime)
+            //                     ->where('event_end', '>', $endDateTime);
+            //             });
+            //     })
+            //     ->exists();
+
+            // if ($conflictingEvent) {
+            //     return back()->withErrors(['start_datetime' => 'Another event is already scheduled during this time.'])->withInput();
+            // }
+
             $event = new EventModel();
             $event->id = (string) Guid::uuid4();
             $event->event_topic = $request->title;
             $event->description = $request->description;
-            $event->event_start_date = $request->start_date;
-            $event->event_start_time = $request->start_time . ':00' ?? '00:00:00';
-            $event->event_end_date = $request->end_date;
-            $event->event_end_time = $request->end_time . ':00' ?? '23:59:00';
+            $event->event_start = $startDateTime;
+            $event->event_end = $endDateTime;
             $event->status = $request->status;
             $event->created_by = auth::user()->id ?? null;
             $event->save();
@@ -154,6 +178,9 @@ class EventController extends Controller
             return back()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
     }
+
+
+
     public function updateEventStatus(Request $request)
     {
         $event = EventModel::find($request->id);

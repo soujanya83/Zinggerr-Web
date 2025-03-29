@@ -421,25 +421,22 @@
                 </div>
 
                 <!-- Modal -->
-                <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel"
-                    aria-hidden="true">
+                <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="eventModalLabel">Event Details</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                <p><strong>📌 Title:</strong> <span id="eventTitle"></span></p>
-                                <p><strong>🕒 Start:</strong> <span id="eventStart"></span></p>
-                                <p><strong>⏳ End:</strong> <span id="eventEnd"></span></p>
-                                <p><strong>📝 Description:</strong> <span id="eventDescription"></span></p>
+                            <div class="modal-body" id="eventModalBody">
+                                <!-- Event details will be injected here -->
                             </div>
-
                         </div>
                     </div>
                 </div>
+
+
+
 
                 <div class="card table-card">
                     <div class="h-100 bg-light rounded p-4">
@@ -498,85 +495,76 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const calendarEl = document.getElementById('calendar');
+   document.addEventListener('DOMContentLoaded', function () {
+    const calendarEl = document.getElementById('calendar');
 
-        // Define an array of pastel colors
-        const colors = [
-            '#ADD8E6', // Light Blue
-            '#90EE90', // Light Green
-            '#FFB6C1', // Pink
-            '#20B2AA', // Light Sea Green
-            '#7FFFD4', // Aqua
-            '#FFDAB9', // Peach Puff
-            '#E6E6FA', // Lavender
-            '#F0E68C', // Khaki
-            '#DDA0DD', // Plum
-            '#87CEFA'  // Light Sky Blue
-        ];
+    // Define an array of pastel colors
+    const colors = [
+        '#ADD8E6', '#90EE90', '#FFB6C1', '#20B2AA', '#7FFFD4',
+        '#FFDAB9', '#E6E6FA', '#F0E68C', '#DDA0DD', '#87CEFA'
+    ];
 
-        const calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            headerToolbar: {
-                left: '',
-                center: 'title',
-                right: 'prev,next'
-            },
-            events: '/events',
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+            left: '',
+            center: 'title',
+            right: 'prev,next'
+        },
+        events: '/events', // Fetch events from API
 
-            // Customize event rendering
-                        eventContent: function(arg) {
-                // Randomly select a color from the array
-                        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        // Customize event rendering
+        eventContent: function (arg) {
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            return {
+                html: `<div class="event-box" style="background-color: ${randomColor}; padding: 5px; border-radius: 4px;">
+                        <strong>${arg.event.title}</strong>
+                    </div>`
+            };
+        },
 
-                        // Truncate the event title to 8 characters and add "..."
-                        const truncatedTitle = arg.event.title.length > 8
-                            ? arg.event.title.substring(0, 8) + "..."
-                            : arg.event.title;
+        eventClick: function (info) {
+            if (!info.event.extendedProps || !info.event.extendedProps.events) {
+                console.warn('No event data found.');
+                return;
+            }
 
-                        return {
-                            html: `<div class="event-box" style="background-color: ${randomColor};">
-                                    <strong>${truncatedTitle}</strong>
-                                </div>`
-                        };
-                    },
+            let events = info.event.extendedProps.events;
 
-                                  eventClick: function(info) {
-                                        // Function to format date as "22 March 2025"
-                                        function formatDate(date) {
-                                            const options = { day: '2-digit', month: 'long', year: 'numeric' };
-                                            return new Date(date).toLocaleDateString('en-GB', options);
-                                        }
+            let modalContent = `<h5>${events.length} Events on ${formatDate(info.event.start)}</h5>`;
 
-                                        // Function to format time as "02:12 PM"
-                                        function formatTime(date) {
-                                            const options = { hour: '2-digit', minute: '2-digit', hour12: true };
-                                            return new Date(date).toLocaleTimeString('en-US', options);
-                                        }
+            events.forEach(event => {
+                modalContent += `
+                    <hr>
+                    <p><strong>📌 Title:</strong> ${event.event_topic || 'N/A'}</p>
+                    <p><strong>🕒 Start:</strong> ${formatDate(event.event_start)} ${formatTime(event.event_start)}</p>
+                    <p><strong>⏳ End:</strong> ${formatDate(event.event_end)} ${formatTime(event.event_end)}</p>
+                    <p><strong>📝 Description:</strong> ${event.description || 'No description provided'}</p>
+                `;
+            });
 
-                                        // Get event details
-                                        const eventTitle = info.event.title;
-                                        const eventStartDate = formatDate(info.event.start);
-                                        const eventStartTime = formatTime(info.event.start);
-                                        const eventEndDate = info.event.end ? formatDate(info.event.end) : 'N/A';
-                                        const eventEndTime = info.event.end ? formatTime(info.event.end) : 'N/A';
-                                        const eventDescription = info.event.extendedProps.description || 'No description provided';
+            // Inject content into the modal
+            document.getElementById('eventModalBody').innerHTML = modalContent;
 
-                                        // Set modal content
-                                        document.getElementById('eventTitle').textContent = eventTitle;
-                                        document.getElementById('eventStart').textContent = `${eventStartDate} ${eventStartTime}`;
-                                        document.getElementById('eventEnd').textContent = eventEndDate !== 'N/A' ? `${eventEndDate} ${eventEndTime}` : 'N/A';
-                                        document.getElementById('eventDescription').textContent = eventDescription;
-
-                                        // Show modal
-                                        var eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
-                                        eventModal.show();
-                    }
-
-              });
-
-        calendar.render();
+            // Show modal
+            var eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
+            eventModal.show();
+        }
     });
+
+    calendar.render();
+});
+
+// ✅ Helper functions (Moved Outside)
+function formatDate(date) {
+    return date ? new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' }) : 'Invalid Date';
+}
+
+function formatTime(date) {
+    return date ? new Date(date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) : 'Invalid Time';
+}
+
+
 </script>
 
 

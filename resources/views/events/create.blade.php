@@ -2,6 +2,8 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Two+Tone" rel="stylesheet">
+
+
 @section('pageTitle', ' Events Create')
 
 @section('content')
@@ -77,33 +79,39 @@
 
                                         <div class="col-md-4">
                                             <div class="mb-3">
-                                                <label>Start Date</label>
-                                                <input type="date" class="form-control" name="start_date" required
-                                                    value="{{ old('start_date') }}">
+                                                <label for="start_datetime">Start Date & Time</label>
+                                                <input type="datetime-local" class="form-control" name="start_datetime"
+                                                    id="start_datetime" required value="{{ old('start_datetime') }}">
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <div class="mb-3">
-                                                <label>Start Time</label>
-                                                <input type="time" class="form-control" name="start_time" required
-                                                    value="{{ old('start_time') }}">
+                                                <label>End Date and Time</label>
+                                                <input type="datetime-local" class="form-control" name="end_datetime"
+                                                    required
+                                                    value="{{ old('end_datetime', isset($course) ? $course->end_datetime : '') }}">
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4">
-                                            <div class="mb-3">
-                                                <label>End Date</label>
-                                                <input type="date" class="form-control" name="end_date" required
-                                                    value="{{ old('end_date') }}">
-                                            </div>
-                                        </div>
 
-                                        <div class="col-md-4">
+                                        {{-- <div class="col-md-12">
                                             <div class="mb-3">
-                                                <label>End Time</label>
-                                                <input type="time" class="form-control" name="end_time" required
-                                                    value="{{ old('end_time') }}">
+                                                <label for="descriptionInput">Description</label>
+                                                <textarea class="form-control summernote" id="descriptionInput" name="description" required>
+                                                    {{ old('description') }}
+                                                </textarea>
+                                            </div>
+                                        </div> --}}
+                                        <div class="col-md-12">
+                                            <label class="form-label">Description</label>
+                                            <div class="form-floating mb-3">
+                                                <!-- Textarea for Summernote -->
+                                                <textarea id="summernote" name="description" class="form-control"
+                                                    required>{{ old('description') }}
+
+                                                 </textarea>
+
                                             </div>
                                         </div>
 
@@ -123,14 +131,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-8">
-                                            <div class="mb-3">
-                                                <label for="descriptionInput">Description</label>
-                                                <textarea class="form-control" id="descriptionInput" name="description"
-                                                    required rows="1"
-                                                    placeholder="Enter Description...">{{ old('description') }}</textarea>
-                                            </div>
-                                        </div>
+
                                     </div>
                                     <div class="text-end">
                                         <input type="submit" class="btn btn-shadow btn-primary" value="Submit">
@@ -147,7 +148,29 @@
         </div>
     </div>
 </div>
-
-
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs4.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Initialize Summernote on the textarea
+        $('#summernote').summernote({
+            placeholder: 'Enter course summary here...',
+            tabsize: 2,
+            height: 90, // Adjust the height as needed
+            toolbar: [
+                // Custom toolbar options
+                ['style', ['style']],
+                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['fontname', ['fontname']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                // ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ]
+        });
+    });
+</script>
 @include('partials.footer')
 @endsection

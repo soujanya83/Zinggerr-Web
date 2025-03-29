@@ -15,13 +15,11 @@ return new class extends Migration
             $table->char('id', 36)->primary();
             $table->text('event_topic');
             $table->text('description');
-            $table->date('event_start_date')->nullable();
-            $table->date('event_end_date')->nullable();
-            $table->time('event_start_time')->nullable()->default('00:00:00');
-            $table->time('event_end_time')->nullable()->default('23:59:59');;
+            $table->datetime('event_start')->nullable(); // Merged date and time
+            $table->datetime('event_end')->nullable();   // Merged date and time
             $table->boolean('status')->default(1);
-            $table->char('created_by',36)->nullable();
-            $table->char('updated_by',36)->nullable();
+            $table->char('created_by', 36)->nullable();
+            $table->char('updated_by', 36)->nullable();
 
             $table->timestamps();
         });

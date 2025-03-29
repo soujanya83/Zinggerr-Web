@@ -87,58 +87,46 @@
                                     </thead>
                                     <tbody>
                                         @if($events->count() > 0)
-                                        @foreach ($events as $index => $data)
-                                        <tr id="eventRow-{{ $data->id }}"
-                                            data-start-date="{{ $data->event_start_date }}">
-                                            <td>{{ $index + 1 }}</td>
-                                            <td>{{ $data->event_topic }}</td>
-                                            <td>
-                                                {{ \Carbon\Carbon::parse($data->event_start_date)->format('d F Y') }} /
-                                                {{ \Carbon\Carbon::parse($data->event_start_time)->format('g:i A') }}
-                                            </td>
-                                            <td>
-                                                {{ \Carbon\Carbon::parse($data->event_end_date)->format('d F Y') }} /
-                                                {{ \Carbon\Carbon::parse($data->event_end_time)->format('g:i A') }}
-                                            </td>
+                                            @foreach ($events as $index => $data)
+                                            <tr id="eventRow-{{ $data->id }}"
+                                                data-start-date="{{ \Carbon\Carbon::parse($data->event_start)->format('Y-m-d') }}">
+                                                <td>{{ $index + 1 }}</td>
+                                                <td>{{ $data->event_topic }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($data->event_start)->format('d F Y, g:i A') }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($data->event_end)->format('d F Y, g:i A') }}</td>
 
-                                            @if(Auth::user()->can('role') || (isset($permissions) &&
-                                            in_array('events_status', $permissions)))
-                                            <td>
-                                                <span
-                                                    class="badge status-badge {{ $data->status == 1 ? 'bg-success' : 'bg-danger' }}"
-                                                    data-id="{{ $data->id }}" data-status="{{ $data->status }}"
-                                                    style="cursor: pointer;padding:6px">
-                                                    {{ $data->status == 1 ? 'Active' : 'Inactive' }}
-                                                </span>
-                                            </td>
-                                            @endif
-
-
-                                            <td>
-                                                @if(Auth::user()->can('role') || (isset($permissions) &&
-                                                in_array('events_edit', $permissions)))
-                                                <a href="{{ route('event_edit', $data->id) }}"
-                                                    class="avtar avtar-xs btn-link-secondary">
-                                                    <i class="ti ti-edit f-20"></i>
-                                                </a>
+                                                @if(Auth::user()->can('role') || (isset($permissions) && in_array('events_status', $permissions)))
+                                                <td>
+                                                    <span class="badge status-badge {{ $data->status == 1 ? 'bg-success' : 'bg-danger' }}"
+                                                        data-id="{{ $data->id }}" data-status="{{ $data->status }}"
+                                                        style="cursor: pointer;padding:6px">
+                                                        {{ $data->status == 1 ? 'Active' : 'Inactive' }}
+                                                    </span>
+                                                </td>
                                                 @endif
-                                                @if(Auth::user()->can('role') || (isset($permissions) &&
-                                                in_array('events_delete', $permissions)))
-                                                <a href="javascript:void(0);"
-                                                    class="delete-event avtar avtar-xs btn-link-secondary"
-                                                    data-id="{{ $data->id }}" title="Event Delete">
-                                                    <i class="ti ti-trash f-20" style="color: red;"></i>
-                                                </a>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                        @endforeach
+
+                                                <td>
+                                                    @if(Auth::user()->can('role') || (isset($permissions) && in_array('events_edit', $permissions)))
+                                                    <a href="{{ route('event_edit', $data->id) }}" class="avtar avtar-xs btn-link-secondary">
+                                                        <i class="ti ti-edit f-20"></i>
+                                                    </a>
+                                                    @endif
+                                                    @if(Auth::user()->can('role') || (isset($permissions) && in_array('events_delete', $permissions)))
+                                                    <a href="javascript:void(0);" class="delete-event avtar avtar-xs btn-link-secondary"
+                                                        data-id="{{ $data->id }}" title="Event Delete">
+                                                        <i class="ti ti-trash f-20" style="color: red;"></i>
+                                                    </a>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            @endforeach
                                         @else
-                                        <tr class="nodata">
-                                            <td colspan="6" class="text-center">No Data Found!</td>
-                                        </tr>
+                                            <tr class="nodata">
+                                                <td colspan="6" class="text-center">No Data Found!</td>
+                                            </tr>
                                         @endif
                                     </tbody>
+
                                 </table>
                             </div>
                         </div>
@@ -200,31 +188,41 @@
         });
     });
 </script>
-
 <script>
     $(document).ready(function() {
-        // Initial check for data
-        if ($('table tbody tr').length === 0) {
-            $('table tbody').append('<tr class="no-data"><td colspan="6" class="text-center">No Data Found.</td></tr>');
+        function checkNoData() {
+            if ($('table tbody tr:visible').length === 0) {
+                if (!$('table tbody .nodata').length) {
+                    $('table tbody').append('<tr class="nodata"><td colspan="6" class="text-center">No Data Found!</td></tr>');
+                }
+            } else {
+                $('table tbody .nodata').remove();
+            }
         }
 
         $('#dateFilter').on('change', function() {
-            let selectedDate = $(this).val();
+            let selectedDate = $(this).val(); // Get selected date in YYYY-MM-DD format
             let rowCount = 0;
 
             $('table tbody tr').each(function() {
-                let startDate = $(this).data('start-date');
+                let eventDate = $(this).attr('data-start-date'); // Get only the date part
 
-                if (selectedDate === '' || startDate.startsWith(selectedDate)) {
+                if (selectedDate === '' || eventDate === selectedDate) {
                     $(this).show();
                     rowCount++;
                 } else {
                     $(this).hide();
                 }
             });
+
+            checkNoData();
         });
+
+        checkNoData();
     });
 </script>
+
+
 
 <script>
     $(document).ready(function () {
