@@ -52,7 +52,7 @@ class ToDoController extends Controller
     public function tasks_edit($id)
     {
         $taskdata = ToDoTask::find($id);
-        return view('tasks.edit',compact('taskdata'));
+        return view('to_do_tasks.edit',compact('taskdata'));
     }
     public function deleteTask($id)
     {
@@ -83,7 +83,7 @@ class ToDoController extends Controller
 
         $todos = ToDoTask::where('user_id', Auth::id())->latest()->get();
 
-        return view('tasks.list', compact('todos'));
+        return view('to_do_tasks.list', compact('todos'));
     }
 
 

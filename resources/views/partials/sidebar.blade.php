@@ -359,6 +359,26 @@
                 </li>
                 @endif
 
+                @if(Auth::user()->can('role')|| (isset($permissions) && in_array('tasks_sidebar',
+                $permissions)))
+                <li class="pc-item pc-hasmenu">
+                    <a href="#" class="pc-link">
+                        <span class="pc-micon">
+                            <i class="ti ti-notes"></i>
+                        </span>
+                        <span class="pc-mtext" data-i18n="User">Tasks</span>
+                        <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+                    </a>
+                    <ul class="pc-submenu">
+                        <li class="pc-item"><a class="pc-link" href="{{ route('tasks.create') }}"
+                                data-i18n="Pricing">Create</a></li>
+                        <li class="pc-item"><a class="pc-link" href="{{ route('tasks.list') }}"
+                                data-i18n="Pricing">List</a>
+                        </li>
+                    </ul>
+                </li>
+                @endif
+
             </ul>
         </div>
     </div>

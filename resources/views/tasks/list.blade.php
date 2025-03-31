@@ -61,56 +61,102 @@
                             <div class="col">
                                 <h5>Tasks List</h5>
                             </div>
-                            <div class="form-search col-auto">
+                            {{-- <div class="form-search col-auto">
                                 <form>
                                     <input type="date" name="date" id="dateFilter" class="form-control"
                                         style="width: 200px; display: inline-block;">
                                 </form>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
+
                     <div class="card-body">
+                        <!-- User Assignment Dropdown (Top-Right) -->
+                        <div class="d-flex justify-content-between mb-2">
+
+                            <div class="dropdown d-inline">
+                                <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="userDropdown"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="ti ti-users"></i> Assign Users
+                                </button>
+                                <div class="dropdown-menu p-2 keep-open-dropdown" aria-labelledby="userDropdown"
+                                    style="width: 220px; z-index: 1050; ">
+                                    <!-- Search Input -->
+                                    <input type="text" class="form-control form-control-sm mb-2 user-search"
+                                        placeholder="Search user..." onkeyup="filterUsers(this)"
+                                        style="position: sticky; top: 0; z-index: 1051; background: white;">
+
+                                    <!-- Scrollable User List -->
+                                    <div class="user-list-container" style="max-height: 180px; overflow-y: auto;">
+                                        @foreach($users as $user)
+                                        <label class="dropdown-item">
+                                            <input type="checkbox" class="assign-checkbox"
+                                                value="{{ $user->id }}">&nbsp;
+                                            {{ $user->name }}
+                                        </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                                <button id="bulkAssignBtn" class="btn btn-primary btn-sm" disabled>Assign Tasks</button>
+                            </div>
+                        </div>
+
+                        <!-- Table -->
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <th style="width: 5%;">#</th>
-                                        <th style="width: 61%;">Task</th>
-                                        <th style="width: 13%;">Date</th>
-                                        <th style="width: 12%;">Status</th>
-                                        <th style="width: 9%;">Action</th>
+                                        <th style="width: 6%;">
+                                            <input type="checkbox" id="selectAllTasks"> All
+                                        </th>
+                                        <th style="width: 63%;">Task</th>
+                                        <th style="width: 13%;">Complete Date</th>
+                                        <th style="width: 8%;">Status</th>
+                                        <th style="width: 10%;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="taskTableBody">
-                                    @if($todos->count() > 0)
-                                    @foreach ($todos as $index => $data)
-                                    <tr id="taskRow-{{ $data->id }}">
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ Str::limit(strip_tags($data['task']), 130, '...') }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($data->date)->format('d F Y') }}</td>
+                                    @if($tasks->count() > 0)
+                                    @foreach ($tasks as $index => $data)
+                                    <tr id="taskRow-{{ $data->id }}" title="Description: {{ $data->description }}">
+
                                         <td>
-                                            {{ $data->completed == 1 ? 'Complete' : 'Incomplete' }}
+                                            <input type="checkbox" class="task-checkbox" value="{{ $data->id }}"> {{
+                                            ++$index }}
                                         </td>
+                                        <td>{{ Str::limit(strip_tags($data['task_title']), 130, '...') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($data->task_completion_date)->format('d F Y') }}
+                                        </td>
+
+                                        @if(Auth::user()->can('role') || (isset($permissions) && in_array('task_status',
+                                        $permissions)))
+                                        <td title="Task Status">
+                                            <span
+                                                class="badge status-badge {{ $data->status == 1 ? 'bg-success' : 'bg-danger' }}"
+                                                data-id="{{ $data->id }}" data-status="{{ $data->status }}"
+                                                style="cursor: pointer;padding:6px">
+                                                {{ $data->status == 1 ? 'Active' : 'Inactive' }}
+                                            </span>
+                                        </td>
+                                        @endif
                                         <td>
-                                            @if(
-                                            Auth::user()->can('role') ||
-                                            (isset($permissions) && in_array('tasks_edit', $permissions)))
-                                            <a href="{{ route('tasks_edit', $data->id) }}"
-                                                class="avtar avtar-xs btn-link-secondary">
+                                            @if(Auth::user()->can('role') || (isset($permissions) &&
+                                            in_array('tasks_edit', $permissions)))
+                                            <a href="{{ route('task.edit', $data->id) }}"
+                                                class="avtar avtar-xs btn-link-secondary" title="Task Edit/Update">
                                                 <i class="ti ti-edit f-20"></i>
                                             </a>
                                             @endif
-                                            @if(
-                                            Auth::user()->can('role') ||
-                                            (isset($permissions) && in_array('tasks_delete', $permissions)))
+                                            @if(Auth::user()->can('role') || (isset($permissions) &&
+                                            in_array('tasks_delete', $permissions)))
                                             <a href="#" class="delete-task avtar avtar-xs btn-link-secondary"
-                                                data-id="{{ $data->id }}">
+                                                data-id="{{ $data->id }}" title="Task Delete">
                                                 <i class="ti ti-trash f-20" style="color: red;"></i>
                                             </a>
                                             @endif
                                         </td>
                                     </tr>
-
                                     @endforeach
                                     @else
                                     <tr class="nodata">
@@ -118,11 +164,10 @@
                                     </tr>
                                     @endif
                                 </tbody>
-
                             </table>
                         </div>
-
                     </div>
+
 
 
                 </div>
@@ -150,7 +195,7 @@
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: "{{ route('to_do_tasks_delete', ':id') }}".replace(':id', taskId),
+                url: "{{ route('task.delete', ':id') }}".replace(':id', taskId),
                 type: "DELETE",
                 data: {
                     _token: "{{ csrf_token() }}"
@@ -181,54 +226,152 @@
         }
     });
 });
-
-
-
-
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
 <script>
     $(document).ready(function () {
-    $('#dateFilter').on('change', function () {
-        var selectedDate = $(this).val();
+        $(".status-badge").click(function () {
+            let badge = $(this);
+            let eventId = badge.data("id");
+            let currentStatus = badge.data("status");
 
-        $.ajax({
-            url: "{{ route('to_do_list') }}",
-            type: "GET",
-            data: { date: selectedDate },
-            success: function (response) {
-                var rows = '';
-                if (response.todos.length > 0) {
-                    $.each(response.todos, function (index, task) {
-                        let taskText = task.task.length > 130 ? task.task.substring(0, 130) + '...' : task.task;
+            // Toggle status
+            let newStatus = currentStatus == 1 ? 0 : 1;
 
-                        rows += `
-                            <tr id="taskRow-${task.id}">
-                                <td>${index + 1}</td>
-                                <td>${task.task.length > 130 ? task.task.substring(0, 130) + "..." : task.task}</td>
-                                <td>${new Date(task.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })}</td>
-                                <td>${task.completed == 1 ? 'Complete' : 'Incomplete'}</td>
-                                <td>
-                                    <a href="/tasks_edit/${task.id}" class="avtar avtar-xs btn-link-secondary">
-                                        <i class="ti ti-edit f-20"></i>
-                                    </a>
-                                    <a href="#" class="delete-task avtar avtar-xs btn-link-secondary" data-id="${task.id}">
-                                        <i class="ti ti-trash f-20" style="color: red;"></i>
-                                    </a>
-                                </td>
-                            </tr>`;
+            $.ajax({
+                url: "{{ route('task.status.update') }}", // Define this route in web.php
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: eventId,
+                    status: newStatus
+                },
+                success: function (response) {
+                    if (response.success) {
+                        // Update badge color and text
+                        badge.data("status", newStatus);
+                        badge.removeClass("bg-success bg-danger")
+                            .addClass(newStatus == 1 ? "bg-success" : "bg-danger")
+                            .text(newStatus == 1 ? "Active" : "Inactive");
 
-
-                    });
-
-                } else {
-                    rows = '<tr><td colspan="5" class="text-center">No tasks found</td></tr>';
+                        // Show SweetAlert notification for 2 seconds
+                        Swal.fire({
+                            icon: "success",
+                            title: "Status Updated",
+                            text: "The task status has been updated successfully!",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    } else {
+                        Swal.fire("Error", "Failed to update status!", "error");
+                    }
+                },
+                error: function () {
+                    Swal.fire("Error", "Something went wrong!", "error");
                 }
-                $('#taskTableBody').html(rows);
-            }
+            });
         });
     });
-});
 </script>
+
+
+
+<script>
+
+    function filterUsers(input) {
+        var filter = input.value.toLowerCase();
+        $('.user-list-container label').each(function() {
+            var text = $(this).text().toLowerCase();
+            $(this).toggle(text.includes(filter));
+        });
+    }
+
+    $(document).ready(function() {
+        // Prevent dropdown from closing when clicking inside it
+        $('.keep-open-dropdown').on('click', function(event) {
+            event.stopPropagation();
+        });
+
+        // Keep dropdown open when selecting checkboxes
+        $('.assign-checkbox, .task-checkbox, #selectAllUsers, #selectAllTasks').on('click', function(event) {
+            event.stopPropagation();
+        });
+
+        // Select All Users
+        $('#selectAllUsers').on('change', function() {
+            $('.user-checkbox').prop('checked', $(this).prop('checked'));
+        });
+
+        // Select All Tasks
+        $('#selectAllTasks').on('change', function() {
+            $('.task-checkbox').prop('checked', $(this).prop('checked'));
+            toggleAssignButton();
+        });
+
+        // Ensure Assign Button is Enabled
+        $('.task-checkbox, .assign-checkbox').on('change', function() {
+            toggleAssignButton();
+        });
+
+        function toggleAssignButton() {
+            let selectedTasks = $('.task-checkbox:checked').length > 0;
+            let selectedUsers = $('.assign-checkbox:checked').length > 0;
+            $('#bulkAssignBtn').prop('disabled', !(selectedTasks && selectedUsers));
+        }
+
+        // Assign Task Button Click
+        $('#bulkAssignBtn').on('click', function() {
+            let selectedTasks = $('.task-checkbox:checked').map(function() {
+                return $(this).val();
+            }).get();
+
+            let selectedUsers = $('.assign-checkbox:checked').map(function() {
+                return $(this).val();
+            }).get();
+
+            if (selectedTasks.length === 0 || selectedUsers.length === 0) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Oops...",
+                    text: "Please select at least one task and one user!"
+                });
+                return;
+            }
+
+            $.ajax({
+                url: "{{ route('task.assign') }}", // Ensure this is your actual route
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    tasks: selectedTasks,
+                    user_ids: selectedUsers
+                },
+                success: function(response) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Success!",
+                        text: "Tasks assigned successfully!",
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        location.reload(); // Reload page after 2 sec
+                    });
+                },
+                error: function() {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error!",
+                        text: "Something went wrong. Please try again."
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+
 @include('partials.footer')
 @endsection

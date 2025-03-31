@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ToDoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoQuizController;
@@ -369,6 +370,16 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::delete('/event/delete/{id}', [EventController::class, 'event_delete'])->name('event.delete');
     Route::post('/event/status/update', [EventController::class, 'updateEventStatus'])->name('event.status.update');
     Route::get('/events', [EventController::class, 'index'])->name('events.index');
+
+    Route::get('create/task', [TaskController::class, 'task_create_form'])->name('tasks.create');
+    Route::get('task/list', [TaskController::class, 'task_list'])->name('tasks.list');
+    Route::post('task/store', [TaskController::class, 'task_store'])->name('task.store');
+    Route::post('/task/status/update', [TaskController::class, 'updateTaskStatus'])->name('task.status.update');
+    Route::delete('/task/delete/{id}', [TaskController::class, 'task_delete'])->name('task.delete');
+    Route::get('/task/{id}/edit', [TaskController::class, 'task_edit'])->name('task.edit');
+    Route::post('/update/{id}/task', [TaskController::class, 'task_update'])->name('update.task');
+  
+    Route::post('/assign-task', [TaskController::class, 'assignTask'])->name('task.assign');
 
 
     Route::post('/logout', function () {
