@@ -111,7 +111,7 @@
                                             <input type="checkbox" id="selectAllTasks"> All
                                         </th>
                                         <th style="width: 63%;">Task</th>
-                                        <th style="width: 13%;">Complete Date</th>
+                                        <th style="width: 13%;">Deadline</th>
                                         <th style="width: 8%;">Status</th>
                                         <th style="width: 10%;">Action</th>
                                     </tr>

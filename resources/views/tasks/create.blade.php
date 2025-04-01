@@ -80,7 +80,7 @@
 
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label for="task_date">Task Complate Date</label>
+                                                <label for="task_date">Deadline</label>
                                                 <input type="date" class="form-control" name="task_date" id="task_date"
                                                     required value="{{ old('task_date') }}">
                                             </div>

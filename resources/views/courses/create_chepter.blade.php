@@ -115,11 +115,6 @@
         border-radius: 1px;
         transition: transform 0.2s ease;
     }
-
-
-
-
-
 </style>
 
 
@@ -260,7 +255,7 @@
                                                                     aria-controls="collapseChapter{{ $user->id }}">
                                                                     <span>{{ $user->chepter_name }}</span>
                                                                     <span class="position-absolute end-0  p-2"
-                                                                        style="margin-right: 59px;">Lectures: {{
+                                                                        style="margin-right: 59px;">Assets: {{
                                                                         $assets_count }}</span>
                                                                 </button>
                                                             </h2>
@@ -291,10 +286,11 @@
                                                                             <thead>
                                                                                 <tr>
                                                                                     {{-- <th>#</th> --}}
-                                                                                    <th style="width: 80%;">Topic</th>
-                                                                                    <th style="width: 20%;">Lectures
+                                                                                    <th style="width: 58%;">Topic</th>
+                                                                                    <th style="width: 20%;">Assets
                                                                                     </th>
-                                                                                    {{-- <th>Actions</th> --}}
+                                                                                    <th style="width: 22%;">Content</th>
+
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
@@ -307,6 +303,7 @@
                                                                                     <td>
 
                                                                                         @if ($asset->assets_video)
+
                                                                                         <i class="ti ti-video"
                                                                                             style="color:aliceblue;background-color: #1862a9;padding: 4px;border-radius: 50px;"></i>&nbsp;
                                                                                         <a href="#"
@@ -337,19 +334,36 @@
 
                                                                                         @endif
                                                                                     </td>
+                                                                                    <td>
+                                                                                        @php
+                                                                                        $interactive=DB::table('interactive_assets')->where('video_id',$asset->assets_video)->count();
+                                                                                        $fillingIntheblanck=DB::table('fillblanks')->where('video_name',$asset->assets_video)->count();
+                                                                                        $videoQuizz=DB::table('video_quizzes')->where('video_name',$asset->assets_video)->count();
 
+                                                                                        $icons = [
+                                                                                        'interactive' => '<i
+                                                                                            class="fas fa-gamepad" title="Interactive"></i>',
+                                                                                        // 🎮 Interactive
+                                                                                        'fill' => '<i
+                                                                                            class="fas fa-keyboard"  title="Fill in the Blanks"></i>',
+                                                                                        // ⌨️ Fill in the Blanks
+                                                                                        'video' => '<i
+                                                                                            class="fas fa-video" title="Video Quiz"></i>',
+                                                                                        // 📹 Video Quiz
+                                                                                        ];
+                                                                                        @endphp
+                                                                                        @if($interactive)
+                                                                                        {{ $interactive }}: {!!
+                                                                                        $icons['interactive'] !!} @endif &nbsp;
+                                                                                        @if($fillingIntheblanck)
+                                                                                        {{ $fillingIntheblanck }}:  {!! $icons['fill'] !!}
+                                                                                        @endif &nbsp;
+                                                                                        @if($videoQuizz)
+                                                                                        {{ $videoQuizz }}: {!! $icons['video'] !!}
+                                                                                        @endif
 
+                                                                                    </td>
 
-
-                                                                                    {{-- <td>
-
-                                                                                        <a href="{{ route('edit_asset', $asset->id) }}"
-                                                                                            class="btn btn-sm btn-warning">Edit</a>
-                                                                                        <a href="{{ route('delete_asset', $asset->id) }}"
-                                                                                            class="btn btn-sm btn-danger"
-                                                                                            onclick="return confirm('Are you sure you want to delete this asset?');">Delete</a>
-
-                                                                                    </td> --}}
                                                                                 </tr>
                                                                                 @endforeach
                                                                             </tbody>
@@ -499,7 +513,7 @@
                 <div id="quizContainer" style="position: relative; width: 100%; height: auto;"></div>
 
                 <div class="video-container" style="position: relative;">
-                    <video id="editVideoPlayer" width="100%"  controls>
+                    <video id="editVideoPlayer" width="100%" controls>
                         <source src="" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>

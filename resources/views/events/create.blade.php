@@ -87,7 +87,7 @@
 
                                         <div class="col-md-4">
                                             <div class="mb-3">
-                                                <label>End Date and Time</label>
+                                                <label>End Date & Time</label>
                                                 <input type="datetime-local" class="form-control" name="end_datetime"
                                                     required
                                                     value="{{ old('end_datetime', isset($course) ? $course->end_datetime : '') }}">
