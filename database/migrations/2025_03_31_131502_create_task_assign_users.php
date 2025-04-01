@@ -17,6 +17,7 @@ return new class extends Migration
             $table->char('user_id', 36);
             $table->date('task_completed_date')->nullable();
             $table->char('updated_by', 36)->nullable();
+            $table->char('created_by', 36)->nullable();
             $table->timestamps();
         });
     }

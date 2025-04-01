@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
+use App\Models\CoursesAssign;
+use App\Models\Role;
 use App\Models\TaskAssignUser;
 use App\Models\TaskModel;
 use App\Models\User;
@@ -10,6 +13,7 @@ use Ramsey\Uuid\Guid\Guid;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use DateTime;
 use PHPUnit\Metadata\Uses;
 
 class TaskController extends Controller
@@ -17,13 +21,19 @@ class TaskController extends Controller
 
     public function task_store(Request $request)
     {
-
         try {
+            // Validation rules
             $validator = Validator::make($request->all(), [
                 'title' => 'required|string|max:500',
-                'task_date' => 'required|date_format:Y-m-d',
+                'task_date' => 'required|date_format:d/m/Y', // Validates input as dd/mm/yyyy
                 'status' => 'required|boolean',
-                'description' => 'required|string'
+                'description' => 'required|string',
+                'assign_users' => 'nullable|array', // Optional array of user IDs
+                'assign_users.*' => 'exists:users,id', // Validate each ID exists in users table
+                'assign_roles' => 'nullable|array', // Optional array of role IDs
+                'assign_roles.*' => 'exists:roles,id', // Validate each ID exists in roles table
+                'assign_courses' => 'nullable|array', // Optional array of course IDs
+                'assign_courses.*' => 'exists:courses,id', // Validate each ID exists in courses table
             ]);
 
             if ($validator->fails()) {
@@ -31,31 +41,143 @@ class TaskController extends Controller
                     ->withErrors($validator)
                     ->withInput();
             }
+
+            // Convert dd/mm/yyyy to Y-m-d for database storage
+            $taskDate = DateTime::createFromFormat('d/m/Y', $request->task_date)->format('Y-m-d');
+
+            // Create the task
             $uuid = (string) Guid::uuid4();
-            TaskModel::create([
+            $task = TaskModel::create([
                 'id' => $uuid,
                 'task_title' => $request->title,
-                'task_completion_date' => $request->task_date,
+                'task_completion_date' => $taskDate, // Use converted date
                 'description' => $request->description,
                 'status' => $request->status,
-                'created_by' => Auth::user()->id
+                'created_by' => Auth::user()->id,
             ]);
+
+            $taskId = $task->id; // Correct variable name (singular $task, not $tasks)
+
+            // Assign users (if provided)
+            if ($request->assign_users) {
+                foreach ($request->assign_users as $userId) {
+                    $uuid = (string) Guid::uuid4();
+                    TaskAssignUser::updateOrCreate(
+                        ['task_id' => $taskId, 'user_id' => $userId],
+                        ['task_completed_date' => null, 'id' => $uuid,'created_by' => Auth::user()->id]
+                    );
+                }
+            }
+
+
+            if ($request->assign_roles) {
+                foreach ($request->assign_roles as $roleId) {
+                    $role = Role::where('id', $roleId)->first();
+
+                    if ($role) {
+                        $users = User::where('type', $role->name)->get();
+
+                        foreach ($users as $user) {
+                            $uuid = (string) Guid::uuid4();
+                            TaskAssignUser::updateOrCreate(
+                                ['task_id' => $taskId, 'user_id' => $user->id],
+                                ['task_completed_date' => null, 'id' => $uuid,'created_by' => Auth::user()->id]
+                            );
+                        }
+                    }
+                }
+            }
+
+            if ($request->assign_courses) {
+                foreach ($request->assign_courses as $courseId) {
+                    // Fetch all user assignments for this course
+                    $courseAssignments = CoursesAssign::where('courses_id', $courseId)->get();
+
+                    if ($courseAssignments->isNotEmpty()) {
+                        foreach ($courseAssignments as $assignment) {
+                            $uuid = (string) Guid::uuid4();
+                            TaskAssignUser::updateOrCreate(
+                                ['task_id' => $taskId, 'user_id' => $assignment->users_id], // Adjust column name if needed
+                                ['task_completed_date' => null, 'id' => $uuid,'created_by' => Auth::user()->id]
+                            );
+                        }
+                    }
+                }
+            }
 
             return redirect()->route('tasks.list')->with('success', 'Task created successfully');
         } catch (\Exception $e) {
-
             return back()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
     }
 
+
+    // public function task_store(Request $request)
+    // {
+    //     // dd($request);
+    //     try {
+    //         $validator = Validator::make($request->all(), [
+    //             'title' => 'required|string|max:500',
+    //             'task_date' => 'required|date_format:d/m/Y',
+    //             'status' => 'required|boolean',
+    //             'description' => 'required|string',
+    //             'assign_users' => 'nullable|array', // Optional array of user IDs
+    //             'assign_users.*' => 'exists:users,id', // Validate each ID exists in users table
+    //             'assign_roles' => 'nullable|array', // Optional array of role IDs
+    //             'assign_roles.*' => 'exists:roles,id', // Validate each ID exists in roles table
+    //             'assign_courses' => 'nullable|array', // Optional array of course IDs
+    //             'assign_courses.*' => 'exists:courses,id',
+    //         ]);
+    //         if ($validator->fails()) {
+    //             return back()
+    //                 ->withErrors($validator)
+    //                 ->withInput();
+    //         }
+    //         $uuid = (string) Guid::uuid4();
+    //         $tasks = TaskModel::create([
+    //             'id' => $uuid,
+    //             'task_title' => $request->title,
+    //             'task_completion_date' => $request->task_date,
+    //             'description' => $request->description,
+    //             'status' => $request->status,
+    //             'created_by' => Auth::user()->id
+    //         ]);
+
+    //         $taskId = $tasks->id;
+    //         if ($request->assign_users) {
+    //             foreach ($request->assign_users as $userId) {
+    //                 $uuid = (string) Guid::uuid4();
+    //                 TaskAssignUser::updateOrCreate(
+    //                     ['task_id' => $taskId, 'user_id' => $userId],
+    //                     ['task_completed_date' => null, 'id' => $uuid]
+    //                 );
+    //             }
+    //         }
+
+
+
+    //         return redirect()->route('tasks.list')->with('success', 'Task created successfully');
+    //     } catch (\Exception $e) {
+
+    //         return back()->with('error', 'Something went wrong: ' . $e->getMessage());
+    //     }
+    // }
+
     public function task_create_form()
     {
-        return view('tasks.create');
+        $userId = Auth::user()->id;
+        $users = User::where('user_id', $userId)->get();
+        $courses = Course::where('user_id', $userId)->get();
+        $roles = Role::where(function ($query) use ($userId) {
+            $query->where('user_id', $userId)
+                ->orWhereNull('user_id');
+        })->get();
+        return view('tasks.create', compact('users', 'courses', 'roles'));
     }
     public function task_list(Request $request)
     {
         $tasks = TaskModel::all();
-        $users = User::all(); // Fetch all users for assignment
+        $users = User::where('user_id',Auth::user()->id)->get(); // Fetch all users for assignment
 
         return view('tasks.list', compact('tasks', 'users'));
     }
@@ -78,7 +200,7 @@ class TaskController extends Controller
                 $uuid = (string) Guid::uuid4();
                 TaskAssignUser::updateOrCreate(
                     ['task_id' => $taskId, 'user_id' => $userId],
-                    ['task_completed_date' => null,'id'=>$uuid]
+                    ['task_completed_date' => null, 'id' => $uuid,'created_by'=>Auth::user()->id]
                 );
             }
         }
