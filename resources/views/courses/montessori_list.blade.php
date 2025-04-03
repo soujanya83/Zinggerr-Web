@@ -208,7 +208,7 @@
                                                             'courses_edit'))
                                                             <a href="{{ route('course_edit', ['slug' => $course->slug, 'ageGroup' => request('ageGroup'), 'area' => request('area')]) }}"
                                                                 class="dropdown-item">
-                                                                <i class="ti ti-edit f-20"></i> Edit
+                                                                <i class="ti ti-edit f-20"></i> Manage
                                                             </a>
 
 

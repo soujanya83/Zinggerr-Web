@@ -375,6 +375,10 @@
                         <li class="pc-item"><a class="pc-link" href="{{ route('tasks.list') }}"
                                 data-i18n="Pricing">List</a>
                         </li>
+
+                        <li class="pc-item"><a class="pc-link" href="{{ route('task.assign_user') }}"
+                            data-i18n="Pricing">Assign</a>
+                    </li>
                     </ul>
                 </li>
                 @endif

@@ -378,7 +378,13 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::delete('/task/delete/{id}', [TaskController::class, 'task_delete'])->name('task.delete');
     Route::get('/task/{id}/edit', [TaskController::class, 'task_edit'])->name('task.edit');
     Route::post('/update/{id}/task', [TaskController::class, 'task_update'])->name('update.task');
-  
+    Route::get('/assign/tasks', [TaskController::class, 'task_assign_users'])->name('task.assign_user');
+    Route::get('/fetch-task-data', [TaskController::class, 'fetchTaskData'])->name('fetch.task.data');
+    Route::get('/task/{id}/assigned-users', [TaskController::class, 'getAssignedUsers'])->name('task.assigned_users');
+    Route::get('/get-assignment-data', [TaskController::class, 'get_assignment_data'])->name('get.assignment.data');
+
+    Route::post('/tasks/complete', [TaskController::class, 'markAsComplete'])->name('tasks.complete');
+    Route::get('/get-task-assignments/{id}', [TaskController::class, 'getTaskAssignments'])->name('get.task.assignments');
     Route::post('/assign-task', [TaskController::class, 'assignTask'])->name('task.assign');
 
 

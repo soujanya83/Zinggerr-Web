@@ -71,62 +71,62 @@
                     </div>
 
                     <div class="card-body">
-                        <!-- User Assignment Dropdown (Top-Right) -->
-                        <div class="d-flex justify-content-between mb-2">
 
-                            <div class="dropdown d-inline">
-                                <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="userDropdown"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="ti ti-users"></i> Assign Users
-                                </button>
-                                <div class="dropdown-menu p-2 keep-open-dropdown" aria-labelledby="userDropdown"
-                                    style="width: 220px; z-index: 1050; ">
-                                    <!-- Search Input -->
-                                    <input type="text" class="form-control form-control-sm mb-2 user-search"
-                                        placeholder="Search user..." onkeyup="filterUsers(this)"
-                                        style="position: sticky; top: 0; z-index: 1051; background: white;">
-
-                                    <!-- Scrollable User List -->
-                                    <div class="user-list-container" style="max-height: 180px; overflow-y: auto;">
-                                        @foreach($users as $user)
-                                        <label class="dropdown-item">
-                                            <input type="checkbox" class="assign-checkbox"
-                                                value="{{ $user->id }}">&nbsp;
-                                            {{ $user->name }}
-                                        </label>
-                                        @endforeach
-                                    </div>
-                                </div>
-
-                                <button id="bulkAssignBtn" class="btn btn-primary btn-sm" disabled>Assign Tasks</button>
-                            </div>
-                        </div>
-
-                        <!-- Table -->
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
                                         <th style="width: 6%;">
-                                            <input type="checkbox" id="selectAllTasks"> All
+                                            #
+                                            {{-- <input type="checkbox" id="selectAllTasks"> All --}}
                                         </th>
-                                        <th style="width: 63%;">Task</th>
+                                        <th style="width: 47%;">Task</th>
                                         <th style="width: 13%;">Deadline</th>
+                                        <th style="width: 13%;">Created By</th>
                                         <th style="width: 8%;">Status</th>
-                                        <th style="width: 10%;">Action</th>
+                                        <th style="width: 13%;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="taskTableBody">
                                     @if($tasks->count() > 0)
                                     @foreach ($tasks as $index => $data)
-                                    <tr id="taskRow-{{ $data->id }}" title="Description: {{ $data->description }}">
+                                    <tr>
 
-                                        <td>
-                                            <input type="checkbox" class="task-checkbox" value="{{ $data->id }}"> {{
+                                        <td id="taskRow-{{ $data->id }}" class="task-row" data-toggle="modal"
+                                            data-target="#taskDetailModal" data-title="{{ $data->task_title }}"
+                                            data-description="{!! $data->description !!}"
+                                            data-date="{{ \Carbon\Carbon::parse($data->task_completion_date)->format('d F Y') }}"
+                                            data-creator="{{ $data->username }}"
+                                            data-status="{{ $data->status == 1 ? 'Active' : 'Inactive' }}"
+                                            style="cursor: pointer;" title="Click to view details">
+                                            {{-- <input type="checkbox" class="task-checkbox" value="{{ $data->id }}">
+                                            --}}
+                                            {{
                                             ++$index }}
                                         </td>
-                                        <td>{{ Str::limit(strip_tags($data['task_title']), 130, '...') }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($data->task_completion_date)->format('d F Y') }}
+                                        <td id="taskRow-{{ $data->id }}" class="task-row" data-toggle="modal"
+                                            data-target="#taskDetailModal" data-title="{{ $data->task_title }}"
+                                            data-description="{!! $data->description !!}"
+                                            data-date="{{ \Carbon\Carbon::parse($data->task_completion_date)->format('d F Y') }}"
+                                            data-creator="{{ $data->username }}"
+                                            data-status="{{ $data->status == 1 ? 'Active' : 'Inactive' }}"
+                                            style="cursor: pointer;" title="Click to view details">{{
+                                            Str::limit(strip_tags($data['task_title']), 130, '...') }}</td>
+                                        <td id="taskRow-{{ $data->id }}" class="task-row" data-toggle="modal"
+                                            data-target="#taskDetailModal" data-title="{{ $data->task_title }}"
+                                            data-description="{!! $data->description !!}"
+                                            data-date="{{ \Carbon\Carbon::parse($data->task_completion_date)->format('d F Y') }}"
+                                            data-creator="{{ $data->username }}"
+                                            data-status="{{ $data->status == 1 ? 'Active' : 'Inactive' }}"
+                                            style="cursor: pointer;" title="Click to view details">{{
+                                            \Carbon\Carbon::parse($data->task_completion_date)->format('d F Y') }}</td>
+                                        <td id="taskRow-{{ $data->id }}" class="task-row" data-toggle="modal"
+                                            data-target="#taskDetailModal" data-title="{{ $data->task_title }}"
+                                            data-description="{!! $data->description !!}"
+                                            data-date="{{ \Carbon\Carbon::parse($data->task_completion_date)->format('d F Y') }}"
+                                            data-creator="{{ $data->username }}"
+                                            data-status="{{ $data->status == 1 ? 'Active' : 'Inactive' }}"
+                                            style="cursor: pointer;" title="Click to view details">{{ $data->username }}
                                         </td>
 
                                         @if(Auth::user()->can('role') || (isset($permissions) && in_array('task_status',
@@ -144,10 +144,19 @@
                                             @if(Auth::user()->can('role') || (isset($permissions) &&
                                             in_array('tasks_edit', $permissions)))
                                             <a href="{{ route('task.edit', $data->id) }}"
-                                                class="avtar avtar-xs btn-link-secondary" title="Task Edit/Update">
+                                                class="avtar avtar-xs btn-link-secondary edit-task"
+                                                title="Task Edit/Update">
                                                 <i class="ti ti-edit f-20"></i>
                                             </a>
                                             @endif
+
+                                            <!-- Eye Icon to Check Assigned Users -->
+                                            <a href="#" class="view-assigned-users avtar avtar-xs btn-link-secondary"
+                                                data-id="{{ $data->id }}" title="View Assigned Users"
+                                                data-toggle="modal" data-target="#assignedUsersModal">
+                                                <i class="ti ti-eye f-20"></i>
+                                            </a>
+
                                             @if(Auth::user()->can('role') || (isset($permissions) &&
                                             in_array('tasks_delete', $permissions)))
                                             <a href="#" class="delete-task avtar avtar-xs btn-link-secondary"
@@ -164,18 +173,61 @@
                                     </tr>
                                     @endif
                                 </tbody>
+
                             </table>
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
         </div>
     </div>
 </div>
+<!-- Task Details Modal -->
+<div class="modal fade" id="taskDetailModal" tabindex="-1" role="dialog" aria-labelledby="taskDetailModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="taskDetailModalLabel">Task Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent">
+                    <p><strong>Title:</strong> <span id="modalTitle"></span></p>
+                    <p><strong>Description:</strong> <span id="modalDescription"></span></p>
+                    <p><strong>Deadline:</strong> <span id="modalDate"></span></p>
+                    <p><strong>Created By:</strong> <span id="modalCreator"></span></p>
+                    <p><strong>Status:</strong> <span id="modalStatus"></span></p>
+                </div>
+            </div>
+            {{-- <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div> --}}
+        </div>
+    </div>
+</div>
 
+<div class="modal fade" id="assignedUsersModal" tabindex="-1" role="dialog" aria-labelledby="assignedUsersModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="assignedUsersModalLabel">Assigned Users</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <input type="text" id="userSearch" style="width:90%;margin-left: 23px;" class="form-control" placeholder="Search roles or users..." />
+
+            <div class="modal-body">
+                <ul id="assignedUsersList">
+                    <!-- User list will be loaded here dynamically -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -206,12 +258,12 @@
                             title: "Deleted!",
                             text: "Task has been deleted.",
                             icon: "success",
-                            timer: 1500, // Show for 2 seconds
+                            timer: 1500, // Show for 1.5 seconds
                             showConfirmButton: false
                         });
 
-                        // **Remove Row Without Page Reload**
-                        $("#taskRow-" + taskId).fadeOut(300, function () {
+                        // Find the closest <tr> of the clicked delete button and fade out
+                        $("a.delete-task[data-id='" + taskId + "']").closest("tr").fadeOut(300, function () {
                             $(this).remove();
                         });
 
@@ -229,7 +281,38 @@
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+<script>
+    $(document).ready(function() {
+    $('.task-row').click(function(e) {
+
+        var title = $(this).data('title');
+        var description = $(this).data('description');
+        var date = $(this).data('date');
+        var creator = $(this).data('creator');
+        var status = $(this).data('status');
+
+        // Populate modal with data
+        $('#modalTitle').text(title);
+        $('#modalDescription').html(description);
+        $('#modalDate').text(date);
+        $('#modalCreator').text(creator);
+        $('#modalStatus').text(status);
+
+        // Show the modal
+        $('#taskDetailModal').modal('show');
+    });
+
+    // Fix black screen issue by removing the backdrop when the modal is hidden
+    $('#taskDetailModal').on('hidden.bs.modal', function () {
+        $('.modal-backdrop').remove();
+        $('body').removeClass('modal-open');
+    });
+});
+</script>
 
 <script>
     $(document).ready(function () {
@@ -280,7 +363,6 @@
 
 
 <script>
-
     function filterUsers(input) {
         var filter = input.value.toLowerCase();
         $('.user-list-container label').each(function() {
@@ -372,6 +454,69 @@
     });
 </script>
 
+
+<script>
+  $(document).on("click", ".view-assigned-users", function () {
+    let taskId = $(this).data("id");
+
+    $.ajax({
+        url: "{{ route('task.assigned_users', ':id') }}".replace(':id', taskId),
+        type: "GET",
+        success: function (response) {
+            let usersList = $("#assignedUsersList");
+            usersList.empty();
+
+            if (response.success) {
+                let usersData = response.users; // Store user data for filtering
+
+                usersData.forEach(user => {
+                    let formattedName = user.name.replace(/\b\w/g, char => char.toUpperCase()); // Capitalize name
+                    let formattedRole = user.type.charAt(0).toUpperCase() + user.type.slice(1); // Capitalize role
+
+                    let profileImage = user.profile_picture
+                        ? `{{ asset('storage/') }}/${user.profile_picture}`
+                        : `{{ asset('asset/images/download.jpg') }}`;
+
+                    let listItem = `
+                        <li class="user-item"
+                            data-name="${formattedName.toLowerCase()}"
+                            data-role="${formattedRole.toLowerCase()}"
+                            style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <img class="img-radius" src="${profileImage}" alt="User image"
+                                style="height: 40px; width: 40px; border-radius: 50%; margin-right: 10px;">
+                            <span>${formattedName} (${formattedRole}) - Assigned: ${user.assignData}</span>
+                        </li>
+                    `;
+                    usersList.append(listItem);
+                });
+
+                // Attach filter event after users are loaded
+                $("#userSearch").on("keyup", function () {
+                    let searchText = $(this).val().toLowerCase();
+                    $(".user-item").each(function () {
+                        let userName = $(this).data("name");
+                        let userRole = $(this).data("role");
+
+                        if (userName.includes(searchText) || userRole.includes(searchText)) {
+                            $(this).show();
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+                });
+            } else {
+                usersList.append("<li>No users assigned to this task.</li>");
+            }
+        },
+        error: function () {
+            $("#assignedUsersList").html("<li>Error fetching assigned users.</li>");
+        }
+    });
+});
+
+
+
+    </script>
 
 @include('partials.footer')
 @endsection
