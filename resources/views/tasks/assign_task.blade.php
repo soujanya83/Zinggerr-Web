@@ -81,12 +81,12 @@
                     <div class="card-header">
                         <div class="row align-items-center g-2">
                             <div class="col">
-                                <h5>Tasks Assign List</h5>
+                                <h5>Assign Tasks List</h5>
                             </div>
 
                         </div>
                     </div>
-
+                    <div id="taskCardContainer">
                     <div class="card-body">
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs" id="taskTabs" role="tablist">
@@ -229,6 +229,7 @@
 
 
                     </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -298,44 +299,52 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function() {
-    $('.pending-checkbox').change(function() {
-        var taskId = $(this).val();
-        var isChecked = $(this).is(':checked');
+        $('.pending-checkbox').change(function() {
+            var $checkbox = $(this);
+            var taskId = $checkbox.val();
+            var isChecked = $checkbox.is(':checked');
 
-        if (isChecked) {
-            $.ajax({
-                url: '{{ route("tasks.complete") }}',
-                type: 'POST',
-                data: {
-                    task_id: taskId,
-                    _token: '{{ csrf_token() }}' // Include CSRF token for security
-                },
-                success: function(response) {
-                    if (response.success) {
-                        // Show SweetAlert notification
+            if (isChecked) {
+                $.ajax({
+                    url: '{{ route("tasks.complete") }}',
+                    type: 'POST',
+                    data: {
+                        task_id: taskId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire({
+                                title: 'Task Completed!',
+                                text: response.message,
+                                icon: 'success',
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
+
+                            // Fade and remove the row
+                            $checkbox.closest('tr').fadeOut(300, function () {
+                                location.reload(); 
+                            });
+                        }
+                    },
+
+                    error: function(xhr) {
                         Swal.fire({
-                            title: 'Task Completed!',
-                            text: response.message,
-                            icon: 'success',
-                            timer: 2000, // Show for 2 seconds
-                            showConfirmButton: false // Hide the confirm button
+                            title: 'Error!',
+                            text: 'An error occurred while marking the task as complete.',
+                            icon: 'error',
+                            timer: 1500,
+                            showConfirmButton: false
                         });
                     }
-                },
-                error: function(xhr) {
-                    Swal.fire({
-                        title: 'Error!',
-                        text: 'An error occurred while marking the task as complete.',
-                        icon: 'error',
-                        timer: 2000, // Show for 2 seconds
-                        showConfirmButton: false // Hide the confirm button
-                    });
-                }
-            });
-        }
+                });
+            }
+        });
     });
-});
 </script>
+
+
 
 
 
