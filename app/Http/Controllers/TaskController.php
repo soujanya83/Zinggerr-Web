@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use DateTime;
 use PHPUnit\Metadata\Uses;
-
+use App\Notifications\TaskAssignedNotification;
+use Illuminate\Support\Facades\Notification;
 class TaskController extends Controller
 {
 
@@ -185,6 +186,11 @@ class TaskController extends Controller
                 }
             }
 
+            $assignedUsers = TaskAssignUser::where('task_id', $taskId)->pluck('user_id')->unique();
+            $users = User::whereIn('id', $assignedUsers)->get();
+            if ($users->isNotEmpty()) {
+                Notification::send($users, new TaskAssignedNotification($task));
+            }
 
             return redirect()->route('tasks.list')->with('success', 'Task created successfully');
         } catch (\Exception $e) {
@@ -737,6 +743,12 @@ class TaskController extends Controller
                         }
                     }
                 }
+            }
+
+            $assignedUsers = TaskAssignUser::where('task_id', $id)->pluck('user_id')->unique();
+            $users = User::whereIn('id', $assignedUsers)->get();
+            if ($users->isNotEmpty()) {
+                Notification::send($users, new TaskAssignedNotification($task));
             }
 
             return redirect()->route('tasks.list')->with('success', 'Task updated successfully');

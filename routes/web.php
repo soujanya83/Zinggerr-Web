@@ -22,7 +22,7 @@ use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
-
+use Illuminate\Notifications\DatabaseNotification;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -387,6 +387,22 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('/get-task-assignments/{id}', [TaskController::class, 'getTaskAssignments'])->name('get.task.assignments');
     Route::post('/assign-task', [TaskController::class, 'assignTask'])->name('task.assign');
 
+    Route::get('/notifications/mark-all-read', function () {
+        Auth::user()->unreadNotifications->markAsRead();
+        return redirect()->back();
+    })->name('notifications.markAllRead');
+
+
+    Route::post('/notifications/read/{id}', function ($id) {
+        $notification = DatabaseNotification::find($id); // Fetch directly from notifications table
+
+        if ($notification && $notification->notifiable_id == Auth::id()) { // Ensure it belongs to the user
+            $notification->markAsRead();
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false], 404);
+    })->name('notifications.read');
 
     Route::post('/logout', function () {
         Auth::logout();

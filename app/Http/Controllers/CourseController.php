@@ -28,11 +28,13 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\session;
 use Illuminate\Validation\Rule;
 use App\Models\FillBlanks;
+use App\Notifications\CourseCreatedNotification;
+use Illuminate\Support\Facades\Notification;
 use App\Models\VideoQuiz;
 use Illuminate\Support\Collection;
 use App\Models\MontessoriAgeGroup;
 use App\Models\MontessoriAreas;
-
+use App\Notifications\CourseAssignedNotification;
 class CourseController extends Controller
 {
 
@@ -124,8 +126,6 @@ class CourseController extends Controller
 
     public function createCourse(Request $request)
     {
-
-
         $validator = Validator::make($request->all(), [
             'course_full_name' => 'required|string|max:255',
             'course_short_name' => 'required|string|max:255',
@@ -142,7 +142,6 @@ class CourseController extends Controller
             'tags' => 'required|nullable|array',
             'tags.*' => 'string|max:50',
         ]);
-
 
         if ($validator->fails()) {
             return back()
@@ -201,6 +200,13 @@ class CourseController extends Controller
                 $course->course_image = $filePath;
             }
             $course->save();
+
+
+            $users = User::where('user_id', Auth::user()->id)->get();
+            $users->push(Auth::user());
+            $uniqueUsers = $users->unique('id');
+            Notification::send($uniqueUsers, new CourseCreatedNotification($course));
+
             return redirect()->route('after_course_create', ['slug' => $slug])->with('success', 'Course Create successfully.');
         } catch (\Exception $e) {
 
@@ -302,6 +308,12 @@ class CourseController extends Controller
                 $course->course_image = $filePath;
             }
             $course->save();
+
+            // $users = User::where('user_id', Auth::user()->id)->get();
+            // $users->push(Auth::user());
+            // $uniqueUsers = $users->unique('id');
+            // Notification::send($uniqueUsers, new CourseCreatedNotification($course));
+
             return redirect($back_url)->with('success', 'Course Updated successfully.');
         } catch (\Exception $e) {
 
@@ -1715,6 +1727,16 @@ class CourseController extends Controller
             ['courses_id' => $courseId, 'users_id' => $userIds],
             ['id' => $uuid]
         );
+
+        $user = User::find($userIds);
+        $course = Course::find($courseId);
+
+        // Send notification to the user
+        if ($user && $course) {
+            $user->notify(new CourseAssignedNotification($course));
+        }
+
+
         return redirect()->back()->with('success', 'Courses assigned successfully!');
     }
     public function coursedetails(Request $request, $id)

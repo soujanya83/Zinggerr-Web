@@ -421,12 +421,14 @@
                 </div>
 
                 <!-- Modal -->
-                <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+                <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel"
+                    aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="eventModalLabel">Event Details</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
                             <div class="modal-body" id="eventModalBody">
                                 <!-- Event details will be injected here -->
@@ -444,39 +446,28 @@
                             <h5 class="mb-0">Notifications</h5>
                             <a href="">Show All</a>
                         </div>
-                        <div class="d-flex align-items-center border-bottom py-3">
-                            <img class="rounded-circle flex-shrink-0" src="asset/images/stu.jpg" alt=""
-                                style="width: 40px; height: 40px;">
-                            <div class="w-100 ms-3">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h6 class="mb-0">Jhon Doe</h6>
-                                    <small>15 minutes ago</small>
+                        @foreach($notifications as $notification)
+                        <a href="{{ $notification->data['url'] ?? '#' }}" class="text-decoration-none text-dark">
+                            <div class="d-flex align-items-center border-bottom py-3">
+                             
+                                    @if(Auth::user()->profile_picture)
+                                    <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="user-image"
+                                        class="user-avatar" style="width: 40px; height: 40px;">
+                                    @else
+                                    <img src="{{ asset('asset/images/user/download.jpg') }}" alt="image" class="user-avatar" style="width: 40px; height: 40px;">
+                                    @endif
+                                <div class="w-100 ms-3">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-0">{{ $notification->data['title'] ?? 'No Title' }}</h6>
+                                        <small>{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</small>
+                                    </div>
+                                    <span>{{ $notification->data['message'] ?? 'No message' }}</span>
                                 </div>
-                                <span>Short message goes here...</span>
                             </div>
-                        </div>
-                        <div class="d-flex align-items-center border-bottom py-3">
-                            <img class="rounded-circle flex-shrink-0" src="asset/images/stu.jpg" alt=""
-                                style="width: 40px; height: 40px;">
-                            <div class="w-100 ms-3">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h6 class="mb-0">Jhon Doe</h6>
-                                    <small>15 minutes ago</small>
-                                </div>
-                                <span>Short message goes here...</span>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center border-bottom py-3">
-                            <img class="rounded-circle flex-shrink-0" src="asset/images/stu.jpg" alt=""
-                                style="width: 40px; height: 40px;">
-                            <div class="w-100 ms-3">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h6 class="mb-0">Jhon Doe</h6>
-                                    <small>15 minutes ago</small>
-                                </div>
-                                <span>Short message goes here...</span>
-                            </div>
-                        </div>
+                        </a>
+                    @endforeach
+
+
 
                     </div>
                 </div>
@@ -495,7 +486,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-   document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
     const calendarEl = document.getElementById('calendar');
 
     // Define an array of pastel colors

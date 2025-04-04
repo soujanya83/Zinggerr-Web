@@ -68,9 +68,6 @@
     }
 
     /* .......................................................... */
-
-
-
 </style>
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -126,7 +123,7 @@
         <!-- [Mobile Media Block end] -->
         <div class="ms-auto">
             <ul class="list-unstyled">
-                {{-- <li class="dropdown pc-h-item">
+                {{-- <li class="dropdown pc-h-item" style="margin-top: -12px;margin-right:21px">
                     <a class="pc-head-link head-link-secondary dropdown-toggle arrow-none me-0"
                         data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                         <i class="ti ti-bell"></i>
@@ -178,23 +175,89 @@
                     </div>
                 </li> --}}
 
+                @php
+                $notifications = auth()->user()->unreadNotifications;
+                @endphp
+
+                <li class="dropdown pc-h-item position-relative" style="margin-top: -12px; margin-right:21px;">
+                    <!-- Bell Icon with Clickable Count -->
+                    <a class="pc-head-link head-link-secondary dropdown-toggle arrow-none me-0 position-relative"
+                        data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+                        style="cursor: pointer; display: flex; align-items: center;">
+
+                        <i class="ti ti-bell" style="font-size: 21px; text-align: center;"></i>
+
+                        @if($notifications->count())
+                        <span id="notification-count" class="badge bg-danger position-absolute"
+                            style="border-radius: 10px; font-size: 12px; bottom: -5px; left: 0; padding: 2px 6px;">
+                            {{ $notifications->count() }}
+                        </span>
+                        @endif
+                    </a>
+
+                    <!-- Notification Dropdown -->
+                    <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown">
+                        <div class="dropdown-header">
+                            <a href="{{ route('notifications.markAllRead') }}"
+                                class="link-primary float-end text-decoration-underline">
+                                Mark all as read
+                            </a>
+                            <h5>All Notifications
+                                <span class="badge bg-warning rounded-pill ms-1" id="notif-badge">{{
+                                    $notifications->count() }}</span>
+                            </h5>
+                        </div>
+
+                        <!-- Notification List -->
+                        <div class="dropdown-header px-0 text-wrap header-notification-scroll position-relative"
+                            style="max-height: calc(100vh - 215px); overflow-y: auto;">
+                            <div class="list-group list-group-flush w-100">
+                                @forelse($notifications as $notification)
+                                <a href="{{ $notification->data['url'] ?? '#' }}"
+                                    class="list-group-item list-group-item-action notification-item"
+                                    data-id="{{ $notification->id }}"
+                                    onclick="markAsRead(event, '{{ $notification->id }}')">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0">
+                                            <div class="user-avtar bg-light-success"><i class="ti ti-bell"></i></div>
+                                        </div>
+                                        <div class="flex-grow-1 ms-1">
+                                            <span class="float-end text-muted">
+                                                {{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}
+                                            </span>
+                                            <h5>{{ $notification->data['title'] }}</h5>
+                                            <p class="text-body fs-6">{{ $notification->data['message'] }}</p>
+                                            @if(!$notification->read_at)
+                                            <div class="badge rounded-pill bg-light-danger unread-badge">Unread</div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </a>
+                                @empty
+                                <div class="text-center text-muted p-2">No notifications</div>
+                                @endforelse
+                            </div>
+                        </div>
+
+                        <div class="dropdown-divider"></div>
+                    </div>
+                </li>
+
 
                 <li class="dropdown pc-h-item header-user-profile" style="margin-right: 14px;">
-                    <span class="dropdown-toggle arrow-none me-0" href="#" role="button"
-                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    <span class="dropdown-toggle arrow-none me-0" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false"
                         style="height: 56px;    width: 162px; radius: 50px;color:#04049b">
 
                         @if(Auth::user()->profile_picture)
                         <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="user-image"
-                            class="user-avatar"
-                            >
+                            class="user-avatar">
                         @else
-                        <img src="{{ asset('asset/images/user/download.jpg') }}" alt="image" class="user-avatar"
-                            >
+                        <img src="{{ asset('asset/images/user/download.jpg') }}" alt="image" class="user-avatar">
                         @endif
                         &nbsp;<b>{{ ucfirst(Str::before(Auth::user()->name, ' ')) }}</b>
-                        <span class="dropdown-toggle" type="button" id="settingsDropdown"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="dropdown-toggle" type="button" id="settingsDropdown" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                         </span>
                     </span>
 
@@ -203,7 +266,8 @@
 
                     <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                         <div class="dropdown-header">
-                            <h4><span class="text-muted" style="font-size: 17px;">{{ Str::title(Auth::user()->name) }}</span></h4>
+                            <h4><span class="text-muted" style="font-size: 17px;">{{ Str::title(Auth::user()->name)
+                                    }}</span></h4>
                             <p class="text-muted small">@if( Auth::user()->type =='Superadmin') <b
                                     class="badge bg-light-primary  rounded-pill f-14"
                                     style="    font-size: 14px;">SuperAdmin</b> @else <b
@@ -249,4 +313,51 @@
             </ul>
         </div>
     </div>
+
+
+    <script>
+        function markAsRead(event, notificationId) {
+            event.preventDefault(); // Prevent page reload
+
+            let notificationItem = document.querySelector(`[data-id="${notificationId}"]`);
+            let unreadBadge = notificationItem.querySelector(".unread-badge");
+            let notificationCountElement = document.getElementById("notification-count");
+            let notifBadge = document.getElementById("notif-badge");
+
+            // Remove "Unread" Badge
+            if (unreadBadge) unreadBadge.remove();
+
+            // Reduce the notification count
+            let count = parseInt(notificationCountElement.innerText);
+            if (count > 1) {
+                notificationCountElement.innerText = count - 1;
+                notifBadge.innerText = count - 1;
+            } else {
+                notificationCountElement.remove();
+                notifBadge.remove();
+            }
+
+            // Mark notification as read via AJAX
+            fetch(`/notifications/read/${notificationId}`, {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({})
+            }).then(response => response.json()).then(data => {
+                if (data.success) {
+                    console.log("Notification marked as read");
+                }
+            });
+
+            // Redirect after marking as read
+            setTimeout(() => {
+                window.location.href = notificationItem.getAttribute("href");
+            }, 300);
+        }
+    </script>
+
+
+
 </header>
