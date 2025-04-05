@@ -359,8 +359,7 @@
                 </li>
                 @endif
 
-                @if(Auth::user()->can('role')|| (isset($permissions) && in_array('tasks_sidebar',
-                $permissions)))
+
                 <li class="pc-item pc-hasmenu">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
@@ -370,18 +369,20 @@
                         <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
                     </a>
                     <ul class="pc-submenu">
+                        @if(Auth::user()->can('role')|| (isset($permissions) && in_array('tasks_create',
+                        $permissions)))
                         <li class="pc-item"><a class="pc-link" href="{{ route('tasks.create') }}"
                                 data-i18n="Pricing">Create</a></li>
                         <li class="pc-item"><a class="pc-link" href="{{ route('tasks.list') }}"
                                 data-i18n="Pricing">List</a>
                         </li>
-
+                        @endif
                         <li class="pc-item"><a class="pc-link" href="{{ route('task.assign_user') }}"
-                            data-i18n="Pricing">Assign</a>
-                    </li>
+                                data-i18n="Pricing">Assign</a>
+                        </li>
                     </ul>
                 </li>
-                @endif
+
 
             </ul>
         </div>
