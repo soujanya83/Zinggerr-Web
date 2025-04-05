@@ -66,6 +66,40 @@ class UserController extends Controller
         }
     }
 
+    public function admindashboard()
+    {
+        $user = Auth::user();
+        $userAuth = $user->email_verified_at;
+        if (Auth::check() && ($userAuth != null)) {
+            $userId = Auth::user()->id;
+            $student = User::where('type', 'Student')->where('user_id', $userId)->count();
+            $studentlast7day = User::where('user_id', $userId)->where('type', 'Student')->where('created_at', '>=', Carbon::now()->subDays(7))->count();
+            $latestStudents = User::where('type', 'Student')->where('user_id', $userId)->latest()->take(10)->get();
+            $studentlastmonth = User::where('user_id', $userId)->where('type', 'Student')->whereBetween('created_at', [
+                Carbon::now()->subMonth()->startOfMonth(),
+                Carbon::now()->subMonth()->endOfMonth()
+            ])->count();
+
+            $teacher = User::where('user_id', $userId)->where('type', 'Faculty')->count();
+            $staff = User::where('user_id', $userId)->where('type', 'Staff')->count();
+
+            // $courseslast7day = Course::where('user_id', $userId)->count();
+            $coursesLastMonth = Course::where('user_id', $userId)->whereBetween('created_at', [
+                Carbon::now()->subMonth()->startOfMonth(),
+                Carbon::now()->subMonth()->endOfMonth()
+            ])->count();
+            $courseslast7day = Course::where('user_id', $userId)->where('created_at', '>=', Carbon::now()->subDays(7))->count();
+
+            $courses = Course::where('user_id', $userId)->count();
+            $user = Auth::user();
+            $unread = $user->unreadNotifications;
+            $read = $user->readNotifications;
+            $notifications = $unread->concat($read)->take(5);
+            return view('app.admindashboard', compact('notifications','student', 'courses', 'teacher', 'staff', 'courseslast7day', 'coursesLastMonth', 'studentlast7day', 'studentlastmonth', 'latestStudents'));
+        } else {
+            return redirect()->route('loginpage');
+        }
+    }
 
     public function createuser(Request $request)
     {
@@ -305,37 +339,7 @@ class UserController extends Controller
     }
 
 
-    public function admindashboard()
-    {
-        $user = Auth::user();
-        $userAuth = $user->email_verified_at;
-        if (Auth::check() && ($userAuth != null)) {
-            $userId = Auth::user()->id;
-            $student = User::where('type', 'Student')->where('user_id', $userId)->count();
-            $studentlast7day = User::where('user_id', $userId)->where('type', 'Student')->where('created_at', '>=', Carbon::now()->subDays(7))->count();
-            $latestStudents = User::where('type', 'Student')->where('user_id', $userId)->latest()->take(10)->get();
-            $studentlastmonth = User::where('user_id', $userId)->where('type', 'Student')->whereBetween('created_at', [
-                Carbon::now()->subMonth()->startOfMonth(),
-                Carbon::now()->subMonth()->endOfMonth()
-            ])->count();
 
-            $teacher = User::where('user_id', $userId)->where('type', 'Faculty')->count();
-            $staff = User::where('user_id', $userId)->where('type', 'Staff')->count();
-
-            // $courseslast7day = Course::where('user_id', $userId)->count();
-            $coursesLastMonth = Course::where('user_id', $userId)->whereBetween('created_at', [
-                Carbon::now()->subMonth()->startOfMonth(),
-                Carbon::now()->subMonth()->endOfMonth()
-            ])->count();
-            $courseslast7day = Course::where('user_id', $userId)->where('created_at', '>=', Carbon::now()->subDays(7))->count();
-
-            $courses = Course::where('user_id', $userId)->count();
-
-            return view('app.admindashboard', compact('student', 'courses', 'teacher', 'staff', 'courseslast7day', 'coursesLastMonth', 'studentlast7day', 'studentlastmonth', 'latestStudents'));
-        } else {
-            return redirect()->route('loginpage');
-        }
-    }
 
 
 

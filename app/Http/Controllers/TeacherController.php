@@ -27,8 +27,11 @@ class TeacherController extends Controller
         $courses =  CoursesAssign::where('users_id', $userId)->where('courses.course_status', 1)->where('courses_assign.status', 1)->join('courses', 'courses.id', '=', 'courses_assign.courses_id')->count();
 
         $student_courses = CoursesAssign::where('users_id', $userId)->where('courses.course_status', 1)->where('courses_assign.status', 1)->join('courses', 'courses.id', '=', 'courses_assign.courses_id')->latest('courses_assign.created_at')->take(10)->get();
-
-        return view('app.teacherdashboard', compact('student', 'courses', 'teacher', 'student_courses'));
+        $user = Auth::user();
+        $unread = $user->unreadNotifications;
+        $read = $user->readNotifications;
+        $notifications = $unread->concat($read)->take(5);
+        return view('app.teacherdashboard', compact('notifications','student', 'courses', 'teacher', 'student_courses'));
     }
 
 

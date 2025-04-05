@@ -25,7 +25,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
-
+{{--
 <style>
     /* Calendar container adjustments */
     .calendar-container {
@@ -127,7 +127,7 @@
         height: 12px !important;
         /* Set height to 12px as requested */
     }
-</style>
+</style> --}}
 
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -444,28 +444,30 @@
                     <div class="h-100 bg-light rounded p-4">
                         <div class="d-flex align-items-center justify-content-between mb-2">
                             <h5 class="mb-0">Notifications</h5>
-                            <a href="">Show All</a>
+                            <a href=""></a>
                         </div>
                         @foreach($notifications as $notification)
                         <a href="{{ $notification->data['url'] ?? '#' }}" class="text-decoration-none text-dark">
                             <div class="d-flex align-items-center border-bottom py-3">
-                             
-                                    @if(Auth::user()->profile_picture)
-                                    <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="user-image"
-                                        class="user-avatar" style="width: 40px; height: 40px;">
-                                    @else
-                                    <img src="{{ asset('asset/images/user/download.jpg') }}" alt="image" class="user-avatar" style="width: 40px; height: 40px;">
-                                    @endif
+
+                                @if(Auth::user()->profile_picture)
+                                <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="user-image"
+                                    class="user-avatar" style="width: 40px; height: 40px;">
+                                @else
+                                <img src="{{ asset('asset/images/user/download.jpg') }}" alt="image" class="user-avatar"
+                                    style="width: 40px; height: 40px;">
+                                @endif
                                 <div class="w-100 ms-3">
                                     <div class="d-flex w-100 justify-content-between">
                                         <h6 class="mb-0">{{ $notification->data['title'] ?? 'No Title' }}</h6>
-                                        <small>{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</small>
+                                        <small>{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans()
+                                            }}</small>
                                     </div>
                                     <span>{{ $notification->data['message'] ?? 'No message' }}</span>
                                 </div>
                             </div>
                         </a>
-                    @endforeach
+                        @endforeach
 
 
 
@@ -491,8 +493,7 @@
 
     // Define an array of pastel colors
     const colors = [
-        '#ADD8E6', '#90EE90', '#FFB6C1', '#20B2AA', '#7FFFD4',
-        '#FFDAB9', '#E6E6FA', '#F0E68C', '#DDA0DD', '#87CEFA'
+        '#bd7910', '#9a0b0b', '#5048c7', '#0b8245', '#bd1995', '#8642ba','#2f979a'
     ];
 
     const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -508,8 +509,8 @@
         eventContent: function (arg) {
             const randomColor = colors[Math.floor(Math.random() * colors.length)];
             return {
-                html: `<div class="event-box" style="background-color: ${randomColor}; padding: 5px; border-radius: 4px;">
-                        <strong>${arg.event.title}</strong>
+                html: `<div class="event-box" style="background-color: ${randomColor}; padding: 5px; border-radius: 1px;">
+                        <strong style='margin-left: -5px;'>${arg.event.title}</strong>
                     </div>`
             };
         },

@@ -84,25 +84,22 @@ class StudentController extends Controller
 
 
         }
-
-
-
         return view('students.courses_views', compact('course', 'chapters', 'assetsData', 'pageName', 'quizzes','weeklysectiondata'));
     }
-
 
     public function studentdashboard()
     {
         $userId = Auth::user()->id;
         $student_courses = CoursesAssign::where('users_id', $userId)->where('courses.course_status', 1)->where('courses_assign.status', 1)->join('courses', 'courses.id', '=', 'courses_assign.courses_id')->latest('courses_assign.created_at')->take(10)->get();
-
-
         $student = User::where('type', 'Student')->count();
         $courses =  CoursesAssign::where('users_id', $userId)->where('courses.course_status', 1)->where('courses_assign.status', 1)->join('courses', 'courses.id', '=', 'courses_assign.courses_id')->count();
         $teacher = User::where('type', 'Teacher')->count();
+        $user = Auth::user();
+        $unread = $user->unreadNotifications;
+        $read = $user->readNotifications;
+        $notifications = $unread->concat($read)->take(5);
 
-
-        return view('app.studentdashboard', compact('student', 'courses', 'teacher', 'student_courses'));
+        return view('app.studentdashboard', compact('notifications','student', 'courses', 'teacher', 'student_courses'));
     }
 
 
