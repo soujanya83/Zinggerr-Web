@@ -199,7 +199,7 @@
                     class="pc-item pc-hasmenu {{ request()->routeIs('useradd') || request()->routeIs('userlist') || request()->routeIs('teacherlist') || request()->routeIs('studentlist') ? 'active pc-trigger' : '' }}">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
-                            <i class="ti ti-user"></i>
+                            <i class="ti ti-users"></i>
                         </span>
                         <span class="pc-mtext" data-i18n="User">Users</span>
                         <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
@@ -245,7 +245,10 @@
                 <li class="pc-item pc-hasmenu">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
-                            <i class="ti ti-notes"></i>
+                            <i class="ti ti-shield-check"></i>
+
+
+
                         </span>
                         <span class="pc-mtext" data-i18n="User">Role</span>
                         <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
@@ -344,7 +347,9 @@
                 <li class="pc-item pc-hasmenu">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
-                            <i class="ti ti-notes"></i>
+                            <i class="ti ti-clipboard-list"></i>
+
+
                         </span>
                         <span class="pc-mtext" data-i18n="User">Events</span>
                         <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
@@ -363,7 +368,9 @@
                 <li class="pc-item pc-hasmenu">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
-                            <i class="ti ti-notes"></i>
+
+                            <i class="ti ti-list-check"></i>
+
                         </span>
                         <span class="pc-mtext" data-i18n="User">Tasks</span>
                         <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
@@ -383,6 +390,23 @@
                     </ul>
                 </li>
 
+
+                <li class="pc-item pc-hasmenu">
+                    <a href="#" class="pc-link">
+                        <span class="pc-micon">
+                            <i class="ti ti-presentation"></i>
+                        </span>
+                        <span class="pc-mtext" data-i18n="User">Online Classes</span>
+                        <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+                    </a>
+                    <ul class="pc-submenu">
+
+                        <li class="pc-item"><a class="pc-link" href="{{ route('online_classes.list') }}"
+                                data-i18n="Pricing">List</a>
+                        </li>
+
+                    </ul>
+                </li>
 
             </ul>
         </div>

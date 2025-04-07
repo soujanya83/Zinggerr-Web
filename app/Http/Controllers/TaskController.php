@@ -12,11 +12,14 @@ use Illuminate\Http\Request;
 use Ramsey\Uuid\Guid\Guid;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use DateTime;
 use PHPUnit\Metadata\Uses;
 use App\Notifications\TaskAssignedNotification;
 use Illuminate\Support\Facades\Notification;
+
 class TaskController extends Controller
 {
 
@@ -39,7 +42,7 @@ class TaskController extends Controller
         $userId = Auth::user()->id;
 
         // Retrieve all tasks assigned to the user with their related user and task data
-        $taskAssignUsers = TaskAssignUser::select('task_assign_users.*', 'users.name', 'task.*','task_assign_users.id as taskId')
+        $taskAssignUsers = TaskAssignUser::select('task_assign_users.*', 'users.name', 'task.*', 'task_assign_users.id as taskId')
             ->where('task_assign_users.user_id', $userId)
             ->join('users', 'users.id', '=', 'task_assign_users.created_by')
             ->join('task', 'task.id', '=', 'task_assign_users.task_id')
@@ -85,7 +88,6 @@ class TaskController extends Controller
 
     public function task_store(Request $request)
     {
-
         try {
             // Validation rules
             $validator = Validator::make($request->all(), [
@@ -135,56 +137,56 @@ class TaskController extends Controller
             }
 
 
-            if ($request->assign_roles) {
-                foreach ($request->assign_roles as $roleId) {
-                    $role = Role::find($roleId);
-                    if ($role) {
-                        $users = User::where('type', $role->name)->where('user_id', Auth::user()->id)->get();
-                        if ($users->isNotEmpty()) {
-                            foreach ($users as $user) {
-                                $uuid = (string) Guid::uuid4();
-                                TaskAssignUser::updateOrCreate(
-                                    [
-                                        'task_id' => $taskId,
-                                        'user_id' => $user->id,
-                                    ],
-                                    [
-                                        'task_completed_date' => null,
-                                        'id' => $uuid,
-                                        'created_by' => Auth::user()->id,
-                                        'role_id' => $role->id, // Ensure role_id is correctly assigned
-                                    ]
-                                );
-                            }
-                        }
-                    }
-                }
-            }
+            // if ($request->assign_roles) {
+            //     foreach ($request->assign_roles as $roleId) {
+            //         $role = Role::find($roleId);
+            //         if ($role) {
+            //             $users = User::where('type', $role->name)->where('user_id', Auth::user()->id)->get();
+            //             if ($users->isNotEmpty()) {
+            //                 foreach ($users as $user) {
+            //                     $uuid = (string) Guid::uuid4();
+            //                     TaskAssignUser::updateOrCreate(
+            //                         [
+            //                             'task_id' => $taskId,
+            //                             'user_id' => $user->id,
+            //                         ],
+            //                         [
+            //                             'task_completed_date' => null,
+            //                             'id' => $uuid,
+            //                             'created_by' => Auth::user()->id,
+            //                             'role_id' => $role->id, // Ensure role_id is correctly assigned
+            //                         ]
+            //                     );
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
 
 
-            if ($request->assign_courses) {
-                foreach ($request->assign_courses as $courseId) {
-                    // Fetch all user assignments for this course
-                    $courseAssignments = CoursesAssign::where('courses_id', $courseId)->get();
-                    if ($courseAssignments->isNotEmpty()) {
-                        foreach ($courseAssignments as $assignment) {
-                            $uuid = (string) Guid::uuid4();
-                            TaskAssignUser::updateOrCreate(
-                                [
-                                    'task_id' => $taskId,
-                                    'user_id' => $assignment->users_id, // Ensure this column exists
-                                ],
-                                [
-                                    'task_completed_date' => null,
-                                    'id' => $uuid,
-                                    'created_by' => Auth::user()->id,
-                                    'course_id' => $courseId, // Use the correct course ID
-                                ]
-                            );
-                        }
-                    }
-                }
-            }
+            // if ($request->assign_courses) {
+            //     foreach ($request->assign_courses as $courseId) {
+            //         // Fetch all user assignments for this course
+            //         $courseAssignments = CoursesAssign::where('courses_id', $courseId)->get();
+            //         if ($courseAssignments->isNotEmpty()) {
+            //             foreach ($courseAssignments as $assignment) {
+            //                 $uuid = (string) Guid::uuid4();
+            //                 TaskAssignUser::updateOrCreate(
+            //                     [
+            //                         'task_id' => $taskId,
+            //                         'user_id' => $assignment->users_id, // Ensure this column exists
+            //                     ],
+            //                     [
+            //                         'task_completed_date' => null,
+            //                         'id' => $uuid,
+            //                         'created_by' => Auth::user()->id,
+            //                         'course_id' => $courseId, // Use the correct course ID
+            //                     ]
+            //                 );
+            //             }
+            //         }
+            //     }
+            // }
 
             $assignedUsers = TaskAssignUser::where('task_id', $taskId)->pluck('user_id')->unique();
             $users = User::whereIn('id', $assignedUsers)->get();
@@ -198,21 +200,78 @@ class TaskController extends Controller
         }
     }
 
-
     public function task_create_form()
     {
-        // Return the view without passing data since we'll fetch it via AJAX
-        return view('tasks.create');
+        $userId = Auth::user()->id;
+        $defaultRoles = ['Admin', 'Faculty', 'Student', 'Superadmin'];
+        $roles = Role::where(function ($query) use ($userId, $defaultRoles) {
+            $query->where('user_id', $userId)
+                ->orWhereIn('name', $defaultRoles);
+        })->orderBy('created_at', 'asc')->get();
+
+
+        return view('tasks.create', compact('roles'));
     }
+
+    // public function get_assignment_data(Request $request)
+    // {
+    //     try {
+    //         $userId = Auth::user()->id;
+
+    //         // Get users where user_id matches current authenticated user
+    //         $users = User::where('user_id', $userId)
+    //             ->select('id', 'name', 'profile_picture', 'type') // Include profile_picture
+    //             ->get();
+
+    //         // Get courses where user_id matches current authenticated user
+    //         $courses = Course::where('user_id', $userId)
+    //             ->select('id', 'course_full_name')
+    //             ->get();
+
+    //         // Get roles where user_id matches current user OR user_id is null
+    //         $roles = Role::where(function ($query) use ($userId) {
+    //             $query->where('user_id', $userId)
+    //                 ->orWhereNull('user_id');
+    //         })
+    //             ->select('id', 'display_name')
+    //             ->get();
+
+    //         return response()->json([
+    //             'success' => true,
+    //             'users' => $users,
+    //             'roles' => $roles,
+    //             'courses' => $courses
+    //         ]);
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Something went wrong: ' . $e->getMessage()
+    //         ], 500);
+    //     }
+    // }
+
 
     public function get_assignment_data(Request $request)
     {
         try {
             $userId = Auth::user()->id;
 
-            // Get users where user_id matches current authenticated user
-            $users = User::where('user_id', $userId)
+            // Get users where user_id matches current authenticated user or are assigned to their courses
+            $users = User::where(function ($query) use ($userId) {
+                $query->where('user_id', $userId)
+                    ->orWhereIn('id', function ($subquery) use ($userId) {
+                        $subquery->select('users_id')
+                            ->from('courses_assign')
+                            ->whereExists(function ($existsQuery) use ($userId) {
+                                $existsQuery->select(DB::raw(1))
+                                    ->from('courses')
+                                    ->whereColumn('courses.id', 'courses_assign.courses_id')
+                                    ->where('courses.user_id', $userId);
+                            });
+                    });
+            })
                 ->select('id', 'name', 'profile_picture', 'type') // Include profile_picture
+                ->limit(100) // Limit to 100 users
                 ->get();
 
             // Get courses where user_id matches current authenticated user
@@ -228,11 +287,28 @@ class TaskController extends Controller
                 ->select('id', 'display_name')
                 ->get();
 
+            // Get assigned course users for the current user
+            $assignedCourseUsers = DB::table('courses_assign')
+                ->join('users', 'courses_assign.users_id', '=', 'users.id')
+                ->join('courses', 'courses_assign.courses_id', '=', 'courses.id')
+                ->where('courses.user_id', $userId)
+                ->where('courses_assign.status', 1) // Assuming status 1 means active assignment
+                ->select(
+                    'courses.id as course_id',
+                    'courses.course_full_name',
+                    'users.id as user_id',
+                    'users.name',
+                    'users.type',
+                    'users.profile_picture'
+                )
+                ->get();
+
             return response()->json([
                 'success' => true,
                 'users' => $users,
                 'roles' => $roles,
-                'courses' => $courses
+                'courses' => $courses,
+                'assignedCourseUsers' => $assignedCourseUsers
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -241,6 +317,7 @@ class TaskController extends Controller
             ], 500);
         }
     }
+
 
     // public function getTaskAssignments($id)
     // {
@@ -755,5 +832,9 @@ class TaskController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
+    }
+    public function online_classes()
+    {
+        echo "working.....";
     }
 }

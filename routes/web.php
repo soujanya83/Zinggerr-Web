@@ -382,6 +382,7 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('/fetch-task-data', [TaskController::class, 'fetchTaskData'])->name('fetch.task.data');
     Route::get('/task/{id}/assigned-users', [TaskController::class, 'getAssignedUsers'])->name('task.assigned_users');
     Route::get('/get-assignment-data', [TaskController::class, 'get_assignment_data'])->name('get.assignment.data');
+    Route::get('/online-classes', [TaskController::class, 'online_classes'])->name('online_classes.list');
 
     Route::post('/tasks/complete', [TaskController::class, 'markAsComplete'])->name('tasks.complete');
     Route::get('/get-task-assignments/{id}', [TaskController::class, 'getTaskAssignments'])->name('get.task.assignments');
