@@ -205,7 +205,7 @@
                         <div id="hidden-inputs" class="d-none"></div>
                     </div>
                     <div class="tab-pane fade" id="courses" role="tabpanel" aria-labelledby="courses-tab">
-                        <input type="text" class="form-control mt-2 mb-2 course-search" placeholder="Search courses...">
+                        <input type="text" class="form-control mb-2 course-search" placeholder="Search courses...">
                         <div class="select-all-container py-2 px-1 bg-light border-bottom mb-2">
                             <label class="d-flex align-items-center w-100 m-0">
                                 <input type="checkbox" class="select-all-checkbox me-2" data-type="courses">
