@@ -29,6 +29,15 @@
         margin-bottom: 0;
     }
 </style>
+<style>
+    .role-search, #filterRoleDropdown {
+        height: 38px; /* Match the height of form-control and form-select */
+        padding: 0.375rem 0.75rem; /* Standard Bootstrap input padding */
+    }
+    .row.g-2 {
+        margin-bottom: 1rem; /* Adjust spacing below the row */
+    }
+</style>
 <div class="pc-container">
     <div class="pc-content">
         <div class="page-header">
@@ -180,10 +189,16 @@
                 </ul>
                 <div class="tab-content" id="assignTabContent">
                     <div class="tab-pane fade show active" id="roles" role="tabpanel" aria-labelledby="roles-tab">
-                        <input type="text" class="form-control mt-2 mb-2 role-search" placeholder="Search users...">
-                        <select id="filterRoleDropdown" class="form-select mb-2">
-                            <option value="">All Roles</option>
-                        </select>
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <input type="text" class="form-control role-search" placeholder="Search users...">
+                            </div>
+                            <div class="col-6">
+                                <select id="filterRoleDropdown" class="form-select">
+                                    <option value="">All Roles</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="list-container role-list" style="max-height: 300px; overflow-y: auto">
                             <!-- Users rendered via JS -->
                         </div>
