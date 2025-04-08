@@ -55,27 +55,45 @@ class EventController extends Controller
 
 
 
+    // public function index()
+    // {
+    //     $events = EventModel::where('status', 1)
+    //         ->whereNotNull('event_start')
+    //         ->whereNotNull('event_end')
+    //         ->get()
+    //         ->groupBy(function ($event) {
+    //             return date('Y-m-d', strtotime($event->event_start)); // Group by event_start date
+    //         })
+    //         ->map(function ($events, $date) {
+    //             return [
+    //                 'title' => count($events) . ' Events',
+    //                 'start' => $date,
+    //                 'events' => $events->toArray(), // Store event details for modal
+    //             ];
+    //         })
+    //         ->values(); // Remove keys for JSON response
+
+    //     return response()->json($events);
+    // }
+
     public function index()
     {
         $events = EventModel::where('status', 1)
-            ->whereNotNull('event_start')
-            ->whereNotNull('event_end')
-            ->get()
-            ->groupBy(function ($event) {
-                return date('Y-m-d', strtotime($event->event_start)); // Group by event_start date
-            })
-            ->map(function ($events, $date) {
-                return [
-                    'title' => count($events) . ' Events',
-                    'start' => $date,
-                    'events' => $events->toArray(), // Store event details for modal
-                ];
-            })
-            ->values(); // Remove keys for JSON response
+        ->whereNotNull('event_start')
+        ->whereNotNull('event_end')
+        ->get()
+        ->map(function ($event) {
+            return [
+                'title' => $event->event_topic ?? 'Event',
+                'start' => $event->event_start,
+                'end' => date('Y-m-d', strtotime($event->event_end . ' +1 day')), // FullCalendar is exclusive on end date
+                'description' => $event->description, // ✅ Move directly here
+            ];
+        });
 
-        return response()->json($events);
+    return response()->json($events);
+
     }
-
 
 
     public function event_delete($id)

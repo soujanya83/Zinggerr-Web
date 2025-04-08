@@ -491,8 +491,8 @@ class TaskController extends Controller
                 ->get();
 
             // Debug: Log the number of users
-            Log::info('Number of users: ' . $users->count());
-            Log::info('Users: ', $users->toArray());
+            // Log::info('Number of users: ' . $users->count());
+            // Log::info('Users: ', $users->toArray());
 
             // Get courses where user_id matches current authenticated user
             $courses = Course::where('user_id', $userId)
@@ -500,8 +500,8 @@ class TaskController extends Controller
                 ->get();
 
             // Debug: Log the number of courses
-            Log::info('Number of courses: ' . $courses->count());
-            Log::info('Courses: ', $courses->toArray());
+            // Log::info('Number of courses: ' . $courses->count());
+            // Log::info('Courses: ', $courses->toArray());
 
             // Get roles where user_id matches current user OR user_id is null
             $roles = Role::where(function ($query) use ($userId) {
@@ -512,8 +512,8 @@ class TaskController extends Controller
                 ->get();
 
             // Debug: Log the number of roles
-            Log::info('Number of roles: ' . $roles->count());
-            Log::info('Roles: ', $roles->toArray());
+            // Log::info('Number of roles: ' . $roles->count());
+            // Log::info('Roles: ', $roles->toArray());
 
             // Get assigned IDs from TaskAssignUser for this specific task
             $assignedUserIds = TaskAssignUser::where('task_id', $id)
@@ -550,7 +550,7 @@ class TaskController extends Controller
 
             // Merge assignedUserIds with courseAssignedUserIds to get all pre-checked users
             $allAssignedUserIds = array_unique(array_merge($assignedUserIds, $courseAssignedUserIds));
-            Log::info('All Assigned User IDs: ', $allAssignedUserIds); // Debug specific IDs
+            // Log::info('All Assigned User IDs: ', $allAssignedUserIds); // Debug specific IDs
 
             // Prepare assignments: only pre-check users, leave roles and courses empty
             $assignments = [
@@ -584,7 +584,7 @@ class TaskController extends Controller
                 'assignments' => $assignments
             ]);
         } catch (\Exception $e) {
-            Log::error('Error in getTaskAssignments: ' . $e->getMessage());
+            // Log::error('Error in getTaskAssignments: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Error retrieving data: ' . $e->getMessage()

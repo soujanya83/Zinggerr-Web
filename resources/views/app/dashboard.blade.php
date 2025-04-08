@@ -24,110 +24,19 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"> --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
-{{--
 <style>
-    /* Calendar container adjustments */
-    .calendar-container {
-        width: 100%;
-        margin: 0 auto;
-    }
-
-    /* Remove card padding and border for full width */
-    .card.table-card {
-        padding: 0;
-        border: none;
-        box-shadow: none;
-    }
-
-    /* Calendar full width and fixed height */
-    #calendar {
-        width: 100% !important;
-        height: 600px !important;
-        /* Height to fit 6 weeks */
-    }
-
-    /* Remove vertical scrolling */
-    .fc-scroller {
-        overflow-y: hidden !important;
-    }
-
-    /* Calendar title styling */
+    .fc-button-group{padding: 12px;}
     .fc-toolbar-title {
-        font-size: 18px;
-        font-weight: bold;
-        text-transform: uppercase;
-    }
+    text-transform: uppercase; /* Makes it ALL CAPS */
+    width: 100%;               /* Ensures full width for alignment to take effect */
+}
+.fc .fc-toolbar-title {
+    font-size: 1.75em;
+    margin: 0;
+    font-size: 19px;
+}
 
-    /* Day grid cell styling */
-    .fc-daygrid-day {
-        position: relative;
-        border: 2px solid #ddd !important;
-        /* Border thickness as previously set */
-    }
-
-    /* Event box styling */
-    .event-box {
-        color: rgb(1, 1, 1);
-        font-size: 11px;
-        /* Smaller font size for event title */
-        text-align: center;
-        padding: 0px;
-        border-radius: 0px;
-        display: block;
-        position: absolute;
-        top: -3px;
-        left: -2px;
-        height: 55px;
-        right: -2px;
-        bottom: 0;
-        background-size: cover;
-        background-position: center;
-        /* Watercolor effect using a subtle gradient and opacity */
-        opacity: 0.9;
-        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Remove default event time text */
-    .fc-daygrid-event .fc-event-time {
-        display: none;
-    }
-
-    /* Navigation buttons */
-    .fc-prev-button,
-    .fc-next-button {
-        background-color: #007bff !important;
-        border: none !important;
-        color: white !important;
-    }
-
-    .fc-prev-button:hover,
-    .fc-next-button:hover {
-        background-color: #0056b3 !important;
-    }
-
-    /* Adjust day number positioning */
-    .fc-daygrid-day-number {
-        font-size: 12px;
-        color: #666;
-    }
-
-    /* Ensure the calendar grid takes full height */
-    .fc-daygrid-body {
-        height: 100% !important;
-    }
-
-    /* Adjust the day grid rows to fit within the height */
-    .fc-daygrid-day-frame {
-        height: 100% !important;
-    }
-
-    /* Set the height of tr elements with role="row" to 12px */
-    .fc-daygrid-body tr[role="row"] {
-        height: 12px !important;
-        /* Set height to 12px as requested */
-    }
-</style> --}}
+</style>
 
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -146,7 +55,7 @@
                                 <div class="row align-items-center">
                                     <div class="col">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10" style="font-size: 18px;">Welcome: {{
+                                            <h5 class="m-b-10" style="font-size: 17px;">Welcome: {{
                                                 Str::title(Auth::user()->name)
                                                 }}</h5>
                                         </div>
@@ -198,6 +107,30 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="card table-card">
+                    <div class="calendar-container">
+                        <div id="calendar" style="padding:0px"></div>
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="eventModalLabel">Event Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="eventModalBody">
+                                <!-- Event details will be injected here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card table-card">
                     <div class="card-header">
                         <h5>Latest Students</h5>
@@ -274,45 +207,8 @@
 
 
 
-                <div class="card table-card">
-                    <div class=""
-                        style="border: 1px solid #e0e0e0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                        <div class="card-header"
-                            style="display: flex; justify-content: space-between; align-items: center;">
-                            <h5 id="cardHeaderTitle" style=" font-weight: 500; margin: 0;">To Do List
-                            </h5>
 
 
-                            <div>
-                                <button id="prevDateBtn"
-                                    style="background-color: #2c3e50; color: white; border: none; padding: 5px 10px; border-radius: 5px; margin-right: 5px;">&lt;</button>
-                                <button id="nextDateBtn"
-                                    style="background-color: #2c3e50; color: white; border: none; padding: 5px 10px; border-radius: 5px;">&gt;</button>
-                            </div>
-                        </div>
-                        <div class="card-body" style="padding: 5px;">
-                            <div class="table-responsive">
-                                <div class="customers-scroll">
-                                    <!-- Task List Container -->
-                                    <div id="taskList">
-                                        <!-- Tasks will be dynamically loaded here -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer"
-                            style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #f8f9fa; border-top: 1px solid #e0e0e0;">
-                            <!-- Add Button on the Left -->
-                            <a href="#" class="text-primary add-task-link" data-bs-toggle="modal"
-                                data-bs-target="#addTaskModal"
-                                style=" color: white; padding: 8px 16px; font-size: 0.875rem; text-decoration: none; border-radius: 4px;">Add
-                                Task</a>
-                            <!-- View All Link on the Right -->
-                            <a href="{{ route('to_do_list') }}" class="text-primary"
-                                style="font-size: 0.875rem; color: #007bff; text-decoration: none;">View all</a>
-                        </div>
-                    </div>
-                </div>
 
 
 
@@ -407,39 +303,6 @@
                         </div>
                     </div>
                 </div>
-
-                {{-- <div class="card table-card">
-                    <div class="calendar-container">
-                        <div id="calendar" style="padding:8px"></div>
-                    </div>
-                </div> --}}
-
-                <div class="card table-card">
-                    <div class="calendar-container">
-                        <div id="calendar" style="padding:8px"></div>
-                    </div>
-                </div>
-
-                <!-- Modal -->
-                <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="eventModalLabel">Event Details</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body" id="eventModalBody">
-                                <!-- Event details will be injected here -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-
                 <div class="card table-card">
                     <div class="h-100 bg-light rounded p-4">
                         <div class="d-flex align-items-center justify-content-between mb-2">
@@ -474,6 +337,47 @@
                     </div>
                 </div>
 
+                <div class="card table-card">
+                    <div class=""
+                        style="border: 1px solid #e0e0e0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                        <div class="card-header"
+                            style="display: flex; justify-content: space-between; align-items: center;">
+                            <h5 id="cardHeaderTitle" style=" font-weight: 500; margin: 0;">To Do List
+                            </h5>
+
+
+                            <div>
+                                <button id="prevDateBtn"
+                                    style="background-color: #2c3e50; color: white; border: none; padding: 5px 10px; border-radius: 5px; margin-right: 5px;">&lt;</button>
+                                <button id="nextDateBtn"
+                                    style="background-color: #2c3e50; color: white; border: none; padding: 5px 10px; border-radius: 5px;">&gt;</button>
+                            </div>
+                        </div>
+                        <div class="card-body" style="padding: 5px;">
+                            <div class="table-responsive">
+                                <div class="customers-scroll">
+                                    <!-- Task List Container -->
+                                    <div id="taskList">
+                                        <!-- Tasks will be dynamically loaded here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer"
+                            style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #f8f9fa; border-top: 1px solid #e0e0e0;">
+                            <!-- Add Button on the Left -->
+                            <a href="#" class="text-primary add-task-link" data-bs-toggle="modal"
+                                data-bs-target="#addTaskModal"
+                                style=" color: white; padding: 8px 16px; font-size: 0.875rem; text-decoration: none; border-radius: 4px;">Add
+                                Task</a>
+                            <!-- View All Link on the Right -->
+                            <a href="{{ route('to_do_list') }}" class="text-primary"
+                                style="font-size: 0.875rem; color: #007bff; text-decoration: none;">View all</a>
+                        </div>
+                    </div>
+                </div>
+
+
             </div><!-- [ sample-page ] end -->
         </div><!-- [ Main Content ] end -->
     </div>
@@ -487,7 +391,7 @@
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function () {
     const calendarEl = document.getElementById('calendar');
 
@@ -545,21 +449,188 @@
     });
 
     calendar.render();
-});
+    });
 
-// ✅ Helper functions (Moved Outside)
-function formatDate(date) {
-    return date ? new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' }) : 'Invalid Date';
-}
+    // ✅ Helper functions (Moved Outside)
+    function formatDate(date) {
+        return date ? new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' }) : 'Invalid Date';
+    }
 
-function formatTime(date) {
-    return date ? new Date(date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) : 'Invalid Time';
-}
+    function formatTime(date) {
+        return date ? new Date(date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) : 'Invalid Time';
+    }
 
 
+</script> --}}
+
+
+<script>
+   document.addEventListener('DOMContentLoaded', function () {
+        const calendarEl = document.getElementById('calendar');
+
+        const colors = [
+            '#bd7910', '#9a0b0b', '#5048c7', '#0b8245', '#bd1995', '#8642ba', '#2f979a'
+        ];
+
+        const eventColorMap = {}; // Map event IDs to colors
+
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            headerToolbar: {
+                left: '',
+                center: 'title',
+                right: 'prev,next'
+            },
+            events: '/events',
+
+            eventContent: function (arg) {
+                const eventId = arg.event.id || arg.event.title; // fallback if no ID
+                // Assign a random color if not already set
+                if (!eventColorMap[eventId]) {
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    eventColorMap[eventId] = randomColor;
+                }
+
+                const bgColor = eventColorMap[eventId];
+                const fullTitle = arg.event.title || '';
+                const title = fullTitle.length > 10 ? fullTitle.slice(0, 10) + '…' : fullTitle;
+
+                return {
+                    html: `
+                        <div style="background-color: ${bgColor}; padding: 4px 18px; border-radius: 0px; font-size: 13px; font-weight: 500; color: white;">
+                            ${title}
+                        </div>`
+                };
+            },
+
+            eventClick: function (info) {
+                let event = info.event;
+                let modalContent = `
+                    <h5>Event on ${formatDate(event.start)}</h5>
+                    <hr>
+                    <p><strong>📌 Title:</strong> ${event.title}</p>
+                    <p><strong>🕒 Start:</strong> ${formatDate(event.start)} ${formatTime(event.start)}</p>
+                    <p><strong>⏳ End:</strong> ${event.end ? formatDate(adjustEndDate(event.end)) + ' ' + formatTime(adjustEndDate(event.end)) : 'Same as start'}</p>
+                    <p><strong>📝 Description:</strong> ${event.extendedProps.description || 'No description provided'}</p>
+                `;
+
+                document.getElementById('eventModalBody').innerHTML = modalContent;
+                new bootstrap.Modal(document.getElementById('eventModal')).show();
+            }
+        });
+
+        calendar.render();
+    });
+
+    // Utility functions
+    function formatDate(date) {
+        return date ? new Date(date).toLocaleDateString('en-GB', {
+            day: '2-digit', month: 'long', year: 'numeric'
+        }) : 'Invalid Date';
+    }
+
+    function formatTime(date) {
+        return date ? new Date(date).toLocaleTimeString('en-US', {
+            hour: '2-digit', minute: '2-digit', hour12: true
+        }) : 'Invalid Time';
+    }
+
+    function adjustEndDate(date) {
+        if (!date) return null;
+        let adjusted = new Date(date);
+        adjusted.setDate(adjusted.getDate() - 1);
+        return adjusted;
+    }
 </script>
 
 
+{{-- <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const calendarEl = document.getElementById('calendar');
+
+        // Define an array of pastel colors
+        const colors = [
+            '#bd7910', '#9a0b0b', '#5048c7', '#0b8245', '#bd1995', '#8642ba', '#2f979a'
+        ];
+
+        // Sample events data (replace with your API or dynamic data)
+        const events = [
+            { title: 'All Day Event', start: '2025-04-01', color: colors[0] },
+            { title: 'Long Event', start: '2025-04-08', end: '2025-04-11', color: colors[1] }, // Multi-day event
+            { title: 'Repeating Event', start: '2025-04-09', end: '2025-04-09', color: colors[2] },
+            { title: 'Conference', start: '2025-04-11', end: '2025-04-11', color: colors[3] },
+            { title: 'Meeting', start: '2025-04-12', end: '2025-04-12', color: colors[4] },
+            { title: 'Lunch', start: '2025-04-13', end: '2025-04-13', color: colors[5] },
+            { title: 'Birthday Party', start: '2025-04-13', end: '2025-04-13', color: colors[6] },
+            { title: 'Meeting', start: '2025-04-14', end: '2025-04-14', color: colors[0] },
+            { title: 'Happy Hour', start: '2025-04-14', end: '2025-04-14', color: colors[1] },
+            { title: 'Dinner', start: '2025-04-15', end: '2025-04-15', color: colors[2] },
+            { title: 'Repeating Event', start: '2025-04-16', end: '2025-04-16', color: colors[3] }
+        ];
+
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            headerToolbar: {
+                left: 'prev,next',
+                center: 'title',
+                right: ''
+            },
+            events: events, // Use the defined events array
+
+            // Customize event rendering
+            eventContent: function (arg) {
+                const eventColor = arg.event.backgroundColor || colors[Math.floor(Math.random() * colors.length)];
+                return {
+                    html: `<div class="event-box" style="background-color: ${eventColor}; padding: 5px; border-radius: 3px; color: white;">
+                            <strong>${arg.event.title}</strong>
+                        </div>`
+                };
+            },
+
+            // Ensure events span multiple days correctly
+            eventDidMount: function (info) {
+                if (info.event.start && info.event.end) {
+                    const start = new Date(info.event.start);
+                    const end = new Date(info.event.end);
+                    end.setDate(end.getDate() - 1); // Adjust end date to include the last day
+                    if (start.toDateString() !== end.toDateString()) {
+                        info.el.style.borderLeft = `5px solid ${info.event.backgroundColor}`;
+                        info.el.style.borderRight = `5px solid ${info.event.backgroundColor}`;
+                    }
+                }
+            },
+
+            eventClick: function (info) {
+                let modalContent = `
+                    <h5>Event Details on ${formatDate(info.event.start)}</h5>
+                    <hr>
+                    <p><strong>📌 Title:</strong> ${info.event.title || 'N/A'}</p>
+                    <p><strong>🕒 Start:</strong> ${formatDate(info.event.start)} ${formatTime(info.event.start)}</p>
+                    <p><strong>⏳ End:</strong> ${formatDate(info.event.end) || formatDate(info.event.start)} ${formatTime(info.event.end) || formatTime(info.event.start)}</p>
+                    <p><strong>📝 Description:</strong> No description provided</p>
+                `;
+
+                // Inject content into the modal
+                document.getElementById('eventModalBody').innerHTML = modalContent;
+
+                // Show modal
+                var eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
+                eventModal.show();
+            }
+        });
+
+        calendar.render();
+    });
+
+    // Helper functions
+    function formatDate(date) {
+        return date ? new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' }) : 'Invalid Date';
+    }
+
+    function formatTime(date) {
+        return date ? new Date(date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) : 'Invalid Time';
+    }
+</script> --}}
 
 
 <script>
