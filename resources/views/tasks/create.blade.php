@@ -634,16 +634,26 @@
         }
     }
 
-    // Remove item
-    window.removeItem = function(element) {
-        const $item = $(element).closest('.selected-item');
-        const id = $item.data('id');
-        const type = $item.data('type');
-        $(`.${type === 'user' ? 'role-user-checkbox, .course-user-checkbox' : type + '-checkbox'}[value="${id}"]`).prop('checked', false);
-        if (type !== 'user') updateUserSelectionsBasedOnRoles();
-        updateSelectedItems();
-        updateSelectAllCheckboxes();
-    };
+            // Remove item
+            window.removeItem = function(element) {
+            const $item = $(element).closest('.selected-item');
+            const id = $item.data('id');
+            const type = $item.data('type');
+
+            // Uncheck the specific checkbox for the user/role/course
+            if (type === 'user') {
+                $(`.role-user-checkbox[value="${id}"], .course-user-checkbox[value="${id}"]`).prop('checked', false);
+            } else {
+                $(`.${type}-checkbox[value="${id}"]`).prop('checked', false);
+            }
+
+            // Remove the specific selected item from the DOM
+            $item.remove();
+
+            // Update the hidden inputs and refresh the selected items display
+            updateSelectedItems();
+            updateSelectAllCheckboxes();
+        };
 
     // Modal events
     $('#assignModal').on('show.bs.modal', function() {
