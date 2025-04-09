@@ -23,6 +23,58 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"> --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<style>
+    .fc-button-group {
+        padding: 12px;
+    }
+
+    .fc-toolbar-title {
+        text-transform: uppercase;
+        /* Makes it ALL CAPS */
+        width: 100%;
+        /* Ensures full width for alignment to take effect */
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 1.75em;
+        margin: 0;
+        font-size: 19px;
+    }
+</style>
+<style>
+    .fc-daygrid-event {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    .fc-event-title {
+        white-space: normal !important;
+    }
+
+    .fc-daygrid-event>div {
+        width: 100%;
+        display: block;
+    }
+</style>
+<style>
+    /* Remove FullCalendar default blue border */
+    .fc-daygrid-event-harness {
+        border: none !important;
+    }
+
+    .fc-daygrid-event {
+        background-color: transparent !important;
+        /* remove default bg */
+        border: none !important;
+        /* remove default border */
+        padding: 0 !important;
+    }
+
+    /* Optional: remove hover blue highlight */
+    .fc-daygrid-event:hover {
+        background-color: transparent !important;
+    }
+</style>
 
 <div class="pc-container">
     <div class="pc-content">
@@ -51,6 +103,42 @@
                 <div class="row" style="margin-top:25px">
 
                     <div class="col-md-6">
+                        <div class="card dashnum-card dashnum-card-small overflow-hidden"><span
+                                class="round bg-warning small"></span> <span class="round bg-warning big"></span>
+                            <div class="card-body p-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="avtar avtar-lg bg-light-warning"><i class="text-warning ti ti-book"></i>
+                                    </div>
+                                    <div class="ms-2">
+                                        <h4 class="mb-1"> {{ $courses
+                                            }}</h4>
+
+                                        <p class="mb-0 opacity-75 text-sm">Total Courses</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card dashnum-card dashnum-card-small overflow-hidden"><span
+                                class="round bg-warning small"></span> <span class="round bg-warning big"></span>
+                            <div class="card-body p-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="avtar avtar-lg bg-light-warning"><i class="text-warning ti ti-users"></i>
+                                    </div>
+                                    <div class="ms-2">
+                                        <h4 class="mb-1"> {{ $teacher
+                                            }}</h4>
+
+                                        <p class="mb-0 opacity-75 text-sm">Total Teachers</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- <div class="col-md-6">
                         <div class="card  order-card" style="background-color: #aa33d4">
                             <div class="card-body">
                                 <h5 class="text-white" style="font-size: 17px;">Total Courses</h5>
@@ -76,8 +164,33 @@
 
                             </div>
                         </div>
+                    </div> --}}
+
+                </div>
+
+                <div class="card table-card">
+                    <div class="calendar-container">
+                        <div id="calendar" style="padding:0px"></div>
                     </div>
                 </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="eventModalLabel">Event Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="eventModalBody">
+                                <!-- Event details will be injected here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card table-card">
                     <div class="card-header">
                         <h5>Latest Courses</h5>
@@ -174,7 +287,7 @@
                             class="b-b-primary text-primary">View
                             all</a></div>
                 </div>
-                <div class="card table-card">
+                {{-- <div class="card table-card">
                     <div class=""
                         style="border: 1px solid #e0e0e0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
                         <div class="card-header"
@@ -212,12 +325,12 @@
                                 style="font-size: 0.875rem; color: #007bff; text-decoration: none;">View all</a>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
             <div class="col-xxl-4">
 
 
-                <div class="card table-card">
+                {{-- <div class="card table-card">
                     <div class="calendar-container">
                         <div id="calendar" style="padding:8px"></div>
                     </div>
@@ -238,7 +351,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
 
                 <div class="card table-card">
@@ -264,7 +377,7 @@
                                         <small>{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans()
                                             }}</small>
                                     </div>
-                                    <span>{{ $notification->data['message'] ?? 'No message' }}</span>
+                                    <span>{{ strip_tags($notification->data['message'] ?? 'No message') }}</span>
                                 </div>
                             </div>
                         </a>
@@ -273,8 +386,48 @@
 
 
                     </div>
+
+
+
                 </div>
 
+                <div class="card table-card">
+                    <div class=""
+                        style="border: 1px solid #e0e0e0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                        <div class="card-header"
+                            style="display: flex; justify-content: space-between; align-items: center;">
+                            <h5 id="cardHeaderTitle" style=" font-weight: 500; margin: 0;">To Do List
+                            </h5>
+                            <div>
+                                <button id="prevDateBtn"
+                                    style="background-color: #2c3e50; color: white; border: none; padding: 5px 10px; border-radius: 5px; margin-right: 5px;">&lt;</button>
+                                <button id="nextDateBtn"
+                                    style="background-color: #2c3e50; color: white; border: none; padding: 5px 10px; border-radius: 5px;">&gt;</button>
+                            </div>
+                        </div>
+                        <div class="card-body" style="padding: 5px;">
+                            <div class="table-responsive">
+                                <div class="customers-scroll">
+                                    <!-- Task List Container -->
+                                    <div id="taskList">
+                                        <!-- Tasks will be dynamically loaded here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer"
+                            style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #f8f9fa; border-top: 1px solid #e0e0e0;">
+                            <!-- Add Button on the Left -->
+                            <a href="#" class="text-primary add-task-link" data-bs-toggle="modal"
+                                data-bs-target="#addTaskModal"
+                                style=" color: white; padding: 8px 16px; font-size: 0.875rem; text-decoration: none; border-radius: 4px;">Add
+                                Task</a>
+                            <!-- View All Link on the Right -->
+                            <a href="{{ route('to_do_list') }}" class="text-primary"
+                                style="font-size: 0.875rem; color: #007bff; text-decoration: none;">View all</a>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Modal for Adding Task -->
                 <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel"
@@ -323,75 +476,76 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-    const calendarEl = document.getElementById('calendar');
+        const calendarEl = document.getElementById('calendar');
 
-    // Define an array of pastel colors
-    const colors = [
-      '#bd7910', '#9a0b0b', '#5048c7', '#0b8245', '#bd1995', '#8642ba','#2f979a'
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            headerToolbar: {
+                left: '',
+                center: 'title',
+                right: 'prev,next'
+            },
+            events: '/events',
 
-    ];
+            eventContent: function (arg) {
+                const event = arg.event;
+                const eventData = event.toPlainObject();
+                console.log('Event Data:', eventData); // Log the full plain object
 
-    const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        headerToolbar: {
-            left: '',
-            center: 'title',
-            right: 'prev,next'
-        },
-        events: '/events', // Fetch events from API
+                // Extract colors from extendedProps with fallbacks
+                const bgColor = eventData.extendedProps.background_color || event.get('backgroundColor') || '#bd7910';
+                const textColor = eventData.extendedProps.text_color || event.get('textColor') || '#ffffff';
+                console.log('Background Color:', bgColor, 'Text Color:', textColor);
 
-        // Customize event rendering
-        eventContent: function (arg) {
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            return {
-                html: `<div class="event-box" style="background-color: ${randomColor}; padding: 5px; border-radius: 1px;">
-                        <strong style='margin-left: -5px;'>${arg.event.title}</strong>
-                    </div>`
-            };
-        },
+                const fullTitle = event.title || '';
+                const title = fullTitle.length > 10 ? fullTitle.slice(0, 10) + '…' : fullTitle;
 
-        eventClick: function (info) {
-            if (!info.event.extendedProps || !info.event.extendedProps.events) {
-                console.warn('No event data found.');
-                return;
-            }
+                return {
+                    html: `
+                        <div style="background-color: ${bgColor} !important; padding: 5px 18px; border-radius: 5px; font-size: 13px; font-weight: 500; color: ${textColor} !important;margin-left: -2px; ">
+                            ${title}
+                        </div>`
+                };
+            },
 
-            let events = info.event.extendedProps.events;
-
-            let modalContent = `<h5>${events.length} Events on ${formatDate(info.event.start)}</h5>`;
-
-            events.forEach(event => {
-                modalContent += `
+            eventClick: function (info) {
+                let event = info.event;
+                let modalContent = `
+                    <h5>Event on ${formatDate(event.start)}</h5>
                     <hr>
-                    <p><strong>📌 Title:</strong> ${event.event_topic || 'N/A'}</p>
-                    <p><strong>🕒 Start:</strong> ${formatDate(event.event_start)} ${formatTime(event.event_start)}</p>
-                    <p><strong>⏳ End:</strong> ${formatDate(event.event_end)} ${formatTime(event.event_end)}</p>
-                    <p><strong>📝 Description:</strong> ${event.description || 'No description provided'}</p>
+                    <p><strong>📌 Title:</strong> ${event.title}</p>
+                    <p><strong>🕒 Start:</strong> ${formatDate(event.start)} ${formatTime(event.start)}</p>
+                    <p><strong>⏳ End:</strong> ${event.end ? formatDate(adjustEndDate(event.end)) + ' ' + formatTime(adjustEndDate(event.end)) : 'Same as start'}</p>
+                    <p><strong>📝 Description:</strong> ${event.extendedProps.description || 'No description provided'}</p>
                 `;
-            });
 
-            // Inject content into the modal
-            document.getElementById('eventModalBody').innerHTML = modalContent;
+                document.getElementById('eventModalBody').innerHTML = modalContent;
+                new bootstrap.Modal(document.getElementById('eventModal')).show();
+            }
+        });
 
-            // Show modal
-            var eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
-            eventModal.show();
-        }
+        calendar.render();
     });
 
-    calendar.render();
-});
+    // Utility functions
+    function formatDate(date) {
+        return date ? new Date(date).toLocaleDateString('en-GB', {
+            day: '2-digit', month: 'long', year: 'numeric'
+        }) : 'Invalid Date';
+    }
 
-// ✅ Helper functions (Moved Outside)
-function formatDate(date) {
-    return date ? new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' }) : 'Invalid Date';
-}
+    function formatTime(date) {
+        return date ? new Date(date).toLocaleTimeString('en-US', {
+            hour: '2-digit', minute: '2-digit', hour12: true
+        }) : 'Invalid Time';
+    }
 
-function formatTime(date) {
-    return date ? new Date(date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) : 'Invalid Time';
-}
-
-
+    function adjustEndDate(date) {
+        if (!date) return null;
+        let adjusted = new Date(date);
+        adjusted.setDate(adjusted.getDate() - 1);
+        return adjusted;
+    }
 </script>
 
 

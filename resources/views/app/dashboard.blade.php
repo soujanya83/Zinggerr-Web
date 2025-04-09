@@ -77,59 +77,6 @@
     }
 </style>
 
-<style>
-    .dashnum-card .card-body {
-        position: relative;
-        z-index: 5;
-    }
-
-    [data-pc-direction=ltr] .p-3 {
-        padding: 1rem !important;
-    }
-
-    .card-body {
-        flex: 1 1 auto;
-        padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
-        color: var(--bs-card-color);
-    }
-
-    *,
-    ::after,
-    ::before {
-        box-sizing: border-box;
-    }
-
-    div {
-        display: block;
-        unicode-bidi: isolate;
-    }
-
-    .card {
-        --bs-card-spacer-y: 25px;
-        --bs-card-spacer-x: 25px;
-        --bs-card-title-spacer-y: 0.5rem;
-        --bs-card-border-width: 0px;
-        --bs-card-border-color: #eeeeee;
-        --bs-card-border-radius: 8px;
-        --bs-card-box-shadow: none;
-        --bs-card-inner-border-radius: calc(8px - 0px);
-        --bs-card-cap-padding-y: 25px;
-        --bs-card-cap-padding-x: 25px;
-        --bs-card-cap-bg: transparent;
-        --bs-card-bg: #ffffff;
-        --bs-card-img-overlay-padding: 1.25rem;
-        --bs-card-group-margin: 0.75rem;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        min-width: 0;
-        height: var(--bs-card-height);
-        background-color: var(--bs-card-bg);
-        background-clip: border-box;
-        border: var(--bs-card-border-width) solid var(--bs-card-border-color);
-        border-radius: var(--bs-card-border-radius);
-    }
-</style>
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -174,43 +121,42 @@
                 <div class="row" style="margin-top:25px">
 
                     <div class="col-md-6">
-                    <div class="card dashnum-card dashnum-card-small overflow-hidden"><span
-                            class="round bg-warning small"></span> <span class="round bg-warning big"></span>
-                        <div class="card-body p-3">
-                            <div class="d-flex align-items-center">
-                                <div class="avtar avtar-lg bg-light-warning"><i
-                                        class="text-warning ti ti-book"></i>
-                                </div>
-                                <div class="ms-2">
-                                    <h4 class="mb-1"> {{ $courseslast7day
-                                    }}</h4>
+                        <div class="card dashnum-card dashnum-card-small overflow-hidden"><span
+                                class="round bg-warning small"></span> <span class="round bg-warning big"></span>
+                            <div class="card-body p-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="avtar avtar-lg bg-light-warning"><i class="text-warning ti ti-book"></i>
+                                    </div>
+                                    <div class="ms-2">
+                                        <h4 class="mb-1"> {{ $courseslast7day
+                                            }}</h4>
 
-                                    <p class="mb-0 opacity-75 text-sm">Courses Last 7 day`s</p>
+                                        <p class="mb-0 opacity-75 text-sm">Courses Last 7 day`s</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
 
-                <div class="col-md-6">
-                    <div class="card dashnum-card dashnum-card-small overflow-hidden"><span
-                            class="round bg-warning small"></span> <span class="round bg-warning big"></span>
-                        <div class="card-body p-3">
-                            <div class="d-flex align-items-center">
-                                <div class="avtar avtar-lg bg-light-warning"><i
-                                        class="text-warning ti ti-users"></i>
-                                </div>
-                                <div class="ms-2">
-                                    <h4 class="mb-1">{{ $studentlast7day
-                                    }}</h4>
-                                    <p class="mb-0 opacity-75 text-sm">Students Last 7
-                                        day`s</p>
+                    <div class="col-md-6">
+                        <div class="card dashnum-card dashnum-card-small overflow-hidden"><span
+                                class="round bg-warning small"></span> <span class="round bg-warning big"></span>
+                            <div class="card-body p-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="avtar avtar-lg bg-light-warning"><i
+                                            class="text-warning ti ti-users"></i>
+                                    </div>
+                                    <div class="ms-2">
+                                        <h4 class="mb-1">{{ $studentlast7day
+                                            }}</h4>
+                                        <p class="mb-0 opacity-75 text-sm">Students Last 7
+                                            day`s</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
 
                     {{-- <div class="col-md-6">
