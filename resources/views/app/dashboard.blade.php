@@ -37,6 +37,38 @@
 }
 
 </style>
+<style>
+    .fc-daygrid-event {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    .fc-event-title {
+        white-space: normal !important;
+    }
+
+    .fc-daygrid-event > div {
+        width: 100%;
+        display: block;
+    }
+</style>
+<style>
+    /* Remove FullCalendar default blue border */
+    .fc-daygrid-event-harness {
+        border: none !important;
+    }
+
+    .fc-daygrid-event {
+        background-color: transparent !important; /* remove default bg */
+        border: none !important; /* remove default border */
+        padding: 0 !important;
+    }
+
+    /* Optional: remove hover blue highlight */
+    .fc-daygrid-event:hover {
+        background-color: transparent !important;
+    }
+</style>
 
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -326,14 +358,12 @@
                                         <small>{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans()
                                             }}</small>
                                     </div>
-                                    <span>{{ $notification->data['message'] ?? 'No message' }}</span>
+                                    <span>{{ strip_tags($notification->data['message'] ?? 'No message') }}</span>
+
                                 </div>
                             </div>
                         </a>
                         @endforeach
-
-
-
                     </div>
                 </div>
 
@@ -344,8 +374,6 @@
                             style="display: flex; justify-content: space-between; align-items: center;">
                             <h5 id="cardHeaderTitle" style=" font-weight: 500; margin: 0;">To Do List
                             </h5>
-
-
                             <div>
                                 <button id="prevDateBtn"
                                     style="background-color: #2c3e50; color: white; border: none; padding: 5px 10px; border-radius: 5px; margin-right: 5px;">&lt;</button>
@@ -391,88 +419,9 @@
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-{{-- <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    const calendarEl = document.getElementById('calendar');
-
-    // Define an array of pastel colors
-    const colors = [
-        '#bd7910', '#9a0b0b', '#5048c7', '#0b8245', '#bd1995', '#8642ba','#2f979a'
-    ];
-
-    const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        headerToolbar: {
-            left: '',
-            center: 'title',
-            right: 'prev,next'
-        },
-        events: '/events', // Fetch events from API
-
-        // Customize event rendering
-        eventContent: function (arg) {
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            return {
-                html: `<div class="event-box" style="background-color: ${randomColor}; padding: 5px; border-radius: 1px;">
-                        <strong style='margin-left: -5px;'>${arg.event.title}</strong>
-                    </div>`
-            };
-        },
-
-        eventClick: function (info) {
-            if (!info.event.extendedProps || !info.event.extendedProps.events) {
-                console.warn('No event data found.');
-                return;
-            }
-
-            let events = info.event.extendedProps.events;
-
-            let modalContent = `<h5>${events.length} Events on ${formatDate(info.event.start)}</h5>`;
-
-            events.forEach(event => {
-                modalContent += `
-                    <hr>
-                    <p><strong>📌 Title:</strong> ${event.event_topic || 'N/A'}</p>
-                    <p><strong>🕒 Start:</strong> ${formatDate(event.event_start)} ${formatTime(event.event_start)}</p>
-                    <p><strong>⏳ End:</strong> ${formatDate(event.event_end)} ${formatTime(event.event_end)}</p>
-                    <p><strong>📝 Description:</strong> ${event.description || 'No description provided'}</p>
-                `;
-            });
-
-            // Inject content into the modal
-            document.getElementById('eventModalBody').innerHTML = modalContent;
-
-            // Show modal
-            var eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
-            eventModal.show();
-        }
-    });
-
-    calendar.render();
-    });
-
-    // ✅ Helper functions (Moved Outside)
-    function formatDate(date) {
-        return date ? new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' }) : 'Invalid Date';
-    }
-
-    function formatTime(date) {
-        return date ? new Date(date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) : 'Invalid Time';
-    }
-
-
-</script> --}}
-
-
 <script>
-   document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
         const calendarEl = document.getElementById('calendar');
-
-        const colors = [
-            '#bd7910', '#9a0b0b', '#5048c7', '#0b8245', '#bd1995', '#8642ba', '#2f979a'
-        ];
-
-        const eventColorMap = {}; // Map event IDs to colors
 
         const calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
@@ -484,20 +433,21 @@
             events: '/events',
 
             eventContent: function (arg) {
-                const eventId = arg.event.id || arg.event.title; // fallback if no ID
-                // Assign a random color if not already set
-                if (!eventColorMap[eventId]) {
-                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
-                    eventColorMap[eventId] = randomColor;
-                }
+                const event = arg.event;
+                const eventData = event.toPlainObject();
+                console.log('Event Data:', eventData); // Log the full plain object
 
-                const bgColor = eventColorMap[eventId];
-                const fullTitle = arg.event.title || '';
+                // Extract colors from extendedProps with fallbacks
+                const bgColor = eventData.extendedProps.background_color || event.get('backgroundColor') || '#bd7910';
+                const textColor = eventData.extendedProps.text_color || event.get('textColor') || '#ffffff';
+                console.log('Background Color:', bgColor, 'Text Color:', textColor);
+
+                const fullTitle = event.title || '';
                 const title = fullTitle.length > 10 ? fullTitle.slice(0, 10) + '…' : fullTitle;
 
                 return {
                     html: `
-                        <div style="background-color: ${bgColor}; padding: 4px 18px; border-radius: 0px; font-size: 13px; font-weight: 500; color: white;">
+                        <div style="background-color: ${bgColor} !important; padding: 5px 18px; border-radius: 5px; font-size: 13px; font-weight: 500; color: ${textColor} !important;margin-left: -2px; ">
                             ${title}
                         </div>`
                 };
@@ -541,96 +491,88 @@
         adjusted.setDate(adjusted.getDate() - 1);
         return adjusted;
     }
-</script>
-
+    </script>
 
 {{-- <script>
-    document.addEventListener('DOMContentLoaded', function () {
+   document.addEventListener('DOMContentLoaded', function () {
         const calendarEl = document.getElementById('calendar');
 
-        // Define an array of pastel colors
         const colors = [
             '#bd7910', '#9a0b0b', '#5048c7', '#0b8245', '#bd1995', '#8642ba', '#2f979a'
         ];
 
-        // Sample events data (replace with your API or dynamic data)
-        const events = [
-            { title: 'All Day Event', start: '2025-04-01', color: colors[0] },
-            { title: 'Long Event', start: '2025-04-08', end: '2025-04-11', color: colors[1] }, // Multi-day event
-            { title: 'Repeating Event', start: '2025-04-09', end: '2025-04-09', color: colors[2] },
-            { title: 'Conference', start: '2025-04-11', end: '2025-04-11', color: colors[3] },
-            { title: 'Meeting', start: '2025-04-12', end: '2025-04-12', color: colors[4] },
-            { title: 'Lunch', start: '2025-04-13', end: '2025-04-13', color: colors[5] },
-            { title: 'Birthday Party', start: '2025-04-13', end: '2025-04-13', color: colors[6] },
-            { title: 'Meeting', start: '2025-04-14', end: '2025-04-14', color: colors[0] },
-            { title: 'Happy Hour', start: '2025-04-14', end: '2025-04-14', color: colors[1] },
-            { title: 'Dinner', start: '2025-04-15', end: '2025-04-15', color: colors[2] },
-            { title: 'Repeating Event', start: '2025-04-16', end: '2025-04-16', color: colors[3] }
-        ];
+        const eventColorMap = {}; // Map event IDs to colors
 
         const calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             headerToolbar: {
-                left: 'prev,next',
+                left: '',
                 center: 'title',
-                right: ''
+                right: 'prev,next'
             },
-            events: events, // Use the defined events array
+            events: '/events',
 
-            // Customize event rendering
             eventContent: function (arg) {
-                const eventColor = arg.event.backgroundColor || colors[Math.floor(Math.random() * colors.length)];
+                const eventId = arg.event.id || arg.event.title; // fallback if no ID
+                // Assign a random color if not already set
+                if (!eventColorMap[eventId]) {
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    eventColorMap[eventId] = randomColor;
+                }
+
+                const bgColor = eventColorMap[eventId];
+                const fullTitle = arg.event.title || '';
+                const title = fullTitle.length > 10 ? fullTitle.slice(0, 10) + '…' : fullTitle;
+
                 return {
-                    html: `<div class="event-box" style="background-color: ${eventColor}; padding: 5px; border-radius: 3px; color: white;">
-                            <strong>${arg.event.title}</strong>
+                    html: `
+                        <div style="background-color: ${bgColor}; padding: 4px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; color: white;">
+                            ${title}
                         </div>`
                 };
             },
 
-            // Ensure events span multiple days correctly
-            eventDidMount: function (info) {
-                if (info.event.start && info.event.end) {
-                    const start = new Date(info.event.start);
-                    const end = new Date(info.event.end);
-                    end.setDate(end.getDate() - 1); // Adjust end date to include the last day
-                    if (start.toDateString() !== end.toDateString()) {
-                        info.el.style.borderLeft = `5px solid ${info.event.backgroundColor}`;
-                        info.el.style.borderRight = `5px solid ${info.event.backgroundColor}`;
-                    }
-                }
-            },
-
             eventClick: function (info) {
+                let event = info.event;
                 let modalContent = `
-                    <h5>Event Details on ${formatDate(info.event.start)}</h5>
+                    <h5>Event on ${formatDate(event.start)}</h5>
                     <hr>
-                    <p><strong>📌 Title:</strong> ${info.event.title || 'N/A'}</p>
-                    <p><strong>🕒 Start:</strong> ${formatDate(info.event.start)} ${formatTime(info.event.start)}</p>
-                    <p><strong>⏳ End:</strong> ${formatDate(info.event.end) || formatDate(info.event.start)} ${formatTime(info.event.end) || formatTime(info.event.start)}</p>
-                    <p><strong>📝 Description:</strong> No description provided</p>
+                    <p><strong>📌 Title:</strong> ${event.title}</p>
+                    <p><strong>🕒 Start:</strong> ${formatDate(event.start)} ${formatTime(event.start)}</p>
+                    <p><strong>⏳ End:</strong> ${event.end ? formatDate(adjustEndDate(event.end)) + ' ' + formatTime(adjustEndDate(event.end)) : 'Same as start'}</p>
+                    <p><strong>📝 Description:</strong> ${event.extendedProps.description || 'No description provided'}</p>
                 `;
 
-                // Inject content into the modal
                 document.getElementById('eventModalBody').innerHTML = modalContent;
-
-                // Show modal
-                var eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
-                eventModal.show();
+                new bootstrap.Modal(document.getElementById('eventModal')).show();
             }
         });
 
         calendar.render();
     });
 
-    // Helper functions
+    // Utility functions
     function formatDate(date) {
-        return date ? new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' }) : 'Invalid Date';
+        return date ? new Date(date).toLocaleDateString('en-GB', {
+            day: '2-digit', month: 'long', year: 'numeric'
+        }) : 'Invalid Date';
     }
 
     function formatTime(date) {
-        return date ? new Date(date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) : 'Invalid Time';
+        return date ? new Date(date).toLocaleTimeString('en-US', {
+            hour: '2-digit', minute: '2-digit', hour12: true
+        }) : 'Invalid Time';
+    }
+
+    function adjustEndDate(date) {
+        if (!date) return null;
+        let adjusted = new Date(date);
+        adjusted.setDate(adjusted.getDate() - 1);
+        return adjusted;
     }
 </script> --}}
+
+
 
 
 <script>

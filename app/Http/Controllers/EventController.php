@@ -9,20 +9,40 @@ use Ramsey\Uuid\Guid\Guid;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use DateTime;
 use App\Notifications\EventCreated;
+
 class EventController extends Controller
 {
 
 
     public function event_store(Request $request)
     {
+        // dd($request);
         try {
+            $start_datetime = DateTime::createFromFormat('d/m/Y H:i', $request->input('start_datetime'));
+            $end_datetime = DateTime::createFromFormat('d/m/Y H:i', $request->input('end_datetime'));
+
+            // Check if conversion was successful
+            if (!$start_datetime || !$end_datetime) {
+                return back()->withErrors(['start_datetime' => 'Invalid date format. Use dd/mm/yyyy HH:ii.'])->withInput();
+            }
+
+            // Replace the request inputs with formatted values
+            $request->merge([
+                'start_datetime' => $start_datetime->format('d-m-Y\TH:i'),
+                'end_datetime' => $end_datetime->format('d-m-Y\TH:i'),
+            ]);
+
+            // Validate the request
             $validator = Validator::make($request->all(), [
                 'title' => 'required|string|max:500',
-                'start_datetime' => 'required|date_format:Y-m-d\TH:i',
-                'end_datetime' => 'required|date_format:Y-m-d\TH:i|after:start_datetime',
+                'start_datetime' => 'required|date_format:d-m-Y\TH:i',
+                'end_datetime' => 'required|date_format:d-m-Y\TH:i|after:start_datetime',
                 'status' => 'required|boolean',
-                'description' => 'required|string'
+                'description' => 'required|string',
+                'background_color' => 'required|regex:/^#[0-9A-Fa-f]{6}$/', // Optional: Validate hex color
+                'text_color' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',    // Optional: Validate hex color
             ]);
 
             if ($validator->fails()) {
@@ -40,6 +60,8 @@ class EventController extends Controller
             $event->description = $request->description;
             $event->event_start = $startDateTime;
             $event->event_end = $endDateTime;
+            $event->background_color = $request->background_color;
+            $event->text_color = $request->text_color;
             $event->status = $request->status;
             $event->created_by = auth::user()->id ?? null;
             $event->save();
@@ -79,20 +101,21 @@ class EventController extends Controller
     public function index()
     {
         $events = EventModel::where('status', 1)
-        ->whereNotNull('event_start')
-        ->whereNotNull('event_end')
-        ->get()
-        ->map(function ($event) {
-            return [
-                'title' => $event->event_topic ?? 'Event',
-                'start' => $event->event_start,
-                'end' => date('Y-m-d', strtotime($event->event_end . ' +1 day')), // FullCalendar is exclusive on end date
-                'description' => $event->description, // ✅ Move directly here
-            ];
-        });
+            ->whereNotNull('event_start')
+            ->whereNotNull('event_end')
+            ->get()
+            ->map(function ($event) {
+                return [
+                    'title' => $event->event_topic ?? 'Event',
+                    'start' => $event->event_start,
+                    'background_color' => $event->background_color, // Use database value
+                    'text_color' => $event->text_color,            // Use database value
+                    'end' => date('Y-m-d', strtotime($event->event_end . ' +1 day')), // FullCalendar is exclusive on end date
+                    'description' => $event->description, // ✅ Move directly here
+                ];
+            });
 
-    return response()->json($events);
-
+        return response()->json($events);
     }
 
 
@@ -113,11 +136,25 @@ class EventController extends Controller
     public function event_update(Request $request)
     {
         try {
+            $start_datetime = DateTime::createFromFormat('d/m/Y H:i', $request->input('start_datetime'));
+            $end_datetime = DateTime::createFromFormat('d/m/Y H:i', $request->input('end_datetime'));
+
+            // Check if conversion was successful
+            if (!$start_datetime || !$end_datetime) {
+                return back()->withErrors(['start_datetime' => 'Invalid date format. Use dd/mm/yyyy HH:ii.'])->withInput();
+            }
+
+            // Replace the request inputs with formatted values
+            $request->merge([
+                'start_datetime' => $start_datetime->format('d-m-Y\TH:i'),
+                'end_datetime' => $end_datetime->format('d-m-Y\TH:i'),
+            ]);
+
             $id = $request->event_id;
             $validator = Validator::make($request->all(), [
                 'title' => 'required|string|max:500',
-                'start_datetime' => 'required|date_format:Y-m-d\TH:i',
-                'end_datetime' => 'required|date_format:Y-m-d\TH:i|after:start_datetime',
+             'start_datetime' => 'required|date_format:d-m-Y\TH:i',
+                'end_datetime' => 'required|date_format:d-m-Y\TH:i|after:start_datetime',
                 'status' => 'required|boolean',
                 'description' => 'required|string'
             ]);
@@ -156,6 +193,8 @@ class EventController extends Controller
             $event->description = $request->description;
             $event->event_start = $startDateTime;
             $event->event_end = $endDateTime;
+            $event->background_color = $request->background_color;
+            $event->text_color = $request->text_color;
             $event->status = $request->status;
             $event->updated_by = auth::user()->id ?? null;
             $event->save();
@@ -181,7 +220,7 @@ class EventController extends Controller
 
     public function event_list(Request $request)
     {
-        $events = EventModel::orderBy('event_start', 'asc')->get();
+        $events = EventModel::orderBy('created_at','DESC')->get();
         return view('events.list', compact('events'));
     }
 

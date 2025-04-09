@@ -4,11 +4,58 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Two+Tone" rel="stylesheet">
 
 
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 @section('pageTitle', ' Events Create')
 
 @section('content')
 @include('partials.sidebar')
 @include('partials.header')
+<style>
+    .faded-placeholder::placeholder {
+        color: rgba(0, 0, 0, 0.5);
+        /* light gray */
+        transition: opacity 0.3s ease;
+    }
+
+    .faded-placeholder:focus::placeholder {
+        opacity: 0.3;
+    }
+
+
+    .faded-placeholder::placeholder {
+        color: #888;
+        opacity: 0.7;
+        transition: opacity 0.3s ease;
+    }
+
+    .faded-placeholder:focus::placeholder {
+        opacity: 0.4;
+    }
+
+    .color-picker {
+        padding: 5px;
+        width: 100%;
+        /* Ensures the color input takes full width */
+        height: 40px;
+        /* Adjust height for better visibility */
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    /* Optional: Customize the appearance of the color input (limited by browser support) */
+    .color-picker::-webkit-color-swatch {
+        border-radius: 4px;
+        border: none;
+    }
+
+    .color-picker::-moz-color-swatch {
+        border-radius: 4px;
+        border: none;
+    }
+</style>
 
 <div class="pc-container">
     <div class="pc-content">
@@ -65,57 +112,66 @@
                             </div>
 
                             <div class="card-body">
+
                                 <form id="permissionForm" action="{{ route('event.store') }}" method="post"
                                     autocomplete="off">
                                     @csrf
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-8">
                                             <div class="mb-3">
-                                                <label>Title</label>
+                                                <label><b>Title</b></label>
                                                 <input type="text" class="form-control" name="title"
                                                     placeholder="Enter Title.." value="{{ old('title') }}" required>
                                             </div>
                                         </div>
-
-                                        <div class="col-md-4">
+                                        <div class="col-md-2">
                                             <div class="mb-3">
-                                                <label for="start_datetime">Start Date & Time</label>
-                                                <input type="datetime-local" class="form-control" name="start_datetime"
-                                                    id="start_datetime" required value="{{ old('start_datetime') }}">
+                                                <div class="mb-2">
+                                                    <label for="background_color"><b>Background Color</b></label>
+                                                    <input type="color" class="form-control color-picker"
+                                                        name="background_color" id="background_color" value="#732b2b"
+                                                        required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="mb-3">
+                                                <div>
+                                                    <label for="text_color"><b>Text Color</b></label>
+                                                    <input type="color" class="form-control color-picker"
+                                                        name="text_color" id="text_color" value="#d8d0d0" required>
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4">
+
+                                        <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label>End Date & Time</label>
-                                                <input type="datetime-local" class="form-control" name="end_datetime"
-                                                    required
-                                                    value="{{ old('end_datetime', isset($course) ? $course->end_datetime : '') }}">
+                                                <label for="start_datetime"><b>Start Date & Time</b></label>
+                                                <input type="text" class="form-control faded-placeholder"
+                                                    name="start_datetime" id="start_datetime"
+                                                    placeholder="dd/mm/yyyy --:--" value="{{ old('start_datetime') }}">
                                             </div>
                                         </div>
 
-
-                                        {{-- <div class="col-md-12">
+                                        <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label for="descriptionInput">Description</label>
-                                                <textarea class="form-control summernote" id="descriptionInput" name="description" required>
-                                                    {{ old('description') }}
-                                                </textarea>
+                                                <label for="end_datetime"><b>End Date & Time</b></label>
+                                                <input type="text" class="form-control faded-placeholder"
+                                                    name="end_datetime" id="end_datetime" placeholder="dd/mm/yyyy --:--"
+                                                    value="{{ old('end_datetime')}}">
                                             </div>
-                                        </div> --}}
+                                        </div>
+
                                         <div class="col-md-12">
-                                            <label class="form-label">Description</label>
-                                            <div class="form-floating mb-3">
-                                                <!-- Textarea for Summernote -->
+                                            <label class="form-label"><b>Description</b></label>
+                                            <div class="form-floating">
                                                 <textarea id="summernote" name="description" class="form-control"
-                                                    required>{{ old('description') }}
-
-                                                 </textarea>
-
+                                                    required>{{ old('description') }}</textarea>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4">
+                                        <div class="col-md-4" style="display: none">
                                             <div class="mb-3 mt-4">
                                                 <label></label>
                                                 <div class="form-check form-check-inline">
@@ -131,12 +187,14 @@
                                             </div>
                                         </div>
 
-
                                     </div>
                                     <div class="text-end">
                                         <input type="submit" class="btn btn-shadow btn-primary" value="Submit">
                                     </div>
                                 </form>
+
+
+
                             </div>
 
 
@@ -170,6 +228,19 @@
                 ['view', ['fullscreen', 'codeview', 'help']]
             ]
         });
+    });
+</script>
+<script>
+    flatpickr("#start_datetime", {
+        enableTime: true,
+        dateFormat: "d/m/Y H:i",
+        allowInput: true
+    });
+
+    flatpickr("#end_datetime", {
+        enableTime: true,
+        dateFormat: "d/m/Y H:i",
+        allowInput: true
     });
 </script>
 @include('partials.footer')

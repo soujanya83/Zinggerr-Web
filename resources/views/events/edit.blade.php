@@ -2,12 +2,38 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Two+Tone" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 @section('pageTitle', ' Events Update')
 
 @section('content')
 @include('partials.sidebar')
 @include('partials.header')
+<style>
 
+    .color-picker {
+        padding: 5px;
+        width: 100%;
+        /* Ensures the color input takes full width */
+        height: 40px;
+        /* Adjust height for better visibility */
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    /* Optional: Customize the appearance of the color input (limited by browser support) */
+    .color-picker::-webkit-color-swatch {
+        border-radius: 4px;
+        border: none;
+    }
+
+    .color-picker::-moz-color-swatch {
+        border-radius: 4px;
+        border: none;
+    }
+</style>
 <div class="pc-container">
     <div class="pc-content">
         <div class="page-header">
@@ -69,46 +95,72 @@
                                     <input type="hidden" name="event_id" value="{{ $event->id }}">
 
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-8">
                                             <div class="mb-3">
-                                                <label>Title</label>
+                                                <label><b>Title</b></label>
                                                 <input type="text" class="form-control" name="title"
                                                     placeholder="Enter Title..."
                                                     value="{{ old('title', $event->event_topic) }}" required>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4">
+                                        <div class="col-md-2">
                                             <div class="mb-3">
-                                                <label for="start_datetime">Start Date & Time</label>
+                                                <div class="mb-2">
+                                                    <label for="background_color"><b>Background Color</b></label>
+                                                    <input type="color" class="form-control color-picker"
+                                                        name="background_color" id="background_color" value="{{ old('background_color', $event->background_color) }}"
+                                                        required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="mb-3">
+                                                <div>
+                                                    <label for="text_color"><b>Text Color</b></label>
+                                                    <input type="color" class="form-control color-picker"
+                                                        name="text_color" id="text_color" value="{{ old('text_color', $event->text_color) }}" required>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {{-- <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="start_datetime"><b>Start Date & Time</b></label>
                                                 <input type="datetime-local" class="form-control" name="start_datetime"
                                                     id="start_datetime" required
                                                     value="{{ old('start_datetime', \Carbon\Carbon::parse($event->event_start)->format('Y-m-d\TH:i')) }}">
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label>End Date & Time</label>
+                                                <label><b>End Date & Time</b></label>
                                                 <input type="datetime-local" class="form-control" name="end_datetime"
                                                     required
                                                     value="{{ old('end_datetime', \Carbon\Carbon::parse($event->event_end)->format('Y-m-d\TH:i')) }}">
                                             </div>
-                                        </div>
-
-
-
-                                        {{-- <div class="col-md-8">
-                                            <div class="mb-3">
-                                                <label for="descriptionInput">Description</label>
-                                                <textarea class="form-control" id="descriptionInput" name="description"
-                                                    required rows="1"
-                                                    placeholder="Enter Description...">{{ old('description', $event->description) }}</textarea>
-                                            </div>
                                         </div> --}}
 
+
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="start_datetime"><b>Start Date & Time</b></label>
+                                                <input type="text" class="form-control faded-placeholder" name="start_datetime" id="start_datetime" required
+                                                       value="{{ old('start_datetime', \Carbon\Carbon::parse($event->event_start)->format('d/m/Y H:i')) }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label><b>End Date & Time</b></label>
+                                                <input type="text" class="form-control faded-placeholder" name="end_datetime" id="end_datetime" required
+                                                       value="{{ old('end_datetime', \Carbon\Carbon::parse($event->event_end)->format('d/m/Y H:i')) }}">
+                                            </div>
+                                        </div>
+
                                         <div class="col-md-12">
-                                            <label class="form-label">Description</label>
+                                            <label class="form-label"><b>Description</b></label>
                                             <div class="form-floating mb-3">
                                                 <!-- Textarea for Summernote -->
                                                 <textarea id="summernote" name="description" class="form-control"
@@ -182,6 +234,20 @@
         });
     });
 </script>
+<script>
+    flatpickr("#start_datetime", {
+        enableTime: true,
+        dateFormat: "d/m/Y H:i",
+        allowInput: true,
+        defaultDate: "{{ old('start_datetime', \Carbon\Carbon::parse($event->event_start)->format('d/m/Y H:i')) }}"
+    });
 
+    flatpickr("#end_datetime", {
+        enableTime: true,
+        dateFormat: "d/m/Y H:i",
+        allowInput: true,
+        defaultDate: "{{ old('end_datetime', \Carbon\Carbon::parse($event->event_end)->format('d/m/Y H:i')) }}"
+    });
+</script>
 @include('partials.footer')
 @endsection

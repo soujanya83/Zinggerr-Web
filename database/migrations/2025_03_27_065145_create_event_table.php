@@ -15,6 +15,8 @@ return new class extends Migration
             $table->char('id', 36)->primary();
             $table->text('event_topic');
             $table->text('description');
+            $table->string('background_color',36);
+            $table->string('text_color',36);
             $table->datetime('event_start')->nullable(); // Merged date and time
             $table->datetime('event_end')->nullable();   // Merged date and time
             $table->boolean('status')->default(1);

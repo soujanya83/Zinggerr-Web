@@ -226,7 +226,9 @@
                                                 {{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}
                                             </span>
                                             <h5>{{ $notification->data['title'] }}</h5>
-                                            <p class="text-body fs-6">{{ $notification->data['message'] }}</p>
+                                            <p class="text-body fs-6">{{ strip_tags($notification->data['message']) }}
+                                            </p>
+
                                             @if(!$notification->read_at)
                                             <div class="badge rounded-pill bg-light-danger unread-badge">Unread</div>
                                             @endif
