@@ -119,8 +119,7 @@
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="mb-3 position-relative">
-                                                <label class="form-label">Enter OTP <span
-                                                        class="text-danger">*</span></label>
+                                                <label class="form-label">Enter OTP <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                 <input type="text" id="otp" name="otp" class="form-control"
                                                     placeholder="Enter OTP" required pattern="[0-9]{6}"
                                                     title="OTP must be 6 digits" maxlength="6" minlength="6"

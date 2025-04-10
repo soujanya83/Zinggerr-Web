@@ -269,7 +269,7 @@ class StudentController extends Controller
             $user->name = $request->input('name');
             $user->username = $request->input('username');
             $user->email = $request->input('email');
-            $user->phone = $request->input('phone');
+            $user->phone = $request->input('phone') ?? null;
             $user->country_code = $country_code;
             $user->country_name = $country_name;
             $user->status = $request->input('status');

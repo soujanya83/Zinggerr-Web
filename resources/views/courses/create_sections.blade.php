@@ -137,9 +137,9 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="mb-3">
-                                                <h5 class="p-2 bg-light border rounded">📅 Select Course Start Date</h5>
+                                                <h5 class="p-2 bg-light border rounded">📅 Select Course Start Date <span class="text-danger" style="font-weight: bold;">*</span></h5>
                                                 <input type="date" id="course_start_date" name="course_start_date"
-                                                    class="form-control" required
+                                                    class="form-control"
                                                     value="{{ old('course_start_date') }}">
                                             </div>
                                         </div>
@@ -373,7 +373,7 @@
                                 <input type="hidden" name="status" value="1">
 
                                 <div class="mb-3">
-                                    <label for="assetstype_${formattedDate}" class="form-label">Assets Type:</label>
+                                    <label for="assetstype_${formattedDate}" class="form-label">Assets Type: <span class="text-danger" style="font-weight: bold;">*</span></label>
                                     <select name="assetstype" id="assetstype_${formattedDate}" class="form-select asset-selector" required>
                                         <option value="">Select</option>
                                         <option value="blog">Blog</option>

@@ -11,7 +11,7 @@
 @include('partials.header')
 
 <style>
-       .thspace {
+    .thspace {
         margin-left: 67%;
     }
 
@@ -80,7 +80,8 @@
 
 
 
-                        <form action="{{ route('user.password.update') }}" method="post" onsubmit="return validatePasswords()">
+                        <form action="{{ route('user.password.update') }}" method="post"
+                            onsubmit="return validatePasswords()">
                             @csrf
                             <div class="card border">
                                 <div class="card-header">
@@ -95,10 +96,13 @@
                                         <!-- New Password -->
                                         <div class="col-sm-6">
                                             <div class="mb-0 position-relative">
-                                                <label class="form-label">New Password <span class="text-danger">*</span></label>
-                                                <input type="password" id="newPassword" name="password" class="form-control"
-                                                    placeholder="Enter new password" onkeyup="checkPasswordMatch()">
-                                                <button type="button"  style="top: 40%;" class="btn btn-outline-secondary toggle-password eyebutton"
+                                                <label class="form-label">New Password <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="password" id="newPassword" name="password"
+                                                    class="form-control" placeholder="Enter new password"
+                                                    onkeyup="checkPasswordMatch()" required>
+                                                <button type="button" style="top: 40%;"
+                                                    class="btn btn-outline-secondary toggle-password eyebutton"
                                                     data-target="newPassword">
                                                     <i class="fa fa-eye"></i>
                                                 </button>
@@ -110,10 +114,13 @@
                                         <!-- Confirm Password -->
                                         <div class="col-sm-6">
                                             <div class="mb-0 position-relative">
-                                                <label class="form-label">Confirm Password <span class="text-danger">*</span></label>
+                                                <label class="form-label">Confirm Password <span
+                                                        class="text-danger">*</span></label>
                                                 <input type="password" id="confirmPassword" name="password_confirmation"
-                                                    class="form-control" placeholder="Confirm your new password" onkeyup="checkPasswordMatch()">
-                                                <button type="button"  style="top: 39%;" class="btn btn-outline-secondary toggle-password eyebutton"
+                                                    class="form-control" placeholder="Confirm your new password"
+                                                    required onkeyup="checkPasswordMatch()">
+                                                <button type="button" style="top: 39%;"
+                                                    class="btn btn-outline-secondary toggle-password eyebutton"
                                                     data-target="confirmPassword">
                                                     <i class="fa fa-eye"></i>
                                                 </button>
@@ -138,7 +145,7 @@
 </div>
 
 <script>
-   function checkPasswordMatch() {
+    function checkPasswordMatch() {
     let password = document.getElementById("newPassword").value;
     let confirmPassword = document.getElementById("confirmPassword").value;
     let passwordError = document.getElementById("passwordError");

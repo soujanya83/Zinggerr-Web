@@ -101,7 +101,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label>Title</label>
+                                                <label>Title <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                 <input type="text" class="form-control" name="title"
                                                     placeholder="Enter Task Title.."
                                                     value="{{ old('title', $task->task_title) }}" required>
@@ -110,7 +110,7 @@
 
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label for="task_date">Deadline</label>
+                                                <label for="task_date">Deadline <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                 <input type="text" class="form-control" name="task_date" id="task_date"
                                                     required
                                                     value="{{ old('task_date', \Carbon\Carbon::parse($task->task_completion_date)->format('d/m/Y')) }}"
@@ -118,7 +118,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-12">
-                                            <label class="form-label">Description</label>
+                                            <label class="form-label">Description <span class="text-danger" style="font-weight: bold;">*</span></label>
                                             <div class="form-floating mb-3">
                                                 <!-- Textarea for Summernote -->
                                                 <textarea id="summernote" name="description" class="form-control"

@@ -13,7 +13,10 @@
     .iti {
         width: 100%;
     }
-
+    .required-asterisk {
+        color: red;
+        font-weight: bold;
+    }
 </style>
 <div class="pc-container">
     <div class="pc-content">
@@ -54,7 +57,7 @@
         <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
             <ul>
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                <li>{{ $error }}</li>
                 @endforeach
             </ul>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -67,8 +70,8 @@
                         <h5 class="mb-0">Update User</h5>
                     </div>
                     <div class="card-body">
-                        <form id="registerForm"  action="{{ route('updateuser')}}" method="post"
-                            autocomplete="off" enctype="multipart/form-data">
+                        <form id="registerForm" action="{{ route('updateuser')}}" method="post" autocomplete="off"
+                            enctype="multipart/form-data">
                             @csrf
 
                             <input type="hidden" name="userid" value="{{ $user->id }}">
@@ -77,7 +80,7 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label for="nameInput">Full Name</label>
+                                            <label for="nameInput">Full Name  <span class="text-danger" style="font-weight: bold;">*</span></label>
                                             <input type="text" class="form-control" id="nameInput" name="name"
                                                 value="{{ old('name', $user->name) }}" required>
                                             @error('name')
@@ -87,18 +90,21 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label for="usernameInput">Username</label>
+                                            <label for="usernameInput">Username <span
+                                                    class="text-danger">*</span></label>
                                             <input type="text" class="form-control" id="usernameInput" name="username"
-                                                value="{{ old('username', $user->username) }}" required  oninput="this.value = this.value.replace(/\s/g, '')">
-                                             <!-- Suggestions Dropdown -->
-                                        <div class="position-relative">
-                                            <div id="usernameSuggestions" class="suggestions-box" style="display: none; position: absolute; background: #fff; border: 1px solid #ccc; width: 100%; z-index: 1000; padding: 5px;">
-                                                <strong style="color:rgb(18, 18, 98)">Suggested Usernames:</strong>
-                                                <div id="suggestionsList" class="mt-1"></div>
+                                                value="{{ old('username', $user->username) }}" required
+                                                oninput="this.value = this.value.replace(/\s/g, '')">
+                                            <!-- Suggestions Dropdown -->
+                                            <div class="position-relative">
+                                                <div id="usernameSuggestions" class="suggestions-box"
+                                                    style="display: none; position: absolute; background: #fff; border: 1px solid #ccc; width: 100%; z-index: 1000; padding: 5px;">
+                                                    <strong style="color:rgb(18, 18, 98)">Suggested Usernames:</strong>
+                                                    <div id="suggestionsList" class="mt-1"></div>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                                @error('username')
+                                            @error('username')
                                             <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </div>
@@ -120,12 +126,13 @@
                                         <div class="mb-3">
                                             <label for="phoneInput" class="form-label">Phone</label>
                                             <div class="input-group" style="display: flex; align-items: center;">
-                                                <input type="tel" class="form-control" id="phoneInput" name="phone" required
-                                                    value="{{ old('phone', $user->phone) }}" style="height: 43px;" readonly>
+                                                <input type="tel" class="form-control" id="phoneInput" name="phone"
+                                                    required value="{{ old('phone', $user->phone) }}"
+                                                    style="height: 43px;" readonly>
                                             </div>
                                             <small id="phoneError" class="text-danger"></small>
                                             @error('phone')
-                                                <small class="text-danger">{{ $message }}</small>
+                                            <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </div>
                                     </div> --}}
@@ -143,14 +150,14 @@
                                             </div>
                                             <small id="phoneError" class="text-danger"></small>
                                             @error('phone')
-                                                <small class="text-danger">{{ $message }}</small>
+                                            <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </div>
                                     </div>
 
                                     <div class="col-md-4">
                                         <div class=" mb-3">
-                                            <label for="emailInput">Email</label>
+                                            <label for="emailInput">Email  <span class="text-danger" style="font-weight: bold;">*</span></label>
                                             <input type="email" class="form-control" id="emailInput" placeholder=""
                                                 name="email" required value="{{ old('email', $user->email) }}" readonly>
 
@@ -162,10 +169,13 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class=" mb-3">
-                                            <label for="passwordInput">Password</label>
+                                            <label for="passwordInput">Password <span
+                                                    class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <input type="password" id="passwordInput" class="form-control" name="password" placeholder="Enter new password" required>
-                                                <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                                                <input type="password" id="passwordInput" class="form-control"
+                                                    name="password" placeholder="Enter new password" required>
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    id="togglePassword">
                                                     <i class="fas fa-eye"></i>
                                                 </button>
                                             </div>
@@ -175,7 +185,7 @@
 
                                     <div class="col-md-4">
                                         <div class=" mb-3">
-                                            <label for="emailInput">Role Type</label>
+                                            <label for="emailInput">Role Type  <span class="text-danger" style="font-weight: bold;">*</span></label>
                                             <select name="role" class="form-select" required>
                                                 <option value="" disabled selected>Select Role</option>
                                                 @foreach($role as $roledata)
@@ -185,7 +195,8 @@
                                                 </option>
                                                 @endforeach
 
-                                                {{-- <option value="Superadmin" {{ old('role', $user->type) == 'Superadmin' ?
+                                                {{-- <option value="Superadmin" {{ old('role', $user->type) ==
+                                                    'Superadmin' ?
                                                     'selected' : '' }}>Superadmin</option>
                                                 <option value="Staff" {{ old('role', $user->type) == 'Staff' ?
                                                     'selected' : '' }}>Staff</option> --}}
@@ -258,6 +269,8 @@
                                     <div class="text-end">
                                         <input type="submit" class="btn btn-primary" id="submitButton" value="Update">
                                     </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>

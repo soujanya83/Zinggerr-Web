@@ -303,7 +303,7 @@
                                                 </tr>
 
                                                 <tr>
-                                                    <th> <span class="thspace">Full Name</span> </th>
+                                                    <th> <span class="thspace">Full Name <span class="text-danger" >*</span></span> </th>
                                                     <td>:</td>
                                                     <td>
                                                         <input type="text" class="form-control" name="name"
@@ -311,7 +311,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <th><span class="thspace">Username</span></th>
+                                                    <th><span class="thspace">Username <span class="text-danger" >*</span></span></th>
                                                     <td>:</td>
                                                     {{-- <td>{{ Auth::user()->username }} <small
                                                             class="text-muted">(Read Only)</small></td> --}}
@@ -321,7 +321,7 @@
                                                             oninput="this.value = this.value.replace(/\s/g, '')"></td>
                                                 </tr>
                                                 <tr>
-                                                    <th><span class="thspace">Phone</span></th>
+                                                    <th><span class="thspace">Phone <span class="text-danger" >*</span></span></th>
                                                     <td>:</td>
 
                                                     <td>
@@ -334,7 +334,7 @@
 
                                                 </tr>
                                                 <tr>
-                                                    <th><span class="thspace">Email</span></th>
+                                                    <th><span class="thspace">Email <span class="text-danger" >*</span></span></th>
                                                     <td>:</td>
                                                     {{-- <td>{{ Auth::user()->email }} <small class="text-muted">(Read
                                                             Only)</small></td> --}}
@@ -417,7 +417,7 @@
                                                                             class="text-danger">*</span></label>
                                                                     <input type="password" id="currentPassword"
                                                                         name="current_password" class="form-control"
-                                                                        placeholder="Enter your current password">
+                                                                        placeholder="Enter your current password" required>
                                                                     <button type="button" style="top: 34%;"
                                                                         class="btn btn-outline-secondary toggle-password eyebutton"
                                                                         data-target="currentPassword">
@@ -438,7 +438,7 @@
                                                                             class="text-danger">*</span></label>
                                                                     <input type="password" id="newPassword"
                                                                         name="new_password" class="form-control"
-                                                                        placeholder="Enter new password">
+                                                                        placeholder="Enter new password" required>
                                                                     <button type="button"
                                                                         class="btn btn-outline-secondary toggle-password eyebutton"
                                                                         data-target="newPassword">
@@ -453,7 +453,7 @@
                                                                     <input type="password" id="confirmPassword"
                                                                         name="new_password_confirmation"
                                                                         class="form-control"
-                                                                        placeholder="Confirm your new password">
+                                                                        placeholder="Confirm your new password" required>
                                                                     <button type="button"
                                                                         class="btn btn-outline-secondary toggle-password eyebutton"
                                                                         data-target="confirmPassword">

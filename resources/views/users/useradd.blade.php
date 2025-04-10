@@ -18,6 +18,10 @@
         width: 100%;
     }
 
+    .required-asterisk {
+        color: red;
+        font-weight: bold;
+    }
 </style>
 
 
@@ -67,193 +71,164 @@
         </div>
         @endif
         <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">Create User</h5>
-                    </div>
-                    <div class="card-body">
-                        <form id="registerForm" action="{{ route('createuser') }}" method="post" autocomplete="off"
-                            enctype="multipart/form-data">
-                            @csrf
-
-
-
-                            <div class="row">
-
-                                <div class="col-md-4">
-                                    <div class=" mb-3">
-                                        <label for="emailInput">Role</label>
-                                        <select name="role" id="roleSelect" class="form-select" required>
-                                            <option value="">Select Role</option>
-                                            @foreach($role as $roledata)
-                                            <option value="{{ $roledata->name }}">{{ $roledata->display_name }}</option>
-                                            @endforeach
-                                            <option value="other">Other</option>
-
-                                        </select>
-                                    </div>
+            <div class="class=" tab-pane" id="request" role="tabpanel" aria-labelledby="request-tab"">
+                <div class=" card">
+                <div class="card-header">
+                    <h5 class="mb-0">Create User</h5>
+                </div>
+                <div class="card-body">
+                    <form id="registerForm" action="{{ route('createuser') }}" method="post" autocomplete="off"
+                        enctype="multipart/form-data">
+                        @csrf
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class=" mb-3">
+                                    <label for="emailInput">Role  <span class="text-danger" style="font-weight: bold;">*</span></label>
+                                    <select name="role" id="roleSelect" class="form-select" required>
+                                        <option value="">Select Role</option>
+                                        @foreach($role as $roledata)
+                                        <option value="{{ $roledata->name }}">{{ $roledata->display_name }}</option>
+                                        @endforeach
+                                        <option value="other">Other</option>
+                                    </select>
                                 </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class=" mb-3">
+                                    <label for="nameInput">Full Name  <span class="text-danger" style="font-weight: bold;">*</span></label>
+                                    <input type="text" class="form-control" id="nameInput" name="name" required
+                                        value="{{ old('name') }}">
 
-
-                                <div class="col-md-4">
-                                    <div class=" mb-3">
-                                        <label for="nameInput">Full Name</label>
-                                        <input type="text" class="form-control" id="nameInput" name="name" required
-                                            value="{{ old('name') }}">
-
-                                        <small id="nameError" class="text-danger"></small>
-                                        @error('name')
-                                        <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                    </div>
+                                    <small id="nameError" class="text-danger"></small>
+                                    @error('name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
-                                {{-- <div class="col-md-4">
-                                    <div class=" mb-3">
-                                        <label for="usernameInput">Username</label>
-                                        <input type="text" class="form-control" id="usernameInput" placeholder=""
-                                            name="username" required value="{{ old('username') }}"
-                                            oninput="this.value = this.value.replace(/\s/g, '')">
-
-                                        <small id="usernameError" class="text-danger"></small>
-                                        @error('username')
-                                        <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div> --}}
-
-                                <div class="col-md-4">
-                                    <div class="mb-3 position-relative">
-                                        <label for="usernameInput">Username</label>
-                                        <input type="text" class="form-control" id="usernameInput" name="username" required
-                                               oninput="this.value = this.value.replace(/\s/g, '')">
-
-                                        <!-- Suggestions Dropdown -->
-                                        <div class="position-relative">
-                                            <div id="usernameSuggestions" class="suggestions-box" style="display: none; position: absolute; background: #fff; border: 1px solid #ccc; width: 100%; z-index: 1000; padding: 5px;">
-                                                <strong style="color:rgb(18, 18, 98)">Suggested Usernames:</strong>
-                                                <div id="suggestionsList" class="mt-1"></div>
-                                            </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3 position-relative">
+                                    <label for="usernameInput">Username  <span class="text-danger" style="font-weight: bold;">*</span></label>
+                                    <input type="text" class="form-control" id="usernameInput" name="username" required
+                                        oninput="this.value = this.value.replace(/\s/g, '')">
+                                    <div class="position-relative">
+                                        <div id="usernameSuggestions" class="suggestions-box"
+                                            style="display: none; position: absolute; background: #fff; border: 1px solid #ccc; width: 100%; z-index: 1000; padding: 5px;">
+                                            <strong style="color:rgb(18, 18, 98)">Suggested Usernames:</strong>
+                                            <div id="suggestionsList" class="mt-1"></div>
                                         </div>
-                                        <small id="usernameError" class="text-danger"></small>
-                                        @error('username')
-                                        <small class="text-danger">{{ $message }}</small>
-                                        @enderror
                                     </div>
+                                    <small id="usernameError" class="text-danger"></small>
+                                    @error('username')
+                                    <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
+                            </div>
+                            <div class="col-md-4" style="margin-top: -8px;">
+                                <div class="mb-3">
+                                    <label for="phoneInput" class="form-label">Phone</label>
+                                    <div class="input-group" style="display: flex; align-items: center;">
+                                        <input type="tel" class="form-control" id="phoneInput" name="phone"
+                                            value="{{ old('phone') }}" style="height: 43px;" pattern="[0-9]*"
+                                            inputmode="numeric">
+                                        <input type="hidden" name="full_phone" id="fullPhone">
+                                        <input type="hidden" name="country_code" id="countryCode">
+                                        <input type="hidden" name="country_name" id="countryName">
+                                    </div>
+                                    <small id="phoneError" class="text-danger"></small>
+                                    @error('phone')
+                                    <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class=" mb-3">
+                                    <label for="emailInput">Email  <span class="text-danger" style="font-weight: bold;">*</span></label>
+                                    <input type="email" class="form-control" id="emailInput" placeholder="" name="email"
+                                        required value="{{ old('email') }}">
 
-
-
-
-                                <div class="col-md-4" style="margin-top: -8px;">
-                                    <div class="mb-3">
-                                        <label for="phoneInput" class="form-label">Phone</label>
-                                        <div class="input-group" style="display: flex; align-items: center;">
-                                            <input type="tel" class="form-control" id="phoneInput" name="phone"
-                                                value="{{ old('phone') }}" style="height: 43px;" pattern="[0-9]*" inputmode="numeric">
-                                            <input type="hidden" name="full_phone" id="fullPhone">
-                                            <input type="hidden" name="country_code" id="countryCode">
-                                            <input type="hidden" name="country_name" id="countryName">
+                                    <small id="emailError" class="text-danger"></small>
+                                    @error('email')
+                                    <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class=" mb-3">
+                                    <label for="passwordInput">Password  <span class="text-danger" style="font-weight: bold;">*</span></label>
+                                    <div class="input-group">
+                                        <input type="password" id="passwordInput" class="form-control" name="password"
+                                            required>
+                                        <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <small id="passwordError" class="text-danger"></small>
+                                    @error('password')
+                                    <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class=" mb-3">
+                                    <label for="profile">Profile Picture</label>
+                                    <input type="file" name="profile_picture" class="form-control" accept="image/*"
+                                        placeholder="Profile Picture" id="profile">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="gender">Gender:</label>
+                                    <div style="margin-top: 10px;">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="gender" id="genderMale"
+                                                value="Male" checked>
+                                            <label class="form-check-label" for="genderMale">Male</label>
                                         </div>
-                                        <small id="phoneError" class="text-danger"></small>
-                                        @error('phone')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class=" mb-3">
-                                        <label for="emailInput">Email</label>
-                                        <input type="email" class="form-control" id="emailInput" placeholder=""
-                                            name="email" required value="{{ old('email') }}">
-
-                                        <small id="emailError" class="text-danger"></small>
-                                        @error('email')
-                                        <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class=" mb-3">
-                                        <label for="passwordInput">Password</label>
-                                        <div class="input-group">
-                                            <input type="password" id="passwordInput" class="form-control"
-                                                name="password" required>
-                                            <button type="button" class="btn btn-outline-secondary" id="togglePassword">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="gender" id="genderFemale"
+                                                value="Female">
+                                            <label class="form-check-label" for="genderFemale">Female</label>
                                         </div>
-                                        <small id="passwordError" class="text-danger"></small>
-                                        @error('password')
-                                        <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-
-
-                                <div class="col-md-4">
-                                    <div class=" mb-3">
-                                        <label for="profile">Profile Picture</label>
-                                        <input type="file" name="profile_picture" class="form-control" accept="image/*"
-                                            placeholder="Profile Picture" id="profile">
-                                    </div>
-                                </div>
-
-
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <label for="gender">Gender:</label>
-                                        <div style="margin-top: 10px;">
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="gender"
-                                                    id="genderMale" value="Male" checked>
-                                                <label class="form-check-label" for="genderMale">Male</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="gender"
-                                                    id="genderFemale" value="Female">
-                                                <label class="form-check-label" for="genderFemale">Female</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="gender"
-                                                    id="genderOther" value="Other">
-                                                <label class="form-check-label" for="genderOther">Other</label>
-                                            </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="gender" id="genderOther"
+                                                value="Other">
+                                            <label class="form-check-label" for="genderOther">Other</label>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <label for="status">Status:</label>
-                                        <div style="margin-top: 10px;">
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="status"
-                                                    id="statusActive" value="1" checked>
-                                                <label class="form-check-label" for="statusActive">Active</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="status"
-                                                    id="statusInactive" value="0">
-                                                <label class="form-check-label" for="statusInactive">Inactive</label>
-                                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="status">Status:</label>
+                                    <div style="margin-top: 10px;">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="status" id="statusActive"
+                                                value="1" checked>
+                                            <label class="form-check-label" for="statusActive">Active</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="status"
+                                                id="statusInactive" value="0">
+                                            <label class="form-check-label" for="statusInactive">Inactive</label>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="text-end">
-                                    <input type="submit" class="btn  btn-shadow btn-primary" id="submitButton"
-                                        value="Submit">
-                                </div>
-                        </form>
-
-
-                    </div>
+                            </div>
+                            <div class="text-end">
+                                <input type="submit" class="btn  btn-shadow btn-primary" id="submitButton"
+                                    value="Submit">
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+
+
+
+</div>
 </div>
 
 <!-- Modal for Creating New Role -->
@@ -268,11 +243,12 @@
                 <form action="{{ route('roles.newstore') }}" method="POST">
                     @csrf
                     <div class="mb-3">
-                        <label for="roleName" class="form-label">Name</label>
+                        <label for="roleName" class="form-label">Name  <span class="text-danger" style="font-weight: bold;">*</span></label>
                         <input type="text" class="form-control" id="roleName" name="name" required>
                     </div>
                     <div class="mb-3">
-                        <label for="roleDescription" class="form-label">Description</label>
+                        <label for="roleDescription" class="form-label">Description <span
+                                class="text-danger">*</span></label>
                         <textarea class="form-control" id="roleDescription" name="description" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary" style="margin-left: 39%;">Save Role</button>
@@ -283,7 +259,7 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
     const roleSelect = document.getElementById('roleSelect');
     const createRoleModal = new bootstrap.Modal(document.getElementById('createRoleModal'));
 

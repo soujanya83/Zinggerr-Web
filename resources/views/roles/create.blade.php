@@ -7,7 +7,12 @@
 @section('content')
 @include('partials.sidebar')
 @include('partials.header')
-
+<style>
+       .required-asterisk {
+        color: red;
+        font-weight: bold;
+    }
+</style>
 <div class="pc-container">
     <div class="pc-content">
         <div class="page-header">
@@ -73,7 +78,7 @@
 
                                         <div class="col-md-4">
                                             <div class="mb-3">
-                                                <label for="displayNameInput">Display Name</label>
+                                                <label for="displayNameInput">Display Name  <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                 <input type="text" class="form-control" id="displayNameInput"
                                                     name="displayname" placeholder="Enter Display Name"
                                                     value="{{ old('displayname') }}" required>
@@ -83,7 +88,7 @@
 
                                         <div class="col-md-4">
                                             <div class="mb-3">
-                                                <label for="nameInput">Name</label>
+                                                <label for="nameInput">Name  <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                 <input type="text" class="form-control" id="nameInput" name="name"
                                                     required placeholder="Enter Name" value="{{ old('name') }}"
                                                     oninput="this.value = this.value.replace(/\s/g, '')">
@@ -92,7 +97,7 @@
 
                                         <div class="col-md-4">
                                             <div class="mb-3">
-                                                <label for="descriptionInput">Description</label>
+                                                <label for="descriptionInput">Description  <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                 <textarea class="form-control" id="descriptionInput" name="description"
                                                     required rows="1"
                                                     placeholder="Enter Description...">{{ old('description') }}</textarea>

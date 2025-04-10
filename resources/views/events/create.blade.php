@@ -119,7 +119,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label><b>Title</b></label>
+                                                <label><b>Title</b> <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                 <input type="text" class="form-control" name="title"
                                                     placeholder="Enter Title.." value="{{ old('title') }}" required>
                                             </div>
@@ -127,7 +127,7 @@
                                         <div class="col-md-3">
                                             <div class="mb-3">
                                                 <div class="mb-2">
-                                                    <label for="background_color"><b>Background Color</b></label>
+                                                    <label for="background_color"><b>Background Color</b> <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                     <input type="color" class="form-control color-picker"
                                                         name="background_color" id="background_color" value="#732b2b"
                                                         required>
@@ -137,7 +137,7 @@
                                         <div class="col-md-3">
                                             <div class="mb-3">
                                                 <div>
-                                                    <label for="text_color"><b>Text Color</b></label>
+                                                    <label for="text_color"><b>Text Color</b> <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                     <input type="color" class="form-control color-picker"
                                                         name="text_color" id="text_color" value="#d8d0d0" required>
                                                 </div>
@@ -147,8 +147,8 @@
 
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label for="start_datetime"><b>Start Date & Time</b></label>
-                                                <input type="text" class="form-control faded-placeholder"
+                                                <label for="start_datetime"><b>Start Date & Time</b> <span class="text-danger" style="font-weight: bold;">*</span></label>
+                                                <input type="text" class="form-control faded-placeholder" required
                                                     name="start_datetime" id="start_datetime"
                                                     placeholder="dd/mm/yyyy --:--" value="{{ old('start_datetime') }}">
                                             </div>
@@ -156,15 +156,15 @@
 
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label for="end_datetime"><b>End Date & Time</b></label>
-                                                <input type="text" class="form-control faded-placeholder"
+                                                <label for="end_datetime"><b>End Date & Time</b> <span class="text-danger" style="font-weight: bold;">*</span></label>
+                                                <input type="text" class="form-control faded-placeholder" required
                                                     name="end_datetime" id="end_datetime" placeholder="dd/mm/yyyy --:--"
                                                     value="{{ old('end_datetime')}}">
                                             </div>
                                         </div>
 
                                         <div class="col-md-12">
-                                            <label class="form-label"><b>Description</b></label>
+                                            <label class="form-label"><b>Description</b> <span class="text-danger" style="font-weight: bold;">*</span></label>
                                             <div class="form-floating">
                                                 <textarea id="summernote" name="description" class="form-control"
                                                     required>{{ old('description') }}</textarea>

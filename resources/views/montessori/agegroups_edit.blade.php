@@ -7,7 +7,12 @@
 @section('content')
 @include('partials.sidebar')
 @include('partials.header')
-
+<style>
+    .required-asterisk {
+     color: red;
+     font-weight: bold;
+ }
+</style>
 <div class="pc-container">
     <div class="pc-content">
         <div class="page-header">
@@ -70,7 +75,7 @@
                                         <input type="hidden" value="{{ $getdata->id }}" name="id">
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label for="nameInput">Full Name</label>
+                                                <label for="nameInput">Full Name  <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                 <input type="text" class="form-control" id="nameInput" name="fullname"
                                                     required placeholder="Enter Full Name"
                                                     value="{{ old('fullname', $getdata->full_name ?? '') }}">
@@ -79,7 +84,7 @@
 
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label for="shortnameInput">Short Name</label>
+                                                <label for="shortnameInput">Short Name  <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                 <input type="text" class="form-control" id="shortnameInput"
                                                     name="shortname" required placeholder="Enter Short Name"
                                                     value="{{ old('shortname', $getdata->short_name ?? '') }}">
@@ -89,7 +94,7 @@
 
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label for="descriptionInput">Description</label>
+                                                <label for="descriptionInput">Description  <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                 <textarea class="form-control" id="descriptionInput" name="description"
                                                     required rows="1"
                                                     placeholder="Enter Description...">{{ old('description', $getdata->description ?? '') }}</textarea>

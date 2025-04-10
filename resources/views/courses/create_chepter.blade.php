@@ -188,7 +188,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label for="chepter_name">Chapter Name:</label>
+                                                <label for="chepter_name">Chapter Name: <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                 <input type="text" id="chepter_name" name="chepter_name"
                                                     class="form-control" placeholder="Enter Chapter Name" required
                                                     value="{{ old('chepter_name') }}">

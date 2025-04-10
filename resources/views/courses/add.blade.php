@@ -220,7 +220,7 @@
 
                                                     <label style="align-content: center;" class="form-label"
                                                         for="floatingShortname">Course Full
-                                                        Name</label>
+                                                        Name  <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                 </div>
                                             </div>
 
@@ -245,7 +245,7 @@
                                                         oninput="this.value = this.value.replace(/\s/g, '')">
                                                     <label style="align-content: center;" class="form-label"
                                                         for="floatingShortname">
-                                                        Course Short Name
+                                                        Course Short Name <span class="text-danger" style="font-weight: bold;">*</span>
                                                     </label>
                                                 </div>
                                             </div>
@@ -324,7 +324,7 @@
                                                         @endforeach
                                                         <option value="other">Other</option>
                                                     </select>
-                                                    <label style="align-content: center;" for="ageGroupSelect">Select Montessori Age Group</label>
+                                                    <label style="align-content: center;" for="ageGroupSelect">Select Montessori Age Group <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                 </div>
                                             </div>
 
@@ -333,7 +333,7 @@
                                                     <select name="areas" class="form-select" id="areaSelect" onchange="handleFloatingLabel()">
                                                         <option value="" disabled selected>Select Area</option>
                                                     </select>
-                                                    <label style="align-content: center;" for="areaSelect">Select Montessori Area</label>
+                                                    <label style="align-content: center;" for="areaSelect">Select Montessori Area <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                 </div>
                                             </div>
 
@@ -415,7 +415,7 @@
                                             </div>
 
                                             <div class="col-md-12">
-                                                <label class="form-label">Course Summary</label>
+                                                <label class="form-label">Course Summary  <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                 <div class="form-floating mb-3">
                                                     <!-- Textarea for Summernote -->
                                                     <textarea id="summernote" name="course_summary" class="form-control"
@@ -428,7 +428,7 @@
 
                                             <div class="col-md-12">
                                                 <label class="form-label" style="margin-bottom: 5px;">Course Image
-                                                    Upload</label>
+                                                    Upload <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                 <div class="form-floating mb-3">
                                                     <div class="d-flex align-items-center rounded w-100 col-md-12">
                                                         <label for="fileUpload"

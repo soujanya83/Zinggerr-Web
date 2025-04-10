@@ -133,7 +133,7 @@
                                         <!-- Assets Type -->
                                         <div class="col-md-4">
                                             <div class="mb-3">
-                                                <label for="assetstype" class="form-label">Assets Type:</label>
+                                                <label for="assetstype" class="form-label">Assets Type: <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                 <select name="assetstype" id="blog" class="form-select" required>
                                                     <option value="">Select</option>
                                                     <option value="blog">Blog</option>
@@ -147,7 +147,7 @@
                                         <!-- Topic Name -->
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label for="topicname" class="form-label">Topic Name:</label>
+                                                <label for="topicname" class="form-label">Topic Name: <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                 <input type="text" id="topicname" name="topicname" class="form-control"
                                                     required placeholder="Enter Topic Name ">
                                             </div>

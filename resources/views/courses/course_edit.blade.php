@@ -270,10 +270,10 @@
                                                         <input type="text" name="course_full_name" class="form-control"
                                                             placeholder="Enter Course Full Name"
                                                             value="{{ old('course_full_name'). $course->course_full_name }}"
-                                                            id="floatingShortname">
+                                                            id="floatingShortname" required>
                                                         <label style="align-content: center;" class="form-label"
                                                             for="floatingShortname">Course Full
-                                                            Name</label>
+                                                            Name <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                     </div>
                                                 </div>
 
@@ -284,10 +284,10 @@
                                                             placeholder="Enter Course Short Name"
                                                             value="{{ old('course_short_name'). $course->course_short_name }}"
                                                             id="floatingShortname"
-                                                            oninput="this.value = this.value.replace(/\s/g, '')">
+                                                            oninput="this.value = this.value.replace(/\s/g, '')" required>
                                                         <label style="align-content: center;" class="form-label"
                                                             for="floatingShortname">Course Short
-                                                            Name</label>
+                                                            Name <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6" style="display:none">
@@ -319,46 +319,10 @@
 
 
 
-                                                {{-- <div class="col-md-6">
-                                                    <div class="form-floating mb-3">
-                                                        <select name="age_groups" class="form-select"
-                                                            id="floatingShortname">
-                                                            <option>Select Age-Group</option>
-                                                            @foreach($agegroups as $agedata)
-                                                            <option value="{{ $agedata->short_name }}" {{ isset($course)
-                                                                && $course->age_group == $agedata->short_name ?
-                                                                'selected' : '' }}>
-                                                                {{ $agedata->short_name }}
-                                                            </option>
-                                                            @endforeach
-
-                                                        </select>
-                                                        <label for="floatingShortname">Select Montessori Age
-                                                            Group</label>
-                                                    </div>
-                                                </div>
-
 
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3">
-                                                        <select name="areas" class="form-select" id="floatingShortname">
-                                                            <option>Select Area</option>
-                                                            @foreach($areas as $areadata)
-                                                            <option value="{{ $areadata->full_name }}" {{ isset($course)
-                                                                && $course->area == $areadata->full_name ? 'selected' :
-                                                                '' }}>
-                                                                {{ $areadata->full_name }}
-                                                            </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <label for="floatingShortname">Select Montessori Area</label>
-                                                    </div>
-                                                </div> --}}
-
-
-                                                <div class="col-md-6">
-                                                    <div class="form-floating mb-3">
-                                                        <select name="age_groups" class="form-select" id="ageGroupSelect" onchange="updateAreas()">
+                                                        <select name="age_groups" class="form-select" id="ageGroupSelect" onchange="updateAreas()" required>
                                                             <option value="" disabled>Select Age-Group</option>
                                                             @foreach($agegroups as $agedata)
                                                             <option value="{{ $agedata->short_name }}" {{ isset($course) && $course->age_group == $agedata->short_name ? 'selected' : '' }}>
@@ -366,17 +330,17 @@
                                                             </option>
                                                             @endforeach
                                                         </select>
-                                                        <label for="ageGroupSelect">Select Montessori Age Group</label>
+                                                        <label for="ageGroupSelect">Select Montessori Age Group <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3">
-                                                        <select name="areas" class="form-select" id="areaSelect" onchange="handleFloatingLabel()">
+                                                        <select name="areas" class="form-select" id="areaSelect" onchange="handleFloatingLabel()" required>
                                                             <option value="" disabled>Select Area</option>
                                                             <!-- Options will be dynamically populated by JavaScript -->
                                                         </select>
-                                                        <label for="areaSelect">Select Montessori Area</label>
+                                                        <label for="areaSelect">Select Montessori Area <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                     </div>
                                                 </div>
 
@@ -494,11 +458,11 @@
                                                 </div>
 
                                                 <div class="col-md-12">
-                                                    <label class="form-label">Course Summary</label>
+                                                    <label class="form-label">Course Summary <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                     <div class="form-floating mb-3">
                                                         <!-- Textarea for Summernote -->
                                                         <textarea id="summernote" name="course_summary"
-                                                            class="form-control">
+                                                            class="form-control" required>
                                                             {{ old('course_summary', $course->course_summary ?? '') }}
                                                         </textarea>
 
@@ -506,7 +470,7 @@
                                                 </div>
 
                                                 <div class="col-md-12">
-                                                    <label class="form-label">Course Image Upload</label>
+                                                    <label class="form-label">Course Image Upload <span class="text-danger" style="font-weight: bold;">*</span></label>
 
                                                     <div class="form-floating mb-3">
 
@@ -526,7 +490,7 @@
                                                                     <span id="fileName" class="ms-2"></span>
                                                                     <input type="file" id="fileUpload"
                                                                         name="course_image" class="file-upload-input"
-                                                                        onchange="showFileName(this)">
+                                                                        onchange="showFileName(this)" required>
                                                                 </label>
 
                                                             </div>
@@ -873,7 +837,7 @@
                 <div class="modal-body">
                     <input type="hidden" name="assign_id" id="assignId">
                     <div class="mb-3">
-                        <label for="remark" class="form-label">Remove Remark For This User</label>
+                        <label for="remark" class="form-label">Remove Remark For This User  <span class="text-danger" style="font-weight: bold;">*</span></label>
                         <textarea class="form-control" name="remark" id="remark" rows="3" required></textarea>
                     </div>
                 </div>

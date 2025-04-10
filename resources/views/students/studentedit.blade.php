@@ -13,6 +13,10 @@
     .iti {
         width: 100%;
     }
+    .required-asterisk {
+        color: red;
+        font-weight: bold;
+    }
 </style>
 <div class="pc-container">
     <div class="pc-content">
@@ -76,7 +80,7 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label for="nameInput">Full Name</label>
+                                            <label for="nameInput">Full Name  <span class="text-danger" style="font-weight: bold;">*</span></label>
                                             <input type="text" class="form-control" id="nameInput" name="name"
                                                 value="{{ old('name', $user->name) }}" required>
                                             @error('name')
@@ -86,7 +90,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label for="usernameInput">Username</label>
+                                            <label for="usernameInput">Username  <span class="text-danger" style="font-weight: bold;">*</span></label>
                                             <input type="text" class="form-control" id="usernameInput" name="username"
                                                 value="{{ old('username', $user->username) }}" required
                                                 oninput="this.value = this.value.replace(/\s/g, '')">
@@ -104,19 +108,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    {{-- <div class="col-md-4">
-                                        <div class=" mb-3">
-                                            <label for="phoneInput">Phone</label>
-                                            <input type="tel" class="form-control" id="phoneInput" placeholder=""
-                                                name="phone" required value="{{ old('phone', $user->$user->phone) }}"
-                                                readonly>
 
-                                            <small id="phoneError" class="text-danger"></small>
-                                            @error('phone')
-                                            <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                    </div> --}}
 
 
                                     <div class="col-md-4" style="margin-top: -8px;">
@@ -132,7 +124,7 @@
                                             </div>
                                             <small id="phoneError" class="text-danger"></small>
                                             @error('phone')
-                                                <small class="text-danger">{{ $message }}</small>
+                                            <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </div>
                                     </div>
@@ -141,7 +133,7 @@
 
                                     <div class="col-md-4">
                                         <div class=" mb-3">
-                                            <label for="emailInput">Email</label>
+                                            <label for="emailInput">Email  <span class="text-danger" style="font-weight: bold;">*</span></label>
                                             <input type="email" class="form-control" id="emailInput" placeholder=""
                                                 name="email" required value="{{ old('email', $user->email) }}" readonly>
 
@@ -153,7 +145,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label for="passwordInput">Password</label>
+                                            <label for="passwordInput">Password  <span class="text-danger" style="font-weight: bold;">*</span></label>
                                             <div class="input-group">
                                                 <input type="password" class="form-control" id="passwordInput"
                                                     name="password" required placeholder="Enter New Password">
@@ -232,6 +224,8 @@
                                     <div class="text-end">
                                         <input type="submit" class="btn btn-primary" id="submitButton" value="Submit">
                                     </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>

@@ -95,29 +95,29 @@
                                     <input type="hidden" name="event_id" value="{{ $event->id }}">
 
                                     <div class="row">
-                                        <div class="col-md-8">
+                                        <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label><b>Title</b></label>
+                                                <label><b>Title</b> <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                 <input type="text" class="form-control" name="title"
                                                     placeholder="Enter Title..."
                                                     value="{{ old('title', $event->event_topic) }}" required>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-2">
+                                        <div class="col-md-3">
                                             <div class="mb-3">
                                                 <div class="mb-2">
-                                                    <label for="background_color"><b>Background Color</b></label>
+                                                    <label for="background_color"><b>Background Color</b> <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                     <input type="color" class="form-control color-picker"
                                                         name="background_color" id="background_color" value="{{ old('background_color', $event->background_color) }}"
                                                         required>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-3">
                                             <div class="mb-3">
                                                 <div>
-                                                    <label for="text_color"><b>Text Color</b></label>
+                                                    <label for="text_color"><b>Text Color</b> <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                     <input type="color" class="form-control color-picker"
                                                         name="text_color" id="text_color" value="{{ old('text_color', $event->text_color) }}" required>
                                                 </div>
@@ -145,7 +145,7 @@
 
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label for="start_datetime"><b>Start Date & Time</b></label>
+                                                <label for="start_datetime"><b>Start Date & Time</b> <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                 <input type="text" class="form-control faded-placeholder" name="start_datetime" id="start_datetime" required
                                                        value="{{ old('start_datetime', \Carbon\Carbon::parse($event->event_start)->format('d/m/Y H:i')) }}">
                                             </div>
@@ -153,14 +153,14 @@
 
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label><b>End Date & Time</b></label>
-                                                <input type="text" class="form-control faded-placeholder" name="end_datetime" id="end_datetime" required
+                                                <label><b>End Date & Time</b> <span class="text-danger" style="font-weight: bold;">*</span></label>
+                                                <input required type="text" class="form-control faded-placeholder" name="end_datetime" id="end_datetime" required
                                                        value="{{ old('end_datetime', \Carbon\Carbon::parse($event->event_end)->format('d/m/Y H:i')) }}">
                                             </div>
                                         </div>
 
                                         <div class="col-md-12">
-                                            <label class="form-label"><b>Description</b></label>
+                                            <label class="form-label"><b>Description</b> <span class="text-danger" style="font-weight: bold;">*</span></label>
                                             <div class="form-floating mb-3">
                                                 <!-- Textarea for Summernote -->
                                                 <textarea id="summernote" name="description" class="form-control"
