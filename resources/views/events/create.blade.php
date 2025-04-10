@@ -117,14 +117,14 @@
                                     autocomplete="off">
                                     @csrf
                                     <div class="row">
-                                        <div class="col-md-8">
+                                        <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label><b>Title</b></label>
                                                 <input type="text" class="form-control" name="title"
                                                     placeholder="Enter Title.." value="{{ old('title') }}" required>
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-3">
                                             <div class="mb-3">
                                                 <div class="mb-2">
                                                     <label for="background_color"><b>Background Color</b></label>
@@ -134,7 +134,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-3">
                                             <div class="mb-3">
                                                 <div>
                                                     <label for="text_color"><b>Text Color</b></label>
