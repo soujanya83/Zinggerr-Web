@@ -74,6 +74,42 @@
     .fc-daygrid-event:hover {
         background-color: transparent !important;
     }
+
+
+
+        /* Change color of prev/next buttons */
+.fc-button.fc-prev-button,
+.fc-button.fc-next-button {
+    background-color: #d4e7f9 !important;  /* Example: Amber */
+    border: none !important;
+    color: #2a19b6  !important; /* Text/icon color */
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(157, 2, 2, 0.1);
+}
+
+.fc-button.fc-prev-button:hover,
+.fc-button.fc-next-button:hover {
+    background-color: #d4e7f9 !important;  /* Darker on hover */
+}
+
+
+
+    /* Change color of prev/next buttons */
+    .fc-button.fc-prev-button,
+.fc-button.fc-next-button {
+    background-color: #d4e7f9 !important;  /* Example: Amber */
+    border: none !important;
+    color: #2a19b6  !important; /* Text/icon color */
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(157, 2, 2, 0.1);
+}
+
+.fc-button.fc-prev-button:hover,
+.fc-button.fc-next-button:hover {
+    background-color: #d4e7f9 !important;  /* Darker on hover */
+}
+.material-icons-two-tone {
+    background-color: #2a19b6}
 </style>
 
 <div class="pc-container">
@@ -399,10 +435,10 @@
                             <h5 id="cardHeaderTitle" style=" font-weight: 500; margin: 0;">To Do List
                             </h5>
                             <div>
-                                <button id="prevDateBtn"
-                                    style="background-color: #2c3e50; color: white; border: none; padding: 5px 10px; border-radius: 5px; margin-right: 5px;">&lt;</button>
-                                <button id="nextDateBtn"
-                                    style="background-color: #2c3e50; color: white; border: none; padding: 5px 10px; border-radius: 5px;">&gt;</button>
+                                <button id="prevDateBtn" class="btn  btn-shadow"
+                                    style="background-color: #d4e7f9; color: #2a19b6; border: none; padding: 6px 10px; border-radius: 5px; margin-right: 5px;"><i class="material-icons-two-tone">navigate_before</i></button>
+                                <button id="nextDateBtn" class="btn  btn-shadow"
+                                    style="background-color: #d4e7f9; color: #2a19b6; border: none; padding: 6px 10px; border-radius: 5px;"><i class="material-icons-two-tone">navigate_next</i></button>
                             </div>
                         </div>
                         <div class="card-body" style="padding: 5px;">
