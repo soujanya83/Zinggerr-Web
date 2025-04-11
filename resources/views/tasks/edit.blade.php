@@ -147,7 +147,7 @@
 
                                         <div class="col-md-6">
                                             <div class="mb-3 mt-4">
-                                                <label>Assign To</label>
+                                                <label>Assign To:</label>
                                                 <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#assignModal" data-task-id="{{ $task->id }}">
                                                     Select Users
                                                 </button>

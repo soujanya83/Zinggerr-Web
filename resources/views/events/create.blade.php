@@ -129,7 +129,7 @@
                                                 <div class="mb-2">
                                                     <label for="background_color"><b>Background Color</b> <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                     <input type="color" class="form-control color-picker"
-                                                        name="background_color" id="background_color" value="#732b2b"
+                                                        name="background_color" id="background_color" value="#d4e7f9"
                                                         required>
                                                 </div>
                                             </div>
@@ -139,7 +139,7 @@
                                                 <div>
                                                     <label for="text_color"><b>Text Color</b> <span class="text-danger" style="font-weight: bold;">*</span></label>
                                                     <input type="color" class="form-control color-picker"
-                                                        name="text_color" id="text_color" value="#d8d0d0" required>
+                                                        name="text_color" id="text_color" value="#6610f2" required>
                                                 </div>
                                             </div>
                                         </div>

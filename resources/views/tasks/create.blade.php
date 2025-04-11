@@ -69,7 +69,36 @@
         margin-bottom: 1rem; /* Adjust spacing below the row */
     }
 </style>
+<style>
+    .nav-tabs .nav-link.active {
+        border-bottom: 3px solid #007bff;
+        color: #007bff;
+        font-weight: bold;
+        background-color: white
+    }
 
+    .nav-tabs .nav-link {
+        border: none;
+        /* Remove default tab borders for a cleaner look */
+        color: #000000;
+        /* Default inactive tab text color */
+        transition: color 0.2s ease-in-out;
+        /* Smooth transition for hover effects */
+    }
+
+    .nav-tabs .nav-link:hover {
+        color: #007bff;
+        /* Hover effect for inactive tabs */
+    }
+
+    .nav-link.active i {
+        background-color: #007bff
+    }
+
+    .nav-link:hover i {
+        background-color: #007bff;
+    }
+</style>
 <div class="pc-container">
     <div class="pc-content">
         <div class="page-header">
@@ -169,7 +198,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3 mt-4">
-                                                <label>Assign To</label>
+                                                <label>Assign To:</label>
                                                 <button type="button" class="btn btn-outline-primary"
                                                     data-bs-toggle="modal" data-bs-target="#assignModal">
                                                     Select Users
@@ -199,16 +228,17 @@
                 <h5 class="modal-title" id="assignModalLabel">Assign Task</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="    margin-top: -20px;">
                 <div id="selected-items" class="mb-3 d-flex flex-wrap align-items-center"></div>
                 <ul class="nav nav-tabs" id="assignTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="roles-tab" data-bs-toggle="tab" data-bs-target="#roles" type="button" role="tab" aria-controls="roles" aria-selected="true">Users/Roles</button>
+                        <button class="nav-link active" id="roles-tab" data-bs-toggle="tab" data-bs-target="#roles" type="button" role="tab" aria-controls="roles" aria-selected="true"><i class="material-icons-two-tone me-1">account_circle</i>Users/Roles</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="courses-tab" data-bs-toggle="tab" data-bs-target="#courses" type="button" role="tab" aria-controls="courses" aria-selected="false">Courses</button>
+                        <button class="nav-link" id="courses-tab" data-bs-toggle="tab" data-bs-target="#courses" type="button" role="tab" aria-controls="courses" aria-selected="false"><i class="material-icons-two-tone me-1">book</i>Courses</button>
                     </li>
                 </ul>
+
                 <div class="tab-content" id="assignTabContent">
                     <div class="tab-pane fade show active" id="roles" role="tabpanel" aria-labelledby="roles-tab">
                         <div class="row g-2 mb-2">

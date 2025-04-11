@@ -22,6 +22,9 @@ return new class extends Migration
             $table->string('option_2');
             $table->string('option_3');
             $table->string('option_4');
+            $table->float('position_x')->nullable();
+            $table->float('position_y')->nullable();
+            $table->integer('skippable')->default(null);
             $table->integer('correct_option');
             $table->timestamps();
         });

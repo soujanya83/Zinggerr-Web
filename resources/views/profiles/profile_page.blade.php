@@ -434,7 +434,7 @@
                                                         <div class="row">
                                                             <div class="col-sm-6">
                                                                 <div class="mb-3 position-relative">
-                                                                    <label class="form-label">New Password <span
+                                                                    <label class="form-label">New Password<span
                                                                             class="text-danger">*</span></label>
                                                                     <input type="password" id="newPassword"
                                                                         name="new_password" class="form-control"
@@ -448,7 +448,7 @@
                                                             </div>
                                                             <div class="col-sm-6">
                                                                 <div class="mb-3 position-relative">
-                                                                    <label class="form-label">Confirm Password <span
+                                                                    <label class="form-label">Confirm Password<span
                                                                             class="text-danger">*</span></label>
                                                                     <input type="password" id="confirmPassword"
                                                                         name="new_password_confirmation"

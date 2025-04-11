@@ -30,6 +30,36 @@
     }
 </style>
 
+<style>
+    .nav-tabs .nav-link.active {
+        border-bottom: 3px solid #007bff;
+        color: #007bff;
+        font-weight: bold;
+        background-color: white
+    }
+
+    .nav-tabs .nav-link {
+        border: none;
+        /* Remove default tab borders for a cleaner look */
+        color: #000000;
+        /* Default inactive tab text color */
+        transition: color 0.2s ease-in-out;
+        /* Smooth transition for hover effects */
+    }
+
+    .nav-tabs .nav-link:hover {
+        color: #007bff;
+        /* Hover effect for inactive tabs */
+    }
+
+    .nav-link.active i {
+        background-color: #007bff
+    }
+
+    .nav-link:hover i {
+        background-color: #007bff;
+    }
+</style>
 <div class="pc-container">
     <div class="pc-content">
         <div class="page-header">
@@ -87,148 +117,157 @@
                         </div>
                     </div>
                     <div id="taskCardContainer">
-                    <div class="card-body">
-                        <!-- Nav tabs -->
-                        <ul class="nav nav-tabs" id="taskTabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="completed-tasks-tab" data-toggle="tab"
-                                    href="#completed-tasks" role="tab" aria-controls="completed-tasks"
-                                    aria-selected="true">Completed</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="pending-tasks-tab" data-toggle="tab" href="#pending-tasks"
-                                    role="tab" aria-controls="pending-tasks" aria-selected="false">Pending</a>
-                            </li>
-                        </ul>
+                        <div class="card-body">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" id="taskTabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="completed-tasks-tab" data-toggle="tab"
+                                        href="#completed-tasks" role="tab" aria-controls="completed-tasks"
+                                        aria-selected="true"><i class="material-icons-two-tone me-1">check_circle</i><span>Completed</span> </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pending-tasks-tab" data-toggle="tab" href="#pending-tasks"
+                                        role="tab" aria-controls="pending-tasks" aria-selected="false"><i class="material-icons-two-tone me-1">schedule</i> <span>Pending</span>
+                                        </a>
+                                </li>
+                            </ul>
 
-                        <!-- Tab panes -->
-                        <div class="tab-content">
-                            <div class="tab-pane fade show active" id="completed-tasks" role="tabpanel"
-                                aria-labelledby="completed-tasks-tab">
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 5%;">#</th>
-                                                <th style="width: 47%;">Task</th>
-                                                <th style="width: 11%;">Deadline</th>
-                                                {{-- <th style="width: 8%;">Status</th> --}}
-                                                <th style="width: 11%;">Completed Date</th>
-                                                <th style="width: 13%;">Assign by</th>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="completed-tasks" role="tabpanel"
+                                    aria-labelledby="completed-tasks-tab">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 5%;">#</th>
+                                                    <th style="width: 47%;">Task</th>
+                                                    <th style="width: 11%;">Deadline</th>
+                                                    {{-- <th style="width: 8%;">Status</th> --}}
+                                                    <th style="width: 11%;">Completed Date</th>
+                                                    <th style="width: 13%;">Assign by</th>
 
-                                                <th style="width: 13%;">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="completedTaskTableBody">
-                                            @if($completeTask->count() > 0)
-                                            @foreach ($completeTask as $index => $data)
-                                            <tr id="taskRow-{{ $data->id }}" class="task-row" data-toggle="modal"
-                                                data-target="#taskDetailModal" data-title="{{ $data->task_title }}"
-                                                data-description="{!! $data->description !!}"
-                                                data-date="{{ \Carbon\Carbon::parse($data->task_completion_date)->format('d F Y') }}"
-                                                data-creator="{{ $data->username }}"
-                                                data-status="{{ $data->status == 1 ? 'Active' : 'Inactive' }}"
-                                                style="cursor: pointer;" title="Click to view details">
-                                                <td>{{ ++$index }}</td>
-                                                <td>{{ Str::limit(strip_tags($data['task_title']), 130, '...') }}</td>
-                                                <td>{{ \Carbon\Carbon::parse($data->task_completion_date)->format('d F
-                                                    Y') }}</td>
-                                                {{-- <td>Completed</td> --}}
-                                                <td>{{ \Carbon\Carbon::parse($data->task_completed_date)->format('d F
-                                                    Y') }}</td>
-                                                <td>{{ $data->name }}</td>
+                                                    <th style="width: 13%;">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="completedTaskTableBody">
+                                                @if($completeTask->count() > 0)
+                                                @foreach ($completeTask as $index => $data)
+                                                <tr id="taskRow-{{ $data->id }}" class="task-row" data-toggle="modal"
+                                                    data-target="#taskDetailModal" data-title="{{ $data->task_title }}"
+                                                    data-description="{!! $data->description !!}"
+                                                    data-date="{{ \Carbon\Carbon::parse($data->task_completion_date)->format('d F Y') }}"
+                                                    data-creator="{{ $data->username }}"
+                                                    data-status="{{ $data->status == 1 ? 'Active' : 'Inactive' }}"
+                                                    style="cursor: pointer;" title="Click to view details">
+                                                    <td>{{ ++$index }}</td>
+                                                    <td>{{ Str::limit(strip_tags($data['task_title']), 130, '...') }}
+                                                    </td>
+                                                    <td>{{ \Carbon\Carbon::parse($data->task_completion_date)->format('d
+                                                        F
+                                                        Y') }}</td>
+                                                    {{-- <td>Completed</td> --}}
+                                                    <td>{{ \Carbon\Carbon::parse($data->task_completed_date)->format('d
+                                                        F
+                                                        Y') }}</td>
+                                                    <td>{{ $data->name }}</td>
 
-                                                <td>
-                                                    <input type="checkbox"
-                                                        class="completed-checkbox {{ \Carbon\Carbon::now()->isAfter($data->task_completion_date) ? 'red-checkbox' : 'green-checkbox' }}"
-                                                        disabled checked>
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                            @else
-                                            <tr class="nodata">
-                                                <td colspan="6" class="text-center">No Completed Tasks Found!</td>
-                                            </tr>
-                                            @endif
-                                        </tbody>
-                                    </table>
+                                                    <td>
+                                                        <input type="checkbox"
+                                                            class="completed-checkbox {{ \Carbon\Carbon::now()->isAfter($data->task_completion_date) ? 'red-checkbox' : 'green-checkbox' }}"
+                                                            disabled checked>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                                @else
+                                                <tr class="nodata">
+                                                    <td colspan="6" class="text-center">No Completed Tasks Found!</td>
+                                                </tr>
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="pending-tasks" role="tabpanel"
+                                    aria-labelledby="pending-tasks-tab">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 6%;">#</th>
+                                                    <th style="width: 47%;">Task</th>
+                                                    <th style="width: 10%;">Deadline</th>
+                                                    <th style="width: 13%;">Assign by</th>
+                                                    {{-- <th style="width: 8%;">Status</th> --}}
+                                                    <th style="width: 13%;">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="pendingTaskTableBody">
+                                                @if($pendingTask->count() > 0)
+                                                @foreach ($pendingTask as $index => $data)
+                                                <tr>
+                                                    <td id="taskRow-{{ $data->id }}" class="task-row"
+                                                        data-toggle="modal" data-target="#taskDetailModal"
+                                                        data-title="{{ $data->task_title }}"
+                                                        data-description="{!! $data->description !!}"
+                                                        data-date="{{ \Carbon\Carbon::parse($data->task_completion_date)->format('d F Y') }}"
+                                                        data-creator="{{ $data->username }}"
+                                                        data-status="{{ $data->status == 1 ? 'Active' : 'Inactive' }}"
+                                                        style="cursor: pointer;" title="Click to view details">{{
+                                                        ++$index
+                                                        }}</td>
+                                                    <td id="taskRow-{{ $data->id }}" class="task-row"
+                                                        data-toggle="modal" data-target="#taskDetailModal"
+                                                        data-title="{{ $data->task_title }}"
+                                                        data-description="{!! $data->description !!}"
+                                                        data-date="{{ \Carbon\Carbon::parse($data->task_completion_date)->format('d F Y') }}"
+                                                        data-creator="{{ $data->username }}"
+                                                        data-status="{{ $data->status == 1 ? 'Active' : 'Inactive' }}"
+                                                        style="cursor: pointer;" title="Click to view details">{{
+                                                        Str::limit(strip_tags($data->task_title), 130, '...') }}</td>
+                                                    <td id="taskRow-{{ $data->id }}" class="task-row"
+                                                        data-toggle="modal" data-target="#taskDetailModal"
+                                                        data-title="{{ $data->task_title }}"
+                                                        data-description="{!! $data->description !!}"
+                                                        data-date="{{ \Carbon\Carbon::parse($data->task_completion_date)->format('d F Y') }}"
+                                                        data-creator="{{ $data->username }}"
+                                                        data-status="{{ $data->status == 1 ? 'Active' : 'Inactive' }}"
+                                                        style="cursor: pointer;" title="Click to view details">{{
+                                                        \Carbon\Carbon::parse($data->task_completion_date)->format('d F
+                                                        Y') }}</td>
+                                                    <td id="taskRow-{{ $data->id }}" class="task-row"
+                                                        data-toggle="modal" data-target="#taskDetailModal"
+                                                        data-title="{{ $data->task_title }}"
+                                                        data-description="{!! $data->description !!}"
+                                                        data-date="{{ \Carbon\Carbon::parse($data->task_completion_date)->format('d F Y') }}"
+                                                        data-creator="{{ $data->username }}"
+                                                        data-status="{{ $data->status == 1 ? 'Active' : 'Inactive' }}"
+                                                        style="cursor: pointer;" title="Click to view details">{{
+                                                        $data->name }}</td>
+                                                    {{-- <td>Pending</td> --}}
+                                                    <td>
+                                                        <input type="checkbox" class="pending-checkbox"
+                                                            value="{{ $data->taskId }}">
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                                @else
+                                                <tr class="nodata">
+                                                    <td colspan="6" class="text-center">No Pending Tasks Found!</td>
+                                                </tr>
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="tab-pane fade" id="pending-tasks" role="tabpanel"
-                                aria-labelledby="pending-tasks-tab">
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 6%;">#</th>
-                                                <th style="width: 47%;">Task</th>
-                                                <th style="width: 10%;">Deadline</th>
-                                                <th style="width: 13%;">Assign by</th>
-                                                {{-- <th style="width: 8%;">Status</th> --}}
-                                                <th style="width: 13%;">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="pendingTaskTableBody">
-                                            @if($pendingTask->count() > 0)
-                                            @foreach ($pendingTask as $index => $data)
-                                            <tr>
-                                                <td id="taskRow-{{ $data->id }}" class="task-row" data-toggle="modal"
-                                                    data-target="#taskDetailModal" data-title="{{ $data->task_title }}"
-                                                    data-description="{!! $data->description !!}"
-                                                    data-date="{{ \Carbon\Carbon::parse($data->task_completion_date)->format('d F Y') }}"
-                                                    data-creator="{{ $data->username }}"
-                                                    data-status="{{ $data->status == 1 ? 'Active' : 'Inactive' }}"
-                                                    style="cursor: pointer;" title="Click to view details">{{ ++$index
-                                                    }}</td>
-                                                <td id="taskRow-{{ $data->id }}" class="task-row" data-toggle="modal"
-                                                    data-target="#taskDetailModal" data-title="{{ $data->task_title }}"
-                                                    data-description="{!! $data->description !!}"
-                                                    data-date="{{ \Carbon\Carbon::parse($data->task_completion_date)->format('d F Y') }}"
-                                                    data-creator="{{ $data->username }}"
-                                                    data-status="{{ $data->status == 1 ? 'Active' : 'Inactive' }}"
-                                                    style="cursor: pointer;" title="Click to view details">{{
-                                                    Str::limit(strip_tags($data->task_title), 130, '...') }}</td>
-                                                <td id="taskRow-{{ $data->id }}" class="task-row" data-toggle="modal"
-                                                    data-target="#taskDetailModal" data-title="{{ $data->task_title }}"
-                                                    data-description="{!! $data->description !!}"
-                                                    data-date="{{ \Carbon\Carbon::parse($data->task_completion_date)->format('d F Y') }}"
-                                                    data-creator="{{ $data->username }}"
-                                                    data-status="{{ $data->status == 1 ? 'Active' : 'Inactive' }}"
-                                                    style="cursor: pointer;" title="Click to view details">{{
-                                                    \Carbon\Carbon::parse($data->task_completion_date)->format('d F
-                                                    Y') }}</td>
-                                                <td id="taskRow-{{ $data->id }}" class="task-row" data-toggle="modal"
-                                                    data-target="#taskDetailModal" data-title="{{ $data->task_title }}"
-                                                    data-description="{!! $data->description !!}"
-                                                    data-date="{{ \Carbon\Carbon::parse($data->task_completion_date)->format('d F Y') }}"
-                                                    data-creator="{{ $data->username }}"
-                                                    data-status="{{ $data->status == 1 ? 'Active' : 'Inactive' }}"
-                                                    style="cursor: pointer;" title="Click to view details">{{
-                                                    $data->name }}</td>
-                                                {{-- <td>Pending</td> --}}
-                                                <td>
-                                                    <input type="checkbox" class="pending-checkbox"
-                                                        value="{{ $data->taskId }}">
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                            @else
-                                            <tr class="nodata">
-                                                <td colspan="6" class="text-center">No Pending Tasks Found!</td>
-                                            </tr>
-                                            @endif
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+
+
+
+
                         </div>
-
-
-
-
-
-                    </div>
                     </div>
                 </div>
             </div>
@@ -324,7 +363,7 @@
 
                             // Fade and remove the row
                             $checkbox.closest('tr').fadeOut(300, function () {
-                                location.reload(); 
+                                location.reload();
                             });
                         }
                     },
