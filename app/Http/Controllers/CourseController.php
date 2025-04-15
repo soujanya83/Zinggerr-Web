@@ -765,9 +765,7 @@ class CourseController extends Controller
             'asset_id' => 'required|string', // UUIDs are strings
             'video_time' => 'required|numeric' // Ensure it's a valid number
         ]);
-
         try {
-            // ✅ Create Checkpoint
             $checkpoint = InteractiveAsset::create([
                 'id' => (string) Str::uuid(), // Generate UUID
                 'video_id' => $validated['video_id'],

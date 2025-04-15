@@ -34,7 +34,153 @@
         background: #f5f5f5;
     }
 </style>
+<style>
+    /* Sidebar styles */
+    .pc-sidebar {
+        width: 260px;
+        transition: all 0.3s ease;
+        position: fixed;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1029;
+    }
 
+    /* Icon-only sidebar state */
+    .pc-sidebar.icon-only {
+        width: 70px;
+    }
+
+    /* Hide text and unnecessary elements in icon-only state */
+    .pc-sidebar.icon-only .pc-mtext,
+    .pc-sidebar.icon-only .pc-item.pc-caption label,
+    .pc-sidebar.icon-only .pc-arrow,
+    .pc-sidebar.icon-only .navbar-brand-name {
+        display: none;
+    }
+
+    /* Center the icons in icon-only state */
+    .pc-sidebar.icon-only .pc-micon {
+        /* margin: 0 auto; */
+        display: flex;
+        justify-content: center;
+    }
+
+    /* Adjust menu items in icon-only state */
+    .pc-sidebar.icon-only .pc-navbar>li>.pc-link {
+        padding: 12px 5px;
+        justify-content: center;
+    }
+
+    /* Logo adjustments */
+    .pc-sidebar .m-header img.logo {
+        transition: all 0.3s ease;
+    }
+
+    .pc-sidebar.icon-only .m-header img.logo {
+        width: 40px !important;
+    }
+
+    /* Submenu styling for icon-only state */
+    .pc-sidebar.icon-only .pc-hasmenu:hover .pc-submenu {
+        display: block;
+        position: absolute;
+        left: 70px;
+        top: 0;
+        width: 200px;
+        background: #fff;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+        z-index: 999;
+        padding: 10px;
+    }
+
+    /* Show submenu on hover in icon-only state */
+    .pc-sidebar.icon-only .pc-hasmenu:hover>.pc-submenu {
+        display: block;
+    }
+
+    /* Main content adjustment */
+    .pc-container {
+        margin-left: 260px;
+        transition: all 0.3s ease;
+    }
+
+    .pc-sidebar.icon-only~.pc-container {
+        margin-left: 70px;
+    }
+
+
+
+
+
+    /* Hide submenus by default */
+    .pc-sidebar .pc-submenu {
+        display: none;
+    }
+
+    /* Show submenu when parent is active */
+    .pc-sidebar .pc-hasmenu.active>.pc-submenu {
+        display: block;
+    }
+</style>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const originalHideBtn = document.getElementById('sidebar-hide');
+        if (originalHideBtn) {
+            const newBtn = originalHideBtn.cloneNode(true);
+            newBtn.id = 'sidebar-toggle-btn';
+            originalHideBtn.parentNode.replaceChild(newBtn, originalHideBtn);
+
+            const sidebar = document.querySelector('.pc-sidebar');
+            const mainContainer = document.querySelector('.pc-container');
+            const headerLeft = document.querySelector('.pc-header-left');
+            const header = document.querySelector('.pc-header'); // <-- New line
+
+            function updateLayoutStyles() {
+                const isIconOnly = sidebar.classList.contains('icon-only');
+
+                if (mainContainer) {
+                    mainContainer.style.marginLeft = isIconOnly ? '70px' : '260px';
+                }
+
+                if (headerLeft) {
+                    headerLeft.style.left = isIconOnly ? '66px' : '260px';
+                }
+
+                if (header) {
+                    header.style.left = isIconOnly ? '66px' : '260px'; // <-- Apply style to .pc-header
+                }
+            }
+
+            function toggleSidebarView() {
+                sidebar.classList.toggle('icon-only');
+                updateLayoutStyles();
+
+                localStorage.setItem('sidebarView',
+                    sidebar.classList.contains('icon-only') ? 'icon-only' : 'full');
+            }
+
+            const savedView = localStorage.getItem('sidebarView');
+            if (savedView === 'icon-only') {
+                sidebar.classList.add('icon-only');
+            }
+
+            updateLayoutStyles();
+
+            newBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleSidebarView();
+                return false;
+            });
+        }
+    });
+
+
+</script>
 <nav class="pc-sidebar">
     <div class="navbar-wrapper">
         <div class="m-header">
@@ -45,22 +191,11 @@
         </div>
         <div class="navbar-content">
             <ul class="pc-navbar">
-                <li class="pc-item pc-caption">
-                    <label>Navigation</label>
-                    <i class="ti ti-dashboard"></i>
-                </li>
-
-
 
                 <li class="pc-item">
                     <a href="{{ route('dashboard_user') }}" class="pc-link"><span class="pc-micon"><i
                                 class="ti ti-dashboard"></i></span><span class="pc-mtext">Dashboard</span></a>
                 </li>
-
-
-
-
-
                 <li class="pc-item pc-hasmenu">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
@@ -120,81 +255,8 @@
                     </ul>
                 </li>
 
-
-
-
-
-
-                {{-- @if (Auth::user()->can('role') || (isset($permissions) &&
-                in_array('faculty_sidebar',$permissions)))
-
-
-                <li class="pc-item pc-hasmenu">
-                    <a href="#" class="pc-link">
-                        <span class="pc-micon">
-                            <i class="ti ti-user"></i>
-                        </span>
-                        <span class="pc-mtext" data-i18n="Teachers">Faculty</span>
-                        <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
-                    </a>
-                    <ul class="pc-submenu">
-                        <li class="pc-item"><a class="pc-link" href="{{ route('teacheradd') }}"
-                                data-i18n="Pricing">Create</a></li>
-                        <li class="pc-item"><a class="pc-link" href="{{ route('teacherlist') }}"
-                                data-i18n="List">List</a>
-                        </li>
-                    </ul>
-                </li>
-                @endif --}}
-
-
-                {{-- @if(Auth::user()->can('role') || (isset($permissions) && in_array('student_sidebar',$permissions)))
-
-
-                <li class="pc-item pc-hasmenu">
-                    <a href="#" class="pc-link">
-                        <span class="pc-micon">
-                            <i class="ti ti-users"></i>
-                        </span>
-                        <span class="pc-mtext" data-i18n="Students">Students</span>
-                        <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
-                    </a>
-                    <ul class="pc-submenu">
-                        <li class="pc-item"><a class="pc-link" href="{{ route('studentadd') }}"
-                                data-i18n="Pricing">Create</a></li>
-                        <li class="pc-item"><a class="pc-link" href="{{ route('studentlist') }}"
-                                data-i18n="List">List</a>
-                        </li>
-                    </ul>
-                </li>
-                @endif --}}
-
-                {{-- @if(Auth::user()->can('role') || Auth::user()->can('admin-role') ||
-                Auth::user()->can('staff-role')) --}}
-                {{-- @php
-                dd($permissions);
-                @endphp --}}
                 @if(Auth::user()->can('role') || (isset($permissions) && in_array('user_sidebar',
                 $permissions)))
-
-                {{-- <li class="pc-item pc-hasmenu">
-                    <a href="#" class="pc-link">
-                        <span class="pc-micon">
-                            <i class="ti ti-user"></i>
-                        </span>
-                        <span class="pc-mtext" data-i18n="User">Users</span>
-                        <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
-                    </a>
-                    <ul class="pc-submenu">
-                        <li class="pc-item"><a class="pc-link" href="{{ route('useradd') }}" data-i18n="Pricing">Create
-                            </a></li>
-                        <li class="pc-item"><a class="pc-link" href="{{ route('userlist') }}" data-i18n="List">
-                                List</a>
-                        </li>
-                    </ul>
-                </li> --}}
-
-
                 <li
                     class="pc-item pc-hasmenu {{ request()->routeIs('useradd') || request()->routeIs('userlist') || request()->routeIs('teacherlist') || request()->routeIs('studentlist') ? 'active pc-trigger' : '' }}">
                     <a href="#" class="pc-link">
@@ -233,22 +295,13 @@
                         @endif
                     </ul>
                 </li>
-
-
-
-
-
                 @endif
-
                 @if(Auth::user()->can('role') || (isset($permissions) && in_array('role_sidebar',
                 $permissions)))
                 <li class="pc-item pc-hasmenu">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
                             <i class="ti ti-shield-check"></i>
-
-
-
                         </span>
                         <span class="pc-mtext" data-i18n="User">Role</span>
                         <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
@@ -279,14 +332,7 @@
 
                         <li class="pc-item"><a class="pc-link" href="{{ route('permissions.list') }}"
                                 data-i18n="Pricing">List</a></li>
-
-                        {{-- <li class="pc-item"><a class="pc-link" href="{{ route('permissions.role') }}"
-                                data-i18n="List">Assign</a></li> --}}
-
-                        {{-- <li class="pc-item"><a class="pc-link" href="{{ route('permissions.assignedlist') }}"
-                                data-i18n="List">Assigned List</a></li> --}}
                     </ul>
-
                 </li>
                 @endif
 
@@ -325,16 +371,8 @@
                                     <a class="pc-link" href="{{ route('course.category') }}"
                                         data-i18n="Expired List">Category</a>
                                 </li>
-                                {{-- <li class="pc-item">
-                                    <a class="pc-link" href="{{ route('addCourse') }}"
-                                        data-i18n="Expired List">Create</a>
-                                </li> --}}
-
-
                             </ul>
                         </li>
-
-                        <!-- Account Settings -->
                         <li class="pc-item">
                             <a class="pc-link" href="{{ route('userprofile') }}" data-i18n="AccountSettings">Account</a>
                         </li>
@@ -414,84 +452,7 @@
 </nav>
 
 
-{{-- <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const fullNameInput = document.getElementById('nameInput'); // Full Name field
-        const userNameInput = document.getElementById('usernameInput'); // Username field
-        const suggestionsBox = document.getElementById('usernameSuggestions'); // Suggestions box
-        const suggestionsList = document.getElementById('suggestionsList'); // Suggestions list inside the box
 
-        // Function to generate username suggestions based on full name
-        const generateUsernames = (fullName) => {
-            if (!fullName) return [];
-
-            let cleanName = fullName.trim().replace(/\s+/g, '').toLowerCase(); // Remove spaces
-            let randomNum = () => Math.floor(10000 + Math.random() * 90000); // 5-digit random number
-            let variations = [
-                cleanName.toLowerCase() + randomNum(),
-                cleanName.toUpperCase() + randomNum(),
-                cleanName.charAt(0).toUpperCase() + cleanName.slice(1) + randomNum(),
-                cleanName.slice(0, 3).toUpperCase() + cleanName.slice(3) + randomNum(),
-                cleanName + '_' + randomNum()
-            ];
-
-            return variations;
-        };
-
-        // Check if usernames exist in the database
-        const checkUsernames = async (usernames) => {
-            try {
-                let response = await fetch('{{ route("check.username.suggestions") }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ usernames })
-                });
-                return await response.json();
-            } catch (error) {
-                console.error('Error checking usernames:', error);
-                return [];
-            }
-        };
-
-        // Function to update and display username suggestions
-        const updateUsernameSuggestions = async () => {
-            let fullName = fullNameInput.value.trim();
-            if (!fullName) return; // Don't show suggestions if full name is empty
-
-            let suggestions = generateUsernames(fullName);
-            let availableUsernames = await checkUsernames(suggestions);
-
-            // Show available usernames in the dropdown
-            suggestionsList.innerHTML = '';
-            availableUsernames.forEach(username => {
-                let div = document.createElement('div');
-                div.classList.add('suggestion-item');
-                div.textContent = username;
-                div.addEventListener('click', () => {
-                    userNameInput.value = username;
-                    suggestionsBox.style.display = 'none';
-                });
-                suggestionsList.appendChild(div);
-            });
-
-            suggestionsBox.style.display = availableUsernames.length > 0 ? 'block' : 'none';
-        };
-
-        // Show suggestions when typing in the username field
-        userNameInput.addEventListener('focus', updateUsernameSuggestions);
-        userNameInput.addEventListener('input', updateUsernameSuggestions);
-
-        // Hide suggestions if user clicks outside
-        document.addEventListener('click', (event) => {
-            if (!suggestionsBox.contains(event.target) && event.target !== userNameInput) {
-                suggestionsBox.style.display = 'none';
-            }
-        });
-    });
-</script> --}}
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
