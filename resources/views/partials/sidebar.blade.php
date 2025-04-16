@@ -34,7 +34,8 @@
         background: #f5f5f5;
     }
 </style>
-<style>
+
+{{-- <style>
     /* Sidebar styles */
     .pc-sidebar {
         width: 260px;
@@ -109,22 +110,131 @@
     .pc-sidebar.icon-only~.pc-container {
         margin-left: 70px;
     }
+</style> --}}
+
+<style>
+ /* Sidebar styles (base - initially full) */
+.pc-sidebar {
+    width: 260px; /* Initially full width */
+    transition: all 0.3s ease;
+    position: fixed;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1029;
+    overflow-y: auto; /* Enable scroll if content overflows */
+    background-color: #f8f9fa;
+    padding-top: 1rem;
+}
+
+/* Icon-only sidebar state (when collapsed) */
+.pc-sidebar.icon-only {
+    width: 60px;
+}
+
+.pc-sidebar.icon-only .m-header {
+    text-align: center;
+}
+
+.pc-sidebar.icon-only .m-header img.logo {
+    width: 40px !important;
+}
+
+.pc-sidebar.icon-only .pc-mtext,
+.pc-sidebar.icon-only .pc-item.pc-caption label,
+.pc-sidebar.icon-only .pc-arrow {
+    display: none !important; /* Forcefully hide in icon-only */
+    opacity: 0 !important;
+}
+
+.pc-sidebar.icon-only .pc-micon {
+    display: flex;
+    justify-content: center;
+    margin-right: 0;
+}
+
+.pc-sidebar.icon-only .pc-navbar>li>.pc-link {
+    padding: 0.75rem 5px;
+    justify-content: center;
+}
+
+/* Hover effect on the icon-only sidebar */
+.pc-sidebar.icon-only:hover {
+    width: 260px !important; /* Forcefully expand to full width */
+}
+
+.pc-sidebar.icon-only:hover .m-header {
+    text-align: left !important; /* Forcefully align logo to left */
+}
+
+.pc-sidebar.icon-only:hover .m-header img.logo {
+    width: auto !important; /* Forcefully restore full logo width */
+}
+
+.pc-sidebar.icon-only:hover .pc-mtext,
+.pc-sidebar.icon-only:hover .pc-arrow {
+    display: inline-block !important; /* Forcefully show text and arrows */
+    opacity: 1 !important; /* Forcefully set opacity to visible */
+}
+
+.pc-sidebar.icon-only:hover .pc-micon {
+    justify-content: flex-start !important; /* Forcefully align icon to the left */
+    margin-right: 0.75rem !important; /* Forcefully add spacing */
+}
+
+.pc-sidebar.icon-only:hover .pc-navbar>li>.pc-link {
+    padding: 0.75rem 1rem !important; /* Forcefully restore full padding */
+    justify-content: flex-start !important; /* Forcefully align content left */
+}
+
+.pc-sidebar.icon-only:hover .pc-link > span {
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pc-sidebar.icon-only:hover .pc-mtext {
+    width: auto; /* Allow text to take necessary width */
+}
+
+/* Main content adjustment */
+.pc-container {
+    margin-left: 260px; /* Initially full width */
+    transition: margin-left 0.3s ease;
+}
+
+.pc-sidebar.icon-only~.pc-container {
+    margin-left: 70px !important; /* Forcefully adjust for collapsed state */
+}
+
+.pc-sidebar.icon-only:hover~.pc-container {
+    margin-left: 260px !important; /* Forcefully adjust for expanded hover state */
+}
+
+/* Logo adjustments */
+.pc-sidebar .m-header {
+    text-align: left; /* Adjust if needed */
+    opacity: 1; /* Initially show logo */
+    transition: opacity 0.3s ease;
+}
+
+.pc-sidebar.icon-only .m-header {
+    text-align: center;
+}
+
+.pc-sidebar.icon-only .m-header img.logo {
+    width: 40px !important;
+}
+
+.pc-sidebar .m-header img.logo {
+    max-width: 100%;
+    height: auto;
+}
 
 
 
 
-
-    /* Hide submenus by default */
-    .pc-sidebar .pc-submenu {
-        display: none;
-    }
-
-    /* Show submenu when parent is active */
-    .pc-sidebar .pc-hasmenu.active>.pc-submenu {
-        display: block;
-    }
 </style>
-
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -181,16 +291,16 @@
 
 
 </script>
-<nav class="pc-sidebar">
+<nav class="pc-sidebar" style="background-color: #ffffff;">
     <div class="navbar-wrapper">
-        <div class="m-header">
+        <div class="m-header" style="margin-top:-19px">
             <a href="{{ route('dashboard_user') }}" class="b-brand text-primary">
                 <img src="{{ asset('asset/images/logo.png')}}" class="logo" width="200px" alt="logo">
 
             </a>
         </div>
         <div class="navbar-content">
-            <ul class="pc-navbar">
+            <ul class="pc-navbar mt-1">
 
                 <li class="pc-item">
                     <a href="{{ route('dashboard_user') }}" class="pc-link"><span class="pc-micon"><i
@@ -227,7 +337,6 @@
                                 </li>
                             </ul>
                         </li>
-                        <!-- Casa Dei Bambini (3-6 years) -->
                         @php
                         use Illuminate\Support\Str;
                         $ageGroups = DB::table('montessori_age_groups')->where('status', 1)->get();
@@ -266,6 +375,7 @@
                         <span class="pc-mtext" data-i18n="User">Users</span>
                         <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
                     </a>
+
                     <ul class="pc-submenu">
                         <li class="pc-item {{ request()->routeIs('useradd') ? 'active' : '' }}">
                             <a class="pc-link" href="{{ route('useradd') }}" data-i18n="Create">Create</a>

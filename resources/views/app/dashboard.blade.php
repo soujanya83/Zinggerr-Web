@@ -153,7 +153,6 @@
 
 
                 <div class="row" style="margin-top:25px">
-
                     <div class="col-md-6">
                         <div class="card dashnum-card dashnum-card-small overflow-hidden"><span
                                 class="round bg-warning small"></span> <span class="round bg-warning big"></span>
@@ -563,84 +562,7 @@
     }
 </script>
 
-{{-- <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const calendarEl = document.getElementById('calendar');
 
-        const colors = [
-            '#bd7910', '#9a0b0b', '#5048c7', '#0b8245', '#bd1995', '#8642ba', '#2f979a'
-        ];
-
-        const eventColorMap = {}; // Map event IDs to colors
-
-        const calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            headerToolbar: {
-                left: '',
-                center: 'title',
-                right: 'prev,next'
-            },
-            events: '/events',
-
-            eventContent: function (arg) {
-                const eventId = arg.event.id || arg.event.title; // fallback if no ID
-                // Assign a random color if not already set
-                if (!eventColorMap[eventId]) {
-                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
-                    eventColorMap[eventId] = randomColor;
-                }
-
-                const bgColor = eventColorMap[eventId];
-                const fullTitle = arg.event.title || '';
-                const title = fullTitle.length > 10 ? fullTitle.slice(0, 10) + '…' : fullTitle;
-
-                return {
-                    html: `
-                        <div style="background-color: ${bgColor}; padding: 4px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; color: white;">
-                            ${title}
-                        </div>`
-                };
-            },
-
-            eventClick: function (info) {
-                let event = info.event;
-                let modalContent = `
-                    <h5>Event on ${formatDate(event.start)}</h5>
-                    <hr>
-                    <p><strong>📌 Title:</strong> ${event.title}</p>
-                    <p><strong>🕒 Start:</strong> ${formatDate(event.start)} ${formatTime(event.start)}</p>
-                    <p><strong>⏳ End:</strong> ${event.end ? formatDate(adjustEndDate(event.end)) + ' ' + formatTime(adjustEndDate(event.end)) : 'Same as start'}</p>
-                    <p><strong>📝 Description:</strong> ${event.extendedProps.description || 'No description provided'}</p>
-                `;
-
-                document.getElementById('eventModalBody').innerHTML = modalContent;
-                new bootstrap.Modal(document.getElementById('eventModal')).show();
-            }
-        });
-
-        calendar.render();
-    });
-
-    // Utility functions
-    function formatDate(date) {
-        return date ? new Date(date).toLocaleDateString('en-GB', {
-            day: '2-digit', month: 'long', year: 'numeric'
-        }) : 'Invalid Date';
-    }
-
-    function formatTime(date) {
-        return date ? new Date(date).toLocaleTimeString('en-US', {
-            hour: '2-digit', minute: '2-digit', hour12: true
-        }) : 'Invalid Time';
-    }
-
-    function adjustEndDate(date) {
-        if (!date) return null;
-        let adjusted = new Date(date);
-        adjusted.setDate(adjusted.getDate() - 1);
-        return adjusted;
-    }
-</script> --}}
 
 
 
