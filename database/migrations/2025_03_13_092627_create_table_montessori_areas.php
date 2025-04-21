@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('montessori_areas', function (Blueprint $table) {
             $table->char('id', 36)->primary();
             $table->string('full_name');
+            $table->string('age_group');
             $table->string('short_name');
             $table->string('slug');
             $table->char('created_by', 36)->nullable();

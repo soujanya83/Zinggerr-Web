@@ -101,8 +101,10 @@ class MontessoriController extends Controller
 
     function montessori_areas_edit($slug)
     {
+        $ageGroups=MontessoriAgeGroup::where('status',1)->orderBy('created_at', 'asc')->get();
+// dd($ageGroups);
         $getdata = MontessoriAreas::where('slug', $slug)->first();
-        return view('montessori.areas_edit', compact('getdata'));
+        return view('montessori.areas_edit', compact('getdata','ageGroups'));
     }
 
 
@@ -114,6 +116,7 @@ class MontessoriController extends Controller
             'shortname' => 'required|string|max:200',
             'description' => 'required|string|max:500',
             'areas_status' => 'required|in:0,1',
+            'age_group' => 'required',
             'id' => 'required|exists:montessori_areas,id',
 
 
@@ -132,6 +135,7 @@ class MontessoriController extends Controller
                 'short_name' => ucwords(strtolower($request->shortname)),
                 'description' => $request->description,
                 'status' => $request->areas_status,
+                'age_group' => $request->age_group,
                 'updated_by' => Auth::user()->id,
 
 
@@ -238,6 +242,7 @@ class MontessoriController extends Controller
             'shortname' => 'required|string|max:200',
             'description' => 'required|string|max:500',
             'areas_status' => 'required|in:0,1',
+            'age_group' => 'required'
         ]);
         if ($validator->fails()) {
             return back()
@@ -253,6 +258,7 @@ class MontessoriController extends Controller
                 'short_name' => ucwords(strtolower($request->shortname)),
                 'description' => $request->description,
                 'status' => $request->areas_status,
+                'age_group' => $request->age_group,
                 'created_by' => Auth::user()->id,
 
             ]);
@@ -294,7 +300,8 @@ class MontessoriController extends Controller
 
     function montessori_areas_create()
     {
-        return view('montessori.areas_create');
+        $ageGroups=MontessoriAgeGroup::where('status',1)->orderBy('created_at', 'asc')->get();
+        return view('montessori.areas_create',compact('ageGroups'));
     }
 
     function montessori_agegroup_create()

@@ -309,7 +309,7 @@
                 <li class="pc-item pc-hasmenu">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
-                            <i class="ti ti-settings"></i>
+                            <i class="ti ti-school"></i>
                         </span>
                         <span class="pc-mtext" data-i18n="Teachers">Montessori Training</span>
                         <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
@@ -462,6 +462,7 @@
                             <a href="#" class="pc-link">
                                 <span class="pc-mtext" data-i18n="Montessori">Montessori</span>
                                 <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+
                             </a>
                             <ul class="pc-submenu">
                                 <li class="pc-item">

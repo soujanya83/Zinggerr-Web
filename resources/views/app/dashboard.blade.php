@@ -192,31 +192,7 @@
                     </div>
 
 
-                    {{-- <div class="col-md-6">
-                        <div class="card  order-card" style="background-color: #aa33d4">
-                            <div class="card-body">
-                                <h5 class="text-white" style="font-size: 17px;">Courses Last 7 day`s</h5>
-                                <h3 class="text-white" style="font-size: 17px;">{{ $courseslast7day
-                                    }}</h3>
-                                <p class="m-b-0" style="font-size: 13px;">{{ $coursesLastMonth }} Courses Last
-                                    Month</p>
-                                <i class="material-icons-two-tone d-block f-46 card-icon text-white">note</i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card bg-primary order-card">
-                            <div class="card-body">
-                                <h5 class="text-white" style="font-size: 17px;">Students Last 7
-                                    day`s</h5>
-                                <h3 class="text-white" style="font-size: 17px;">{{ $studentlast7day
-                                    }}</h3>
-                                <p class="m-b-0" style="font-size: 13px;">{{ $studentlastmonth }} Students Last
-                                    Month</p><i
-                                    class="material-icons-two-tone d-block f-46 card-icon text-white">account_circle</i>
-                            </div>
-                        </div>
-                    </div> --}}
+
                 </div>
 
                 <div class="card table-card">
@@ -340,8 +316,7 @@
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                {{-- <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">Close</button> --}}
+                              
                                 <button type="button" class="btn btn-primary" onclick="saveTask()">Save Task</button>
                             </div>
                         </div>

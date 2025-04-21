@@ -72,15 +72,31 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label for="nameInput">Full Name <span class="text-danger" style="font-weight: bold;">*</span></label>
-                                                <input type="text" class="form-control" id="nameInput" name="fullname"
-                                                    required placeholder="Enter Full Name" value="{{ old('name') }}">
+                                                <label for="nameInput">Select Age Group <span class="text-danger"
+                                                        style="font-weight: bold;">*</span></label>
+                                                <select type="text" class="form-control" id="nameInput" name="age_group"
+                                                    required value="{{ old('age_group') }}">
+                                                    <option value="">Select</option>
+                                                    @foreach($ageGroups as $data)
+                                                    <option value="{{ $data->full_name }}">{{ $data->full_name }}
+                                                    </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label for="nameInput">Short Name <span class="text-danger" style="font-weight: bold;">*</span></label>
+                                                <label for="nameInput">Full Name <span class="text-danger"
+                                                        style="font-weight: bold;">*</span></label>
+                                                <input type="text" class="form-control" id="nameInput" name="fullname"
+                                                    required placeholder="Enter Full Name" value="{{ old('name') }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="nameInput">Short Name <span class="text-danger"
+                                                        style="font-weight: bold;">*</span></label>
                                                 <input type="text" class="form-control" id="nameInput" name="shortname"
                                                     required placeholder="Enter Short Name"
                                                     value="{{ old('fullname') }}">
@@ -90,7 +106,8 @@
 
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label for="descriptionInput">Description <span class="text-danger" style="font-weight: bold;">*</span></label>
+                                                <label for="descriptionInput">Description <span class="text-danger"
+                                                        style="font-weight: bold;">*</span></label>
                                                 <textarea class="form-control" id="descriptionInput" name="description"
                                                     required rows="1"
                                                     placeholder="Enter Description...">{{ old('description') }}</textarea>
@@ -111,7 +128,7 @@
                                                     </div>
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input" type="radio" name="areas_status"
-                                                            id="statushide" value="0" >
+                                                            id="statushide" value="0">
                                                         <label class="form-check-label" for="statushide"
                                                             style="color: #000">Not-Publish</label>
                                                     </div>

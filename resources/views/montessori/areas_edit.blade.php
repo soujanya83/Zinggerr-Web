@@ -69,6 +69,26 @@
 
                                     <input type="hidden" value="{{ $getdata->id}}" name="id">
                                     <div class="row">
+
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="nameInput">Select Age Group
+                                                    <span class="text-danger" style="font-weight: bold;">*</span>
+                                                </label>
+                                                <select class="form-control" id="nameInput" name="age_group" required>
+                                                    <option value="">Select</option>
+                                                    @foreach($ageGroups as $data)
+                                                        <option value="{{ $data->full_name }}"
+                                                            {{ (old('age_group', $getdata->age_group ?? '') == $data->full_name) ? 'selected' : '' }}>
+                                                            {{ $data->full_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="nameInput">Full Name <span class="text-danger" style="font-weight: bold;">*</span></label>

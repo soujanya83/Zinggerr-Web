@@ -106,8 +106,9 @@
                                         <td>
                                             {{Str::limit(strip_tags($data['description'] ), 90, '...') }}
                                         </td>
-                                        @if($data->created_at != null)
+
                                         <td class="text-center">
+                                            @if($data->created_at != null)
                                             @if(
                                             Auth::user()->can('role') ||
                                             (isset($permissions) && in_array('areas_edit', $permissions)))
@@ -125,8 +126,11 @@
                                                 <i class="ti ti-trash f-20" style="color: red;"></i>
                                             </a>
                                             @endif
+                                            @else
+                                            Default
+                                            @endif
                                         </td>
-                                        @endif
+
 
                                     </tr>
                                     @endforeach
