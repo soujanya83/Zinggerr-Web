@@ -40,14 +40,20 @@ class CourseController extends Controller
 
     public function courseadd(Request $request)
     {
-        $montessori_area = $request->has('montessori_area') ? ucwords($request->montessori_area) : null;
-        $montessori_agegroup = $request->has('montessori_agegroup') ? ucwords($request->montessori_agegroup) : null;
+        // dd($request);
+
+        $montessori_area = $request->has('montessori_area') ? ($request->montessori_area) : null;
+        $montessori_agegroup = $request->has('montessori_agegroup') ? ($request->montessori_agegroup) : null;
+// dd($montessori_area);
 
         $userid = Auth::user()->id;
         $categories = CoursesCategory::where('user_id', $userid)->get();
 
-        $agegroup = MontessoriAgeGroup::where('status', 1)->orderBy('created_at', 'asc')->get();
-        $areas = MontessoriAreas::where('status', 1)->orderBy('created_at', 'asc')->get();
+        $agegroup = MontessoriAgeGroup::where('status', 1)->orderBy('position', 'asc')->get();
+        $areas = MontessoriAreas::
+        select('slug', 'full_name', 'age_group') // add 'age_group_slug' as a foreign key
+        ->where('status', 1)
+        ->get();
 
         return view('courses.add', compact('categories', 'agegroup', 'areas', 'montessori_area', 'montessori_agegroup'));
     }
@@ -55,13 +61,21 @@ class CourseController extends Controller
 
     public function courseedit(Request $request, $slug)
     {
-        $agegroups = MontessoriAgeGroup::where('status', 1)->orderBy('created_at', 'asc')->get();
-        $areas = MontessoriAreas::where('status', 1)->orderBy('created_at', 'asc')->get();
+        $agegroup = MontessoriAgeGroup::where('status', 1)->orderBy('position', 'asc')->get();
+        $areas = MontessoriAreas::
+        select('slug', 'full_name', 'age_group') // add 'age_group_slug' as a foreign key
+        ->where('status', 1)
+        ->get();
 
         $userId = Auth::user()->id;
         $course = Course::where('slug', $slug)->first();
 
         if ($course) {
+
+            $montessori_area = $course->age_group ?? null;
+            $montessori_agegroup = $course->area ?? null;
+
+
             $id = $course->id;
             $data = CoursesAssign::select('users.*', 'courses_assign.id as assignId', 'courses_assign.status as assignStatus')
                 ->where('courses_id', $id)->where('users.type', 'Faculty')->where('users.user_id', $userId)
@@ -94,10 +108,6 @@ class CourseController extends Controller
             $permissionsdata = Permission::where('name', 'LIKE', '%' . 'course' . '%')->get();
 
             session()->put('course_id_f_edit', $id);
-
-            // assets data get from(API) assets project
-
-
             $response = Http::timeout(0)->get('https://assets.zinggerr.com/api/course/assets-list');
             if ($response->failed()) {
                 return back()->with('error', 'Failed to fetch data from API.');
@@ -116,7 +126,9 @@ class CourseController extends Controller
                 'id',
                 'permissionsdata',
                 'areas',
-                'agegroups'
+                'agegroup',
+                'montessori_area',
+                'montessori_agegroup'
             ));
         } else {
             return redirect()->route('courses')->with('error', 'Course not found.');

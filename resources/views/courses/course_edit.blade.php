@@ -320,116 +320,76 @@
 
 
 
-                                                <div class="col-md-6">
-                                                    <div class="form-floating mb-3">
-                                                        <select name="age_groups" class="form-select" id="ageGroupSelect" onchange="updateAreas()" required>
-                                                            <option value="" disabled>Select Age-Group</option>
-                                                            @foreach($agegroups as $agedata)
-                                                            <option value="{{ $agedata->short_name }}" {{ isset($course) && $course->age_group == $agedata->short_name ? 'selected' : '' }}>
-                                                                {{ $agedata->short_name }}
-                                                            </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <label for="ageGroupSelect">Select Montessori Age Group <span class="text-danger" style="font-weight: bold;">*</span></label>
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating mb-3">
+                                                            <select name="age_groups" class="form-select" id="ageGroupSelect" onchange="updateAreas()" required>
+                                                                <option value="">Select Age-Group</option>
+                                                                @foreach($agegroup as $agedata)
+                                                                    <option value="{{ $agedata->slug }}" {{ $course->age_group == $agedata->slug ? 'selected' : '' }}>
+                                                                        {{ $agedata->full_name }}
+                                                                    </option>
+                                                                @endforeach
+                                                                <option value="other" {{ $course->age_group == 'other' ? 'selected' : '' }}>Other</option>
+                                                            </select>
+                                                            <label for="ageGroupSelect">Select Montessori Age Group <span class="text-danger fw-bold">*</span></label>
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                                <div class="col-md-6">
-                                                    <div class="form-floating mb-3">
-                                                        <select name="areas" class="form-select" id="areaSelect" onchange="handleFloatingLabel()" required>
-                                                            <option value="" disabled>Select Area</option>
-                                                            <!-- Options will be dynamically populated by JavaScript -->
-                                                        </select>
-                                                        <label for="areaSelect">Select Montessori Area <span class="text-danger" style="font-weight: bold;">*</span></label>
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating mb-3">
+                                                            <select name="areas" class="form-select" id="areaSelect" onchange="handleFloatingLabel()" required>
+                                                                <option value="" disabled>Select Area</option>
+                                                            </select>
+                                                            <label for="areaSelect">Select Montessori Area <span class="text-danger fw-bold">*</span></label>
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                                <script>
-                                                    // Pass the PHP $areas data to JavaScript
-                                                    const areasData = @json($areas);
-                                                    // Pass the current course area value to JavaScript for pre-selection
-                                                    const currentArea = @json(isset($course) ? $course->area : null);
+                                                    <script>
+                                                        const areasData = @json($areas); // expects each area to have age_group_slug, slug, full_name
+                                                        const selectedArea = @json($course->area); // pre-selected area slug (for edit)
 
-                                                    function updateAreas() {
-                                                        const ageGroupSelect = document.getElementById('ageGroupSelect');
-                                                        const areaSelect = document.getElementById('areaSelect');
-                                                        const selectedAgeGroup = ageGroupSelect.value;
+                                                        function updateAreas() {
+                                                            const ageGroupSelect = document.getElementById('ageGroupSelect');
+                                                            const areaSelect = document.getElementById('areaSelect');
+                                                            const selectedAgeGroup = ageGroupSelect.value;
 
-                                                        // Clear the current options in the Areas dropdown
-                                                        areaSelect.innerHTML = '<option value="" disabled>Select Area</option>';
+                                                            areaSelect.innerHTML = '<option value="" disabled>Select Area</option>';
 
-                                                        if (selectedAgeGroup === 'Montessori') {
-                                                            // If Montessori is selected, show only Nido and Infant
-                                                            const nidoOption = document.createElement('option');
-                                                            nidoOption.value = 'Nido';
-                                                            nidoOption.text = 'Nido';
-                                                            if (currentArea === 'Nido') {
-                                                                nidoOption.selected = true; // Pre-select if the current area is Nido
-                                                            }
-                                                            areaSelect.appendChild(nidoOption);
+                                                            const filteredAreas = areasData.filter(area => area.age_group === selectedAgeGroup);
 
-                                                            const infantOption = document.createElement('option');
-                                                            infantOption.value = 'Infant';
-                                                            infantOption.text = 'Infant';
-                                                            if (currentArea === 'Infant') {
-                                                                infantOption.selected = true; // Pre-select if the current area is Infant
-                                                            }
-                                                            areaSelect.appendChild(infantOption);
-                                                        } else if (selectedAgeGroup === 'Casa Dei Bambini') {
-                                                            // If Casa Dei Bambini is selected, loop through the $areas data
-                                                            areasData.forEach(area => {
+                                                            filteredAreas.forEach(area => {
                                                                 const option = document.createElement('option');
-                                                                option.value = area.full_name;
+                                                                option.value = area.slug;
                                                                 option.text = area.full_name;
-                                                                if (currentArea === area.full_name) {
-                                                                    option.selected = true; // Pre-select if the current area matches
+
+                                                                if (selectedArea === area.slug) {
+                                                                    option.selected = true;
                                                                 }
+
                                                                 areaSelect.appendChild(option);
                                                             });
+
+                                                            handleFloatingLabel();
                                                         }
 
-                                                        // Trigger the floating label update after populating options
-                                                        handleFloatingLabel();
-                                                    }
+                                                        function handleFloatingLabel() {
+                                                            const areaSelect = document.getElementById('areaSelect');
+                                                            const label = areaSelect.parentElement.querySelector('label');
 
-                                                    // Function to handle the floating label behavior for the Areas dropdown
-                                                    function handleFloatingLabel() {
-                                                        const areaSelect = document.getElementById('areaSelect');
-                                                        const label = areaSelect.parentElement.querySelector('label');
-
-                                                        // Log the selected value for debugging
-                                                        console.log("Selected Area Value:", areaSelect.value);
-
-                                                        // If a valid option (not the placeholder) is selected, add the 'floating' effect
-                                                        if (areaSelect.value !== '') {
-                                                            label.classList.add('floating-label-active');
-                                                            areaSelect.classList.add('has-value');
-                                                        } else {
-                                                            label.classList.remove('floating-label-active');
-                                                            areaSelect.classList.remove('has-value');
+                                                            if (areaSelect.value !== '') {
+                                                                label.classList.add('floating-label-active');
+                                                                areaSelect.classList.add('has-value');
+                                                            } else {
+                                                                label.classList.remove('floating-label-active');
+                                                                areaSelect.classList.remove('has-value');
+                                                            }
                                                         }
-                                                    }
 
-                                                    // Handle the floating label for the Age Group dropdown on page load
-                                                    function handleAgeGroupFloatingLabel() {
-                                                        const ageGroupSelect = document.getElementById('ageGroupSelect');
-                                                        const label = ageGroupSelect.parentElement.querySelector('label');
+                                                        window.onload = function () {
+                                                            updateAreas();
+                                                        };
+                                                    </script>
 
-                                                        if (ageGroupSelect.value !== '') {
-                                                            label.classList.add('floating-label-active');
-                                                            ageGroupSelect.classList.add('has-value');
-                                                        } else {
-                                                            label.classList.remove('floating-label-active');
-                                                            ageGroupSelect.classList.remove('has-value');
-                                                        }
-                                                    }
-
-                                                    // Trigger the functions on page load to set the initial state
-                                                    window.onload = function() {
-                                                        handleAgeGroupFloatingLabel(); // Handle the Age Group floating label
-                                                        updateAreas(); // Populate the Areas dropdown based on the selected Age Group
-                                                    };
-                                                </script>
 
                                                 <style>
                                                     /* Custom CSS to ensure the label stays above when a value is selected */
@@ -489,8 +449,10 @@
                                                                         file here</span>
                                                                     <span id="fileName" class="ms-2"></span>
                                                                     <input type="file" id="fileUpload"
-                                                                        name="course_image" class="file-upload-input"
-                                                                        onchange="showFileName(this)" required>
+                                                                    name="course_image"
+                                                                    class="file-upload-input"
+                                                                    onchange="showFileName(this)"
+                                                                    {{ isset($course->course_image) ? '' : 'required' }}>
                                                                 </label>
 
                                                             </div>
@@ -510,7 +472,12 @@
                                                             class="border rounded">
                                                         @endif
                                                     </div>
-
+{{-- <script>
+    function showFileName(input) {
+    const fileName = input.files[0] ? input.files[0].name : '';
+    document.getElementById('fileName').textContent = fileName;
+}
+</script> --}}
 
                                                 </div>
                                             </div>

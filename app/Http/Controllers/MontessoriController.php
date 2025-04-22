@@ -22,9 +22,11 @@ class MontessoriController extends Controller
     {
         $ageGroupUrl=$ageGroup;
         $areaUrl=$area;
+// dd($ageGroupUrl);
+//         $ageGroup = str_replace('-', ' ', ucfirst($ageGroup));
+//         $area = str_replace('-', ' ', ucfirst($area));
 
-        $ageGroup = str_replace('-', ' ', ucfirst($ageGroup));
-        $area = str_replace('-', ' ', ucfirst($area));
+// dd($area);
 
         $userId = Auth::id();
         $userType = Auth::user()->type;
@@ -82,7 +84,7 @@ class MontessoriController extends Controller
 
     function montessori_areas_delete($id)
     {
-
+        // dd($id);
         $course = MontessoriAreas::find($id);
         if ($course) {
             $course->delete();

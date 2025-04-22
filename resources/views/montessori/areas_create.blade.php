@@ -78,7 +78,7 @@
                                                     required value="{{ old('age_group') }}">
                                                     <option value="">Select</option>
                                                     @foreach($ageGroups as $data)
-                                                    <option value="{{ $data->full_name }}">{{ $data->full_name }}
+                                                    <option value="{{ $data->slug }}">{{ $data->full_name }}
                                                     </option>
                                                     @endforeach
                                                 </select>
