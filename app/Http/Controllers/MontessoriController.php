@@ -287,7 +287,7 @@ class MontessoriController extends Controller
 
     function montessori_areas_list()
     {
-        $all_areas = MontessoriAreas::orderBy('created_at', 'asc')->get();
+        $all_areas = MontessoriAreas::select('montessori_areas.*','montessori_age_groups.full_name as agefull_name')->orderBy('montessori_areas.created_at', 'asc')->join('montessori_age_groups','montessori_age_groups.slug','=','age_group')->get();
 
         return view('montessori.areas_list', compact('all_areas'));
     }

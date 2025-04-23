@@ -180,7 +180,7 @@ input:checked + .slider:before {
                                             @if(Auth::user()->can('role') ||
                                             (isset($permissions) && in_array('users_edit', $permissions)) ||
                                             (isset($permissions) && in_array('users_delete', $permissions)))
-                                            <th class="text-center">Actions</th>
+                                            <th>Actions</th>
                                             @endif
                                         </tr>
                                     </thead>

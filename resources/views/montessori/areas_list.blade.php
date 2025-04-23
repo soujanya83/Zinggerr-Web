@@ -85,7 +85,8 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Name</th>
+                                        <th>Areas</th>
+                                        <th>Age-groups</th>
 
                                         <th>Description</th>
                                         @if(Auth::user()->can('role') ||
@@ -102,9 +103,10 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ ucfirst($data['full_name']) }}</td>
+                                        <td>{{ ucfirst($data['agefull_name']) }}</td>
 
                                         <td>
-                                            {{Str::limit(strip_tags($data['description'] ), 90, '...') }}
+                                            {{Str::limit(strip_tags($data['description'] ), 70, '...') }}
                                         </td>
 
                                         <td class="text-center">

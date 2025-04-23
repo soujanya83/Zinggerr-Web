@@ -50,7 +50,7 @@
 
     @endif
 
-    <td class="text-center">
+    <td>
         @if(Auth::user()->can('role') ||
         (isset($permissions) && in_array('users_edit', $permissions)))
 
