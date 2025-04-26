@@ -140,7 +140,6 @@ class MontessoriController extends Controller
                 'age_group' => $request->age_group,
                 'updated_by' => Auth::user()->id,
 
-
             ]);
             return redirect()->route('montessori.areas_list')->with('success', 'Update Montessori Areas successfully!');
         } catch (\Exception $e) {

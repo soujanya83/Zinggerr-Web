@@ -549,17 +549,19 @@
                 <li class="pc-item pc-hasmenu">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
-                            <i class="ti ti-presentation"></i>
+                            <i class="ti ti-video"></i>
                         </span>
-                        <span class="pc-mtext" data-i18n="User">Online Classes</span>
+                        <span class="pc-mtext" data-i18n="User">Video Conference</span>
                         <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
                     </a>
                     <ul class="pc-submenu">
 
-                        <li class="pc-item"><a class="pc-link" href="{{ route('online_classes.list') }}"
-                                data-i18n="Pricing">List</a>
+                        <li class="pc-item"><a class="pc-link" href="{{ route('meetings.index') }}"
+                                data-i18n="Pricing">Schedule</a>
                         </li>
-
+                        <li class="pc-item"><a class="pc-link" href="{{ route('online_classes.list') }}"
+                                data-i18n="Pricing">History</a>
+                        </li>
                     </ul>
                 </li>
 

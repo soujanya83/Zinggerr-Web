@@ -34,5 +34,9 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'bbb' => [
+        'base_url' => env('BBB_SERVER_BASE_URL', 'https://your-bbb-server.com/bigbluebutton/'),
+        'secret' => env('BBB_SECRET', 'your-secret-key'),
+    ],
 
 ];

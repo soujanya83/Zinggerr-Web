@@ -22,6 +22,9 @@ use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use App\Http\Controllers\BBBController;
+use App\Http\Controllers\BigBlueButtonController;
+
 use Illuminate\Notifications\DatabaseNotification;
 Route::get('/', function () {
     return view('welcome');
@@ -404,6 +407,26 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
 
         return response()->json(['success' => false], 404);
     })->name('notifications.read');
+
+
+
+    // Route::get('/create-meeting-form', [BBBController::class, 'create_meeting_form'])->name('bbb.create.form');
+    // Route::get('/meetings', [BBBController::class, 'listMeetings'])->name('bbb.list');
+    // Route::post('/meetings', [BBBController::class, 'createMeeting'])->name('bbb.create');
+    // Route::get('/meetings/join/{meetingID}/{userName}', [BBBController::class, 'joinMeeting'])->name('bbb.join');
+    // Route::post('/meetings/end', [BBBController::class, 'endMeeting'])->name('bbb.end');
+    // Route::post('/meetings/is-running', [BBBController::class, 'isMeetingRunning'])->name('bbb.isRunning');
+    // Route::get('/meetings/link', [BBBController::class, 'showMeetingLink'])->name('bbb.showMeetingLink');
+
+
+    Route::get('/meetings', [BigBlueButtonController::class, 'index'])->name('meetings.index');
+    Route::get('/meetings/create', [BigBlueButtonController::class, 'createMeeting'])->name('meetings.create');
+    Route::post('/meetings/create', [BigBlueButtonController::class, 'createMeeting']);
+    Route::get('/meetings/join', [BigBlueButtonController::class, 'joinMeeting'])->name('meetings.join');
+    Route::post('/meetings/end', [BigBlueButtonController::class, 'endMeeting'])->name('meetings.end');
+    Route::get('/meetings/recordings', [BigBlueButtonController::class, 'getRecordings'])->name('meetings.recordings');
+    Route::get('/bbb/room-link/{meetingId}', [BigBlueButtonController::class, 'showRoomLink'])->name('bbb.room-link');
+
 
     Route::post('/logout', function () {
         Auth::logout();
