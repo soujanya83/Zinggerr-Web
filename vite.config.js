@@ -14,7 +14,8 @@ export default defineConfig({
     server: {
         port: 5174, // Change to an available port
         hmr: {
-            host: 'localhost',
+            // host: 'localhost',
+            host: 'bbb.zinggerr.com',
         },
     }
 });
