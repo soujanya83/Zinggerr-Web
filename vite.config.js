@@ -1,3 +1,25 @@
+// import { defineConfig } from 'vite';
+// import laravel from 'laravel-vite-plugin';
+
+// export default defineConfig({
+//     plugins: [
+//         laravel({
+//             input: [
+//                 'resources/css/app.css',
+//                 'resources/js/app.js',
+//             ],
+//             refresh: true,
+//         }),
+//     ],
+//     server: {
+//         port: 5174, // Change to an available port
+//         hmr: {
+//             // host: 'localhost',
+//             host: 'bbb.zinggerr.com',
+//         },
+//     }
+// });
+
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 
@@ -11,11 +33,8 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-    server: {
-        port: 5174, // Change to an available port
-        hmr: {
-            // host: 'localhost',
-            host: 'bbb.zinggerr.com',
-        },
-    }
+    build: {
+        outDir: 'public/build', // Ensure assets are output to public/build/
+        manifest: true, // Ensure manifest.json is generated
+    },
 });

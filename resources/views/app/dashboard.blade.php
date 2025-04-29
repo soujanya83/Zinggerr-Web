@@ -260,7 +260,7 @@
                         </div>
                     </div>
                     <div class="card-footer text-end">
-                        <a href="{{ route('meetings.list') }}" class="b-b-primary text-primary">View all</a>
+                        {{-- <a href="{{ route('meetings.list') }}" class="b-b-primary text-primary">View all</a> --}}
                     </div>
                 </div>
 
