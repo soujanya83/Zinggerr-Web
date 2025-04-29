@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('meeting_name');
             $table->string('moderator_pw');
             $table->string('attendee_pw');
+            $table->text('moderator_join_url');
+            $table->text('attendee_join_url');
+            $table->char('host_started')->default(false);
             $table->timestamp('scheduled_at')->nullable(); // Scheduled time
             $table->enum('status', ['scheduled', 'running', 'ended'])->default('scheduled');
             $table->timestamps();

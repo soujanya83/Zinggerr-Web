@@ -21,9 +21,7 @@ class BigBlueButtonService
         $this->hashingAlgorithm = config('bbb.hashing_algorithm');
     }
 
-    /**
-     * Generate checksum for BBB API calls
-     */
+
     protected function generateChecksum($action, $params)
     {
         $queryString = http_build_query($params, '', '&', PHP_QUERY_RFC3986);
@@ -87,29 +85,27 @@ class BigBlueButtonService
     /**
      * End a meeting
      */
-    public function endMeeting($meetingID, $moderatorPassword)
+    public function endMeeting($meetingID)
     {
         $action = 'end';
-        $params = [
+        $params = http_build_query([
             'meetingID' => $meetingID,
-            'password' => $moderatorPassword,
-        ];
-
-        $params['checksum'] = $this->generateChecksum($action, $params);
+            'password' => config('bbb.moderator_password'), // Adjust based on your config
+        ]);
+        $checksum = hash($this->hashingAlgorithm, $action . $params . $this->secret);
+        $url = $this->baseUrl . $action . '?' . $params . '&checksum=' . $checksum;
 
         try {
-            $response = $this->client->get($this->baseUrl . $action, [
-                'query' => $params,
-            ]);
+            $response = $this->client->get($url);
+            $xml = simplexml_load_string($response->getBody(), 'SimpleXMLElement', LIBXML_NOCDATA);
+            $result = json_decode(json_encode($xml), true);
 
-            $xml = simplexml_load_string($response->getBody()->getContents());
-            return [
-                'returncode' => (string) $xml->returncode,
-                'message' => (string) $xml->message,
-            ];
+            return $result;
         } catch (\Exception $e) {
-            Log::error('BBB End Meeting Error: ' . $e->getMessage());
-            return ['returncode' => 'FAILED', 'message' => $e->getMessage()];
+            return [
+                'returncode' => 'FAILED',
+                'message' => $e->getMessage(),
+            ];
         }
     }
 
@@ -145,6 +141,42 @@ class BigBlueButtonService
         } catch (\Exception $e) {
             Log::error('BBB Get Recordings Error: ' . $e->getMessage());
             return ['returncode' => 'FAILED', 'message' => $e->getMessage()];
+        }
+    }
+
+    public function getMeetings()
+    {
+        $action = 'getMeetings';
+        $params = '';
+        $checksum = hash($this->hashingAlgorithm, $action . $params . $this->secret);
+        $url = $this->baseUrl . $action . '?' . http_build_query(['checksum' => $checksum]);
+
+        try {
+            $response = $this->client->get($url);
+            $xml = simplexml_load_string($response->getBody(), 'SimpleXMLElement', LIBXML_NOCDATA);
+            $result = json_decode(json_encode($xml), true);
+
+            if ($result['returncode'] === 'SUCCESS') {
+                $meetings = $result['meetings']['meeting'] ?? [];
+                // Ensure meetings is always an array
+                if (!isset($meetings[0]) && !empty($meetings)) {
+                    $meetings = [$meetings];
+                }
+                return [
+                    'returncode' => 'SUCCESS',
+                    'meetings' => $meetings,
+                ];
+            }
+
+            return [
+                'returncode' => 'FAILED',
+                'message' => $result['message'] ?? 'Unknown error',
+            ];
+        } catch (\Exception $e) {
+            return [
+                'returncode' => 'FAILED',
+                'message' => $e->getMessage(),
+            ];
         }
     }
 }

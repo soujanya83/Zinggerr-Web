@@ -556,8 +556,8 @@
                     </a>
                     <ul class="pc-submenu">
 
-                        <li class="pc-item"><a class="pc-link" href="{{ route('meetings.index') }}"
-                                data-i18n="Pricing">Schedule</a>
+                        <li class="pc-item"><a class="pc-link" href="{{ route('meetings.list') }}"
+                                data-i18n="Pricing">Meetings</a>
                         </li>
                         <li class="pc-item"><a class="pc-link" href="{{ route('online_classes.list') }}"
                                 data-i18n="Pricing">History</a>

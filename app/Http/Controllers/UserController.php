@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use App\Mail\VerifyEmail;
+use App\Models\BbbMeeting;
 use App\Models\CoursesAssign;
 use App\Models\Permission;
 use App\Models\Notifications;
@@ -60,7 +61,12 @@ class UserController extends Controller
             $read = $user->readNotifications;
             $notifications = $unread->concat($read)->take(5);
 
-            return view('app.dashboard', compact('student', 'courses', 'teacher', 'staff', 'courseslast7day', 'coursesLastMonth', 'studentlast7day', 'studentlastmonth', 'latestStudents','notifications'));
+
+            $bbbmeetings = BbbMeeting::orderByRaw("CASE WHEN status = 'running' THEN 0 ELSE 1 END")
+    ->latest('scheduled_at')
+    ->take(5)
+    ->get();
+            return view('app.dashboard', compact('student','bbbmeetings', 'courses', 'teacher', 'staff', 'courseslast7day', 'coursesLastMonth', 'studentlast7day', 'studentlastmonth', 'latestStudents','notifications'));
         } else {
             return redirect()->route('loginpage');
         }

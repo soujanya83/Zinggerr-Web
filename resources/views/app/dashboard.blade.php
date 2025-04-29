@@ -77,38 +77,46 @@
     }
 
 
-        /* Change color of prev/next buttons */
-.fc-button.fc-prev-button,
-.fc-button.fc-next-button {
-    background-color: #d4e7f9 !important;  /* Example: Amber */
-    border: none !important;
-    color: #2a19b6  !important; /* Text/icon color */
-    border-radius: 6px;
-    box-shadow: 0 2px 5px rgba(157, 2, 2, 0.1);
-}
+    /* Change color of prev/next buttons */
+    .fc-button.fc-prev-button,
+    .fc-button.fc-next-button {
+        background-color: #d4e7f9 !important;
+        /* Example: Amber */
+        border: none !important;
+        color: #2a19b6 !important;
+        /* Text/icon color */
+        border-radius: 6px;
+        box-shadow: 0 2px 5px rgba(157, 2, 2, 0.1);
+    }
 
-.fc-button.fc-prev-button:hover,
-.fc-button.fc-next-button:hover {
-    background-color: #d4e7f9 !important;  /* Darker on hover */
-}
+    .fc-button.fc-prev-button:hover,
+    .fc-button.fc-next-button:hover {
+        background-color: #d4e7f9 !important;
+        /* Darker on hover */
+    }
 
 
     /* Change color of prev/next buttons */
     .fc-button.fc-prev-button,
-.fc-button.fc-next-button {
-    background-color: #d4e7f9 !important;  /* Example: Amber */
-    border: none !important;
-    color: #2a19b6  !important; /* Text/icon color */
-    border-radius: 6px;
-    box-shadow: 0 2px 5px rgba(157, 2, 2, 0.1);
-}
+    .fc-button.fc-next-button {
+        background-color: #d4e7f9 !important;
+        /* Example: Amber */
+        border: none !important;
+        color: #2a19b6 !important;
+        /* Text/icon color */
+        border-radius: 6px;
+        box-shadow: 0 2px 5px rgba(157, 2, 2, 0.1);
+    }
 
-.fc-button.fc-prev-button:hover,
-.fc-button.fc-next-button:hover {
-    background-color: #d4e7f9 !important;  /* Darker on hover */
-}
-.material-icons-two-tone {
-    background-color: #2a19b6}
+    .fc-button.fc-prev-button:hover,
+    .fc-button.fc-next-button:hover {
+        background-color: #d4e7f9 !important;
+        /* Darker on hover */
+    }
+
+    .material-icons-two-tone {
+        background-color: #2a19b6
+    }
 </style>
 
 
@@ -194,6 +202,69 @@
 
 
                 </div>
+
+                <div class="card table-card">
+                    <div class="card-header">
+                        <h5>Latest Meetings</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            @if($bbbmeetings->count()>0)
+                            <div class="meetings-scroll" style="height: 310px; position: relative">
+                                <table class="table table-hover table-borderless mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style="text-align:center">#</th>
+                                            <th scope="col">Meeting Name</th>
+                                            <th scope="col">Meeting ID</th>
+                                            <th scope="col">Scheduled At</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach($bbbmeetings as $keys => $user)
+                                        <tr>
+                                            <td style="text-align:center">{{ $keys + 1 }}</td>
+                                            <td>{{ \Illuminate\Support\Str::title($user->meeting_name) }}</td>
+                                            <td>{{ $user->meeting_id }}</td>
+                                            <td>{{ $user->scheduled_at->format('d M Y h:i A') }}</td>
+                                            <td>
+                                                @if($user->status == 'running' && $user->attendee_join_url)
+                                                <span class="badge bg-light-success rounded-pill f-14">Running</span>
+                                                @elseif($user->status == 'ended')
+                                                    <span class="badge bg-light-danger rounded-pill f-14">Ended</span>
+                                                @else
+                                                    <span class="badge bg-light-warning rounded-pill f-14">Scheduled</span>
+                                                @endif
+                                            </td>
+                                            <td> @if($user->status == 'running' && $user->attendee_join_url)
+                                                <a href="{{ route('meetings.join', ['meeting_id' => $user->meeting_id, 'is_moderator' => 0]) }}" class="btn btn-sm btn-success"><span style="border-radius: 46px;">Join</span></a></td>
+                                                @else
+                                                ---
+                                                @endif
+                                        </tr>
+                                        @endforeach
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            @else
+                            <div id="no-meetings" class="d-flex align-items-center mt-2"
+                                style="margin-left:12px; display: none;">
+                                <tr>Data Not found!</tr>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="card-footer text-end">
+                        <a href="{{ route('meetings.list') }}" class="b-b-primary text-primary">View all</a>
+                    </div>
+                </div>
+
+
 
                 <div class="card table-card">
                     <div class="calendar-container">
@@ -316,7 +387,7 @@
                                 </form>
                             </div>
                             <div class="modal-footer">
-                              
+
                                 <button type="button" class="btn btn-primary" onclick="saveTask()">Save Task</button>
                             </div>
                         </div>
@@ -420,9 +491,11 @@
                             </h5>
                             <div>
                                 <button id="prevDateBtn" class="btn  btn-shadow"
-                                    style="background-color: #d4e7f9; color: #2a19b6; border: none; padding: 6px 10px; border-radius: 5px; margin-right: 5px;"><i class="material-icons-two-tone">navigate_before</i></button>
+                                    style="background-color: #d4e7f9; color: #2a19b6; border: none; padding: 6px 10px; border-radius: 5px; margin-right: 5px;"><i
+                                        class="material-icons-two-tone">navigate_before</i></button>
                                 <button id="nextDateBtn" class="btn  btn-shadow"
-                                    style="background-color: #d4e7f9; color: #2a19b6; border: none; padding: 6px 10px; border-radius: 5px;"><i class="material-icons-two-tone">navigate_next</i></button>
+                                    style="background-color: #d4e7f9; color: #2a19b6; border: none; padding: 6px 10px; border-radius: 5px;"><i
+                                        class="material-icons-two-tone">navigate_next</i></button>
                             </div>
                         </div>
                         <div class="card-body" style="padding: 5px;">
@@ -734,6 +807,9 @@
             };
         });
 </script>
+
+
+
 
 @include('partials.footer')
 @endsection
