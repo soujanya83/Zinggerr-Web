@@ -12,7 +12,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 @section('pageTitle', ' Roles Create')
-@vite(['resources/css/app.css', 'resources/js/app.js'])
+{{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
+<link href="{{ asset('css/app.css') }}" rel="stylesheet">
+<script src="{{ asset('js/app.js') }}" defer></script>
 @section('content')
 @include('partials.sidebar')
 @include('partials.header')
