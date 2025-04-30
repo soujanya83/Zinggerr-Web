@@ -35,85 +35,10 @@
     }
 </style>
 
-{{-- <style>
-    /* Sidebar styles */
-    .pc-sidebar {
-        width: 260px;
-        transition: all 0.3s ease;
-        position: fixed;
-        height: 100%;
-        top: 0;
-        left: 0;
-        z-index: 1029;
-    }
 
-    /* Icon-only sidebar state */
-    .pc-sidebar.icon-only {
-        width: 70px;
-    }
-
-    /* Hide text and unnecessary elements in icon-only state */
-    .pc-sidebar.icon-only .pc-mtext,
-    .pc-sidebar.icon-only .pc-item.pc-caption label,
-    .pc-sidebar.icon-only .pc-arrow,
-    .pc-sidebar.icon-only .navbar-brand-name {
-        display: none;
-    }
-
-    /* Center the icons in icon-only state */
-    .pc-sidebar.icon-only .pc-micon {
-        /* margin: 0 auto; */
-        display: flex;
-        justify-content: center;
-    }
-
-    /* Adjust menu items in icon-only state */
-    .pc-sidebar.icon-only .pc-navbar>li>.pc-link {
-        padding: 12px 5px;
-        justify-content: center;
-    }
-
-    /* Logo adjustments */
-    .pc-sidebar .m-header img.logo {
-        transition: all 0.3s ease;
-    }
-
-    .pc-sidebar.icon-only .m-header img.logo {
-        width: 40px !important;
-    }
-
-    /* Submenu styling for icon-only state */
-    .pc-sidebar.icon-only .pc-hasmenu:hover .pc-submenu {
-        display: block;
-        position: absolute;
-        left: 70px;
-        top: 0;
-        width: 200px;
-        background: #fff;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        border-radius: 4px;
-        z-index: 999;
-        padding: 10px;
-    }
-
-    /* Show submenu on hover in icon-only state */
-    .pc-sidebar.icon-only .pc-hasmenu:hover>.pc-submenu {
-        display: block;
-    }
-
-    /* Main content adjustment */
-    .pc-container {
-        margin-left: 260px;
-        transition: all 0.3s ease;
-    }
-
-    .pc-sidebar.icon-only~.pc-container {
-        margin-left: 70px;
-    }
-</style> --}}
 
 <style>
-    /* Sidebar styles (base - initially full) */
+
     .pc-sidebar {
         width: 260px;
         /* Initially full width */
@@ -127,6 +52,9 @@
         /* Enable scroll if content overflows */
         background-color: #f8f9fa;
         padding-top: 1rem;
+
+        height: 100vh;           /* Full viewport height */
+        overflow-y: hidden;
     }
 
     /* Icon-only sidebar state (when collapsed) */
@@ -159,6 +87,7 @@
     .pc-sidebar.icon-only .pc-navbar>li>.pc-link {
         padding: 0.75rem 5px;
         justify-content: center;
+        margin-left: 23px;
     }
 
     /* Hover effect on the icon-only sidebar */
@@ -190,6 +119,8 @@
         /* Forcefully align icon to the left */
         margin-right: 0.75rem !important;
         /* Forcefully add spacing */
+
+
     }
 
     .pc-sidebar.icon-only:hover .pc-navbar>li>.pc-link {
@@ -249,6 +180,36 @@
         max-width: 100%;
         height: auto;
     }
+
+
+        .pc-sidebar,
+    .pc-sidebar .pc-link,
+    .pc-sidebar .pc-link i,
+    .pc-sidebar .pc-link span,
+    .pc-sidebar .pc-submenu .pc-link {
+        color: white !important;
+        font-size: 13px !important; /* Assuming default is 14px */
+    }
+
+    .pc-sidebar .pc-micon i,
+    .pc-sidebar .pc-arrow i {
+        color: white !important;
+        font-size: 15px !important; /* Assuming icons were 16px, now reduced */
+    }
+
+    .pc-sidebar .pc-link:hover,
+    .pc-sidebar .pc-submenu .pc-link:hover {
+        color: white !important;
+    }
+
+    .pc-sidebar .pc-submenu {
+        background-color: #6141bc !important;
+    }
+
+    .pc-sidebar .pc-link,
+    .pc-sidebar .pc-submenu .pc-link {
+        opacity: 1 !important;}
+
 </style>
 
 <script>
@@ -306,23 +267,25 @@
 
 
 </script>
-<nav class="pc-sidebar" style="background-color: #ffffff;">
+
+<nav class="pc-sidebar" style="background-color: #6141bc;">
     <div class="navbar-wrapper">
-        <div class="m-header" style="margin-top:-19px">
+        <div class="m-header" style="margin-top:-10px">
             <a href="{{ route('dashboard_user') }}" class="b-brand text-primary">
-                <img src="{{ asset('asset/images/logo.png')}}" class="logo" width="200px" alt="logo">
+                <img src="{{ asset('asset/images/logo.png')}}" class="logo" width="190px" alt="logo">
 
             </a>
         </div>
-        <div class="navbar-content">
-            <ul class="pc-navbar mt-1">
 
-                <li class="pc-item">
+        <div class="navbar-content" style="margin-top: 16px;">
+            <ul class="pc-navbar">
+
+                <li class="pc-item" style="    margin-left: -13px;">
                     <a href="{{ route('dashboard_user') }}" class="pc-link"><span class="pc-micon"><i
                                 class="ti ti-dashboard"></i></span><span class="pc-mtext">Dashboard</span></a>
                 </li>
 
-                <li class="pc-item pc-hasmenu">
+                <li class="pc-item pc-hasmenu" style="    margin-left: -13px;">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
                             <i class="ti ti-school"></i>
@@ -372,7 +335,7 @@
 
                 @if(Auth::user()->can('role') || (isset($permissions) && in_array('user_sidebar',
                 $permissions)))
-                <li
+                <li style="    margin-left: -13px;"
                     class="pc-item pc-hasmenu {{ request()->routeIs('useradd') || request()->routeIs('userlist') || request()->routeIs('teacherlist') || request()->routeIs('studentlist') ? 'active pc-trigger' : '' }}">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
@@ -414,7 +377,7 @@
                 @endif
                 @if(Auth::user()->can('role') || (isset($permissions) && in_array('role_sidebar',
                 $permissions)))
-                <li class="pc-item pc-hasmenu">
+                <li class="pc-item pc-hasmenu" style="    margin-left: -13px;">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
                             <i class="ti ti-shield-check"></i>
@@ -434,7 +397,7 @@
 
                 @if(Auth::user()->can('role')|| (isset($permissions) && in_array('permission_sidebar',
                 $permissions)))
-                <li class="pc-item pc-hasmenu" style="display:none">
+                <li class="pc-item pc-hasmenu" style="display:none; margin-left: -13px;">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
                             <i class="ti ti-login"></i>
@@ -454,7 +417,7 @@
 
                 @if(Auth::user()->can('role')|| (isset($permissions) && in_array('settings_sidebar',
                 $permissions)))
-                <li class="pc-item pc-hasmenu">
+                <li class="pc-item pc-hasmenu" style="margin-left: -13px;">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
                             <i class="ti ti-settings"></i>
@@ -499,7 +462,7 @@
 
                 @if(Auth::user()->can('role')|| (isset($permissions) && in_array('events_sidebar',
                 $permissions)))
-                <li class="pc-item pc-hasmenu">
+                <li class="pc-item pc-hasmenu" style="    margin-left: -13px;">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
                             <i class="ti ti-clipboard-list"></i>
@@ -520,7 +483,7 @@
                 @endif
 
 
-                <li class="pc-item pc-hasmenu">
+                <li class="pc-item pc-hasmenu" style="    margin-left: -13px;">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
 
@@ -546,7 +509,7 @@
                 </li>
 
 
-                <li class="pc-item pc-hasmenu">
+                <li class="pc-item pc-hasmenu" style="    margin-left: -13px;">
                     <a href="#" class="pc-link">
                         <span class="pc-micon">
                             <i class="ti ti-video"></i>
@@ -565,8 +528,123 @@
                     </ul>
                 </li>
 
+
+                {{-- <li class="pc-item profile-section" style="position: absolute; bottom: 20px; left: 0; width: 100%; margin-left: -13px; padding: 10px; background-color: #6141bc; color: white;">
+                    <span class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="display: flex; align-items: center; padding: 8px; border-radius: 8px 8px 0 0; transition: all 0.3s ease; width: 100%; cursor: pointer;">
+                        <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('asset/images/user/download.jpg') }}" alt="user-image" class="user-avatar" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                        <div class="profile-info" style="flex-grow: 1;">
+                            <span style="font-weight: bold; color: white;">{{ ucfirst(Str::before(Auth::user()->name, ' ')) }}</span><br>
+                            <span style="color: white; font-size: 12px;">{{ Auth::user()->email }}</span>
+                        </div>
+                    </span>
+                    <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown" style="background-color: #6141bc; color: white; border: none; border-radius: 8px; padding: 10px; position: absolute; bottom: 100%; right: 0; margin-bottom: 10px; width: 200px;">
+                        <div class="dropdown-header" style="padding: 10px;">
+                            <h4 class="dropdown-text" style="color: white; font-size: 17px; margin-bottom: 5px;">{{ Str::title(Auth::user()->name) }}</h4>
+                            <p class="dropdown-text" style="color: white; font-size: 12px; margin-bottom: 10px;">@if(Auth::user()->type == 'Superadmin') <b style="background-color: #e9ecef; color: #6141bc; padding: 4px 10px; border-radius: 15px; font-size: 14px;">SuperAdmin</b> @else <b style="background-color: #e9ecef; color: #6141bc; padding: 4px 10px; border-radius: 15px; font-size: 14px;">{{ Auth::user()->type }}</b> @endif</p>
+                            <a href="{{ route('userprofile') }}" class="dropdown-item" style="color: white; padding: 8px 15px; display: flex; align-items: center; background-color: rgba(255, 255, 255, 0.1); border-radius: 8px; margin-bottom: 5px;">
+                                <i class="ti ti-settings" style="margin-right: 10px; font-size: 16px;"></i>
+                                <span class="dropdown-text">Account Settings</span>
+                            </a>
+                            <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="color: white; padding: 8px 15px; display: flex; align-items: center; background-color: rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                                <i class="ti ti-logout" style="margin-right: 10px; font-size: 16px;"></i>
+                                <span class="dropdown-text">Logout</span>
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Inline styles for icon-only mode -->
+                    <style type="text/css">
+                        .pc-sidebar.icon-only .dropdown-toggle {
+                            justify-content: center;
+                        }
+                        .pc-sidebar.icon-only .user-avatar {
+                            margin-right: 0;
+                        }
+                        .pc-sidebar.icon-only .profile-info {
+                            display: none !important;
+                        }
+                        .pc-sidebar.icon-only:hover .dropdown-toggle {
+                            justify-content: flex-start;
+                        }
+                        .pc-sidebar.icon-only:hover .user-avatar {
+                            margin-right: 10px;
+                        }
+                        .pc-sidebar.icon-only:hover .profile-info {
+                            display: block !important;
+                        }
+                        .pc-sidebar.icon-only .dropdown-text {
+                            display: none !important;
+                        }
+                        .pc-sidebar.icon-only:hover .dropdown-text {
+                            display: block !important;
+                        }
+                        .dropdown-item:hover {
+                            background-color: rgba(255, 255, 255, 0.2) !important;
+                        }
+                    </style>
+
+                    <!-- Inline JavaScript to close dropdown on outside click -->
+                    <script type="text/javascript">
+                        document.addEventListener('click', function(event) {
+                            const dropdown = document.querySelector('.profile-section .dropdown-menu');
+                            const toggle = document.querySelector('.profile-section .dropdown-toggle');
+                            const isClickInsideDropdown = dropdown.contains(event.target);
+                            const isClickOnToggle = toggle.contains(event.target);
+
+                            if (!isClickInsideDropdown && !isClickOnToggle) {
+                                const bsDropdown = bootstrap.Dropdown.getInstance(toggle);
+                                if (bsDropdown) {
+                                    bsDropdown.hide();
+                                }
+                            }
+                        });
+                    </script>
+                </li> --}}
+                <li class="pc-item profile-section" style="position: absolute; bottom: 20px; left: 0; width: 100%; margin-left: -13px; padding: 10px; background-color: #6141bc; color: white;">
+                    <div class="profile-content" style="display: flex; align-items: center; padding: 8px; border-radius: 8px 8px 0 0; transition: all 0.3s ease;">
+                        <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('asset/images/user/download.jpg') }}" alt="user-image" class="user-avatar" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                        <div class="profile-info" style="flex-grow: 1;">
+                            <span style="font-weight: bold; color: white;">{{ ucfirst(Str::before(Auth::user()->name, ' ')) }}</span><br>
+                            <span style="color: white; font-size: 12px;">{{ Auth::user()->email }}</span>
+                        </div>
+                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="margin-left: auto; color: #e43c4d; font-size: 18px;" title="Log-out">
+                            <i class="ti ti-logout"></i>
+                        </a>
+                    </div>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+
+                    <!-- Inline styles for icon-only mode -->
+                    <style type="text/css">
+                        .pc-sidebar.icon-only .profile-content {
+                            justify-content: center;
+                        }
+                        .pc-sidebar.icon-only .user-avatar {
+                            margin-right: 0;
+                        }
+                        .pc-sidebar.icon-only .profile-info,
+                        .pc-sidebar.icon-only .profile-content a {
+                            display: none !important;
+                        }
+                        .pc-sidebar.icon-only:hover .profile-content {
+                            justify-content: flex-start;
+                        }
+                        .pc-sidebar.icon-only:hover .user-avatar {
+                            margin-right: 10px;
+                        }
+                        .pc-sidebar.icon-only:hover .profile-info,
+                        .pc-sidebar.icon-only:hover .profile-content a {
+                            display: block !important;
+                        }
+                    </style>
+                </li>
             </ul>
         </div>
+
     </div>
 </nav>
 

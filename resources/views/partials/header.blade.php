@@ -66,7 +66,8 @@
         color: #6c757d;
         cursor: not-allowed;
     }
-
+    .pc-header {
+        background: #1b1a8c;}
     /* .......................................................... */
 </style>
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -75,10 +76,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
-<header class="pc-header">
+<header class="pc-header" style="background-color: #6141bc;">
     {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
 
-    <div class="header-wrapper">
+    <div class="header-wrapper" >
         <div class="me-auto pc-mob-drp">
             <ul class="list-unstyled">
 
@@ -257,8 +258,8 @@
                         @else
                         <img src="{{ asset('asset/images/user/download.jpg') }}" alt="image" class="user-avatar">
                         @endif
-                        &nbsp;<b>{{ ucfirst(Str::before(Auth::user()->name, ' ')) }}</b>
-                        <span class="dropdown-toggle" type="button" id="settingsDropdown" data-bs-toggle="dropdown"
+                        &nbsp;<b style="color:#e9ecef">{{ ucfirst(Str::before(Auth::user()->name, ' ')) }}</b>
+                        <span class="dropdown-toggle" style="color:#e9ecef" type="button" id="settingsDropdown" data-bs-toggle="dropdown"
                             aria-expanded="false">
                         </span>
                     </span>
@@ -278,27 +279,12 @@
                             <hr>
                             <div class="profile-notification-scroll position-relative"
                                 style="max-height: calc(100vh - 280px)">
-                                {{-- <div class="upgradeplan-block bg-light-warning rounded">
-                                    <h4>Explore full code</h4>
-                                    <p class="text-muted">Buy now to get full access to code files</p>
-                                    <a href="https://codedthemes.com/item/berry-bootstrap-5-admin-template/"
-                                        target="_blank" class="btn btn-warning">Buy Now</a>
-                                </div>
-                                <hr> --}}
-                                {{-- ........................only set for Spueradmin................................
-                                --}}
-                                {{-- @can('role',Auth::user()) --}}
+
                                 <a href="{{ route('userprofile') }}" class="dropdown-item">
                                     <i class="ti ti-settings"></i>
                                     <span>Account Settings</span>
                                 </a>
-                                {{-- @endcan --}}
 
-
-                                {{-- <a href="{{ route('user.socialprofile') }}" class="dropdown-item">
-                                    <i class="ti ti-user"></i>
-                                    <span>Social Profile</span>
-                                </a> --}}
                                 <a class="dropdown-item" href="#"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <i class="ti ti-logout"></i>

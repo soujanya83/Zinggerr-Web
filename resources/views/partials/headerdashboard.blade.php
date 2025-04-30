@@ -73,7 +73,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
-<header class="pc-header">
+<header class="pc-header" style="background-color: #6141bc;">
     <div class="header-wrapper">
         <div class="me-auto pc-mob-drp">
             <ul class="list-unstyled">
@@ -253,8 +253,8 @@
                         @else
                         <img src="{{ asset('asset/images/user/download.jpg') }}" alt="image" class="user-avatar">
                         @endif
-                        &nbsp;<b>{{ ucfirst(Str::before(Auth::user()->name, ' ')) }}</b>
-                        <span class="dropdown-toggle" type="button" id="settingsDropdown" data-bs-toggle="dropdown"
+                        &nbsp;<b style="color:#e9ecef">{{ ucfirst(Str::before(Auth::user()->name, ' ')) }}</b>
+                        <span class="dropdown-toggle" style="color:#e9ecef" type="button" id="settingsDropdown" data-bs-toggle="dropdown"
                             aria-expanded="false">
                         </span>
                     </span>
