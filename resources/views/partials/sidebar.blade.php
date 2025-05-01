@@ -549,6 +549,23 @@
                     </ul>
                 </li>
 
+                @php
+                $notifications = auth()->user()->unreadNotifications;
+            @endphp
+
+            <li class="pc-item pc-hasmenu" style="margin-left: -13px;">
+                <a href="{{ route('all_notifications') }}" class="pc-link" style="position: relative; display: flex; align-items: center;">
+                    <span class="pc-micon" style="margin-right: 0.75rem;">
+                        <i class="ti ti-bell"></i>
+                    </span>
+                    <span class="pc-mtext" data-i18n="Teachers">Notifications</span>
+                    <span id="notification-count" class="badge"
+                          style="background-color: white; color: black !important; border-radius: 50%; font-size: 10px; font-weight: bold; padding: 2px 6px; min-width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+                        {{ $notifications->count() > 0 ? $notifications->count() : 0 }}
+                    </span>
+                </a>
+            </li>
+
 
                 {{-- <li class="pc-item profile-section"
                     style="position: absolute; bottom: 20px; left: 0; width: 100%; margin-left: -13px; padding: 10px; background-color: #6141bc; color: white;">

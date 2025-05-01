@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\Profiler\Profile;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BigBlueButtonController;
-
+use App\Http\Controllers\NotificationController;
 use Illuminate\Notifications\DatabaseNotification;
 Route::get('/', function () {
     return view('welcome');
@@ -409,8 +409,8 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
 
 
 
-
-
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('all_notifications');
+    Route::get('/mark-all-as-read', [NotificationController::class, 'markAllRead'])->name('markAllRead');
 
     Route::get('create-meetings', [BigBlueButtonController::class, 'index'])->name('meetings.index');
     Route::get('/meetings/create', [BigBlueButtonController::class, 'createMeeting'])->name('meetings.create');
