@@ -101,7 +101,12 @@ class UserController extends Controller
             $unread = $user->unreadNotifications;
             $read = $user->readNotifications;
             $notifications = $unread->concat($read)->take(5);
-            return view('app.admindashboard', compact('notifications','student', 'courses', 'teacher', 'staff', 'courseslast7day', 'coursesLastMonth', 'studentlast7day', 'studentlastmonth', 'latestStudents'));
+
+            $bbbmeetings = BbbMeeting::orderByRaw("CASE WHEN status = 'running' THEN 0 ELSE 1 END")
+            ->latest('scheduled_at')
+            ->take(5)
+            ->get();
+            return view('app.admindashboard', compact('bbbmeetings','notifications','student', 'courses', 'teacher', 'staff', 'courseslast7day', 'coursesLastMonth', 'studentlast7day', 'studentlastmonth', 'latestStudents'));
         } else {
             return redirect()->route('loginpage');
         }

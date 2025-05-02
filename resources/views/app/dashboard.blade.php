@@ -163,10 +163,10 @@
                 <div class="row" style="margin-top:25px">
                     <div class="col-md-6">
                         <div class="card dashnum-card dashnum-card-small overflow-hidden"><span
-                                class="round bg-warning small"></span> <span class="round bg-warning big"></span>
+                                class="round bg-primary small"></span> <span class="round bg-primary big"></span>
                             <div class="card-body p-3">
                                 <div class="d-flex align-items-center">
-                                    <div class="avtar avtar-lg bg-light-warning"><i class="text-warning ti ti-book"></i>
+                                    <div class="avtar avtar-lg bg-light-primary"><i class="text-primary ti ti-book"></i>
                                     </div>
                                     <div class="ms-2">
                                         <h4 class="mb-1"> {{ $courseslast7day
@@ -182,11 +182,11 @@
 
                     <div class="col-md-6">
                         <div class="card dashnum-card dashnum-card-small overflow-hidden"><span
-                                class="round bg-warning small"></span> <span class="round bg-warning big"></span>
+                                class="round bg-primary small"></span> <span class="round bg-primary big"></span>
                             <div class="card-body p-3">
                                 <div class="d-flex align-items-center">
-                                    <div class="avtar avtar-lg bg-light-warning"><i
-                                            class="text-warning ti ti-users"></i>
+                                    <div class="avtar avtar-lg bg-light-primary"><i
+                                            class="text-primary ti ti-users"></i>
                                     </div>
                                     <div class="ms-2">
                                         <h4 class="mb-1">{{ $studentlast7day
@@ -460,13 +460,9 @@
                         <a href="{{ $notification->data['url'] ?? '#' }}" class="text-decoration-none text-dark">
                             <div class="d-flex align-items-center border-bottom py-3">
 
-                                @if(Auth::user()->profile_picture)
-                                <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="user-image"
-                                    class="user-avatar" style="width: 40px; height: 40px;">
-                                @else
-                                <img src="{{ asset('asset/images/user/download.jpg') }}" alt="image" class="user-avatar"
-                                    style="width: 40px; height: 40px;">
-                                @endif
+                                <div class="user-avtar bg-light-success ms-2 rounded-circle d-flex justify-content-center align-items-center" style="width: 45px; height: 40px;">
+                                    <i class="ti ti-bell"></i>
+                                </div>
                                 <div class="w-100 ms-3">
                                     <div class="d-flex w-100 justify-content-between">
                                         <h6 class="mb-0">{{ $notification->data['title'] ?? 'No Title' }}</h6>

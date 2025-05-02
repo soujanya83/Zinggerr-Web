@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BbbMeeting;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use Illuminate\Support\Facades\Validator;
@@ -98,8 +99,11 @@ class StudentController extends Controller
         $unread = $user->unreadNotifications;
         $read = $user->readNotifications;
         $notifications = $unread->concat($read)->take(5);
-
-        return view('app.studentdashboard', compact('notifications','student', 'courses', 'teacher', 'student_courses'));
+        $bbbmeetings = BbbMeeting::orderByRaw("CASE WHEN status = 'running' THEN 0 ELSE 1 END")
+        ->latest('scheduled_at')
+        ->take(5)
+        ->get();
+        return view('app.studentdashboard', compact('bbbmeetings','notifications','student', 'courses', 'teacher', 'student_courses'));
     }
 
 

@@ -152,10 +152,10 @@
 
                     <div class="col-md-6">
                         <div class="card dashnum-card dashnum-card-small overflow-hidden"><span
-                                class="round bg-warning small"></span> <span class="round bg-warning big"></span>
+                                class="round bg-primary small"></span> <span class="round bg-primary big"></span>
                             <div class="card-body p-3">
                                 <div class="d-flex align-items-center">
-                                    <div class="avtar avtar-lg bg-light-warning"><i class="text-warning ti ti-book"></i>
+                                    <div class="avtar avtar-lg bg-light-primary"><i class="text-primary ti ti-book"></i>
                                     </div>
                                     <div class="ms-2">
                                         <h4 class="mb-1"> {{ $courses
@@ -170,10 +170,10 @@
 
                     <div class="col-md-6">
                         <div class="card dashnum-card dashnum-card-small overflow-hidden"><span
-                                class="round bg-warning small"></span> <span class="round bg-warning big"></span>
+                                class="round bg-primary small"></span> <span class="round bg-primary big"></span>
                             <div class="card-body p-3">
                                 <div class="d-flex align-items-center">
-                                    <div class="avtar avtar-lg bg-light-warning"><i class="text-warning ti ti-users"></i>
+                                    <div class="avtar avtar-lg bg-light-primary"><i class="text-primary ti ti-users"></i>
                                     </div>
                                     <div class="ms-2">
                                         <h4 class="mb-1"> {{ $student
@@ -213,7 +213,66 @@
                         </div>
                     </div> --}}
                 </div>
+                <div class="card table-card">
+                    <div class="card-header">
+                        <h5>Latest Meetings</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            @if($bbbmeetings->count()>0)
+                            <div class="meetings-scroll" style="height: 310px; position: relative">
+                                <table class="table table-hover table-borderless mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style="text-align:center">#</th>
+                                            <th scope="col">Meeting Name</th>
+                                            <th scope="col">Meeting ID</th>
+                                            <th scope="col">Scheduled At</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
+                                        @foreach($bbbmeetings as $keys => $user)
+                                        <tr>
+                                            <td style="text-align:center">{{ $keys + 1 }}</td>
+                                            <td>{{ \Illuminate\Support\Str::title($user->meeting_name) }}</td>
+                                            <td>{{ $user->meeting_id }}</td>
+                                            <td>{{ $user->scheduled_at->format('d M Y h:i A') }}</td>
+                                            <td>
+                                                @if($user->status == 'running' && $user->attendee_join_url)
+                                                <span class="badge bg-light-success rounded-pill f-14">Running</span>
+                                                @elseif($user->status == 'ended')
+                                                    <span class="badge bg-light-danger rounded-pill f-14">Ended</span>
+                                                @else
+                                                    <span class="badge bg-light-warning rounded-pill f-14">Scheduled</span>
+                                                @endif
+                                            </td>
+                                            <td> @if($user->status == 'running' && $user->attendee_join_url)
+                                                <a href="{{ route('meetings.join', ['meeting_id' => $user->meeting_id, 'is_moderator' => 0]) }}" class="btn btn-sm btn-success"><span style="border-radius: 46px;">Join</span></a></td>
+                                                @else
+                                                ---
+                                                @endif
+                                        </tr>
+                                        @endforeach
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            @else
+                            <div id="no-meetings" class="d-flex align-items-center mt-2"
+                                style="margin-left:12px; display: none;">
+                                <tr>Data Not found!</tr>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="card-footer text-end">
+                        {{-- <a href="{{ route('meetings.list') }}" class="b-b-primary text-primary">View all</a> --}}
+                    </div>
+                </div>
                 <div class="card table-card">
                     <div class="calendar-container">
                         <div id="calendar" style="padding:0px"></div>
@@ -354,13 +413,9 @@
                         <a href="{{ $notification->data['url'] ?? '#' }}" class="text-decoration-none text-dark">
                             <div class="d-flex align-items-center border-bottom py-3">
 
-                                @if(Auth::user()->profile_picture)
-                                <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="user-image"
-                                    class="user-avatar" style="width: 40px; height: 40px;">
-                                @else
-                                <img src="{{ asset('asset/images/user/download.jpg') }}" alt="image" class="user-avatar"
-                                    style="width: 40px; height: 40px;">
-                                @endif
+                                <div class="user-avtar bg-light-success ms-2 rounded-circle d-flex justify-content-center align-items-center" style="width: 45px; height: 40px;">
+                                    <i class="ti ti-bell"></i>
+                                </div>
                                 <div class="w-100 ms-3">
                                     <div class="d-flex w-100 justify-content-between">
                                         <h6 class="mb-0">{{ $notification->data['title'] ?? 'No Title' }}</h6>
