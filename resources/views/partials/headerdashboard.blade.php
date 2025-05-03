@@ -170,7 +170,18 @@
                         </div>
                     </div>
                 </li> --}}
+                <div class="m-header" style="margin-top:-10px">
 
+                    <!-- Search Bar -->
+                    <div class="search-bar mt-2" style="position: relative; width: 100%;">
+                        <span class="search-icon"
+                            style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #a0a0a0;">
+                            <i class="ti ti-search" style="font-size: 18px;color: #6610f2;"></i>
+                        </span>
+                        <input type="text" class="form-control" id="sidebarSearch" placeholder="Search..."
+                            style="background-color: #e0cffc; border: none; border-radius: 11px; padding: 8px 15px 8px 35px; color: white; font-size: 16px; width: 100%;">
+                    </div>
+                </div>
                 @php
                 $notifications = auth()->user()->unreadNotifications;
                 @endphp
@@ -244,20 +255,31 @@
 
                 <li class="dropdown pc-h-item header-user-profile" style="margin-right: 14px">
                     <span class="dropdown-toggle arrow-none me-0" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false"
-                        style="height: 56px;     width: 162px; radius: 50px;color:#04049b">
-
-                        @if(Auth::user()->profile_picture)
-                        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="user-image"
-                            class="user-avatar">
-                        @else
-                        <img src="{{ asset('asset/images/user/download.jpg') }}" alt="image" class="user-avatar">
-                        @endif
-                        &nbsp;<b style="color:#e9ecef">{{ ucfirst(Str::before(Auth::user()->name, ' ')) }}</b>
-                        <span class="dropdown-toggle" style="color:#e9ecef" type="button" id="settingsDropdown" data-bs-toggle="dropdown"
-                            aria-expanded="false">
+                    aria-haspopup="true" aria-expanded="false"
+                    style="height: 56px; display: flex; align-items: center; padding: 0 10px; color:#04049b;">
+                    @if(Auth::user()->profile_picture)
+                    <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="user-image"
+                        class="user-avatar"
+                        style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                    @else
+                    <img src="{{ asset('asset/images/user/download.jpg') }}" alt="image" class="user-avatar"
+                        style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                    @endif
+                    <div style="display: flex; flex-direction: column; justify-content: center;">
+                        <b style="color:#e9ecef; font-size: 16px;">{{ ucfirst(Str::before(Auth::user()->name, ' '))
+                            }}</b>
+                        <span style="color:#e9ecef; font-size: 12px; line-height: 1.2;">
+                            @if (Auth::user()->type == 'Superadmin')
+                            SuperAdmin
+                            @else
+                            {{ Auth::user()->type }}
+                            @endif
                         </span>
+                    </div>
+                    <span class="dropdown-toggle" style="color:#e9ecef; margin-left: 10px;" type="button"
+                        id="settingsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                     </span>
+                </span>
 
                     <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                         <div class="dropdown-header">

@@ -130,7 +130,7 @@
                                                 }}</h5>
                                         </div>
                                     </div>
-                                    <div class="col-auto">
+                                    {{-- <div class="col-auto">
                                         <ul class="breadcrumb">
                                             <li class="breadcrumb-item mt-1">
                                                 <b>
@@ -141,7 +141,7 @@
                                             </li>
 
                                         </ul>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>

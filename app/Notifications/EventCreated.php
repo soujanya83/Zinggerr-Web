@@ -28,7 +28,7 @@ class EventCreated extends Notification
             'title' => $this->event->event_topic,
             'message' => $this->event->description,
             'time' => now()->toDateTimeString(),
-            'url' => url('/dashboard'),
+            'url' => url('/user/dashboard'),
         ];
     }
 }

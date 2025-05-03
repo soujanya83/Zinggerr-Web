@@ -189,14 +189,14 @@
     .pc-sidebar .pc-link span,
     .pc-sidebar .pc-submenu .pc-link {
         color: white !important;
-        font-size: 13px !important;
+        font-size: 15px !important;
         /* Assuming default is 14px */
     }
 
     .pc-sidebar .pc-micon i,
     .pc-sidebar .pc-arrow i {
         color: white !important;
-        font-size: 15px !important;
+        font-size: 20px !important;
         /* Assuming icons were 16px, now reduced */
     }
 
@@ -215,24 +215,25 @@
     }
 
 
-    body, html {
-    margin: 0;
-    padding: 0;
-    background-color: #6141bc;
+    body,
+    html {
+        margin: 0;
+        padding: 0;
+        background-color: #6141bc;
     }
 
 
     .pc-sidebar .pc-link:hover {
-    background-color: #7b5cd6 !important; /* A slightly lighter purple shade for hover */
-    border-radius: 5px; /* Rounded corners for the hover effect */
-    color: white !important; /* Ensure text remains white */
-    transition: background-color 0.2s ease; /* Smooth transition for the hover effect */
-}
-
-
-
+        background-color: #7b5cd6 !important;
+        /* A slightly lighter purple shade for hover */
+        border-radius: 5px;
+        /* Rounded corners for the hover effect */
+        color: white !important;
+        /* Ensure text remains white */
+        transition: background-color 0.2s ease;
+        /* Smooth transition for the hover effect */
+    }
 </style>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const originalHideBtn = document.getElementById('sidebar-hide');
@@ -298,7 +299,7 @@
             </a>
         </div>
 
-        <div class="navbar-content" style="margin-top: 16px;">
+        <div class="navbar-content" style="margin-top: 28px;">
             <ul class="pc-navbar">
 
                 <li class="pc-item" style="    margin-left: -13px;">
@@ -551,20 +552,21 @@
 
                 @php
                 $notifications = auth()->user()->unreadNotifications;
-            @endphp
+                @endphp
 
-            <li class="pc-item pc-hasmenu" style="margin-left: -13px;">
-                <a href="{{ route('all_notifications') }}" class="pc-link" style="position: relative; display: flex; align-items: center;">
-                    <span class="pc-micon" style="margin-right: 0.75rem;">
-                        <i class="ti ti-bell"></i>
-                    </span>
-                    <span class="pc-mtext" data-i18n="Teachers">Notifications</span>
-                    <span id="notification-count" class="badge"
-                          style="background-color: white; color: black !important; border-radius: 50%; font-size: 10px; font-weight: bold; padding: 2px 6px; min-width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
-                        {{ $notifications->count() > 0 ? $notifications->count() : 0 }}
-                    </span>
-                </a>
-            </li>
+                <li class="pc-item pc-hasmenu" style="margin-left: -13px;">
+                    <a href="{{ route('all_notifications') }}" class="pc-link"
+                        style="position: relative; display: flex; align-items: center;">
+                        <span class="pc-micon" style="margin-right: 0.75rem;">
+                            <i class="ti ti-bell"></i>
+                        </span>
+                        <span class="pc-mtext" data-i18n="Teachers" style="font-size: 18px">Notifications</span>
+                        <span id="notification-count" class="badge"
+                            style="background-color: white; color: black !important; border-radius: 50%; font-size: 10px; font-weight: bold; padding: 2px 6px; min-width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+                            {{ $notifications->count() > 0 ? $notifications->count() : 0 }}
+                        </span>
+                    </a>
+                </li>
 
 
                 {{-- <li class="pc-item profile-section"
@@ -716,15 +718,20 @@
                 </li> --}}
             </ul>
 
-            <div class="profile-section" style="padding: 10px; background-color: #6141bc; color: white; margin-left: -13px; width: 100%; border-top: 1px solid rgba(255, 255, 255, 0.1)">
-                <div class="profile-content" style="display: flex; align-items: center; padding: 8px; border-radius: 8px 8px 0 0; transition: all 0.3s ease;">
+            <div class="profile-section"
+                style="padding: 10px; background-color: #6141bc; color: white; margin-left: -13px; width: 100%; border-top: 1px solid rgba(255, 255, 255, 0.1)">
+                <div class="profile-content"
+                    style="display: flex; align-items: center; padding: 8px; border-radius: 8px 8px 0 0; transition: all 0.3s ease;">
                     <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('asset/images/user/download.jpg') }}"
-                        alt="user-image" class="user-avatar" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                        alt="user-image" class="user-avatar"
+                        style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
                     <div class="profile-info" style="flex-grow: 1;">
-                        <span style="font-weight: bold; color: white;">{{ ucfirst(Str::before(Auth::user()->name, ' ')) }}</span><br>
+                        <span style="font-weight: bold; color: white;">{{ ucfirst(Str::before(Auth::user()->name, ' '))
+                            }}</span><br>
                         <span style="color: white; font-size: 12px;">{{ Auth::user()->email }}</span>
                     </div>
-                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="margin-left: auto; color: #fffcfc; font-size: 18px;" title="Log-out">
+                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                        style="margin-left: auto; color: #fffcfc; font-size: 18px;" title="Log-out">
                         <b><i class="ti ti-logout"></i></b>
                     </a>
                 </div>
@@ -737,19 +744,24 @@
                     .pc-sidebar.icon-only .profile-content {
                         justify-content: center;
                     }
+
                     .pc-sidebar.icon-only .user-avatar {
                         margin-right: 0;
                     }
+
                     .pc-sidebar.icon-only .profile-info,
                     .pc-sidebar.icon-only .profile-content a {
                         display: none !important;
                     }
+
                     .pc-sidebar.icon-only:hover .profile-content {
                         justify-content: flex-start;
                     }
+
                     .pc-sidebar.icon-only:hover .user-avatar {
                         margin-right: 10px;
                     }
+
                     .pc-sidebar.icon-only:hover .profile-info,
                     .pc-sidebar.icon-only:hover .profile-content a {
                         display: block !important;
