@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BbbMeeting;
 use App\Models\EventModel;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -11,6 +12,8 @@ use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use DateTime;
 use App\Notifications\EventCreated;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class EventController extends Controller
 {
@@ -75,48 +78,39 @@ class EventController extends Controller
         }
     }
 
-
-
-    // public function index()
-    // {
-    //     $events = EventModel::where('status', 1)
-    //         ->whereNotNull('event_start')
-    //         ->whereNotNull('event_end')
-    //         ->get()
-    //         ->groupBy(function ($event) {
-    //             return date('Y-m-d', strtotime($event->event_start)); // Group by event_start date
-    //         })
-    //         ->map(function ($events, $date) {
-    //             return [
-    //                 'title' => count($events) . ' Events',
-    //                 'start' => $date,
-    //                 'events' => $events->toArray(), // Store event details for modal
-    //             ];
-    //         })
-    //         ->values(); // Remove keys for JSON response
-
-    //     return response()->json($events);
-    // }
-
-    public function index()
+    public function index(): JsonResponse
     {
-        $events = EventModel::where('status', 1)
-            ->whereNotNull('event_start')
-            ->whereNotNull('event_end')
-            ->get()
-            ->map(function ($event) {
-                return [
-                    'title' => $event->event_topic ?? 'Event',
-                    'start' => $event->event_start,
-                    'background_color' => $event->background_color, // Use database value
-                    'text_color' => $event->text_color,            // Use database value
-                    'end' => date('Y-m-d', strtotime($event->event_end . ' +1 day')), // FullCalendar is exclusive on end date
-                    'description' => $event->description, // ✅ Move directly here
-                ];
-            });
-
-        return response()->json($events);
+        try {
+            $events = EventModel::where('status', 1)
+                ->whereNotNull('event_start')
+                ->whereNotNull('event_end')
+                ->get()
+                ->map(function ($event) {
+                    return [
+                        'title' => $event->event_topic ?? 'Event',
+                        'start' => $event->event_start,
+                        'background_color' => $event->background_color,
+                        'text_color' => $event->text_color,
+                        'end' => date('Y-m-d', strtotime($event->event_end . ' +1 day')),
+                        'description' => $event->description,
+                        'type' => 'event'
+                    ];
+                })->toArray();
+            $meetings = BbbMeeting::
+            orderByRaw("CASE WHEN status = 'running' THEN 0 ELSE 1 END")->
+                latest('scheduled_at')
+                ->get()
+                ->toArray();
+            $combinedData = array_merge($events, $meetings);
+            return response()->json($combinedData);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch data'], 500);
+        }
     }
+
+
+
+
 
 
     public function event_delete($id)
@@ -153,7 +147,7 @@ class EventController extends Controller
             $id = $request->event_id;
             $validator = Validator::make($request->all(), [
                 'title' => 'required|string|max:500',
-             'start_datetime' => 'required|date_format:d-m-Y\TH:i',
+                'start_datetime' => 'required|date_format:d-m-Y\TH:i',
                 'end_datetime' => 'required|date_format:d-m-Y\TH:i|after:start_datetime',
                 'status' => 'required|boolean',
                 'description' => 'required|string'
@@ -220,7 +214,7 @@ class EventController extends Controller
 
     public function event_list(Request $request)
     {
-        $events = EventModel::orderBy('created_at','DESC')->get();
+        $events = EventModel::orderBy('created_at', 'DESC')->get();
         return view('events.list', compact('events'));
     }
 

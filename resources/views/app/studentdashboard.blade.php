@@ -205,7 +205,7 @@
                     </div> --}}
 
                 </div>
-                <div class="card table-card">
+                <div class="card table-card" style="display: none">
                     <div class="card-header">
                         <h5>Latest Meetings</h5>
                     </div>
@@ -558,7 +558,25 @@
     </div>
 </div><!-- [ Main Content ] end -->
 
-
+  <!-- Meeting Modal -->
+  <div class="modal fade" id="meetingModal" tabindex="-1" aria-labelledby="meetingModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="meetingModalLabel"><i class="ti ti-video"></i> Meeting Details</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="meetingModalBody">
+              <!-- Meeting details will be injected here -->
+          </div>
+          <div class="modal-footer">
+              <a id="meetingJoinLink" href="#" class="btn btn-success">Join</a>
+          </div>
+      </div>
+  </div>
+</div>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js">
 </script>
@@ -566,7 +584,7 @@
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function () {
         const calendarEl = document.getElementById('calendar');
 
@@ -638,9 +656,186 @@
         adjusted.setDate(adjusted.getDate() - 1);
         return adjusted;
     }
+</script> --}}
+
+<script>
+    // This route should match: route('meetings.join', ['meeting_id' => 'PLACEHOLDER', 'is_moderator' => 0])
+    const meetingJoinRoute = @json(route('meetings.join', ['meeting_id' => 'PLACEHOLDER', 'is_moderator' => 0]));
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const calendarEl = document.getElementById('calendar');
 
+    // Meetings data passed from the controller
+    const meetings = @json($bbbmeetings);
 
+    // Transform meetings into FullCalendar event format
+    const meetingEvents = meetings.map(meeting => ({
+        title: meeting.meeting_name,
+        start: meeting.scheduled_at,
+        extendedProps: {
+            type: 'meeting',
+            meeting_id: meeting.meeting_id,
+            status: meeting.status,
+            scheduled_at: meeting.scheduled_at
+        },
+        backgroundColor: '#28a745', // Green to differentiate from events
+        textColor: '#ffffff'
+    }));
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+            left: '',
+            center: 'title',
+            right: 'prev,next'
+        },
+        events: function(fetchInfo, successCallback, failureCallback) {
+            // Fetch events from the /events endpoint
+            fetch('/events')
+                .then(response => response.json())
+                .then(events => {
+                    // Combine events and meetings
+                    const allEvents = [
+                        ...events.map(event => ({
+                            ...event,
+                            extendedProps: {
+                                ...event.extendedProps,
+                                type: 'event'
+                            }
+                        })),
+                        ...meetingEvents
+                    ];
+                    successCallback(allEvents);
+                })
+                .catch(error => failureCallback(error));
+        },
+
+        eventContent: function (arg) {
+            const event = arg.event;
+            const eventData = event.toPlainObject();
+            const isMeeting = eventData.extendedProps.type === 'meeting';
+
+            // Colors for events and meetings
+            const bgColor = isMeeting ? '#d4e7f9' : (eventData.extendedProps.background_color || '#d4e7f9');
+            const textColor = isMeeting ? '#6141bc' : (eventData.extendedProps.text_color || '#6141bc');
+
+            const fullTitle = event.title || '';
+            const title = fullTitle.length > 10 ? fullTitle.slice(0, 10) + '…' : fullTitle;
+
+            return {
+                html: `
+                    <div style="background-color: ${bgColor} !important; padding: 5px 18px; border-radius: 5px; font-size: 13px; font-weight: 500; color: ${textColor} !important; margin-left: -2px;">
+                        ${title}
+                    </div>`
+            };
+        },
+
+        // eventClick: function (info) {
+        //     const event = info.event;
+        //     const props = event.extendedProps;
+
+        //     if (props.type === 'meeting') {
+        //         // Handle meeting click
+        //         let modalContent = `
+        //             <h5>Meeting on ${formatDate(event.start)}</h5>
+        //             <hr>
+        //             <p><strong>📌 Meeting Name:</strong> ${event.title}</p>
+        //             <p><strong>🆔 Meeting ID:</strong> ${props.meeting_id}</p>
+        //             <p><strong>🕒 Scheduled At:</strong> ${formatDateTime(new Date(props.scheduled_at))}</p>
+        //             <p><strong>📊 Status:</strong> ${props.status.charAt(0).toUpperCase() + props.status.slice(1)}</p>
+        //         `;
+
+        //         document.getElementById('meetingModalBody').innerHTML = modalContent;
+        //         const joinLink = document.getElementById('meetingJoinLink');
+        //         joinLink.href = `/join-meeting/${props.meeting_id}`; // Adjust the URL as per your routing
+        //         joinLink.style.display = props.status === 'running' ? 'inline-block' : 'none'; // Show Join button only if running
+
+        //         new bootstrap.Modal(document.getElementById('meetingModal')).show();
+        //     } else {
+        //         // Handle event click (existing logic)
+        //         let modalContent = `
+        //             <h5>Event on ${formatDate(event.start)}</h5>
+        //             <hr>
+        //             <p><strong>📌 Title:</strong> ${event.title}</p>
+        //             <p><strong>🕒 Start:</strong> ${formatDate(event.start)} ${formatTime(event.start)}</p>
+        //             <p><strong>⏳ End:</strong> ${event.end ? formatDate(adjustEndDate(event.end)) + ' ' + formatTime(adjustEndDate(event.end)) : 'Same as start'}</p>
+        //             <p><strong>📝 Description:</strong> ${props.description || 'No description provided'}</p>
+        //         `;
+
+        //         document.getElementById('eventModalBody').innerHTML = modalContent;
+        //         new bootstrap.Modal(document.getElementById('eventModal')).show();
+        //     }
+        // }
+
+        eventClick: function (info) {
+const event = info.event;
+const props = event.extendedProps;
+
+if (props.type === 'meeting') {
+    // Prepare modal content
+    let modalContent = `
+        <h5>Meeting on ${formatDate(event.start)}</h5>
+        <hr>
+        <p><strong>📌 Meeting Name:</strong> ${event.title}</p>
+        <p><strong>🆔 Meeting ID:</strong> ${props.meeting_id}</p>
+        <p><strong>🕒 Scheduled At:</strong> ${formatDateTime(new Date(props.scheduled_at))}</p>
+        <p><strong>📊 Status:</strong> ${props.status.charAt(0).toUpperCase() + props.status.slice(1)}</p>
+    `;
+
+    // Inject content into modal
+    document.getElementById('meetingModalBody').innerHTML = modalContent;
+
+    // Generate full join link from Laravel route
+    const joinLink = document.getElementById('meetingJoinLink');
+    joinLink.href = meetingJoinRoute.replace('PLACEHOLDER', props.meeting_id);
+    joinLink.style.display = props.status === 'running' ? 'inline-block' : 'none'; // Show only if running
+
+    // Show modal
+    new bootstrap.Modal(document.getElementById('meetingModal')).show();
+} else {
+    // Handle event
+    let modalContent = `
+        <h5>Event on ${formatDate(event.start)}</h5>
+        <hr>
+        <p><strong>📌 Title:</strong> ${event.title}</p>
+        <p><strong>🕒 Start:</strong> ${formatDate(event.start)} ${formatTime(event.start)}</p>
+        <p><strong>⏳ End:</strong> ${event.end ? formatDate(adjustEndDate(event.end)) + ' ' + formatTime(adjustEndDate(event.end)) : 'Same as start'}</p>
+        <p><strong>📝 Description:</strong> ${props.description || 'No description provided'}</p>
+    `;
+    document.getElementById('eventModalBody').innerHTML = modalContent;
+    new bootstrap.Modal(document.getElementById('eventModal')).show();
+}
+}
+    });
+
+    calendar.render();
+});
+
+// Utility functions
+function formatDate(date) {
+    return date ? new Date(date).toLocaleDateString('en-GB', {
+        day: '2-digit', month: 'long', year: 'numeric'
+    }) : 'Invalid Date';
+}
+
+function formatTime(date) {
+    return date ? new Date(date).toLocaleTimeString('en-US', {
+        hour: '2-digit', minute: '2-digit', hour12: true
+    }) : 'Invalid Time';
+}
+
+function formatDateTime(date) {
+    return date ? `${formatDate(date)} ${formatTime(date)}` : 'Invalid DateTime';
+}
+
+function adjustEndDate(date) {
+    if (!date) return null;
+    let adjusted = new Date(date);
+    adjusted.setDate(adjusted.getDate() - 1);
+    return adjusted;
+}
+</script>
 
 
 <script>
