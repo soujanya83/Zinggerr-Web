@@ -294,7 +294,7 @@
     <div class="navbar-wrapper">
         <div class="m-header" style="margin-top:-10px">
             <a href="{{ route('dashboard_user') }}" class="b-brand text-primary">
-                <img src="{{ asset('asset/images/logo.png')}}" class="logo" width="190px" alt="logo">
+                <img src="{{ asset('asset/images/logo.png')}}" class="logo" width="190px" alt="logo" style="background-color: #e0cffc;padding: 5px;border-radius: 4px;">
 
             </a>
         </div>
