@@ -1,25 +1,21 @@
 @extends('layouts.app')
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Two+Tone" rel="stylesheet">
-{{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"> --}}
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-
+<link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-@section('pageTitle', ' Roles Create')
-@vite(['resources/css/app.css', 'resources/js/app.js'])
+
+<!-- Manually include raw assets -->
+<link href="{{ asset('css/app.css') }}" rel="stylesheet">
+<script src="{{ asset('js/app.js') }}" defer></script>
+
+@section('pageTitle', 'Meeting Room')
+
 @section('content')
 @include('partials.sidebar')
 @include('partials.header')
-<style>
-    .required-asterisk {
-        color: red;
-        font-weight: bold;
-    }
-</style>
+
 <div class="pc-container">
     <div class="pc-content">
         <div class="page-header">
@@ -30,16 +26,16 @@
                             <h5 class="m-b-10">Meetings</h5>
                         </div>
                     </div>
-
                     <div class="col-auto">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item" aria-current="page">Create Meeting</li>
+                            <li class="breadcrumb-item" aria-current="page">Meeting Room</li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
+
         @if (session('error'))
         <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
             {{ session('error') }}
@@ -54,54 +50,78 @@
         </div>
         @endif
 
-        @if ($errors->any())
-        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        @endif
         <div class="row">
             <div class="tab-pane" id="request" role="tabpanel" aria-labelledby="request-tab">
                 <div class="card">
-
-                    <div class="card-header" style="margin-bottom: -28px;">
-                        <div class="row align-items-center g-2">
-                            <div class="col">
-                                <h1 class="text-2xl font-bold mb-4">Meeting Created Successfully</h1>
-                            </div>
-
-                            <div class="card-body">
-
-                                <h5 class="card-title">Meeting Details</h5>
-                                <p><strong>Meeting ID:</strong> {{ $meetingId }}</p>
-                                <p><strong>Meeting Name:</strong> {{ $meeting->meeting_name }}</p>
-                                <p><strong>Status:</strong> {{ $meeting->status }}</p>
-                                <p><strong>Scheduled At:</strong> {{ \Carbon\Carbon::parse($meeting->scheduled_at)->format('d/M/Y h:i A') }}</p>
-
-                                <div class="mt-3">
-                                    <a href="{{ $joinUrl }}" class="btn btn-primary" target="_blank">Join as Host</a>
+                    <div class="card-header">
+                        <h1 class="text-2xl font-bold mb-0">Meeting Room</h1>
+                    </div>
+                    <div class="card-body">
+                        <!-- Meeting Details -->
+                        <div class="mb-2">
+                            <h5 class="mb-2"><strong>Meeting Details</strong></h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-1">
+                                    <label class="form-label"><strong>Meeting Name:</strong></label>
+                                    <p class="form-control-static">{{ $meeting->meeting_name }}</p>
                                 </div>
-                                <div class="mt-3">
-                                    <p><strong>Attendee Join Link:</strong></p>
-                                    <input type="text" class="form-control" value="{{ $attendeeJoinUrl }}" readonly>
-                                    <button class="btn btn-secondary mt-2" onclick="navigator.clipboard.writeText('{{ $attendeeJoinUrl }}')">Copy join Link</button>
+                                <div class="col-md-6 mb-1">
+                                    <label class="form-label"><strong>Meeting ID:</strong></label>
+                                    <p class="form-control-static">{{ $meeting->meeting_id }}</p>
+                                </div>
+                                <div class="col-md-6 mb-1">
+                                    <label class="form-label"><strong>Scheduled At:</strong></label>
+                                    <p class="form-control-static">{{ $meeting->scheduled_at->format('d/m/Y H:i') }}</p>
+                                </div>
+                                {{-- <div class="col-md-6 mb-1">
+                                    <label class="form-label"><strong>Moderator Password:</strong></label>
+                                    <p class="form-control-static">{{ $meeting->moderator_pw }}</p>
+                                </div> --}}
+                                <div class="col-md-6 mb-1">
+                                    <label class="form-label"><strong>Attendee Password:</strong></label>
+                                    <p class="form-control-static">{{ $meeting->attendee_pw }}</p>
                                 </div>
                             </div>
+                        </div>
+                        <hr>
+                        <!-- Moderator Join Link -->
+                        <div class="mb-2">
+                            {{-- <label class="form-label"><strong>Moderator Join Link</strong></label> --}}
+                            <div class="url-container" style="display: none">
+                                <input type="text" class="form-control url-input" value="{{ $joinUrl }}"
+                                    id="moderatorJoinUrl" readonly>
+                                <button type="button" class="btn btn-outline-primary copy-btn"
+                                    onclick="copyToClipboard('moderatorJoinUrl')">Copy</button>
+                            </div>
+                            <a href="{{ $joinUrl }}" class="btn btn-success mt-1" target="_blank">Join as Host</a>
+                        </div>
 
-
+                        <div class="mb-3">
+                            <label class="form-label"><strong>Attendee Join Link</strong></label>
+                            <div class="url-container">
+                                <input type="text" class="form-control url-input"
+                                    value="{{ $attendeeJoinUrl }}" id="attendeeJoinUrl" readonly>
+                                <button type="button" class="btn btn-outline-primary copy-btn mt-1"
+                                    onclick="copyToClipboard('attendeeJoinUrl')">Copy</button>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script>
+    function copyToClipboard(elementId) {
+        const input = document.getElementById(elementId);
+        input.select();
+        document.execCommand('copy');
+        alert('Link copied to clipboard!');
+    }
+</script>
 @include('partials.footer')
 @endsection

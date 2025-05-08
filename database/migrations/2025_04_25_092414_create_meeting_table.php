@@ -15,6 +15,7 @@ return new class extends Migration
             $table->char('id', 36)->primary();
             $table->string('meeting_id')->unique(); // BigBlueButton meeting ID
             $table->string('meeting_name');
+            $table->char('user_id', 50)->nullable();
             $table->string('moderator_pw');
             $table->string('attendee_pw');
             $table->text('moderator_join_url');

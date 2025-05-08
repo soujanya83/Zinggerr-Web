@@ -25,6 +25,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\BigBlueButtonController;
 use App\Http\Controllers\NotificationController;
 use Illuminate\Notifications\DatabaseNotification;
+use BigBlueButton\BigBlueButton;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -113,6 +115,7 @@ Route::get('reset/new-password', function () {
     // return view('auth.passwords.newpassword_set');
     return view('auth.passwords.reset_password');
 })->name('password.newpassword');
+
 
 
 Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function () {
@@ -412,17 +415,65 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('/notifications', [NotificationController::class, 'index'])->name('all_notifications');
     Route::get('/mark-all-as-read', [NotificationController::class, 'markAllRead'])->name('markAllRead');
 
-    Route::get('create-meetings', [BigBlueButtonController::class, 'index'])->name('meetings.index');
-    Route::get('/meetings/create', [BigBlueButtonController::class, 'createMeeting'])->name('meetings.create');
-    Route::post('/meetings/create', [BigBlueButtonController::class, 'createMeeting'])->name('meetings.create_store');
-    Route::get('/meetings/join', [BigBlueButtonController::class, 'joinMeeting'])->name('meetings.join');
+    // Route::get('create-meetings', [BigBlueButtonController::class, 'index'])->name('meetings.index');
+    // Route::get('/meetings/create', [BigBlueButtonController::class, 'createMeeting'])->name('meetings.create');
+    // Route::post('/meetings/create', [BigBlueButtonController::class, 'createMeeting'])->name('meetings.create_store');
+    // Route::get('/meetings/join', [BigBlueButtonController::class, 'joinMeeting'])->name('meetings.join');
+    // Route::post('/meetings/end', [BigBlueButtonController::class, 'endMeeting'])->name('bbb.end');
+    // Route::get('/meetings/recordings', [BigBlueButtonController::class, 'getRecordings'])->name('meetings.recordings');
+    // Route::get('/bbb/room-link/{meetingId}', [BigBlueButtonController::class, 'showRoomLink'])->name('bbb.room-link');
+    // Route::get('/meetings-list', [BigBlueButtonController::class, 'listMeetings'])->name('meetings.list');
+
+    // Route::get('/meetings/{id}/start', [BigBlueButtonController::class, 'startMeeting'])->name('meetings.start');
+
+    Route::get('/create-meetings', [BigBlueButtonController::class, 'index'])->name('meetings.index');
+    Route::post('/meetings/create', [BigBlueButtonController::class, 'createMeeting'])->name('meetings.create');
     Route::post('/meetings/end', [BigBlueButtonController::class, 'endMeeting'])->name('bbb.end');
-    Route::get('/meetings/recordings', [BigBlueButtonController::class, 'getRecordings'])->name('meetings.recordings');
+    Route::get('/meetings/recordings/{meeting_id}', [BigBlueButtonController::class, 'getRecordings'])->name('meetings.recordings');
+    Route::get('/meetings/recordings-view/{meeting_id}', [BigBlueButtonController::class, 'showRecordings'])->name('meetings.recordings.view');
     Route::get('/bbb/room-link/{meetingId}', [BigBlueButtonController::class, 'showRoomLink'])->name('bbb.room-link');
     Route::get('/meetings-list', [BigBlueButtonController::class, 'listMeetings'])->name('meetings.list');
-    // Route::get('/meetings/start', [BigBlueButtonController::class, 'startMeeting'])->name('meetings.start');
-    // Route::get('/meetings/start', [BigBlueButtonController::class, 'startScheduledMeeting'])->name('meetings.start');
     Route::get('/meetings/{id}/start', [BigBlueButtonController::class, 'startMeeting'])->name('meetings.start');
+
+
+
+
+    Route::get('/debug-bbb-config', function () {
+        return [
+            'BBB_SERVER_BASE_URL' => config('bigbluebutton.server_base_url'),
+            'BBB_SECRET' => config('bigbluebutton.secret'),
+            'BBB_HASHING_ALGORITHM' => config('bigbluebutton.hashing_algorithm', 'sha1'),
+        ];
+    });
+
+
+
+    Route::get('/test-bbb-api', function () {
+        try {
+            $bbb = new BigBlueButton();
+            $response = $bbb->getMeetings();
+
+            if ($response->success()) {
+                return [
+                    'status' => 'success',
+                    'message' => 'Successfully connected to BBB server',
+                    'meetings' => $response->getRawXml()->meetings->meeting ?? 'No active meetings',
+                ];
+            } else {
+                return [
+                    'status' => 'error',
+                    'message' => 'Failed to connect to BBB server',
+                    'error' => $response->getMessage(),
+                ];
+            }
+        } catch (\Exception $e) {
+            return [
+                'status' => 'error',
+                'message' => 'Exception occurred while connecting to BBB server',
+                'error' => $e->getMessage(),
+            ];
+        }
+    });
 
     Route::post('/logout', function () {
         Auth::logout();
@@ -431,3 +482,12 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
         return redirect('login');
     })->name('logout');
 });
+
+// Routes for joining meetings (both authenticated and unauthenticated users)
+Route::get('/meetings/join', [BigBlueButtonController::class, 'joinMeeting'])->name('meetings.join');
+Route::post('/meetings/join', [BigBlueButtonController::class, 'joinMeeting'])->name('meetings.join.submit');
+
+// Guest route for joining meetings as an attendee (public)
+Route::get('/join-meeting/{meeting_id}', function ($meeting_id) {
+    return view('meetings.join', ['meeting_id' => $meeting_id]);
+})->name('guest.join');

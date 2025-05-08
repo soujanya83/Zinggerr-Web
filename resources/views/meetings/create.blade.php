@@ -80,85 +80,51 @@
 
                             <div class="card-body">
 
-                                <form id="createMeetingForm" action="{{ route('meetings.create_store') }}" method="POST"
-                                    autocomplete="off">
+                                <form id="createMeetingForm" action="{{ route('meetings.create') }}" method="POST" autocomplete="off">
                                     @csrf
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="mb-3">
-                                                <label for="meetingNameInput">Meeting Name <span class="text-danger"
-                                                        style="font-weight: bold;">*</span></label>
-                                                <input type="text" class="form-control" id="meetingNameInput"
-                                                    name="meeting_name" placeholder="Enter Meeting Name"
-                                                    value="{{ old('meeting_name') }}" required>
+                                                <label for="meetingNameInput">Meeting Name <span class="text-danger" style="font-weight: bold;">*</span></label>
+                                                <input type="text" class="form-control" id="meetingNameInput" name="meeting_name" placeholder="Enter Meeting Name" value="{{ old('meeting_name') }}" required>
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <div class="mb-3">
-                                                <label for="meetingIdInput">Meeting ID <span class="text-danger"
-                                                        style="font-weight: bold;">*</span></label>
-                                                <input type="text" class="form-control" id="meetingIdInput"
-                                                    name="meeting_id" placeholder="Enter Meeting ID"
-                                                    value="{{ old('meeting_id', Str::random(10)) }}" required
-                                                    oninput="this.value = this.value.replace(/\s/g, '')">
+                                                <label for="meetingIdInput">Meeting ID <span class="text-danger" style="font-weight: bold;">*</span></label>
+                                                <input type="text" class="form-control" id="meetingIdInput" name="meeting_id" placeholder="Enter Meeting ID" value="{{ old('meeting_id', Str::random(10)) }}" required oninput="this.value = this.value.replace(/\s/g, '')" readonly>
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <div class="mb-3">
-                                                <label for="meetingTypeInput">Meeting Type <span class="text-danger"
-                                                        style="font-weight: bold;">*</span></label>
-                                                <select class="form-control" id="meetingTypeInput" name="meeting_type"
-                                                    required>
-                                                    <option value="instant" {{ old('meeting_type', 'instant'
-                                                        )=='instant' ? 'selected' : '' }}>Instant</option>
-                                                    <option value="scheduled" {{ old('meeting_type')=='scheduled'
-                                                        ? 'selected' : '' }}>Scheduled</option>
+                                                <label for="meetingTypeInput">Meeting Type <span class="text-danger" style="font-weight: bold;">*</span></label>
+                                                <select class="form-control" id="meetingTypeInput" name="meeting_type" required>
+                                                    <option value="instant" {{ old('meeting_type', 'instant') == 'instant' ? 'selected' : '' }}>Instant</option>
+                                                    <option value="scheduled" {{ old('meeting_type') == 'scheduled' ? 'selected' : '' }}>Scheduled</option>
                                                 </select>
                                             </div>
                                         </div>
 
-                                        {{-- <div class="col-md-4" id="scheduledAtContainer" style="display: none;">
-                                            <div class="mb-3">
-                                                <label for="scheduled_at">Scheduled At <span class="text-danger"
-                                                        style="font-weight: bold;">*</span></label>
-                                                <input type="text" id="scheduled_at" name="scheduled_at"
-                                                    class="form-control" disabled>
-
-                                            </div>
-                                        </div>--}}
-
                                         <div class="col-md-4" id="scheduledAtContainer" style="display: none;">
                                             <div class="mb-3">
-                                                <label for="scheduled_at"><b>Start Date & Time</b> <span
-                                                        class="text-danger" style="font-weight: bold;">*</span></label>
-                                                <input type="text" class="form-control faded-placeholder" disabled
-                                                    id="scheduled_at" name="scheduled_at"
-                                                    placeholder="dd/mm/yyyy HH:mm AM/PM"
-                                                    value="{{ old('scheduled_at') }}">
-                                            </div>
-                                        </div>
-
-
-
-                                        <div class="col-md-4">
-                                            <div class="mb-3">
-                                                <label for="meetingAdminPwInput">Moderator Password <span
-                                                        class="text-danger" style="font-weight: bold;">*</span></label>
-                                                <input type="text" class="form-control" id="meetingAdminPwInput"
-                                                    name="meeting_admin_pw" placeholder="Enter Moderator Password"
-                                                    value="{{ old('meeting_admin_pw') }}" required>
+                                                <label for="scheduled_at"><b>Start Date & Time</b> <span class="text-danger" style="font-weight: bold;">*</span></label>
+                                                <input type="text" class="form-control faded-placeholder" disabled id="scheduled_at" name="scheduled_at" placeholder="dd/mm/yyyy HH:mm AM/PM" value="{{ old('scheduled_at') }}">
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <div class="mb-3">
-                                                <label for="meetingAttenduserPwInput">Attendee Password <span
-                                                        class="text-danger" style="font-weight: bold;">*</span></label>
-                                                <input type="text" class="form-control" id="meetingAttenduserPwInput"
-                                                    name="meeting_attenduser_pw" placeholder="Enter Attendee Password"
-                                                    value="{{ old('meeting_attenduser_pw') }}" required>
+                                                <label for="meetingAdminPwInput">Moderator Password <span class="text-danger" style="font-weight: bold;">*</span></label>
+                                                <input type="text" class="form-control" id="meetingAdminPwInput" name="meeting_admin_pw" placeholder="Enter Moderator Password" value="{{ old('meeting_admin_pw') }}" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label for="meetingAttenduserPwInput">Attendee Password <span class="text-danger" style="font-weight: bold;">*</span></label>
+                                                <input type="text" class="form-control" id="meetingAttenduserPwInput" name="meeting_attenduser_pw" placeholder="Enter Attendee Password" value="{{ old('meeting_attenduser_pw') }}" required>
                                             </div>
                                         </div>
                                     </div>

@@ -187,7 +187,7 @@
                             <i class="ti ti-search" style="font-size: 18px;color: #6610f2;"></i>
                         </span>
                         <input type="text" class="form-control" id="sidebarSearch" placeholder="Search..."
-                            style="background-color: #e0cffc; border: none; border-radius: 11px; padding: 8px 15px 8px 35px; color: white; font-size: 16px; width: 100%;">
+                            style="background-color: #e0cffc; border: none; border-radius: 11px; padding: 8px 15px 8px 35px; color: rgb(0, 0, 0); font-size: 16px; width: 100%;">
                     </div>
                 </div>
                 @php

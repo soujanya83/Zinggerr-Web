@@ -731,7 +731,7 @@
                         <span style="color: white; font-size: 12px;">{{ Auth::user()->email }}</span>
                     </div>
                     <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                        style="margin-left: auto; color: #fffcfc; font-size: 18px;" title="Log-out">
+                        style="margin-left: auto; color: #fffcfc; font-size: 18px;" title="Logout">
                         <b><i class="ti ti-logout"></i></b>
                     </a>
                 </div>
