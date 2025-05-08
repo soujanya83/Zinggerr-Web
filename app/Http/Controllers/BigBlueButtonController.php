@@ -26,7 +26,7 @@ class BigBlueButtonController extends Controller
         // Validate request data
         $request->validate([
             'meeting_name' => 'required|string',
-            'meeting_id' => 'required|string|unique:bbb_meetings,meeting_id',
+            'meeting_id' => 'required|string|unique:meetings,meeting_id',
             'meeting_type' => 'required|in:instant,scheduled',
             'scheduled_at' => 'required_if:meeting_type,scheduled|date_format:d/m/Y H:i',
             'meeting_admin_pw' => 'required|string',
