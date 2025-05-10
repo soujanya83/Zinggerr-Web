@@ -194,7 +194,7 @@
 
                 </div>
 
-                <div class="card table-card">
+                <div class="card table-card" style="display:none">
                     <div class="card-header">
                         <h5>Latest Meetings</h5>
                     </div>

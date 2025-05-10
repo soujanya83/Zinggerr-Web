@@ -434,10 +434,9 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     Route::get('/bbb/room-link/{meetingId}', [BigBlueButtonController::class, 'showRoomLink'])->name('bbb.room-link');
     Route::get('/meetings-list', [BigBlueButtonController::class, 'listMeetings'])->name('meetings.list');
     Route::get('/meetings/{id}/start', [BigBlueButtonController::class, 'startMeeting'])->name('meetings.start');
-
-
-
-
+    // Route::get('/meetings/joiner', [BigBlueButtonController::class, 'joinMeeting'])->name('meetings.join');
+    Route::post('/meetings/invite/{id}', [BigBlueButtonController::class, 'sendInvites'])->name('meetings.invite');
+    Route::get('/meetings/invite/search/{meeting_id}', [BigBlueButtonController::class, 'searchUsersForInvite'])->name('meetings.invite.search');
     Route::get('/debug-bbb-config', function () {
         return [
             'BBB_SERVER_BASE_URL' => config('bigbluebutton.server_base_url'),
@@ -445,8 +444,6 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
             'BBB_HASHING_ALGORITHM' => config('bigbluebutton.hashing_algorithm', 'sha1'),
         ];
     });
-
-
 
     Route::get('/test-bbb-api', function () {
         try {
@@ -483,11 +480,13 @@ Route::middleware(['web', 'auth', ClearCacheAfterLogout::class])->group(function
     })->name('logout');
 });
 
-// Routes for joining meetings (both authenticated and unauthenticated users)
-Route::get('/meetings/join', [BigBlueButtonController::class, 'joinMeeting'])->name('meetings.join');
-Route::post('/meetings/join', [BigBlueButtonController::class, 'joinMeeting'])->name('meetings.join.submit');
 
-// Guest route for joining meetings as an attendee (public)
-Route::get('/join-meeting/{meeting_id}', function ($meeting_id) {
-    return view('meetings.join', ['meeting_id' => $meeting_id]);
+Route::get('/meetings/joiner', [BigBlueButtonController::class, 'joinMeeting'])->name('meetings.join');
+
+Route::get('/join-meeting', function (Illuminate\Http\Request $request) {
+    $meeting_id = $request->query('meeting_id', '');
+    return view('meetings.join', compact('meeting_id'));
 })->name('guest.join');
+
+// Route for submitting the join form
+Route::post('/join-meeting', [BigBlueButtonController::class, 'joinMeeting'])->name('meetings.join.submit');

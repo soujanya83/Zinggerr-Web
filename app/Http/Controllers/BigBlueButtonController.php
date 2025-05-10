@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\BbbMeeting;
+use App\Models\User;
 use App\Services\BigBlueButtonService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class BigBlueButtonController extends Controller
 {
@@ -21,12 +23,14 @@ class BigBlueButtonController extends Controller
         $this->bbbService = $bbbService;
     }
 
+
+
     public function createMeeting(Request $request)
     {
         // Validate request data
         $request->validate([
             'meeting_name' => 'required|string',
-            'meeting_id' => 'required|string|unique:meetings,meeting_id',
+            'meeting_id' => 'required|string|unique:bbb_meetings,meeting_id',
             'meeting_type' => 'required|in:instant,scheduled',
             'scheduled_at' => 'required_if:meeting_type,scheduled|date_format:d/m/Y H:i',
             'meeting_admin_pw' => 'required|string',
@@ -146,13 +150,15 @@ class BigBlueButtonController extends Controller
                 'status' => 'running',
             ]);
 
-            // Redirect directly to the moderator join URL for instant meetings
-            return redirect($moderatorJoinUrl)
-                ->with('success', 'Instant meeting created successfully. Joining as moderator...');
+            // Redirect to the room-link page for instant meetings
+            return redirect()->route('bbb.room-link', ['meetingId' => $request->meeting_id])
+                ->with('success', 'Instant meeting created successfully.');
         }
 
         return redirect()->route('meetings.list')->with('success', 'Scheduled meeting created successfully.');
     }
+
+
 
     public function showRoomLink($meetingId)
     {
@@ -307,10 +313,130 @@ class BigBlueButtonController extends Controller
             ->with('success', 'Scheduled meeting started successfully.');
     }
 
+    // public function joinMeeting(Request $request)
+    // {
+    //     $meeting = BbbMeeting::where('meeting_id', $request->meeting_id)->firstOrFail();
+    //     $isModerator = $request->is_moderator == true;
+
+    //     if ($meeting->status !== 'running' || !$meeting->host_started) {
+    //         $redirectRoute = Auth::check() ? 'meetings.list' : 'guest.join';
+    //         return redirect()->route($redirectRoute, ['meeting_id' => $request->meeting_id])
+    //             ->with('error', 'Meeting is not currently running or has not been started by the host.');
+    //     }
+
+    //     // If the user is trying to join as a moderator, they must be authenticated and the meeting's creator
+    //     if ($isModerator) {
+    //         if (!Auth::check()) {
+    //             return redirect()->route('login')->with('error', 'Please log in to join as a moderator.');
+    //         }
+
+    //         if ($meeting->user_id !== Auth::id()) {
+    //             return redirect()->route('meetings.list')
+    //                 ->with('error', 'You are not authorized to join this meeting as a moderator.');
+    //         }
+
+    //         $fullName = Auth::user()->name ?? 'Host';
+
+    //         if ($meeting->moderator_join_url) {
+    //             return redirect($meeting->moderator_join_url);
+    //         }
+
+    //         $moderatorJoinUrl = $this->bbbService->joinMeeting(
+    //             $fullName,
+    //             $meeting->meeting_id,
+    //             $meeting->moderator_pw,
+    //             true
+    //         );
+
+    //         $attendeeJoinUrl = $this->bbbService->joinMeeting(
+    //             'Guest',
+    //             $meeting->meeting_id,
+    //             $meeting->attendee_pw,
+    //             false
+    //         );
+
+    //         // Validate URLs
+    //         if (filter_var($moderatorJoinUrl, FILTER_VALIDATE_URL) === false) {
+    //             Log::error('Invalid moderator join URL in joinMeeting', [
+    //                 'meeting_id' => $meeting->meeting_id,
+    //                 'url' => $moderatorJoinUrl,
+    //             ]);
+    //             return redirect()->route('meetings.list')->withErrors(['message' => 'Failed to generate moderator join link']);
+    //         }
+
+    //         if (filter_var($attendeeJoinUrl, FILTER_VALIDATE_URL) === false) {
+    //             Log::error('Invalid attendee join URL in joinMeeting', [
+    //                 'meeting_id' => $meeting->meeting_id,
+    //                 'url' => $attendeeJoinUrl,
+    //             ]);
+    //             return redirect()->route('meetings.list')->withErrors(['message' => 'Failed to generate attendee join link']);
+    //         }
+
+    //         $meeting->update([
+    //             'moderator_join_url' => $moderatorJoinUrl,
+    //             'attendee_join_url' => $attendeeJoinUrl,
+    //             'host_started' => true,
+    //             'status' => 'running',
+    //         ]);
+
+    //         return redirect($moderatorJoinUrl);
+    //     }
+
+    //     // Handle non-moderator (attendee) joining (no authentication required)
+    //     $fullName = $request->full_name ?? 'Guest';
+
+    //     if ($meeting->attendee_join_url) {
+    //         return redirect($meeting->attendee_join_url);
+    //     }
+
+    //     $joinUrl = $this->bbbService->joinMeeting(
+    //         $fullName,
+    //         $meeting->meeting_id,
+    //         $meeting->attendee_pw,
+    //         false
+    //     );
+
+    //     // Validate URL
+    //     if (filter_var($joinUrl, FILTER_VALIDATE_URL) === false) {
+    //         Log::error('Invalid attendee join URL in joinMeeting (attendee)', [
+    //             'meeting_id' => $meeting->meeting_id,
+    //             'url' => $joinUrl,
+    //         ]);
+    //         return redirect()->route('guest.join', ['meeting_id' => $meeting->meeting_id])
+    //             ->with('error', 'Failed to generate attendee join link');
+    //     }
+
+    //     $meeting->update(['attendee_join_url' => $joinUrl]);
+
+    //     return redirect($joinUrl);
+    // }
+
+
     public function joinMeeting(Request $request)
     {
-        $meeting = BbbMeeting::where('meeting_id', $request->meeting_id)->firstOrFail();
-        $isModerator = $request->is_moderator == true;
+        // Validate the request
+        $validator = Validator::make($request->all(), [
+            'meeting_id' => 'required|string',
+            'full_name' => 'required|string|max:255',
+            'password' => 'required|string|max:255',
+            'is_moderator' => 'nullable|boolean',
+        ]);
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // Attempt to find the meeting
+        $meeting = BbbMeeting::where('meeting_id', $request->meeting_id)->where('attendee_pw', $request->meeting_id)->first();
+
+        if (!$meeting) {
+            $redirectRoute = Auth::check() ? 'meetings.list' : 'guest.join';
+            return redirect()->route($redirectRoute, ['meeting_id' => $request->meeting_id])
+                ->with('error', 'Meeting not found.');
+        }
+
+        $isModerator = $request->input('is_moderator', false);
 
         if ($meeting->status !== 'running' || !$meeting->host_started) {
             $redirectRoute = Auth::check() ? 'meetings.list' : 'guest.join';
@@ -463,6 +589,106 @@ class BigBlueButtonController extends Controller
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Error fetching meetings: ' . $e->getMessage());
         }
+    }
+
+    public function sendInvites(Request $request, $id)
+    {
+        // Find the meeting
+        $meeting = BbbMeeting::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        // Validate the request
+        $request->validate([
+            'user_ids' => 'required|array',
+            'user_ids.*' => 'exists:users,id',
+        ]);
+
+        // Fetch the selected users
+        $userIds = $request->input('user_ids', []);
+        $users = User::whereIn('id', $userIds)->get();
+
+        if ($users->isEmpty()) {
+            return redirect()->route('meetings.list')
+                ->with('error', 'No users selected to invite.');
+        }
+
+        // Send invitation email to each user using ZeptoMail
+        $failedEmails = 0;
+        foreach ($users as $user) {
+            // Generate the join URL with meeting_id as a query parameter
+            $joinUrl = url('/join-meeting?meeting_id=' . urlencode($meeting->meeting_id));
+
+            $postData = [
+                "from" => ["address" => "noreply@zinggerr.com"],
+                "to" => [
+                    [
+                        "email_address" => [
+                            "address" => $user->email,
+                            "name" => $user->name
+                        ]
+                    ]
+                ],
+                "subject" => "Meeting Invitation from Zinggerr",
+                "htmlbody" => view('emails.meeting_invitation', [
+                    'userName' => $user->name,
+                    'meetingName' => $meeting->meeting_name,
+                    'meetingId' => $meeting->meeting_id,
+                    'scheduledAt' => \Carbon\Carbon::parse($meeting->scheduled_at)->format('d M Y h:i A'),
+                    'joinUrl' => $joinUrl
+                ])->render() // Convert Blade view to HTML string
+            ];
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+                CURLOPT_URL => "https://api.zeptomail.com.au/v1.1/email",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => json_encode($postData),
+                CURLOPT_HTTPHEADER => [
+                    "accept: application/json",
+                    "authorization: Zoho-enczapikey GkDdjPiC+lYbwFqX8426YIQGbJRi7cDiHJq2MZ9SoBN+vtwJ4UxNeZVLwnAkyzBNuiHIBVfBd7tz8THZsO6OfXMrJSqrcETuOpwzGB+edd0FvHvXUPi/9/tgVkjNnvCoNQtu7RIy9Ctv4A==",
+                    "content-type: application/json",
+                ],
+            ]);
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+            curl_close($curl);
+
+            if ($err) {
+                // \Log::error("ZeptoMail Error for user {$user->id}: " . $err);
+                $failedEmails++;
+            } else {
+                // \Log::info("ZeptoMail Response for user {$user->id}: " . $response);
+            }
+        }
+
+        if ($failedEmails > 0) {
+            return redirect()->route('meetings.list')
+                ->with('warning', "Invitations sent, but failed to send to {$failedEmails} user(s). Check logs for details.");
+        }
+
+        return redirect()->route('meetings.list')
+            ->with('success', 'Invitations sent successfully to selected users.');
+    }
+
+    public function searchUsersForInvite(Request $request, $meeting_id)
+    {
+        $searchTerm = $request->query('search', '');
+        $users = User::where('id', '!=', Auth::id())
+            ->where(function ($query) use ($searchTerm) {
+                $query->where('name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('email', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('type', 'like', '%' . $searchTerm . '%');
+            })
+            ->get();
+
+        return response()->json([
+            'users' => $users,
+            'meeting_id' => $meeting_id,
+        ]);
     }
 
     public function endMeeting(Request $request)
