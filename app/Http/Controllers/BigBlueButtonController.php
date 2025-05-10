@@ -428,7 +428,7 @@ class BigBlueButtonController extends Controller
         }
 
         // Attempt to find the meeting
-        $meeting = BbbMeeting::where('meeting_id', $request->meeting_id)->where('attendee_pw', $request->meeting_id)->first();
+        $meeting = BbbMeeting::where('meeting_id', $request->meeting_id)->where('attendee_pw', $request->password)->first();
 
         if (!$meeting) {
             $redirectRoute = Auth::check() ? 'meetings.list' : 'guest.join';
