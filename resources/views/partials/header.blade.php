@@ -72,6 +72,12 @@
     }
 
     /* .......................................................... */
+
+    .card.table-card {
+    background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}');
+    background-size: cover;
+    background-position: center;
+}
 </style>
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -211,7 +217,7 @@
                     </a>
 
                     <!-- Notification Dropdown -->
-                    <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown">
+                    <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown" >
                         <div class="dropdown-header">
                             <a href="{{ route('notifications.markAllRead') }}"
                                 class="link-primary float-end text-decoration-underline">
@@ -268,12 +274,12 @@
                         @if(Auth::user()->profile_picture)
                         <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="user-image"
                             class="user-avatar"
-                            style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                            style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;margin-top: -10px;">
                         @else
                         <img src="{{ asset('asset/images/user/download.jpg') }}" alt="image" class="user-avatar"
-                            style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                            style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;margin-top: -10px;">
                         @endif
-                        <div style="display: flex; flex-direction: column; justify-content: center;">
+                        <div style="display: flex; flex-direction: column; justify-content: center;    margin-top: -14px;">
                             <b style="color:#e9ecef; font-size: 16px;">{{ ucfirst(Str::before(Auth::user()->name, ' '))
                                 }}</b>
                             <span style="color:#e9ecef; font-size: 12px; line-height: 1.2;">

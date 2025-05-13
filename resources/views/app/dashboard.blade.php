@@ -117,6 +117,8 @@
     .material-icons-two-tone {
         background-color: #2a19b6
     }
+
+    .fc-view-harness {margin-top: -22px;}
 </style>
 
 
@@ -260,7 +262,7 @@
 
 
 
-                <div class="card table-card">
+                <div class="card table-card" style="height: 627px;">
                     <div class="calendar-container">
                         <div id="calendar" style="padding:0px"></div>
                     </div>
@@ -288,7 +290,8 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="meetingModalLabel"><i class="ti ti-video"></i> Meeting Details</h5>
+                                <h5 class="modal-title" id="meetingModalLabel"><i class="ti ti-video"></i> Meeting
+                                    Details</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
@@ -311,7 +314,7 @@
                         <h5>Latest Students</h5>
                     </div>
 
-                    <div class="card-body">
+                    <div class="card-body ">
                         <div class="table-responsive">
                             <div class="customers-scroll" style="height: 310px; position: relative">
                                 @if($latestStudents->count()>0)
@@ -467,8 +470,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="card table-card">
-                    <div class="h-100 bg-light rounded p-4">
+                <div class="card table-card" >
+                    <div class="h-100 bg-light rounded p-4" style="background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}'); background-size: cover; background-position: center;">
                         <div class="d-flex align-items-center justify-content-between mb-2">
                             <h5 class="mb-0">Notifications</h5>
                             <a href=""></a>
@@ -624,8 +627,8 @@
     }
 </script> --}}
 
- <script>
-        // This route should match: route('meetings.join', ['meeting_id' => 'PLACEHOLDER', 'is_moderator' => 0])
+<script>
+    // This route should match: route('meetings.join', ['meeting_id' => 'PLACEHOLDER', 'is_moderator' => 0])
         const meetingJoinRoute = @json(route('meetings.join', ['meeting_id' => 'PLACEHOLDER', 'is_moderator' => 0]));
 </script>
 <script>
