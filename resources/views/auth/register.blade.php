@@ -94,7 +94,7 @@
     <div class="auth-wrapper v3">
 
         <div class="auth-form">
-            <div class="card mt-5">
+            <div class="card mt-5"   style="background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}'); background-size: cover; background-position: center;">
                 <div class="card-body">
                     <a href="#" class="d-flex justify-content-center mt-0"><img src="asset/images/logo.png" alt="image"
                             style="max-width: 50%;"></a>
