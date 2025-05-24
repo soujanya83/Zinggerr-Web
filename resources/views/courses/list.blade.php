@@ -19,7 +19,7 @@
                         </div>
                     </div>
 
-                    <div class="col-auto">
+                    <div class="col-auto"   style="background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}'); background-size: cover; background-position: center;">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item" aria-current="page">Courses List</li>

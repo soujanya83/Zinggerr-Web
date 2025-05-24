@@ -59,7 +59,7 @@
         @endif
         <div class="row">
             <div class="tab-pane" id="request" role="tabpanel" aria-labelledby="request-tab">
-                <div class="card">
+                <div class="card"   style="background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}'); background-size: cover; background-position: center;">
 
                     <div class="card-header" style="margin-bottom: -28px;">
                         <div class="row align-items-center g-2">

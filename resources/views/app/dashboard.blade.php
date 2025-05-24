@@ -118,7 +118,9 @@
         background-color: #2a19b6
     }
 
-    .fc-view-harness {margin-top: -22px;}
+    .fc-view-harness {
+        margin-top: -22px;
+    }
 </style>
 
 
@@ -133,7 +135,8 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="page-header">
+                        <div class="page-header"
+                            style="background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}'); background-size: cover; background-position: center;">
                             <div class="page-block">
                                 <div class="row align-items-center">
                                     <div class="col">
@@ -155,8 +158,9 @@
 
                 <div class="row" style="margin-top:25px">
                     <div class="col-md-6">
-                        <div class="card dashnum-card dashnum-card-small overflow-hidden"><span
-                                class="round bg-primary small"></span> <span class="round bg-primary big"></span>
+                        <div class="card dashnum-card dashnum-card-small overflow-hidden"
+                            style="background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}'); background-size: cover; background-position: center;">
+                            <span class="round bg-primary small"></span> <span class="round bg-primary big"></span>
                             <div class="card-body p-3">
                                 <div class="d-flex align-items-center">
                                     <div class="avtar avtar-lg bg-light-primary"><i class="text-primary ti ti-book"></i>
@@ -174,8 +178,9 @@
 
 
                     <div class="col-md-6">
-                        <div class="card dashnum-card dashnum-card-small overflow-hidden"><span
-                                class="round bg-primary small"></span> <span class="round bg-primary big"></span>
+                        <div class="card dashnum-card dashnum-card-small overflow-hidden"
+                            style="background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}'); background-size: cover; background-position: center;">
+                            <span class="round bg-primary small"></span> <span class="round bg-primary big"></span>
                             <div class="card-body p-3">
                                 <div class="d-flex align-items-center">
                                     <div class="avtar avtar-lg bg-light-primary"><i
@@ -200,7 +205,8 @@
                     <div class="card-header">
                         <h5>Latest Meetings</h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body"
+                        style="background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}'); background-size: cover; background-position: center;">
                         <div class="table-responsive">
                             @if($bbbmeetings->count()>0)
                             <div class="meetings-scroll" style="height: 310px; position: relative">
@@ -272,7 +278,8 @@
                 <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog">
-                        <div class="modal-content">
+                        <div class="modal-content"
+                            style="background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}'); background-size: cover; background-position: center;">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="eventModalLabel">Event Details</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -288,7 +295,8 @@
                 <div class="modal fade" id="meetingModal" tabindex="-1" aria-labelledby="meetingModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog">
-                        <div class="modal-content">
+                        <div class="modal-content"
+                            style="background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}'); background-size: cover; background-position: center;">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="meetingModalLabel"><i class="ti ti-video"></i> Meeting
                                     Details</h5>
@@ -387,7 +395,7 @@
                 <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog">
-                        <div class="modal-content">
+                        <div class="modal-content"   style="background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}'); background-size: cover; background-position: center;">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="addTaskModalLabel">Add New Task</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -416,7 +424,8 @@
 
             </div>
             <div class="col-xxl-4">
-                <div class="card flat-card">
+                <div class="card flat-card"
+                    style="background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}'); background-size: cover; background-position: center;">
                     <div class="row-table">
                         <div class="col-sm-6 card-body w-50 br">
                             <div class="row g-1">
@@ -470,8 +479,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="card table-card" >
-                    <div class="h-100 bg-light rounded p-4" style="background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}'); background-size: cover; background-position: center;">
+                <div class="card table-card">
+                    <div class="h-100 bg-light rounded p-4"
+                        style="background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}'); background-size: cover; background-position: center;">
                         <div class="d-flex align-items-center justify-content-between mb-2">
                             <h5 class="mb-0">Notifications</h5>
                             <a href=""></a>
@@ -499,11 +509,13 @@
                     </div>
                 </div>
 
-                <div class="card table-card">
+                <div class="card table-card"
+                    style="background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}'); background-size: cover; background-position: center;">
                     <div class=""
                         style="border: 1px solid #e0e0e0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
                         <div class="card-header"
-                            style="display: flex; justify-content: space-between; align-items: center;">
+                            style="display: flex; justify-content: space-between; align-items: center;"
+                            style="background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}'); background-size: cover; background-position: center;">
                             <h5 id="cardHeaderTitle" style=" font-weight: 500; margin: 0;">To Do List
                             </h5>
                             <div>
@@ -526,7 +538,8 @@
                             </div>
                         </div>
                         <div class="card-footer"
-                            style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #f8f9fa; border-top: 1px solid #e0e0e0;">
+
+                            style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #f8f9fa; border-top: 1px solid #e0e0e0; background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}')">
                             <!-- Add Button on the Left -->
                             <a href="#" class="text-primary add-task-link" data-bs-toggle="modal"
                                 data-bs-target="#addTaskModal"

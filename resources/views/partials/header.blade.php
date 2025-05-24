@@ -77,6 +77,18 @@
     background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}');
     background-size: cover;
     background-position: center;
+    }
+
+       .page-header {
+    background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}');
+    background-size: cover;
+    background-position: center;
+}
+
+      .card {
+    background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}');
+    background-size: cover;
+    background-position: center;
 }
 </style>
 <meta name="csrf-token" content="{{ csrf_token() }}">

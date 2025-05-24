@@ -54,14 +54,14 @@
         @endif
         <div class="row">
             <div class="tab-pane" id="request" role="tabpanel" aria-labelledby="request-tab">
-                <div class="card">
+                <div class="card"   style="background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}'); background-size: cover; background-position: center;">
 
 
 
 
                     @if($roles->count() > 0)
 
-                    <div class="card-header">
+                    <div class="card-header" >
                         <div class="row align-items-center g-2">
                             <div class="col">
                                 <h5>Roles List</h5>

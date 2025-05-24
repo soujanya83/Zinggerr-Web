@@ -136,22 +136,14 @@
                         </ul>
                     </div>
 
-
-
-
                     <div class="card-body">
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="profile-1" role="tabpanel"
                                 aria-labelledby="profile-tab-1">
-
                                 <div class="row">
-
-
                                     <div class="col-md-3">
                                         <div class="card mb-3">
                                             <div class="card-body text-center">
-
-
                                                 @if(Auth::user()->profile_picture)
                                                 <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}"
                                                     class="rounded-circle" width="100" height="100">
@@ -303,7 +295,8 @@
                                                 </tr>
 
                                                 <tr>
-                                                    <th> <span class="thspace">Full Name <span class="text-danger" >*</span></span> </th>
+                                                    <th> <span class="thspace">Full Name <span
+                                                                class="text-danger">*</span></span> </th>
                                                     <td>:</td>
                                                     <td>
                                                         <input type="text" class="form-control" name="name"
@@ -311,7 +304,8 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <th><span class="thspace">Username <span class="text-danger" >*</span></span></th>
+                                                    <th><span class="thspace">Username <span
+                                                                class="text-danger">*</span></span></th>
                                                     <td>:</td>
                                                     {{-- <td>{{ Auth::user()->username }} <small
                                                             class="text-muted">(Read Only)</small></td> --}}
@@ -321,7 +315,8 @@
                                                             oninput="this.value = this.value.replace(/\s/g, '')"></td>
                                                 </tr>
                                                 <tr>
-                                                    <th><span class="thspace">Phone <span class="text-danger" >*</span></span></th>
+                                                    <th><span class="thspace">Phone <span
+                                                                class="text-danger">*</span></span></th>
                                                     <td>:</td>
 
                                                     <td>
@@ -334,7 +329,8 @@
 
                                                 </tr>
                                                 <tr>
-                                                    <th><span class="thspace">Email <span class="text-danger" >*</span></span></th>
+                                                    <th><span class="thspace">Email <span
+                                                                class="text-danger">*</span></span></th>
                                                     <td>:</td>
                                                     {{-- <td>{{ Auth::user()->email }} <small class="text-muted">(Read
                                                             Only)</small></td> --}}
@@ -389,9 +385,6 @@
 
                                 {{-- <div class="card-body">
                                     <div class="tab-content"> --}}
-
-
-
                                         <div class="tab-pane active show" id="profile-4" role="tabpanel"
                                             aria-labelledby="profile-tab-4">
                                             <div class="alert alert-warning" role="alert">
@@ -417,7 +410,8 @@
                                                                             class="text-danger">*</span></label>
                                                                     <input type="password" id="currentPassword"
                                                                         name="current_password" class="form-control"
-                                                                        placeholder="Enter your current password" required>
+                                                                        placeholder="Enter your current password"
+                                                                        required>
                                                                     <button type="button" style="top: 34%;"
                                                                         class="btn btn-outline-secondary toggle-password eyebutton"
                                                                         data-target="currentPassword">
@@ -453,7 +447,8 @@
                                                                     <input type="password" id="confirmPassword"
                                                                         name="new_password_confirmation"
                                                                         class="form-control"
-                                                                        placeholder="Confirm your new password" required>
+                                                                        placeholder="Confirm your new password"
+                                                                        required>
                                                                     <button type="button"
                                                                         class="btn btn-outline-secondary toggle-password eyebutton"
                                                                         data-target="confirmPassword">
@@ -463,7 +458,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="card-footer text-end">
+                                                    <div class="card-footer text-end" style="    margin-top: -35px;
+}">
                                                         <button type="submit" class="btn btn-shadow btn-danger">Change
                                                             Password</button>
                                                         <button type="reset"

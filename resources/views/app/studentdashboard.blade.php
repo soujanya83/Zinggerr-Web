@@ -451,8 +451,8 @@
                 </div> --}}
 
 
-                <div class="card table-card">
-                    <div class="h-100 bg-light rounded p-4">
+                <div class="card table-card" >
+                    <div class="h-100 bg-light rounded p-4"   style="background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}'); background-size: cover; background-position: center;">
                         <div class="d-flex align-items-center justify-content-between mb-2">
                             <h5 class="mb-0">Notifications</h5>
                             <a href=""></a>
@@ -508,7 +508,7 @@
                             </div>
                         </div>
                         <div class="card-footer"
-                            style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #f8f9fa; border-top: 1px solid #e0e0e0;">
+                            style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #f8f9fa; border-top: 1px solid #e0e0e0;background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}')">
                             <!-- Add Button on the Left -->
                             <a href="#" class="text-primary add-task-link" data-bs-toggle="modal"
                                 data-bs-target="#addTaskModal"
@@ -525,7 +525,7 @@
                 <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog">
-                        <div class="modal-content">
+                        <div class="modal-content"   style="background-image: url('{{ asset('asset/zinggerr-web-image.jpg') }}'); background-size: cover; background-position: center;">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="addTaskModalLabel">Add New Task</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"

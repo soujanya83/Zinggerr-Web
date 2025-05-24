@@ -49,7 +49,7 @@
 
 <div class="pc-container">
     <div class="pc-content">
-        <div class="page-header">
+        <div class="page-header"   style="background-image: url('{{ asset('asset/Montessori Doodle Updated.png') }}'); background-size: cover; background-position: center;">
             <div class="page-block">
                 <div class="row align-items-center">
                     <div class="col">
@@ -78,8 +78,8 @@
 
         <div class="row">
             <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
+                <div class="card" style="background-image: url('{{ asset('asset/Montessori Doodle Updated.png') }}'); background-size: cover; background-position: center;">
+                    <div class="card-header" >
                         <div class="d-flex align-items-center justify-content-between">
                             <h5 class="mb-0">Courses List</h5>
 
